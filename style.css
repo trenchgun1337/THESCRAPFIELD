@@ -1,10 +1,10 @@
 /* ================================================================
-   THE WATANAGASHI ARCHIVE â€” style.css
+   THE WATANAGASHI ARCHIVE — style.css
    Dark Aero = default (:root)
    Legacy (amber) = [data-theme="legacy"]
    ================================================================ */
 
-/* â”€â”€ DEFAULT: Dark Aero â”€â”€ */
+/* ── DEFAULT: Dark Aero ── */
 :root {
   --th-bg-image:       url('BACKGROUND2.jpg');
   --th-bg-image: radial-gradient(circle, transparent 100%, rgba(0, 0, 0, 1.0) 100%), url('BACKGROUND2.jpg');
@@ -135,7 +135,7 @@
   --th-vi-head-brd-b:  rgba(50,50,50,.90);
 }
 
-/* â”€â”€ THEME: Legacy (amber) â”€â”€ */
+/* ── THEME: Legacy (amber) ── */
 :root[data-theme="legacy"] {
   --th-bg-image:       url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/SITEBACKGROUND.png');
   --th-accent:         #ffc820;
@@ -250,7 +250,7 @@
   animation-delay: 0s !important;
 }
 
-/* Intentional animations â€” kept */
+/* Intentional animations — kept */
 .gi-badge-pulse     { animation-duration: 2s !important; }
 .gi-star.gi-star-on { animation-duration: 1.6s !important; }
 
@@ -280,7 +280,7 @@ a img,button img,#visualizerCanvas,
 .gi-star-interactive,.gi-card-imgwrap,.gi-awarded-img,
 #renaChan,#rikaChan { pointer-events:auto !important }
 
-/* â”€â”€ Background: BACKGROUND2, always centered & fixed â”€â”€ */
+/* ── Background: BACKGROUND2, always centered & fixed ── */
 body {
   font-family:Tahoma,'Segoe UI',Geneva,Verdana,sans-serif;
   font-size:12px;
@@ -298,7 +298,7 @@ body {
   background-image: url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/SITEBACKGROUND.png') !important;
 }
 
-/* â”€â”€ Scrollbar: no black side stripe â”€â”€ */
+/* ── Scrollbar: no black side stripe ── */
 html {
   overflow-y: auto !important;
   scrollbar-gutter: auto !important;
@@ -322,7 +322,7 @@ p+p { margin-top:5px }
 .email-contact-link       { cursor:pointer; color:var(--th-accent) }
 .email-contact-link:hover { text-decoration:underline }
 
-/* â”€â”€ Layout â”€â”€ */
+/* ── Layout ── */
 #websiteContainer { width:780px; max-width:100%; display:flex; flex-direction:column; }
 
 /* ================================================================
@@ -360,7 +360,7 @@ p+p { margin-top:5px }
   text-shadow:0 1px 2px rgba(0,0,0,.8); margin-top:1px; letter-spacing:2px;
 }
 
-/* â”€â”€ Sidebar layout â”€â”€ */
+/* ── Sidebar layout ── */
 #navAndContentContainer { display:flex; align-items:stretch !important; }
 
 /* ================================================================
@@ -387,10 +387,9 @@ p+p { margin-top:5px }
   scrollbar-color:var(--th-nav-scroll) var(--th-nav-scrollbg);
 }
 
-/* Sidebar extender â€” mirrors nav background below nav, height set by JS */
+/* Sidebar extender — mirrors nav background below nav, height set by JS */
 #_sidebarExtender {
-  
-  opacity: 0; /* Removido o 'px' */
+  opacity: 0;
   width: 148px;
   display: none;
   flex-shrink: 0;
@@ -401,7 +400,6 @@ p+p { margin-top:5px }
   border-bottom-left-radius: 40px;
   pointer-events: none;
 }
-
 
 .nav-categories {
   background:rgba(10,10,10,.38);
@@ -439,6 +437,35 @@ p+p { margin-top:5px }
 }
 .nav-link.active { background:var(--th-nav-active-bg) !important; color:var(--th-accent) !important }
 .nav-link.active:hover { text-decoration:underline }
+
+/* ── Nav action buttons: Sounds & Themes — verde aero ── */
+#navSoundToggle,
+#_themesBtn {
+  background: linear-gradient(
+    to bottom,
+    #fff       0%,
+    #9efd96    3%,
+    #32912a   30%,
+    #185815   55%,
+    #0b3112   55%,
+    #1a5c1e  100%
+  ) !important;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.2) !important;
+  border: 1px solid #000 !important;
+  color: #fff !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  padding: 5px 0 !important;
+  position: relative !important;
+  font-size: 12.9px !important;
+  font-family: Tahoma, sans-serif !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.7) !important;
+  letter-spacing: .2px !important;
+}
+#navSoundToggle:hover,
+#_themesBtn:hover {
+  filter: brightness(1.15) !important;
+}
 
 /* ================================================================
    MAIN CONTENT
@@ -594,7 +621,7 @@ h1::before,h2::before,h3::before {
 
 .playlist-right { display:flex; flex-direction:column; align-items:center; justify-content:center; margin:0 12px; flex-shrink:0; }
 
-/* Playlist right column â€” CD + visualizer column */
+/* Playlist right column — CD + visualizer column */
 #playlistRight {
   display: flex !important;
   flex-direction: column !important;
@@ -615,10 +642,10 @@ h1::before,h2::before,h3::before {
   cursor:default;
 }
 
-/* Hide original spinning disk â€” replaced by #cdDisc */
+/* Hide original spinning disk — replaced by #cdDisc */
 #spinningDisk { display: none !important; }
 
-/* CD disc image â€” spins below visualizer, no artwork face */
+/* CD disc image — spins below visualizer */
 #cdDisc {
   width: 155px;
   height: 137px;
@@ -629,6 +656,13 @@ h1::before,h2::before,h3::before {
   object-fit: contain;
   margin-top: 2px;
   filter: drop-shadow(0 0 6px rgba(120,20,20,.5));
+}
+
+/* mpPlusBtn — sempre visível, nunca cinza */
+#mpPlusBtn {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: rgba(200,200,200,.75) !important;
 }
 
 .mp-bottom-row {
@@ -723,6 +757,22 @@ h1::before,h2::before,h3::before {
 }
 #galPlusBtn:hover { color: #fff; }
 
+/* ── Sort popups — texto padrão cinza, hover neutro escuro ── */
+#vSortSubmenu div,
+#mpSortSubmenu div,
+#galSortItems > div {
+  color: #ccc !important;
+}
+
+body:not(.adaptive-accent-on) #vSortSubmenu div:hover,
+body:not(.adaptive-accent-on) #mpSortSubmenu div:hover,
+body:not(.adaptive-accent-on) #galSortItems > div:hover,
+body:not(.adaptive-accent-on) #vPopUrl:hover,
+body:not(.adaptive-accent-on) #mpPopUrl:hover {
+  background: rgba(50,50,50,0.80) !important;
+  color: #ffffff !important;
+}
+
 .sort-panel {
   background:var(--th-card-bg); border:1px solid var(--th-aero-border);
   border-top:none; padding:8px 12px; display:flex; flex-wrap:wrap;
@@ -809,7 +859,7 @@ h1::before,h2::before,h3::before {
 .vg-thumb { width:100%; aspect-ratio:16/9; object-fit:cover; display:block }
 .vg-title { display:block; width:100%; text-align:center; font-family:Tahoma,sans-serif; font-size:10px; color:var(--th-text); margin-top:4px; line-height:1.3; word-break:break-word; padding:0 2px; pointer-events:none }
 
-/* Video pager */
+/* ── Video & gallery pager — com setas < > ── */
 .vg-pager {
   display: flex; align-items: center; justify-content: center;
   gap: 4px; padding: 5px 0 2px; flex-wrap: wrap;
@@ -826,6 +876,23 @@ h1::before,h2::before,h3::before {
   border-color: rgba(180,20,20,.7);
   color: #cc1a1a;
   background: rgba(60,5,5,.5);
+}
+.vg-pager-btn.vg-pager-arrow {
+  font-size: 13px !important;
+  font-weight: bold;
+  padding: 2px 10px !important;
+  color: #999;
+}
+.vg-pager-btn.vg-pager-arrow:hover {
+  color: #fff !important;
+  border-color: rgba(150,150,150,.6) !important;
+  background: rgba(30,30,30,.8) !important;
+}
+
+#galleryPager {
+  display: flex; align-items: center; justify-content: center;
+  gap: 4px; padding: 6px 0 2px; flex-wrap: wrap;
+  font-family: Tahoma, sans-serif; font-size: 11px;
 }
 
 @media(max-width:520px) { .vg-grid { grid-template-columns:repeat(2,1fr) !important } }
@@ -897,7 +964,6 @@ h1::before,h2::before,h3::before {
 .gi-star.gi-star-on { filter:grayscale(0%) brightness(1) !important; animation:giStarGlow 1.6s infinite }
 @keyframes giStarGlow { 0%,100%{filter:grayscale(0%) brightness(1)} 50%{filter:grayscale(0%) brightness(1.3)} }
 
-/* .gi-avg always WHITE */
 .gi-avg    { font-size:11px; font-weight:400; color:#ffffff !important; margin-left:4px; font-family:Tahoma,sans-serif }
 .gi-cnt    { font-size:10px; color:#888; font-family:Tahoma,sans-serif }
 .gi-review { font-size:10px; font-family:Tahoma,sans-serif; font-weight:400; text-align:center }
@@ -950,23 +1016,6 @@ h1::before,h2::before,h3::before {
 .aero-glass-overlay > * { position:relative; z-index:1 }
 
 /* ================================================================
-   THEMES BUTTON
-   ================================================================ */
-#_themesBtn {
-  width:100%;
-  background:var(--th-themes-bg);
-  border:1px solid var(--th-themes-border);
-  border-top:1px solid var(--th-themes-bord-t);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),rgba(0,0,0,.5) 0 2px 4px;
-  color:var(--th-themes-col);
-  font-size:11px; font-family:Tahoma,sans-serif;
-  padding:5px 4px 7px; cursor:pointer;
-  text-shadow:0 1px 2px rgba(0,0,0,.9);
-  letter-spacing:.3px; position:relative;
-}
-#_themesBtn:hover { filter:brightness(1.18) }
-
-/* ================================================================
    THEMES PANEL
    ================================================================ */
 #_themePanel {
@@ -985,7 +1034,7 @@ h1::before,h2::before,h3::before {
 #visitor-counter-wrap img { vertical-align:middle }
 
 /* ================================================================
-   FOOTER â€” always right-aligned inside container
+   FOOTER — always right-aligned inside container
    ================================================================ */
 footer {
   font-family: Tahoma, sans-serif;
@@ -1017,7 +1066,6 @@ footer {
   position:relative;
 }
 .comm-tab:hover { color:var(--th-text) }
-/* .comm-tab.active â€” always red, never overridden by adaptive accent */
 .comm-tab.active {
   background:var(--th-card-bg);
   color: #cc1a1a !important;
@@ -1061,7 +1109,6 @@ footer {
   font-size:12px;
   border-bottom:1px solid var(--th-main-border);
 }
-/* warn text always red â€” never overridden */
 .comm-wip strong { color: #cc1a1a !important; }
 
 /* Blog OK button */
@@ -1084,6 +1131,9 @@ footer {
   color: var(--th-accent) !important;
   text-decoration: underline !important;
 }
+
+/* vg-vote-badge: never visible */
+.vg-vote-badge { display: none !important; }
 
 /* ================================================================
    RESPONSIVE
