@@ -664,8 +664,8 @@ function buildPlaylist() {
   if(_musicSort==='popular')  sorted.sort((a,b)=>(LIKES.get(b.videoId).up+LIKES.get(b.videoId).down)-(LIKES.get(a.videoId).up+LIKES.get(a.videoId).down));
   else if(_musicSort==='highest') sorted.sort((a,b)=>LIKES.getScore(b.videoId)-LIKES.getScore(a.videoId));
   else if(_musicSort==='unrated')  sorted=sorted.filter(t=>{const d=LIKES.get(t.videoId);return d.up===0&&d.down===0;});
-  else if(_musicSort==='oldest')   sorted=[...sorted].reverse();
-  /* newest = default array order (index 0 = newest) */
+  else if(_musicSort==='newest')   sorted=[...sorted].reverse();
+  /* oldest = default array order (index 0 = oldest, as pushed after items.reverse()) */
 
   if(PREFS.showMusicOfWeek) {
     const motwId=MOTW.resolve(), motwTrack=motwId?TRACKS.find(t=>t.videoId===motwId):null;
