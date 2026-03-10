@@ -74,14 +74,27 @@
 
   function _createNavBtn() {
     const nav = document.getElementById('navigationMenu');
-    if (!nav || document.getElementById('navSoundToggle')) return;
+    if (!nav) return;
 
+    /* Se o botão já existe no HTML estático, só sincroniza label e adiciona listener */
+    const existing = document.getElementById('navSoundToggle');
+    if (existing) {
+      existing.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off';
+      if (!existing._soundWired) {
+        existing._soundWired = true;
+        existing.addEventListener('click', () => window.SiteSound.toggle());
+      }
+      return;
+    }
+
+    /* Cria dinamicamente caso não exista no HTML */
     const wrap = document.createElement('div');
     wrap.id = '_navSoundWrap';
     wrap.style.cssText = 'padding:4px 5px 2px; margin-top:4px;';
 
     const btn = document.createElement('button');
     btn.id = 'navSoundToggle';
+    btn._soundWired = true;
     btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off';
     btn.addEventListener('click', () => window.SiteSound.toggle());
 
