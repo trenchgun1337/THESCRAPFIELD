@@ -62,6 +62,7 @@ const PREFS = {
   gallerySort:       'newest',
   layoutAlign:       'left',
   adaptiveAccent:    false,
+  soundsOn:          true,
 
   load() {
     try {
@@ -80,6 +81,7 @@ const PREFS = {
       this.gallerySort      = s.gallerySort || 'newest';
       this.layoutAlign      = s.layoutAlign || 'left';
       this.adaptiveAccent   = !!s.adaptiveAccent;
+      this.soundsOn         = s.soundsOn !== false;
     } catch(e) {}
   },
   save() {
@@ -99,6 +101,7 @@ const PREFS = {
         gallerySort:     this.gallerySort,
         layoutAlign:     this.layoutAlign,
         adaptiveAccent:  this.adaptiveAccent,
+        soundsOn:        this.soundsOn,
       }));
     } catch(e) {}
   }
@@ -152,7 +155,6 @@ function applyLayoutAlign(align) {
 
 /* ================================================================
    ADAPTIVE ACCENT COLOR
-   FIX: uses crossOrigin='anonymous' so canvas.getImageData works
    ================================================================ */
 let _adaptiveAccentActive = false;
 
@@ -187,14 +189,10 @@ function _sampleBgColor(cb) {
   try {
     const bodyStyle = window.getComputedStyle(document.body);
     const bgImg = bodyStyle.backgroundImage;
-
-    /* Try extracting URL from background-image */
     const urlMatch = bgImg && bgImg.match(/url\(["']?([^"')]+)["']?\)/);
     if (!urlMatch) return FALLBACK();
-
     const img = new Image();
     const timer = setTimeout(FALLBACK, 5000);
-
     img.onload = () => {
       clearTimeout(timer);
       try {
@@ -203,7 +201,6 @@ function _sampleBgColor(cb) {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, 48, 48);
         const data = ctx.getImageData(0, 0, 48, 48).data;
-
         const buckets = {};
         for (let i = 0; i < data.length; i += 4) {
           const r = data[i], g = data[i+1], b = data[i+2];
@@ -219,13 +216,10 @@ function _sampleBgColor(cb) {
         if (best) {
           const [r, g, b] = best.split(',').map(Number);
           cb(r, g, b);
-        } else {
-          FALLBACK();
-        }
+        } else { FALLBACK(); }
       } catch(e) { FALLBACK(); }
     };
     img.onerror = () => { clearTimeout(timer); FALLBACK(); };
-    /* FIX: use crossOrigin anonymous so canvas.getImageData works without SecurityError */
     img.crossOrigin = 'anonymous';
     img.src = urlMatch[1];
   } catch(e) { FALLBACK(); }
@@ -243,15 +237,12 @@ function applyAdaptiveAccent(enable) {
 
   _sampleBgColor((r, g, b) => {
     if (!_adaptiveAccentActive) return;
-
     const [ar, ag, ab] = _adjustForContrast(r, g, b);
     const hex  = _rgbToHex(ar, ag, ab);
     const hex2 = _rgbToHex(Math.min(255,ar+28), Math.min(255,ag+28), Math.min(255,ab+28));
     const hue  = _getHue(ar, ag, ab);
     window._vizAccentColor = { r:ar, g:ag, b:ab, hex, hex2, hue };
-
     const rgba = (a) => `rgba(${ar},${ag},${ab},${a})`;
-    /* Dark tinted bg for buttons matching the accent color */
     const btnBg = `rgba(${Math.round(ar/5)},${Math.round(ag/5)},${Math.round(ab/5)},.9)`;
 
     const imgFilter = `
@@ -293,7 +284,9 @@ a:hover { color: ${hex} !important; }
 #galPlusPopup  { border-color: ${rgba(0.40)} !important; background: rgba(5,5,5,.98) !important; }
 #vPlusPopup    { border-color: ${rgba(0.40)} !important; background: rgba(5,5,5,.98) !important; }
 #mpSortSubmenu { border-top-color: ${rgba(0.30)} !important; }
-#mpPlusPopup div:hover, #mpPlusPopup a:hover { background: ${rgba(0.14)} !important; }
+#mpPlusPopup div:hover, #mpPlusPopup a:hover { background: rgba(50,50,50,0.80) !important; color: #fff !important; }
+#vPlusPopup div:hover, #vPlusPopup a:hover   { background: rgba(50,50,50,0.80) !important; color: #fff !important; }
+#galPlusPopup div:hover                       { background: rgba(50,50,50,0.80) !important; color: #fff !important; }
 .comm-tab:not(.active) { border-color: ${rgba(0.50)} !important; }
 ::selection      { background: ${rgba(0.75)} !important; }
 ::-moz-selection { background: ${rgba(0.75)} !important; }
@@ -302,11 +295,9 @@ a:hover { color: ${hex} !important; }
 .vg-pager-btn.active { border-color: ${rgba(0.70)} !important; color: ${hex} !important; background: rgba(${Math.round(ar/4)},${Math.round(ag/4)},${Math.round(ab/4)},.5) !important; }
 .gallery-pager-btn.active { border-color: ${rgba(0.70)} !important; color: ${hex} !important; }
 .mp-row-sep { color: ${rgba(0.50)} !important; }
-/* Scrollbar — stays rectangular aero-black, tinted by accent */
 ::-webkit-scrollbar-thumb { background: rgba(${Math.round(ar/3.5)},${Math.round(ag/3.5)},${Math.round(ab/3.5)},.60) !important; border-radius:0 !important; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(${Math.round(ar/2.5)},${Math.round(ag/2.5)},${Math.round(ab/2.5)},.78) !important; }
 html { scrollbar-color: rgba(${Math.round(ar/3.5)},${Math.round(ag/3.5)},${Math.round(ab/3.5)},.60) transparent !important; }
-/* Preferences bar buttons */
 #pg-preferences button, #_prefBar button {
   border-color: ${rgba(0.60)} !important;
   background: ${btnBg} !important;
@@ -315,29 +306,23 @@ html { scrollbar-color: rgba(${Math.round(ar/3.5)},${Math.round(ag/3.5)},${Math.
   border-color: ${rgba(0.85)} !important; color: #fff !important;
 }
 #pg-preferences select, #_prefBar select { border-color: ${rgba(0.60)} !important; }
-/* Nav icons — minimal neutral filter (no color bleed) */
 body.adaptive-accent-on .nav-icons {
   filter: hue-rotate(1deg) saturate(1.05) !important;
   -webkit-filter: hue-rotate(1deg) saturate(1.05) !important;
 }
-/* Comm tabs */
 .comm-tab-bar { border-bottom: 2px solid ${rgba(0.50)} !important; }
 .comm-tab { border-color: ${rgba(0.45)} !important; }
 .comm-tab.active, #commTabChat.active, #commTabBlog.active, button.comm-tab.active {
   background: linear-gradient(to bottom,rgba(255,255,255,.18) 0%,rgba(${ar},${ag},${ab},.45) 18%,rgba(${Math.round(ar*.55)},${Math.round(ag*.55)},${Math.round(ab*.55)},.85) 60%,rgba(${Math.round(ar*.22)},${Math.round(ag*.22)},${Math.round(ab*.22)},.95) 60%,rgba(${Math.round(ar*.33)},${Math.round(ag*.33)},${Math.round(ab*.33)},.82) 100%) !important;
   border-color: ${rgba(0.70)} !important; color: #fff !important;
 }
-/* Comm ok button */
 .comm-ok-btn, a.comm-ok-btn {
   background: linear-gradient(to bottom,rgba(255,255,255,.20) 0%,rgba(${ar},${ag},${ab},.92) 0%,rgba(${Math.round(ar*.7)},${Math.round(ag*.7)},${Math.round(ab*.7)},.82) 4%,rgba(${Math.round(ar*.4)},${Math.round(ag*.4)},${Math.round(ab*.4)},.97) 52%,rgba(${Math.round(ar*.22)},${Math.round(ag*.22)},${Math.round(ab*.22)},1) 52%,rgba(${Math.round(ar*.33)},${Math.round(ag*.33)},${Math.round(ab*.33)},.90) 100%) !important;
   border-color: ${rgba(0.70)} !important;
   border-top-color: rgba(255,255,255,.20) !important;
 }
-/* Nav badge stays red always */
 ._nav-badge { background: #cc1a1a !important; }
-/* Autoplay dot */
 #vPopAutoplayDot.dot-on { background: ${hex} !important; }
-/* vg-vote-badge hidden */
 .vg-vote-badge { display: none !important; }
 ${imgFilter}
 `;
@@ -658,7 +643,9 @@ function seekTo(pct) {
 function setControlsEnabled(on) {
   ['audioPlayPause','audioBack','audioForward','audioLoop','progressBar']
     .forEach(id=>{const b=$(id);if(!b)return;b.disabled=!on;b.classList.toggle('ctrl-disabled',!on);});
-  const pb=$('mpPlusBtn');if(pb){pb.style.opacity=on?'1':'0.35';pb.style.pointerEvents=on?'auto':'none';}
+  /* mpPlusBtn: always visible and clickable regardless of controls state */
+  const pb=$('mpPlusBtn');
+  if(pb){ pb.style.opacity='1'; pb.style.pointerEvents='auto'; }
   if(DISK) DISK.classList.toggle('ctrl-disabled',!on);
   if(VIZ)  VIZ.classList.toggle('ctrl-disabled',!on);
   const lb=$('mpLikeBtn'),db=$('mpDislikeBtn');
@@ -678,6 +665,7 @@ function buildPlaylist() {
   else if(_musicSort==='highest') sorted.sort((a,b)=>LIKES.getScore(b.videoId)-LIKES.getScore(a.videoId));
   else if(_musicSort==='unrated')  sorted=sorted.filter(t=>{const d=LIKES.get(t.videoId);return d.up===0&&d.down===0;});
   else if(_musicSort==='oldest')   sorted=[...sorted].reverse();
+  /* newest = default array order (index 0 = newest) */
 
   if(PREFS.showMusicOfWeek) {
     const motwId=MOTW.resolve(), motwTrack=motwId?TRACKS.find(t=>t.videoId===motwId):null;
@@ -775,14 +763,11 @@ function stopViz() {
 function drawViz() {
   if (!_vizRunning) return;
   requestAnimationFrame(drawViz);
-
   if(!ctx2d||!VIZ) return;
   const W=VIZ.width, H=VIZ.height, now=Date.now()/1000, dt=Math.min(now-_vizLastT,0.05);
   _vizLastT=now;
   ctx2d.clearRect(0,0,W,H);ctx2d.fillStyle='rgba(4,4,4,.96)';ctx2d.fillRect(0,0,W,H);
-
   const ac = window._vizAccentColor;
-
   if(!isPlaying){
     for(let i=0;i<VIZ_BARS;i++){_vizTarget[i]=0;_vizCur[i]*=0.92;}
     ctx2d.strokeStyle = ac ? `rgba(${ac.r},${ac.g},${ac.b},.35)` : 'rgba(160,20,20,.35)';
@@ -980,17 +965,15 @@ function _initCDPlayer() {
 }
 
 /* ================================================================
-   VIDEO PAGINATION — 9 per page, numbered pager
+   VIDEO PAGINATION — 9 per page, numbered pager with < > arrows
    ================================================================ */
 (function() {
   const PAGE_SIZE = 9;
 
   window._repaginateSection = function(listEl) {
     if (!listEl) return;
-    /* Remove old pager */
     const oldPager = listEl.querySelector('.vg-pager');
     if (oldPager) oldPager.remove();
-
     const grid = listEl.querySelector('.vg-grid');
     if (!grid) return;
     delete grid._pgDone;
@@ -1017,7 +1000,18 @@ function _initCDPlayer() {
       grid.innerHTML = '';
       const start = page * PAGE_SIZE;
       for (let i = start; i < Math.min(start + PAGE_SIZE, entries.length); i++) grid.appendChild(entries[i]);
+
       pager.innerHTML = '';
+
+      /* Prev arrow */
+      const prev = document.createElement('span');
+      prev.className = 'vg-pager-btn vg-pager-arrow';
+      prev.textContent = '<';
+      prev.title = 'Previous page';
+      prev.addEventListener('click', () => { if (curPage > 0) showPage(curPage - 1); });
+      pager.appendChild(prev);
+
+      /* Page numbers */
       for (let p = 0; p < totalPages; p++) {
         const btn = document.createElement('span');
         btn.className = 'vg-pager-btn' + (p === curPage ? ' active' : '');
@@ -1025,6 +1019,14 @@ function _initCDPlayer() {
         btn.addEventListener('click', () => showPage(p));
         pager.appendChild(btn);
       }
+
+      /* Next arrow */
+      const next = document.createElement('span');
+      next.className = 'vg-pager-btn vg-pager-arrow';
+      next.textContent = '>';
+      next.title = 'Next page';
+      next.addEventListener('click', () => { if (curPage < totalPages - 1) showPage(curPage + 1); });
+      pager.appendChild(next);
     }
     showPage(0);
   }
@@ -1052,7 +1054,7 @@ function _initCDPlayer() {
 })();
 
 /* ================================================================
-   GALLERY PAGINATION — 9 per page
+   GALLERY PAGINATION — 9 per page with < > arrows
    ================================================================ */
 (function() {
   const GALLERY_PAGE_SIZE = 9;
@@ -1067,7 +1069,6 @@ function _initCDPlayer() {
     const totalPages = Math.ceil(cards.length / GALLERY_PAGE_SIZE);
     let curPage = 0;
 
-    /* Remove existing pager if any */
     const existingPager = document.getElementById('galleryPager');
     if (existingPager) existingPager.remove();
 
@@ -1084,6 +1085,16 @@ function _initCDPlayer() {
         grid.appendChild(cards[i]);
       }
       pager.innerHTML = '';
+
+      /* Prev arrow */
+      const prev = document.createElement('span');
+      prev.className = 'vg-pager-btn vg-pager-arrow';
+      prev.textContent = '<';
+      prev.title = 'Previous page';
+      prev.addEventListener('click', () => { if (curPage > 0) showPage(curPage - 1); });
+      pager.appendChild(prev);
+
+      /* Page numbers */
       for (let p = 0; p < totalPages; p++) {
         const btn = document.createElement('span');
         btn.className = 'vg-pager-btn' + (p === curPage ? ' active' : '');
@@ -1091,11 +1102,18 @@ function _initCDPlayer() {
         btn.addEventListener('click', () => showPage(p));
         pager.appendChild(btn);
       }
+
+      /* Next arrow */
+      const next = document.createElement('span');
+      next.className = 'vg-pager-btn vg-pager-arrow';
+      next.textContent = '>';
+      next.title = 'Next page';
+      next.addEventListener('click', () => { if (curPage < totalPages - 1) showPage(curPage + 1); });
+      pager.appendChild(next);
     }
     showPage(0);
   }
 
-  /* Expose so gallery.js render can trigger re-pagination */
   window._repaginateGallery = function() {
     const grid = document.getElementById('galleryGrid');
     if (grid) delete grid._pgDone;
@@ -1104,7 +1122,6 @@ function _initCDPlayer() {
     setTimeout(paginateGallery, 80);
   };
 
-  /* Watch for gallery grid to be populated */
   const mo = new MutationObserver(() => {
     const grid = document.getElementById('galleryGrid');
     if (grid && !grid._pgDone && grid.querySelectorAll('.gi-card').length > GALLERY_PAGE_SIZE) {
@@ -1119,7 +1136,6 @@ function _initCDPlayer() {
     setTimeout(paginateGallery, 3000);
   });
 
-  /* Wrap GallerySystem.renderGrid after all scripts load */
   window.addEventListener('load', () => {
     if (window.GallerySystem && !window.GallerySystem._pgPatched) {
       window.GallerySystem._pgPatched = true;
@@ -1167,6 +1183,13 @@ function buildPreferencesUI() {
   const genBar=mkSectionBar('GENERAL');
   const genBody=mkSectionBody();
   genBody.appendChild(mkToggle('Intro: Do Not Play \u2014 On','Intro: Do Not Play \u2014 Off',PREFS.alwaysSkipIntro,on=>{PREFS.alwaysSkipIntro=on;PREFS.save();}));
+
+  /* Sounds toggle in preferences */
+  genBody.appendChild(mkToggle('Sounds \u2014 On','Sounds \u2014 Off',PREFS.soundsOn!==false,on=>{
+    PREFS.soundsOn=on;PREFS.save();
+    if(window.SiteSound) window.SiteSound.setOn(on);
+  }));
+
   const charLabel=PREFS.hideRenaUnlocked?'Always Hide Rena/Rika \u2014 On':'Always Hide Rena \u2014 On';
   const charLabelOff=PREFS.hideRenaUnlocked?'Always Hide Rena/Rika \u2014 Off':'Always Hide Rena \u2014 Off';
   genBody.appendChild(mkToggle(charLabel,charLabelOff,PREFS.alwaysHideRena,on=>{
@@ -1270,7 +1293,6 @@ function initNaUnlock() {
 
 /* ================================================================
    Navigation
-   FIX: loads Chatango directly when community page is visited
    ================================================================ */
 const VALID_PAGES=['introduction','preferences','resources','music','sketchbook','videos','contact','community'];
 function navClick(e,name){e.preventDefault();gotoPage(name);history.pushState({page:name},'','#'+name);return false;}
@@ -1285,7 +1307,6 @@ function gotoPage(name){
     stopViz();
   }
 
-  /* FIX: load Chatango when community tab is opened */
   if (name === 'community') {
     setTimeout(() => {
       try { if (typeof _loadChatango === 'function') _loadChatango(); } catch(e) {}
@@ -1297,7 +1318,6 @@ function gotoPage(name){
   document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
   const pg=$('pg-'+name),btn=$('nbtn-'+name);
   if(pg)pg.classList.add('active');if(btn)btn.classList.add('active');
-  /* Mark badge seen when navigating to that section */
   if(name==='videos'){
     const total=(window.ANIME_VIDEOS||[]).length+(window.NOSTALGIA_VIDEOS||[]).length+(window.AWESOME_VIDEOS||[]).length;
     NavBadges.markSeen('videos',total);
@@ -1318,43 +1338,33 @@ window.addEventListener('hashchange',()=>{
   window.location.href=NOT_FOUND_URL;
 });
 
-/* ================================================================ 
-   MOBILE GATE — blocks mobile browsers and prompts desktop mode 
-   ================================================================ */ 
-(function _mobileGate() { 
-  const SOUND_URL = 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/notfound.mp3'; 
-  const BG_URL    = 'https://w7.pngwing.com/pngs/896/604/png-transparent-rika-furude-hanyuu-anime-higurashi-when-they-cry-anime-purple-black-hair-manga-thumbnail.png'; 
+/* ================================================================
+   MOBILE GATE
+   ================================================================ */
+(function _mobileGate() {
+  const SOUND_URL = 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/notfound.mp3';
+  const BG_URL    = 'https://w7.pngwing.com/pngs/896/604/png-transparent-rika-furude-hanyuu-anime-higurashi-when-they-cry-anime-purple-black-hair-manga-thumbnail.png';
 
-  function _isMobileUA() { 
-    return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(navigator.userAgent) 
-      || (typeof window.orientation !== 'undefined') 
-      || ('ontouchstart' in window && navigator.maxTouchPoints > 0 && window.innerWidth < 1024); 
+  function _isMobileUA() {
+    return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(navigator.userAgent)
+      || (typeof window.orientation !== 'undefined')
+      || ('ontouchstart' in window && navigator.maxTouchPoints > 0 && window.innerWidth < 1024);
   }
 
-  /* 
-   * Detecção mais confiável de Desktop Mode:
-   * 1. navigator.userAgentData.mobile === false  → API moderna (Chrome/Edge Android)
-   * 2. Largura >= 1024px  → heurística de viewport
-   * 3. UA mudou pra desktop string  → alguns browsers reescrevem o UA no desktop mode
-   */
   const _originalUA = navigator.userAgent;
 
   function _isDesktopMode() {
-    // Método 1: User-Agent Client Hints API (mais confiável, Chrome 90+)
     if (navigator.userAgentData && typeof navigator.userAgentData.mobile === 'boolean') {
       return !navigator.userAgentData.mobile;
     }
-    // Método 2: O UA mudou desde que a página carregou (alguns browsers fazem isso)
     if (navigator.userAgent !== _originalUA) {
       return !_isMobileUA();
     }
-    // Método 3: Heurística de largura
     return window.innerWidth >= 1024;
   }
 
-  if (!_isMobileUA()) return; 
+  if (!_isMobileUA()) return;
 
-  /* --- Funções de animação de entrada/saída --- */
   function _dismissOverlay(ov) {
     try { const a = new Audio(SOUND_URL); a.volume = 0.6; a.play().catch(()=>{}); } catch(e){}
     ov.style.transition = 'opacity .5s';
@@ -1362,63 +1372,49 @@ window.addEventListener('hashchange',()=>{
     setTimeout(() => { ov.remove(); document.body.style.overflow = ''; }, 600);
   }
 
-  /* --- Build overlay --- */ 
-  const ov = document.createElement('div'); 
-  ov.id = '_mobileGateOv'; 
-  ov.style.cssText = [ 
-    'position:fixed;inset:0;z-index:99999;', 
-    'background:#000 url("' + BG_URL + '") center/cover no-repeat;', 
-    'display:flex;flex-direction:column;align-items:center;justify-content:center;', 
-    'font-family:Tahoma,sans-serif;text-align:center;padding:20px;', 
-  ].join(''); 
+  const ov = document.createElement('div');
+  ov.id = '_mobileGateOv';
+  ov.style.cssText = [
+    'position:fixed;inset:0;z-index:99999;',
+    'background:#000 url("' + BG_URL + '") center/cover no-repeat;',
+    'display:flex;flex-direction:column;align-items:center;justify-content:center;',
+    'font-family:Tahoma,sans-serif;text-align:center;padding:20px;',
+  ].join('');
 
-  ov.innerHTML = ` 
-    <div style="background:rgba(0,0,0,.82);padding:28px 22px;border:1px solid rgba(180,20,20,.6);max-width:340px;border-radius:2px;"> 
-      <p style="font-size:22px;font-weight:bold;color:#cc1a1a;margin:0 0 10px;">UH OH! (X_X)</p> 
-      <p style="font-size:13px;color:#ddd;margin:0 0 8px;">This site isn't optimized for mobile browsers.</p> 
+  ov.innerHTML = `
+    <div style="background:rgba(0,0,0,.82);padding:28px 22px;border:1px solid rgba(180,20,20,.6);max-width:340px;border-radius:2px;">
+      <p style="font-size:22px;font-weight:bold;color:#cc1a1a;margin:0 0 10px;">UH OH! (X_X)</p>
+      <p style="font-size:13px;color:#ddd;margin:0 0 8px;">This site isn't optimized for mobile browsers.</p>
       <p style="font-size:10px;color:#888;margin:0 0 18px;">Please enable <strong style="color:#aaa;">Desktop Mode</strong> or <strong style="color:#aaa;">Tablet Mode</strong> in your browser settings to continue.</p>
-      
       <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:16px;margin-top:4px;">
         <p style="font-size:10px;color:#666;margin:0 0 10px;">— or —</p>
         <button id="_mobileGateContinue"
-          style="
-            background:transparent;
-            border:1px solid rgba(150,150,150,.4);
-            color:#777;
-            font-family:Tahoma,sans-serif;
-            font-size:10px;
-            padding:7px 16px;
-            border-radius:2px;
-            cursor:pointer;
-            letter-spacing:.05em;
-            transition:color .2s,border-color .2s;
-          "
+          style="background:transparent;border:1px solid rgba(150,150,150,.4);color:#777;font-family:Tahoma,sans-serif;font-size:10px;padding:7px 16px;border-radius:2px;cursor:pointer;letter-spacing:.05em;"
           onmouseover="this.style.color='#bbb';this.style.borderColor='rgba(200,200,200,.5)'"
           onmouseout="this.style.color='#777';this.style.borderColor='rgba(150,150,150,.4)'"
         >continue anyway (not recommended)</button>
       </div>
-    </div>`; 
+    </div>`;
 
-  document.body.appendChild(ov); 
-  document.body.style.overflow = 'hidden'; 
+  document.body.appendChild(ov);
+  document.body.style.overflow = 'hidden';
 
-  /* --- Botão "continue anyway" --- */
   document.getElementById('_mobileGateContinue').addEventListener('click', () => {
     clearInterval(_poll);
     _dismissOverlay(ov);
   });
 
-  /* --- Poll para detecção de troca pra Desktop Mode --- */ 
-  let _alerted = false; 
-  const _poll = setInterval(() => { 
-    if (_isDesktopMode()) { 
-      clearInterval(_poll); 
-      if (_alerted) return; 
-      _alerted = true; 
-      setTimeout(() => _dismissOverlay(ov), 400); 
-    } 
-  }, 800); 
+  let _alerted = false;
+  const _poll = setInterval(() => {
+    if (_isDesktopMode()) {
+      clearInterval(_poll);
+      if (_alerted) return;
+      _alerted = true;
+      setTimeout(() => _dismissOverlay(ov), 400);
+    }
+  }, 800);
 })();
+
 /* ================================================================
    NAV NOTIFICATION BADGES
    ================================================================ */
@@ -1428,7 +1424,6 @@ const NavBadges = {
 
   init() {
     try { this._store = JSON.parse(localStorage.getItem('_navBadgesSeen') || '{}'); } catch(e) { this._store = {}; }
-    /* Check prefs toggle */
     this._enabled = typeof PREFS !== 'undefined' ? (PREFS.showNavBadges !== false) : true;
   },
 
@@ -1469,13 +1464,11 @@ const NavBadges = {
     if (badge) badge.remove();
   },
 
-  /* Call after videos init */
   checkVideos() {
     const total = (window.ANIME_VIDEOS||[]).length + (window.NOSTALGIA_VIDEOS||[]).length + (window.AWESOME_VIDEOS||[]).length;
     this.update('videos', total);
   },
 
-  /* Call after gallery renders */
   checkGallery(count) {
     this.update('sketchbook', count);
   },
@@ -1488,6 +1481,10 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   PREFS.load(); LIKES.load();
   NavBadges.init();
   _musicSort=PREFS.musicSort||'newest';
+
+  /* Sync sounds.js with loaded prefs */
+  if (window.SiteSound) window.SiteSound.setOn(PREFS.soundsOn !== false);
+
   applyLayoutAlign(PREFS.layoutAlign);
   applyDarkThemeBg();
 
@@ -1525,10 +1522,28 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   _initSidebarExtender();
   _initCDPlayer();
   if (PREFS.adaptiveAccent) applyAdaptiveAccent(true);
-  /* Nav badges — check video count now, gallery fires from GallerySystem */
   setTimeout(() => NavBadges.checkVideos(), 500);
 
   initIntroVideo();initPlaylists();initNaUnlock();
+
+  /* Lazy spawn Rena after page is ready */
+  setTimeout(() => {
+    if (!document.getElementById('renaChan')) {
+      const el = document.createElement('div');
+      el.id = 'renaChan';
+      el.style.cssText = [
+        'position:fixed;bottom:0;right:0;',
+        'width:250px;height:350px;',
+        "background-image:url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/renaidle1.png');",
+        'background-size:contain;background-repeat:no-repeat;',
+        'background-position:bottom right;',
+        'z-index:9999;cursor:pointer;'
+      ].join('');
+      document.body.appendChild(el);
+      _patchApplyCharAlign(PREFS.layoutAlign || 'left');
+      if (PREFS.alwaysHideRena) el.style.display = 'none';
+    }
+  }, 800);
 
   setTimeout(() => {
     _patchApplyCharAlign(PREFS.layoutAlign || 'left');
@@ -1543,14 +1558,12 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     let _galOpen=false;
     function _buildGalItems(){
       if(!galItems) return; galItems.innerHTML='';
-      const accentCol=(window._vizAccentColor&&window._vizAccentColor.hex)||'#cc1a1a';
-      const accentBg=(window._vizAccentColor)?`rgba(${window._vizAccentColor.r},${window._vizAccentColor.g},${window._vizAccentColor.b},.22)`:'rgba(120,10,10,.3)';
       galSorts.forEach(([v,l])=>{
         const d=document.createElement('div');const active=v===(PREFS.gallerySort||'newest');
-        d.style.cssText='padding:5px 14px;cursor:pointer;font-size:12px;color:'+(active?accentCol:'#ccc')+';white-space:nowrap;background:#050505;';
+        d.style.cssText='padding:5px 14px;cursor:pointer;font-size:12px;color:'+(active?'#fff':'#ccc')+';white-space:nowrap;background:#050505;font-weight:'+(active?'bold':'normal')+';';
         d.textContent=(active?'\u2714 ':'')+l;
-        d.addEventListener('mouseenter',()=>{d.style.background=accentBg;d.style.color=accentCol;});
-        d.addEventListener('mouseleave',()=>{d.style.background='#050505';d.style.color=active?accentCol:'#ccc';});
+        d.addEventListener('mouseenter',()=>{d.style.background='rgba(50,50,50,0.80)';d.style.color='#fff';});
+        d.addEventListener('mouseleave',()=>{d.style.background='#050505';d.style.color=active?'#fff':'#ccc';});
         d.addEventListener('click',e=>{e.stopPropagation();PREFS.gallerySort=v;PREFS.save();if(window.GallerySystem){window.GallerySystem._sortMode=v;window.GallerySystem.renderGrid();}_galOpen=false;galPopup.style.display='none';});
         galItems.appendChild(d);
       });
@@ -1570,20 +1583,19 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     const statusBar=$('mpStatusBar');
     if(statusBar){statusBar.style.position='relative';statusBar.style.zIndex='200';statusBar.style.overflow='visible';}
     plusBtn.style.position='relative';plusBtn.style.zIndex='201';plusBtn.style.pointerEvents='auto';plusBtn.style.cursor='pointer';
+    plusBtn.style.opacity='1';
     plusPopup.style.zIndex='500';plusPopup.style.pointerEvents='auto';
 
     const sortOpts=[{v:'popular',l:'Most Popular'},{v:'highest',l:'Highest Rated'},{v:'unrated',l:'Unrated'},{v:'newest',l:'Newest First'},{v:'oldest',l:'Oldest First'}];
     const sortSubmenu=$('mpSortSubmenu');
     function _rebuildSortItems(){
       if(!sortSubmenu) return; sortSubmenu.innerHTML='';
-      const accentCol=(window._vizAccentColor&&window._vizAccentColor.hex)||'#cc1a1a';
-      const accentBg=(window._vizAccentColor)?`rgba(${window._vizAccentColor.r},${window._vizAccentColor.g},${window._vizAccentColor.b},.22)`:'rgba(120,10,10,.3)';
       sortOpts.forEach(({v,l})=>{
         const opt=document.createElement('div');const active=v===_musicSort;
-        opt.style.cssText='padding:5px 22px;cursor:pointer;font-family:Tahoma,sans-serif;font-size:12px;white-space:nowrap;color:'+(active?accentCol:'#ccc')+';background:#050505;';
+        opt.style.cssText='padding:5px 22px;cursor:pointer;font-family:Tahoma,sans-serif;font-size:12px;white-space:nowrap;color:'+(active?'#fff':'#ccc')+';background:#050505;font-weight:'+(active?'bold':'normal')+';';
         opt.textContent=(active?'\u2714 ':'')+l;
-        opt.addEventListener('mouseenter',()=>{opt.style.color=accentCol;opt.style.background=accentBg;});
-        opt.addEventListener('mouseleave',()=>{opt.style.color=(v===_musicSort)?accentCol:'#ccc';opt.style.background='#050505';});
+        opt.addEventListener('mouseenter',()=>{opt.style.color='#fff';opt.style.background='rgba(50,50,50,0.80)';});
+        opt.addEventListener('mouseleave',()=>{opt.style.color=(v===_musicSort)?'#fff':'#ccc';opt.style.background='#050505';});
         opt.addEventListener('click',e=>{e.stopPropagation();_musicSort=v;PREFS.musicSort=v;PREFS.save();_closePopup();buildPlaylist();});
         sortSubmenu.appendChild(opt);
       });
@@ -1596,9 +1608,13 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     document.addEventListener('click',()=>{if(_open)_closePopup();});
 
     const popRandom=$('mpPopRandom'),popShuffle=$('mpPopShuffle'),popSortToggle=$('mpPopSortToggle');
-    [popRandom,popShuffle,popSortToggle].forEach(el=>{if(!el)return;el.addEventListener('mouseenter',()=>{el.style.background='rgba(120,10,10,.3)';el.style.color='#fff';});el.addEventListener('mouseleave',()=>{el.style.background='';el.style.color='#ccc';});});
+    [popRandom,popShuffle,popSortToggle].forEach(el=>{
+      if(!el)return;
+      el.addEventListener('mouseenter',()=>{el.style.background='rgba(50,50,50,0.80)';el.style.color='#fff';});
+      el.addEventListener('mouseleave',()=>{el.style.background='';el.style.color='#ccc';});
+    });
     if(popRandom) popRandom.addEventListener('click',e=>{e.stopPropagation();if(TRACKS.length)loadTrack(rnd(),isPlaying);_closePopup();});
-    if(popShuffle) popShuffle.addEventListener('click',e=>{e.stopPropagation();shuffleOn=!shuffleOn;popShuffle.textContent=shuffleOn?'Shuffle: ON':'Shuffle: OFF';popShuffle.style.color=shuffleOn?'#cc1a1a':'#ccc';});
+    if(popShuffle) popShuffle.addEventListener('click',e=>{e.stopPropagation();shuffleOn=!shuffleOn;popShuffle.textContent=shuffleOn?'Shuffle: ON':'Shuffle: OFF';popShuffle.style.color=shuffleOn?'#fff':'#ccc';});
     if(popSortToggle&&sortSubmenu){
       sortSubmenu.style.cssText='display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(80,20,20,.3);';
       popSortToggle.addEventListener('click',e=>{e.stopPropagation();_sortOpen=!_sortOpen;sortSubmenu.style.display=_sortOpen?'block':'none';const arrow=popSortToggle.querySelector('span');if(arrow)arrow.style.transform=_sortOpen?'rotate(90deg)':'rotate(0deg)';});
