@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Watanagashi Archive</title>
-<link rel="icon" id="sitefavicon" type="image/x-icon" href="/assets/favicon.ico">
+<link rel="icon" id="sitefavicon" type="image/x-icon" href="https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/favicon.ico">
 <link rel="stylesheet" href="style.css">
 <style id="watanagashi-patch">
 /* Fix: mainContent never locks to a tall height */
@@ -90,8 +90,6 @@ body:not(.adaptive-accent-on) .nav-icons {
   -webkit-filter: none !important;
 }
 
-/* Player buttons keep their --th-player-filter (red tint) from style.css.
-   Only the hover brightness override is needed here. */
 body:not(.adaptive-accent-on) .mp-ctrl-btn:hover img,
 body:not(.adaptive-accent-on) .mp-ctrl-btn:hover .player-img,
 body:not(.adaptive-accent-on) .mp-mute-btn:hover img,
@@ -194,12 +192,10 @@ a.comm-ok-btn:hover {
 .na-span { color: #cc1a1a !important; }
 .gi-avg  { color: #ffffff !important; }
 
-/* Nav icons: no filter in default mode; adaptive mode overrides via JS */
 body:not(.adaptive-accent-on) .nav-icons {
   filter: none !important;
   -webkit-filter: none !important;
 }
-/* In adaptive mode: minimal neutral filter for nav icons (green-safe) */
 body.adaptive-accent-on .nav-icons {
   filter: hue-rotate(1deg) saturate(1.05) !important;
   -webkit-filter: hue-rotate(1deg) saturate(1.05) !important;
@@ -208,7 +204,7 @@ body.adaptive-accent-on .nav-icons {
 /* vg-vote-badge: never visible */
 .vg-vote-badge { display: none !important; }
 
-/* pager */
+/* pager — números */
 .vg-pager {
   display: flex; align-items: center; justify-content: center;
   gap: 4px; padding: 5px 0 2px; flex-wrap: wrap;
@@ -226,6 +222,83 @@ body.adaptive-accent-on .nav-icons {
   color: #cc1a1a;
   background: rgba(60,5,5,.5);
 }
+/* setas < > */
+.vg-pager-btn.vg-pager-arrow {
+  font-size: 13px !important;
+  font-weight: bold;
+  padding: 2px 10px !important;
+  color: #999;
+}
+.vg-pager-btn.vg-pager-arrow:hover {
+  color: #fff !important;
+  border-color: rgba(150,150,150,.6) !important;
+  background: rgba(30,30,30,.8) !important;
+}
+
+/* ── Nav action buttons: Sounds & Themes — verde aero ── */
+#navSoundToggle,
+#_themesBtn {
+  background: linear-gradient(
+    to bottom,
+    #fff       0%,
+    #9efd96    3%,
+    #32912a   30%,
+    #185815   55%,
+    #0b3112   55%,
+    #1a5c1e  100%
+  ) !important;
+  box-shadow: 1px 1px 5px rgba(0,0,0,.2) !important;
+  border: 1px solid #000 !important;
+  color: #fff !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  padding: 5px 0 !important;
+  position: relative !important;
+  font-size: 12.9px !important;
+  font-family: Tahoma, sans-serif !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.7) !important;
+  letter-spacing: .2px !important;
+  filter: none !important;
+}
+#navSoundToggle:hover,
+#_themesBtn:hover {
+  filter: brightness(1.15) !important;
+}
+
+/* ── Sort popups — texto padrão cinza, hover neutro escuro ── */
+#vSortSubmenu div,
+#mpSortSubmenu div,
+#galSortItems > div,
+#vPlusPopup #vPopAutoplay,
+#vPlusPopup #vPopRandom,
+#vPlusPopup #vPopSortToggle,
+#mpPlusPopup #mpPopRandom,
+#mpPlusPopup #mpPopShuffle,
+#mpPlusPopup #mpPopSortToggle {
+  color: #ccc !important;
+}
+
+body:not(.adaptive-accent-on) #vSortSubmenu div:hover,
+body:not(.adaptive-accent-on) #mpSortSubmenu div:hover,
+body:not(.adaptive-accent-on) #galSortItems > div:hover,
+body:not(.adaptive-accent-on) #vPlusPopup #vPopAutoplay:hover,
+body:not(.adaptive-accent-on) #vPlusPopup #vPopRandom:hover,
+body:not(.adaptive-accent-on) #vPlusPopup #vPopSortToggle:hover,
+body:not(.adaptive-accent-on) #mpPlusPopup #mpPopRandom:hover,
+body:not(.adaptive-accent-on) #mpPlusPopup #mpPopShuffle:hover,
+body:not(.adaptive-accent-on) #mpPlusPopup #mpPopSortToggle:hover,
+body:not(.adaptive-accent-on) #vPopUrl:hover,
+body:not(.adaptive-accent-on) #mpPopUrl:hover {
+  background: rgba(50,50,50,0.80) !important;
+  color: #ffffff !important;
+}
+
+/* mpPlusBtn sempre visível e clicável */
+#mpPlusBtn {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  color: rgba(200,200,200,.75) !important;
+}
 
 /* ── Fix: disable hover dimension-change on touch/mobile devices ── */
 @media (hover: none), (pointer: coarse) {
@@ -240,10 +313,8 @@ body.adaptive-accent-on .nav-icons {
   }
 }
 
-/* ── Better mobile nav at ≤600px — overrides existing block ── */
 @media (max-width: 600px) {
   #navAndContentContainer { flex-direction: column; }
-
   #navigationMenu {
     width: 100% !important;
     height: auto !important;
@@ -255,15 +326,12 @@ body.adaptive-accent-on .nav-icons {
     gap: 3px !important;
     overflow: visible !important;
   }
-
   .nav-categories {
     flex-direction: row !important;
     flex-wrap: wrap !important;
     margin-bottom: 2px;
   }
-
   .navbar-titles { display: none !important; }
-
   .nav-link {
     width: auto !important;
     min-width: 70px !important;
@@ -276,27 +344,22 @@ body.adaptive-accent-on .nav-icons {
     text-align: center !important;
     white-space: nowrap;
   }
-
   .nav-link:hover {
     margin: 1px !important;
     width: auto !important;
     padding: 5px 4px !important;
     min-width: 70px !important;
   }
-
   .nav-link::before { display: none !important; }
-
   .nav-icons {
     height: 13px !important;
     margin: 0 2px 0 0 !important;
     flex-shrink: 0;
   }
-
   #mainContent { height: auto; min-height: 400px; }
   #renaChan, #rikaChan { display: none !important; }
 }
 
-/* ── Smallest screens ── */
 @media (max-width: 400px) {
   .nav-link {
     font-size: 10px !important;
@@ -367,7 +430,12 @@ body.adaptive-accent-on .nav-icons {
           <a class="nav-link" id="nbtn-resources" href="#resources" onclick="return navClick(event,'resources')">
             <img src="https://frutigeraeroarchive.org/images/resources.png" class="nav-icons" alt="" draggable="false">Resources</a>
         </nav>
-        <div id="_themesBtnWrap" style="display:none;padding:4px 5px 2px;margin-top:4px;">
+        <!-- Sounds toggle — sempre visível na nav -->
+        <div id="_navSoundWrap" style="padding:4px 5px 2px;margin-top:4px;">
+          <button id="navSoundToggle">Sounds: On</button>
+        </div>
+        <!-- Themes button — hidden until unlocked -->
+        <div id="_themesBtnWrap" style="display:none;padding:4px 5px 2px;margin-top:2px;">
           <button id="_themesBtn" onclick="window._themesPanelToggle && window._themesPanelToggle(event)">Themes</button>
         </div>
       </div>
@@ -464,14 +532,15 @@ body.adaptive-accent-on .nav-icons {
               <span style="flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;">
                 Currently playing: <span id="audioName">&mdash;</span>
               </span>
-              <span id="mpPlusBtn" title="Options" style="cursor:pointer;font-size:15px;font-weight:bold;color:rgba(200,200,200,.55);padding:0 3px;user-select:none;flex-shrink:0;line-height:1;">+</span>
+              <!-- mpPlusBtn: opacity:1 sempre — não depende de JS -->
+              <span id="mpPlusBtn" title="Options" style="cursor:pointer;font-size:15px;font-weight:bold;color:rgba(200,200,200,.75);padding:0 3px;user-select:none;flex-shrink:0;line-height:1;opacity:1;pointer-events:auto;">+</span>
               <div id="mpPlusPopup" style="display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;background:#0a0202;border:1px solid rgba(180,20,20,.5);min-width:200px;font-family:Tahoma,sans-serif;font-size:12px;padding:4px 0;box-shadow:0 -4px 16px rgba(0,0,0,.8);" onclick="event.stopPropagation()">
                 <div id="mpPopRandom"     style="padding:7px 16px;cursor:pointer;color:#ccc;">Random</div>
                 <div id="mpPopShuffle"    style="padding:7px 16px;cursor:pointer;color:#ccc;">Shuffle: OFF</div>
-                <div style="border-top:1px solid rgba(255 255 255);margin:3px 0;"></div>
+                <div style="border-top:1px solid rgba(255,255,255,.08);margin:3px 0;"></div>
                 <div id="mpPopSortToggle" style="padding:7px 16px;cursor:pointer;color:#ccc;display:flex;justify-content:space-between;align-items:center;">Sort <span style="opacity:.5;font-size:10px;">&#9654;</span></div>
-                <div id="mpSortSubmenu"   style="display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(255 255 255);"></div>
-                <div style="border-top:1px solid rgba(255 255 255);margin:3px 0;"></div>
+                <div id="mpSortSubmenu"   style="display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(255,255,255,.08);"></div>
+                <div style="border-top:1px solid rgba(255,255,255,.08);margin:3px 0;"></div>
                 <a id="mpPopUrl" style="display:block;padding:7px 16px;cursor:pointer;color:#ccc;text-decoration:none;" target="_blank" rel="noopener noreferrer">URL</a>
               </div>
             </div>
@@ -518,7 +587,7 @@ body.adaptive-accent-on .nav-icons {
             <div style="position:relative;">
               <span id="galPlusBtn" title="Sort Options" style="cursor:pointer;font-size:17px;font-weight:bold;color:rgba(200,200,200,.55);padding:2px 6px;user-select:none;line-height:1;display:inline-block;">+</span>
               <div id="galPlusPopup" style="display:none;position:absolute;right:0;top:100%;z-index:300;background:#050505;border:1px solid rgba(180,20,20,.4);min-width:180px;font-family:Tahoma,sans-serif;font-size:12px;padding:4px 0;">
-                <div style="padding:4px 14px 2px;color:rgba(255 254 254);font-size:10px;letter-spacing:1px;text-transform:uppercase;">Sort</div>
+                <div style="padding:4px 14px 2px;color:rgba(200,200,200,.6);font-size:10px;letter-spacing:1px;text-transform:uppercase;">Sort</div>
                 <div id="galSortItems"></div>
               </div>
             </div>
@@ -565,7 +634,6 @@ body.adaptive-accent-on .nav-icons {
         <div class="glass-borders">
           <h2>Copyright Notice</h2>
           <div class="copyright-notice aero-borders">
-    
             <p>All content on this website is for archiving, educational, or informational purposes and is not for profit.
             We believe its use qualifies as fair use. If you own any content here and would like it removed or properly credited,
             please contact me at
@@ -684,12 +752,14 @@ body.adaptive-accent-on .nav-icons {
 
 <div id="rikaTransformFlash" style="display:none;position:fixed;bottom:0;right:-60px;width:420px;height:560px;background-image:url('https://img1.picmix.com/output/stamp/normal/2/4/1/7/2107142_5ce19.gif');background-size:contain;background-repeat:no-repeat;background-position:bottom right;z-index:10000;pointer-events:none;"></div>
 
+<!-- Rena é criada via JS (script.js) com delay — não existe div estática aqui -->
+
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src="music.js"></script>
 <script src="video.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
-<script src="script.js"></script>
 <script src="sounds.js"></script>
+<script src="script.js"></script>
 <script id="watanagashi-fixes">
 (function () {
   'use strict';
@@ -726,8 +796,26 @@ body.adaptive-accent-on .nav-icons {
   }
   setTimeout(_applyFixes, 800);
 
+  /* Sincroniza o botão navSoundToggle com SiteSound após carregamento */
+  function _wireSoundBtn() {
+    var btn = document.getElementById('navSoundToggle');
+    if (!btn || btn._wired) return;
+    btn._wired = true;
+    /* Sync label from PREFS */
+    if (typeof PREFS !== 'undefined') {
+      btn.textContent = PREFS.soundsOn !== false ? 'Sounds: On' : 'Sounds: Off';
+    }
+    /* SiteSound.toggle já é chamado via onclick no sounds.js */
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(_wireSoundBtn, 300); });
+  } else {
+    setTimeout(_wireSoundBtn, 300);
+  }
+
 })();
-/* Hook for gallery.js to call after rendering */
+
+/* Hook para gallery.js chamar após renderizar */
 window._onGalleryRendered = function(count) {
   if (typeof NavBadges !== 'undefined') NavBadges.checkGallery(count);
 };
@@ -735,8 +823,6 @@ window._onGalleryRendered = function(count) {
 <script src="gallery.js"></script>
 <script src="paint.js"></script>
 <script src="themes.js"></script>
-
-<div id="renaChan" style="position:fixed;bottom:0;right:0;width:250px;height:350px;background-image:url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/renaidle1.png');background-size:contain;background-repeat:no-repeat;background-position:bottom right;z-index:9999;cursor:pointer;"></div>
 
 <script src="codes.js"></script>
 
@@ -795,4 +881,3 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </body>
 </html>
-
