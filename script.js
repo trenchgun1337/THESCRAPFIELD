@@ -157,6 +157,7 @@ function applyLayoutAlign(align) {
    ADAPTIVE ACCENT COLOR
    ================================================================ */
 let _adaptiveAccentActive = false;
+console.log('[DEBUG] first:', items[0]?.title, '| last:', items[items.length-1]?.title);
 
 window._vizAccentColor = null;
 
