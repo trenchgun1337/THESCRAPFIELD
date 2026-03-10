@@ -497,7 +497,7 @@ async function initPlaylists() {
       if(plIdx===0) PLAYLIST_EL.innerHTML=''; PLAYLIST_EL.appendChild(p);
     }
     const items=await fetchPlaylistViaDataAPI(playlistId,apiKey);
-    items.reverse().forEach(item=>TRACKS.push({title:item.title,videoId:item.videoId,albumArt,type:'youtube',_plIdx:plIdx,_plLabel:label}));
+    items.forEach(item=>TRACKS.push({title:item.title,videoId:item.videoId,albumArt,type:'youtube',_plIdx:plIdx,_plLabel:label}));
     buildPlaylist();
   }
   if(AUDIO_NAME) AUDIO_NAME.textContent=TRACKS.length?'Select a track to play':'No tracks found';
@@ -664,8 +664,8 @@ function buildPlaylist() {
   if(_musicSort==='popular')  sorted.sort((a,b)=>(LIKES.get(b.videoId).up+LIKES.get(b.videoId).down)-(LIKES.get(a.videoId).up+LIKES.get(a.videoId).down));
   else if(_musicSort==='highest') sorted.sort((a,b)=>LIKES.getScore(b.videoId)-LIKES.getScore(a.videoId));
   else if(_musicSort==='unrated')  sorted=sorted.filter(t=>{const d=LIKES.get(t.videoId);return d.up===0&&d.down===0;});
-  else if(_musicSort==='newest')   sorted=[...sorted].reverse();
-  /* oldest = default array order (index 0 = oldest, as pushed after items.reverse()) */
+  else if(_musicSort==='oldest')   sorted=[...sorted].reverse();
+  /* newest = default array order (API returns newest first) */
 
   if(PREFS.showMusicOfWeek) {
     const motwId=MOTW.resolve(), motwTrack=motwId?TRACKS.find(t=>t.videoId===motwId):null;
