@@ -251,14 +251,14 @@ body.adaptive-accent-on .nav-icons {
   border: 1px solid #000 !important;
   color: #fff !important;
   cursor: pointer !important;
-  width: 100% !important;
-  padding: 5px 0 !important;
+  width: calc(100% - 0px) !important;
+  padding: 3px 4px !important;
   position: relative !important;
-  font-size: 12.9px !important;
+  font-size: 11px !important;
   font-family: Tahoma, sans-serif !important;
   text-shadow: 0 1px 2px rgba(0,0,0,.7) !important;
   letter-spacing: .2px !important;
-  filter: none !important;
+  display: block !important;
 }
 #navSoundToggle:hover,
 #_themesBtn:hover {
@@ -432,7 +432,7 @@ body:not(.adaptive-accent-on) #mpPopUrl:hover {
         </nav>
         <!-- Sounds toggle — sempre visível na nav -->
         <div id="_navSoundWrap" style="padding:4px 5px 2px;margin-top:4px;">
-          <button id="navSoundToggle">Sounds: On</button>
+          <button id="navSoundToggle" onclick="if(window.SiteSound){window.SiteSound.toggle();}">Sounds: On</button>
         </div>
         <!-- Themes button — hidden until unlocked -->
         <div id="_themesBtnWrap" style="display:none;padding:4px 5px 2px;margin-top:2px;">
@@ -638,7 +638,7 @@ body:not(.adaptive-accent-on) #mpPopUrl:hover {
             We believe its use qualifies as fair use. If you own any content here and would like it removed or properly credited,
             please contact me at
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank">
-            trenchgun1337@gmail.com
+            <span class="__cf_email__" data-cfemail="4632342328252e2133287775757106212b272f2a6825292b">[email&#160;protected]</span>
             </a>
             and I will take action as soon as possible to fulfill your request.
             </p>
@@ -752,7 +752,56 @@ body:not(.adaptive-accent-on) #mpPopUrl:hover {
 
 <div id="rikaTransformFlash" style="display:none;position:fixed;bottom:0;right:-60px;width:420px;height:560px;background-image:url('https://img1.picmix.com/output/stamp/normal/2/4/1/7/2107142_5ce19.gif');background-size:contain;background-repeat:no-repeat;background-position:bottom right;z-index:10000;pointer-events:none;"></div>
 
-<!-- Rena é criada via JS (script.js) com delay — não existe div estática aqui -->
+<!-- Rena: lazy spawn — aparece SOMENTE após clicar no caractere に da motto -->
+<script>
+(function() {
+  'use strict';
+  var _renaDone = false;
+
+  function _spawnRena() {
+    if (_renaDone) return;
+    _renaDone = true;
+    var existing = document.getElementById('renaChan');
+    if (existing) { existing.style.display = ''; return; }
+    var el = document.createElement('div');
+    el.id = 'renaChan';
+    el.style.cssText = 'position:fixed;bottom:0;right:0;width:250px;height:350px;'
+      + "background-image:url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/renaidle1.png');"
+      + 'background-size:contain;background-repeat:no-repeat;'
+      + 'background-position:bottom right;z-index:9999;cursor:pointer;';
+    document.body.appendChild(el);
+    if (typeof PREFS !== 'undefined' && PREFS.alwaysHideRena) el.style.display = 'none';
+    if (typeof _patchApplyCharAlign === 'function') {
+      _patchApplyCharAlign((typeof PREFS !== 'undefined' && PREFS.layoutAlign) || 'left');
+    }
+  }
+
+  /* Clique no .na-span dispara Rena */
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList && e.target.classList.contains('na-span')) {
+      setTimeout(_spawnRena, 300);
+    }
+  });
+
+  /* Guard: esconde qualquer #renaChan criado por outro script antes do clique */
+  document.addEventListener('DOMContentLoaded', function() {
+    var guard = new MutationObserver(function(muts) {
+      if (_renaDone) { guard.disconnect(); return; }
+      muts.forEach(function(m) {
+        m.addedNodes.forEach(function(node) {
+          if (node && node.id === 'renaChan') {
+            node.style.display = 'none';
+          }
+        });
+      });
+    });
+    guard.observe(document.body, { childList: true });
+  });
+
+  /* Expõe para script.js / codes.js */
+  window._spawnRena = _spawnRena;
+})();
+</script>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src="music.js"></script>
@@ -866,18 +915,3 @@ document.addEventListener('DOMContentLoaded', function () {
           btn.textContent = window.videoAutoPlay
             ? 'Autoplay Enabled (Click to disable)'
             : 'Autoplay Disabled (Click to enable)';
-        }
-      }, 100);
-    }
-  };
-});
-</script>
-
-<footer>
-  <div class="footer-content1">
-    <p>&ldquo;Without love, it cannot be seen.&rdquo; &#x2015; Ryukishi07</p>
-  </div>
-</footer>
-
-</body>
-</html>
