@@ -455,12 +455,13 @@ p+p { margin-top:5px }
   color: #fff !important;
   cursor: pointer !important;
   width: 100% !important;
-  padding: 5px 0 !important;
+  padding: 3px 4px !important;
   position: relative !important;
-  font-size: 12.9px !important;
+  font-size: 11px !important;
   font-family: Tahoma, sans-serif !important;
   text-shadow: 0 1px 2px rgba(0,0,0,.7) !important;
   letter-spacing: .2px !important;
+  display: block !important;
 }
 #navSoundToggle:hover,
 #_themesBtn:hover {
