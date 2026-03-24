@@ -80,7 +80,7 @@ const PREFS = {
       this.videoSort        = s.videoSort   || 'newest';
       this.gallerySort      = s.gallerySort || 'newest';
       this.layoutAlign      = s.layoutAlign || 'left';
-      this.adaptiveAccent   = !!s.adaptiveAccent;
+      this.adaptiveAccent = s.adaptiveAccent !== false;
       this.soundsOn         = s.soundsOn !== false;
     } catch(e) {}
   },
