@@ -66,6 +66,13 @@ const GALLERY_ITEMS = [
     title: 'Now You know how it feels like',
     description: 'Never pet This.',
   }
+
+    },
+  {
+    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/princess%20unicorn%20bunny%20kitten%20angel%20the%20most%20beautifulest%20in%20the%20whole%20wide%20world.png',
+    title: 'Princess Unicorn Bunny Kitten Angel the most beautifulest in the whole wide world',
+    description: 'Love laugh bunnies 4ever.',
+  }
 ];
 
 /* Raw GitHub star image URL */
