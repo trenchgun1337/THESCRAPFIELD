@@ -61,7 +61,7 @@ const PREFS = {
   videoSort:         'default',
   gallerySort:       'newest',
   layoutAlign:       'left',
-  adaptiveAccent:    false,
+  adaptiveAccent:    true,
   soundsOn:          true,
 
   load() {
