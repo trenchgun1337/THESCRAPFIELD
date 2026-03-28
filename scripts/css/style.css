@@ -1066,12 +1066,16 @@ footer {
   padding:6px 18px 7px;
   position:relative;
 }
+
+
 .comm-tab:hover { color:var(--th-text) }
 .comm-tab.active {
   background:var(--th-card-bg);
   color: #cc1a1a !important;
   border-bottom: 2px solid #cc1a1a !important;
   margin-bottom:-1px;
+  padding:6px 24px 7px;
+
 }
 .comm-panel { display:none }
 .comm-panel.active { display:block }

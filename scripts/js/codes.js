@@ -120,7 +120,7 @@
   function stopBlink() { if (blinkInt) { clearInterval(blinkInt); blinkInt = null; } }
   function setImgOn(el, name) { if (el) el.style.backgroundImage = "url('" + BASE + name + "')"; }
   function playAudio(src, onEnd, vol) {
-    var sfx = new Audio(src.indexOf('http') === 0 ? src : BASE + src);
+    var sfx = new Audio(src.indexOf('http') === 0 ? src : SOUND_BASE + src);
     if (vol !== undefined) sfx.volume = vol;
     if (onEnd) sfx.addEventListener('ended', onEnd);
     sfx.play().catch(function () {});

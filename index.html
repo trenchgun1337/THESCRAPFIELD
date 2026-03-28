@@ -764,8 +764,7 @@ function switchCommTab(tab) {
   document.getElementById('commPanelBlog').style.display = tab === 'blog' ? 'block' : 'none';
   document.getElementById('commTabChat').classList.toggle('active', tab === 'chat');
   document.getElementById('commTabBlog').classList.toggle('active', tab === 'blog');
-  if (tab === 'chat') _loadChatango();
-}
+if (tab === 'chat') setTimeout(_loadChatango, 100);}
 
 document.addEventListener('DOMContentLoaded', function () {
   var _origGoto = window.gotoPage;
