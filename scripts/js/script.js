@@ -4,7 +4,7 @@
 
 const FALLBACK_BG     = 'assets/images/MUSICPLAYERPLAYLISTDEFAULTBACKGROUND.png';
 const INTRO_VIDEO_URL = 'assets/video/USODA!.mp4';
-const NOT_FOUND_URL   = 'https://trenchgun.neocities.org/not_found';
+const NOT_FOUND_URL   = 'not_found.html';
 const BG_DARK_URL     = 'assets/images/BACKGROUND2.jpg';
 const LIKE_ICON_URL   = 'https://img1.picmix.com/output/stamp/normal/1/7/9/0/2890971_aea86.png';
 

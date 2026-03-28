@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  const SOUND_BASE = 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/';
+  const SOUND_BASE = 'assets/audio/';
 
   const SOUNDS = {
     start:   SOUND_BASE + 'sitestart.mp3',
