@@ -16,66 +16,66 @@ const FIREBASE_CONFIG = {
 /* Newest first */
 const GALLERY_ITEMS = [
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/alienmaldito.png',
+    src: 'assets/images/alienmaldito.png',
     title: 'Sketch Alien Hominid',
     description: 'aliennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn',
   },
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/rikafurude.png',
+    src: 'assets/images/rikafurude.png',
     title: 'Neko Rika',
     description: 'nipah~',
   },
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/dante2.png',
+    src: 'assets/images/dante2.png',
     title: 'Sketch Dante 2',
     description: 'kewl sworddd',
   },
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/dante3.png',
+    src: 'assets/images/dante3.png',
     title: 'Sketch  Dante 1',
     description: 'boooooriiinggg',
   },
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/coelho5.png',
+    src: 'assets/images/coelho5.png',
     title: 'Do NOT let em in',
     description: 'Army of violent flesh-eating bunnies outside',
   },
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/coelho4.png',
+    src: 'assets/images/coelho4.png',
     title: 'You Against They',
     description: 'Kill all \'They\'',
   },
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/coelho3.png',
+    src: 'assets/images/coelho3.png',
     title: 'Bunny MF & MF Bunny',
     description: 'It`s heavily inspired by <a href="https://x.com/sometimes317/status/1861971961259184166" target="_blank" class="gi-link">THAT</a> one blue & yellow paint art',
   },
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/coelho2.png',
+    src: 'assets/images/coelho2.png',
     title: 'MF Bunny',
     description: 'Lock the doors and close the blinds',
   },
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/coelho1.png',
+    src: 'assets/images/coelho1.png',
     title: 'MF Bunny rig',
     description: 'A fail rig i made using my cat`s fur texture.',
   
   },
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/nowyouknowhowitfeelslike.png',
+    src: 'assets/images/nowyouknowhowitfeelslike.png',
     title: 'Now You know how it feels like',
     description: 'Never pet This.',
 
    },
   {
-    src: 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/princess%20unicorn%20bunny%20kitten%20angel%20the%20most%20beautifulest%20in%20the%20whole%20wide%20world.png',
+    src: 'assets/images/princess%20unicorn%20bunny%20kitten%20angel%20the%20most%20beautifulest%20in%20the%20whole%20wide%20world.png',
     title: 'Princess Unicorn Bunny Kitten Angel the most beautifulest in the whole wide world',
     description: 'Love laugh bunnies 4ever.',
   }
 ];
 
 /* Raw GitHub star image URL */
-const STAR_IMG = 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/ratestar.png';
+const STAR_IMG = 'assets/images/ratestar.png';
 
 /* ================================================================
    Firebase

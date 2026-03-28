@@ -2,7 +2,7 @@
    codes.js — Rena Chan / Rika Chan interactions
    ================================================================ */
 (function () {
-  var BASE = 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/';
+  var BASE = 'assets/images/';
 
   ['renaidle1.png','renaidle2.png','renaidle1fixed.png','renaidle2fixed.png',
    'renadance.png','renadance2.png','renasad.png',
@@ -165,7 +165,7 @@
     /* Step 1: swap to transformation sprite immediately */
     rena.style.transition = 'none';
     rena.style.opacity = '1';
-    rena.style.backgroundImage = "url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/renatransformation.png')";
+    rena.style.backgroundImage = "url('assets/images/renatransformation.png')";
 
     /* Step 2: stepped (non-smooth/stepped) fade out in ~12 steps over ~1.6 seconds */
     const STEPS = 12;
@@ -185,7 +185,7 @@
       /* Start audio at step 5 (mid-fade) */
       if (step >= 5 && !audioStarted) {
         audioStarted = true;
-        fadeAudio = new Audio('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/renafades.mp3');
+        fadeAudio = new Audio('assets/audio/renafades.mp3');
         fadeAudio.volume = 0.85;
         fadeAudio.play().catch(function(){});
       }
@@ -203,7 +203,7 @@
           /* Fade in Rika in steps */
           rika.style.transition = 'none';
           rika.style.opacity = '0';
-          rika.style.backgroundImage = "url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/rikaidle.png')";
+          rika.style.backgroundImage = "url('assets/images/rikaidle.png')";
           rika.style.display = '';
 
           var rikaStep = 0, RIKA_STEPS = 8;

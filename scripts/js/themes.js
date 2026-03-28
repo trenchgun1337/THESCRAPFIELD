@@ -35,8 +35,8 @@
     }
 
     var bgMap = {
-      darkaero: "url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/BACKGROUNDRENA.jpg') no-repeat center center fixed",
-      legacy:   "url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/SITEBACKGROUND.png') no-repeat center center fixed"
+      darkaero: "url('assets/images/BACKGROUNDRENA.jpg') no-repeat center center fixed",
+      legacy:   "url('assets/images/SITEBACKGROUND.png') no-repeat center center fixed"
     };
     document.body.style.background     = bgMap[name];
     document.body.style.backgroundSize = 'cover';

@@ -2,10 +2,10 @@
    THE WATANAGASHI ARCHIVE — script.js
    ================================================================ */
 
-const FALLBACK_BG     = 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/MUSICPLAYERPLAYLISTDEFAULTBACKGROUND.png';
-const INTRO_VIDEO_URL = 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/USODA!.mp4';
+const FALLBACK_BG     = 'assets/images/MUSICPLAYERPLAYLISTDEFAULTBACKGROUND.png';
+const INTRO_VIDEO_URL = 'assets/video/USODA!.mp4';
 const NOT_FOUND_URL   = 'https://trenchgun.neocities.org/not_found';
-const BG_DARK_URL     = 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/BACKGROUND2.jpg';
+const BG_DARK_URL     = 'assets/images/BACKGROUND2.jpg';
 const LIKE_ICON_URL   = 'https://img1.picmix.com/output/stamp/normal/1/7/9/0/2890971_aea86.png';
 
 const ICON_LIKE    = 'https://cdn-icons-png.flaticon.com/128/739/739231.png';
@@ -125,7 +125,7 @@ function applyDarkThemeBg() {
     }
     :root[data-theme="legacy"] body,
     body[data-theme="legacy"] {
-      background-image: url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/SITEBACKGROUND.png') !important;
+      background-image: url('assets/images/SITEBACKGROUND.png') !important;
     }
   `;
   document.head.appendChild(s);
@@ -1219,8 +1219,8 @@ function buildPreferencesUI() {
     toggleBtn.addEventListener('click',()=>{
       window._rikaMode=!window._rikaMode;
       const renaEl=$('renaChan'),rikaEl=$('rikaChan');
-      if(window._rikaMode){if(renaEl)renaEl.style.display='none';if(rikaEl){rikaEl.style.display='';rikaEl.style.backgroundImage="url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/rikaidle.png')";}toggleBtn.textContent='Use Rena instead of Rika';}
-      else{if(rikaEl)rikaEl.style.display='none';if(renaEl){renaEl.style.display='';renaEl.style.backgroundImage="url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/renaidle1.png')";}toggleBtn.textContent='Use Rika instead of Rena';}
+      if(window._rikaMode){if(renaEl)renaEl.style.display='none';if(rikaEl){rikaEl.style.display='';rikaEl.style.backgroundImage="url('assets/images/rikaidle.png')";}toggleBtn.textContent='Use Rena instead of Rika';}
+      else{if(rikaEl)rikaEl.style.display='none';if(renaEl){renaEl.style.display='';renaEl.style.backgroundImage="url('assets/images/renaidle1.png')";}toggleBtn.textContent='Use Rika instead of Rena';}
       hideBtn.textContent=_getHL();
     });
     toggleRow.appendChild(toggleBtn);genBody.appendChild(toggleRow);
@@ -1342,7 +1342,7 @@ window.addEventListener('hashchange',()=>{
    MOBILE GATE
    ================================================================ */
 (function _mobileGate() {
-  const SOUND_URL = 'https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/notfound.mp3';
+  const SOUND_URL = 'assets/audio/notfound.mp3';
   const BG_URL    = 'https://w7.pngwing.com/pngs/896/604/png-transparent-rika-furude-hanyuu-anime-higurashi-when-they-cry-anime-purple-black-hair-manga-thumbnail.png';
 
   function _isMobileUA() {
@@ -1534,7 +1534,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
       el.style.cssText = [
         'position:fixed;bottom:0;right:0;',
         'width:250px;height:350px;',
-        "background-image:url('https://raw.githubusercontent.com/trenchgun1337/THESCRAPFIELD/main/renaidle1.png');",
+        "background-image:url('assets/images/renaidle1.png');",
         'background-size:contain;background-repeat:no-repeat;',
         'background-position:bottom right;',
         'z-index:9999;cursor:pointer;'
