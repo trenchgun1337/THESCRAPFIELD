@@ -3,6 +3,8 @@
    ================================================================ */
 (function () {
   var BASE = 'assets/images/';
+  var SOUND_BASE = 'assets/audio/'; 
+
 
   ['renaidle1.png','renaidle2.png','renaidle1fixed.png','renaidle2fixed.png',
    'renadance.png','renadance2.png','renasad.png',
@@ -56,8 +58,8 @@
 
   function activeEl() { return window._rikaMode ? rika : rena; }
 
-  var NIPAH_URL          = BASE + 'nipah.mp3';
-  var RIKA_TRANSFORM_SND = BASE + 'rikatransformationsound.mp3';
+  var NIPAH_URL          = SOUND_BASE + 'nipah.mp3';
+  var RIKA_TRANSFORM_SND = SOUND_BASE + 'rikatransformationsound.mp3';
 
   function normalizeStr(s) {
     return s.toLowerCase()
