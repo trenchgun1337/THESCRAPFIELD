@@ -80,6 +80,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
 
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; }
 
+/* ── Aero bar ── */
 .aero-bar {
   background: var(--bar-grad);
   border: 1px solid var(--bar-border-s);
@@ -108,6 +109,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
 .aero-bar .back-link:hover { color:var(--accent); text-decoration:underline; }
 .aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:60px; }
 
+/* ── Glass box ── */
 .glass-box {
   background-image: linear-gradient(rgb(255 255 255 / 12%), rgb(0 0 0 / 100%));
   box-shadow:
@@ -142,6 +144,7 @@ h2::before {
   background: var(--bar-glow-top); pointer-events:none;
 }
 
+/* ── URL row ── */
 .url-row {
   display:flex;
   border: 1px solid rgba(100,100,100,.50);
@@ -151,14 +154,14 @@ h2::before {
 }
 .url-input {
   flex:1;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255,255,255,0.9);
   border:none; outline:none;
-  color:#000000;
+  color:#000;
   font-family:Tahoma,sans-serif; font-size:12px;
   padding:7px 10px;
 }
 .url-input::placeholder { color:#696969; }
-.url-input:focus { background:rgba(216, 216, 216, 0.96); }
+.url-input:focus { background:rgba(216,216,216,0.96); }
 
 .fmt-select {
   background: var(--ctrl-grad);
@@ -173,11 +176,18 @@ h2::before {
 }
 .fmt-select option { background:#0a0a0a; }
 
+/* ── Download button — green Aero ── */
 .main-dl-btn {
   width:100%;
-  background:linear-gradient(to bottom, rgba(255, 255, 255, .20) 0%, rgba(190, 190, 190, .90) 0%, rgb(157 251 156 / 80%) 4%, rgb(25 180 20 / 98%) 52%, rgb(4 100 11) 52%, rgb(24 140 8 / 96%) 100%);
+  background:linear-gradient(to bottom,
+    rgba(255,255,255,.20) 0%,
+    rgba(190,190,190,.90) 0%,
+    rgb(157 251 156 / 80%) 4%,
+    rgb(25 180 20 / 98%) 52%,
+    rgb(4 100 11) 52%,
+    rgb(24 140 8 / 96%) 100%);
   border:1px solid rgb(20 180 23 / 80%);
-  border-top-color: rgba(100, 255, 100, 0.28);
+  border-top-color: rgba(100,255,100,0.28);
   border-bottom-color: rgba(0,0,0,.88);
   box-shadow:
     inset 0 1px 0 rgba(255,180,180,.18),
@@ -203,12 +213,8 @@ h2::before {
 }
 
 /* ── YouTube unavailable banner ── */
-#ytWarning {
-  display: none;
-  width: 100%;
-  margin-top: 6px;
-}
-#ytWarning.visible { display: block; }
+#ytWarning { display:none; width:100%; margin-top:6px; }
+#ytWarning.visible { display:block; }
 
 .yt-warn-bar {
   background: linear-gradient(to bottom,
@@ -227,29 +233,23 @@ h2::before {
     0 3px 8px rgba(0,0,0,.52);
   color: #d4a84b;
   font-family: Tahoma, sans-serif;
-  font-size: 11.5px;
-  font-weight: 400;
+  font-size: 11.5px; font-weight: 400;
   padding: 6px 10px 8px;
   text-shadow: 0 1px 3px rgba(0,0,0,.96);
-  position: relative;
-  overflow: hidden;
-  line-height: 1.6;
+  position: relative; overflow: hidden; line-height: 1.6;
 }
 .yt-warn-bar::before {
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
   background: linear-gradient(180deg,rgba(255,220,100,.10) 0%,rgba(200,160,60,.02) 100%);
   pointer-events:none;
 }
-.yt-warn-bar span { position: relative; z-index: 1; }
+.yt-warn-bar span { position:relative; z-index:1; }
 .yt-warn-bar .warn-label {
-  color: #e8c060;
-  font-size: 11px;
-  letter-spacing: .4px;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 2px;
+  color:#e8c060; font-size:11px; letter-spacing:.4px;
+  text-transform:uppercase; display:block; margin-bottom:2px;
 }
 
+/* ── Status box ── */
 #statusBox {
   display:none;
   background: var(--status-grad);
@@ -292,13 +292,15 @@ h2::before {
   100% { left:110%; }
 }
 
+/* ── Source tags ── */
 .src-row {
   display:flex; gap:4px; flex-wrap:wrap;
   margin-top:8px; padding-top:7px;
   border-top:1px solid rgba(50,50,50,.80);
 }
 .src-tag {
-  font-size:10.5px; padding:2px 8px;
+  font-size:10.5px; padding:2px 6px;
+  display:flex; align-items:center; gap:5px;
   background: linear-gradient(to bottom,
     rgba(255,255,255,.10) 0%,
     rgba(80,80,80,.08)   60%,
@@ -307,11 +309,13 @@ h2::before {
   color:#777;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
 }
+.src-tag img { height:14px; width:14px; object-fit:contain; flex-shrink:0; }
 .src-tag.sp { color:#1db954; border-color:rgba(29,185,84,.32); }
 .src-tag.yt { color:#d03030; border-color:rgba(200,48,48,.32); }
-.src-tag.yt.disabled { color:#555; border-color:rgba(80,80,80,.30); text-decoration: line-through; }
+.src-tag.yt.disabled { color:#555; border-color:rgba(80,80,80,.30); text-decoration:line-through; }
 .src-tag.sc { color:#c85010; border-color:rgba(200,80,16,.32); }
 
+/* ── Note ── */
 .note {
   background:rgba(6,6,6,.88);
   border:1px solid rgba(70,70,70,.40);
@@ -320,6 +324,7 @@ h2::before {
   font-size:11.5px; color:#888; line-height:1.6;
 }
 
+/* ── Format tags ── */
 .fmt-row {
   display:flex; flex-wrap:wrap; gap:4px;
   margin-top:7px; padding-top:7px;
@@ -331,10 +336,90 @@ h2::before {
   color:#666; background:rgba(10,10,10,.60);
 }
 
-.footer-line {
-  font-size:11px; color:var(--text-dim);
-  text-align:right; padding:4px 2px 0;
+/* ── Link Preview Panel ── */
+#previewPanel {
+  display:none;
+  margin-bottom: 7px;
 }
+#previewPanel.visible { display:block; }
+
+.preview-header {
+  background: var(--bar-grad);
+  box-shadow:
+    inset 0 1px 0 var(--bar-shine),
+    inset 0 2px 4px rgba(255,255,255,.10),
+    0 3px 10px rgba(0,0,0,.48);
+  border: 1px solid var(--bar-border-s);
+  border-top-color: var(--bar-border-t);
+  border-bottom-color: var(--bar-border-b);
+  padding: 5px 8px 7px;
+  font-weight:400; font-size:12px;
+  color: var(--bar-text);
+  text-shadow: var(--bar-tshadow);
+  position:relative; overflow:hidden;
+  display:flex; align-items:center; gap:6px;
+}
+.preview-header::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:50%;
+  background: var(--bar-glow-top); pointer-events:none;
+}
+.preview-header img  { height:14px; width:14px; object-fit:contain; z-index:1; flex-shrink:0; }
+.preview-header span { z-index:1; }
+
+.preview-body {
+  border: 1px solid var(--aero-border);
+  border-top: none;
+  background: rgba(4,4,4,.96);
+}
+
+/* Spotify embed */
+.sp-embed-wrap { width:100%; overflow:hidden; background:#000; }
+.sp-embed-wrap iframe { width:100%; border:none; display:block; }
+
+/* YouTube embed */
+.yt-embed-wrap {
+  position:relative; padding-bottom:56.25%;
+  height:0; overflow:hidden; background:#000;
+}
+.yt-embed-wrap iframe {
+  position:absolute; top:0; left:0;
+  width:100%; height:100%; border:none;
+}
+
+/* SoundCloud embed */
+.sc-embed-wrap { width:100%; overflow:hidden; background:#000; }
+.sc-embed-wrap iframe { width:100%; border:none; display:block; }
+
+/* Meta info row below embed */
+.preview-meta {
+  display:flex; align-items:center; gap:10px;
+  padding:7px 10px;
+  border-top:1px solid rgba(40,40,40,.80);
+  background:rgba(5,5,5,.94);
+}
+.preview-meta-icon { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
+.preview-meta-info { flex:1; min-width:0; }
+.preview-meta-title {
+  font-size:12px; color:#ccc;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  margin-bottom:2px;
+}
+.preview-meta-sub { font-size:10.5px; color:#555; }
+.preview-meta-badge {
+  font-size:10px; padding:2px 7px;
+  border:1px solid rgba(70,70,70,.50);
+  color:#777; background:rgba(12,12,12,.80);
+  white-space:nowrap; flex-shrink:0;
+}
+
+/* States */
+.preview-checking, .preview-invalid {
+  padding:12px;
+  font-size:11.5px;
+  text-align:center;
+}
+.preview-checking { color:#555; }
+.preview-invalid  { color:var(--accent); }
 </style>
 </head>
 <body>
@@ -345,6 +430,7 @@ h2::before {
     <span class="bar-title">Ultimate Downloader Converter</span>
   </div>
 
+  <!-- Download form -->
   <div class="glass-box">
     <h2>Download</h2>
     <div class="aero-inner">
@@ -373,7 +459,7 @@ h2::before {
 
         <div id="ytWarning">
           <div class="yt-warn-bar">
-            <span class="warn-label">YouTube — Temporarily Unavailable</span>
+            <span class="warn-label">YouTube &mdash; Temporarily Unavailable</span>
             <span>YouTube downloads require server-side authentication. This feature is currently not configured. Spotify and SoundCloud downloads remain fully functional.</span>
           </div>
         </div>
@@ -386,9 +472,18 @@ h2::before {
         </div>
 
         <div class="src-row">
-          <span class="src-tag sp">Spotify &mdash; albums &amp; playlists</span>
-          <span class="src-tag yt" id="ytTag">YouTube &mdash; playlists &amp; videos</span>
-          <span class="src-tag sc">SoundCloud &mdash; sets &amp; profiles</span>
+          <span class="src-tag sp">
+            <img src="assets/images/SPOTIFYAERO.jpeg" alt="">
+            Spotify &mdash; albums &amp; playlists
+          </span>
+          <span class="src-tag yt" id="ytTag">
+            <img src="assets/images/YOUTUBEAERO.png" alt="">
+            YouTube &mdash; playlists &amp; videos
+          </span>
+          <span class="src-tag sc">
+            <img src="assets/images/SOUNDCLOUDAERO.png" alt="">
+            SoundCloud &mdash; sets &amp; profiles
+          </span>
         </div>
 
         <div class="note">
@@ -406,44 +501,212 @@ h2::before {
     </div>
   </div>
 
+  <!-- Link Preview Panel — appears between boxes once URL is typed -->
+  <div id="previewPanel" class="glass-box" style="padding:0;">
+    <div class="preview-header">
+      <img id="previewHeaderIcon" src="" alt="" style="display:none;">
+      <span id="previewHeaderTitle">Link Preview</span>
+    </div>
+    <div class="preview-body" id="previewBody">
+      <div class="preview-checking">Paste a link above to see a preview.</div>
+    </div>
+  </div>
+
 </div>
 
 <script>
 const API_URL = "https://watanagashi-api.onrender.com";
 
-const urlInput  = document.getElementById('urlInput');
-const fmtSelect = document.getElementById('fmtSelect');
-const dlBtn     = document.getElementById('dlBtn');
-const statusBox = document.getElementById('statusBox');
-const statusTxt = document.getElementById('statusText');
-const progFill  = document.getElementById('progFill');
-const ytWarning = document.getElementById('ytWarning');
-const ytTag     = document.getElementById('ytTag');
+const urlInput          = document.getElementById('urlInput');
+const fmtSelect         = document.getElementById('fmtSelect');
+const dlBtn             = document.getElementById('dlBtn');
+const statusBox         = document.getElementById('statusBox');
+const statusTxt         = document.getElementById('statusText');
+const progFill          = document.getElementById('progFill');
+const ytWarning         = document.getElementById('ytWarning');
+const ytTag             = document.getElementById('ytTag');
+const previewPanel      = document.getElementById('previewPanel');
+const previewHeaderIcon = document.getElementById('previewHeaderIcon');
+const previewHeaderTitle= document.getElementById('previewHeaderTitle');
+const previewBody       = document.getElementById('previewBody');
 
-let ytEnabled = true; // assume enabled until server says otherwise
+let ytEnabled = true;
+let previewTimer = null;
 
-// Check YouTube status on load
-(async () => {
-  try {
-    const res = await fetch(`${API_URL}/yt-status`);
-    if (res.ok) {
-      const data = await res.json();
-      ytEnabled = data.youtube_enabled;
-      if (!ytEnabled) {
-        ytWarning.classList.add('visible');
-        ytTag.classList.add('disabled');
-        ytTag.title = 'YouTube currently unavailable';
-      }
-    }
-  } catch (_) {
-    // If we can't reach the server, assume all is fine and let the download attempt handle errors
-  }
-})();
+// ── Icons matching index.html contact links ───────────────────────────────────
+const ICONS = {
+  spotify:    'assets/images/SPOTIFYAERO.jpeg',
+  youtube:    'assets/images/YOUTUBEAERO.png',
+  soundcloud: 'assets/images/SOUNDCLOUDAERO.png',
+};
 
-function isYouTubeUrl(url) {
-  return url.includes('youtube.com') || url.includes('youtu.be');
+// ── Detect platform from URL ──────────────────────────────────────────────────
+function detectSource(url) {
+  if (/spotify\.com/i.test(url))           return 'spotify';
+  if (/youtube\.com|youtu\.be/i.test(url)) return 'youtube';
+  if (/soundcloud\.com/i.test(url))        return 'soundcloud';
+  return null;
 }
 
+// ── Build embed HTML per platform ────────────────────────────────────────────
+function buildSpotifyEmbed(url) {
+  const m = url.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
+  if (!m) return null;
+  const [, type, id] = m;
+  const height = (type === 'track' || type === 'episode') ? 152 : 352;
+  const embedUrl = `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
+  const label = type.charAt(0).toUpperCase() + type.slice(1);
+
+  previewHeaderIcon.src = ICONS.spotify;
+  previewHeaderIcon.style.display = '';
+  previewHeaderTitle.textContent = `Spotify \u2014 ${label} Preview`;
+
+  return `
+    <div class="sp-embed-wrap">
+      <iframe src="${embedUrl}" height="${height}" frameborder="0"
+        allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+    </div>
+    <div class="preview-meta">
+      <img class="preview-meta-icon" src="${ICONS.spotify}" alt="Spotify">
+      <div class="preview-meta-info">
+        <div class="preview-meta-title">Spotify ${label}</div>
+        <div class="preview-meta-sub">Verify the content above, then click Download.</div>
+      </div>
+      <span class="preview-meta-badge">${label.toUpperCase()}</span>
+    </div>`;
+}
+
+function buildYouTubeEmbed(url) {
+  const pl = url.match(/[?&]list=([^&]+)/);
+  const v  = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
+  if (!pl && !v) return null;
+
+  const type = pl ? 'Playlist' : 'Video';
+  const embedUrl = pl
+    ? `https://www.youtube.com/embed/videoseries?list=${pl[1]}`
+    : `https://www.youtube.com/embed/${v[1]}`;
+
+  previewHeaderIcon.src = ICONS.youtube;
+  previewHeaderIcon.style.display = '';
+  previewHeaderTitle.textContent = `YouTube \u2014 ${type} Preview`;
+
+  const sub = ytEnabled
+    ? 'Ready to download.'
+    : 'YouTube downloads currently unavailable \u2014 see warning above.';
+
+  return `
+    <div class="yt-embed-wrap">
+      <iframe src="${embedUrl}" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="preview-meta">
+      <img class="preview-meta-icon" src="${ICONS.youtube}" alt="YouTube">
+      <div class="preview-meta-info">
+        <div class="preview-meta-title">YouTube ${type}</div>
+        <div class="preview-meta-sub">${sub}</div>
+      </div>
+      <span class="preview-meta-badge">${type.toUpperCase()}</span>
+    </div>`;
+}
+
+function buildSoundCloudEmbed(url) {
+  const isSet = /\/sets\//i.test(url);
+  const type  = isSet ? 'Set' : 'Track';
+  const height = isSet ? 450 : 166;
+  const encoded = encodeURIComponent(url);
+  const embedUrl = `https://w.soundcloud.com/player/?url=${encoded}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
+
+  previewHeaderIcon.src = ICONS.soundcloud;
+  previewHeaderIcon.style.display = '';
+  previewHeaderTitle.textContent = `SoundCloud \u2014 ${type} Preview`;
+
+  return `
+    <div class="sc-embed-wrap">
+      <iframe scrolling="no" frameborder="no" allow="autoplay"
+        src="${embedUrl}" height="${height}" loading="lazy"></iframe>
+    </div>
+    <div class="preview-meta">
+      <img class="preview-meta-icon" src="${ICONS.soundcloud}" alt="SoundCloud">
+      <div class="preview-meta-info">
+        <div class="preview-meta-title">SoundCloud ${type}</div>
+        <div class="preview-meta-sub">Verify the content above, then click Download.</div>
+      </div>
+      <span class="preview-meta-badge">${type.toUpperCase()}</span>
+    </div>`;
+}
+
+// ── Render preview ────────────────────────────────────────────────────────────
+function renderPreview(raw) {
+  const url = raw.trim();
+
+  if (!url) {
+    previewPanel.classList.remove('visible');
+    return;
+  }
+
+  const source = detectSource(url);
+
+  previewPanel.classList.add('visible');
+  previewHeaderIcon.style.display = 'none';
+  previewHeaderTitle.textContent = 'Link Preview';
+
+  if (!source) {
+    previewBody.innerHTML = '<div class="preview-invalid">Unrecognized URL &mdash; paste a valid Spotify, YouTube or SoundCloud link.</div>';
+    return;
+  }
+
+  previewBody.innerHTML = '<div class="preview-checking">Loading preview&hellip;</div>';
+
+  let html = null;
+  if (source === 'spotify')    html = buildSpotifyEmbed(url);
+  if (source === 'youtube')    html = buildYouTubeEmbed(url);
+  if (source === 'soundcloud') html = buildSoundCloudEmbed(url);
+
+  previewBody.innerHTML = html
+    ? html
+    : '<div class="preview-invalid">Could not generate preview. Double-check the URL.</div>';
+}
+
+// ── Debounced input ───────────────────────────────────────────────────────────
+function schedulePreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(() => renderPreview(urlInput.value), 500);
+}
+
+urlInput.addEventListener('input', schedulePreview);
+urlInput.addEventListener('paste', () => {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(() => renderPreview(urlInput.value), 250);
+});
+
+// ── YouTube status check (non-blocking, retries once after 8s) ───────────────
+async function checkYtStatus() {
+  for (let i = 0; i < 2; i++) {
+    try {
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), 10000);
+      const res = await fetch(`${API_URL}/yt-status`, { signal: controller.signal });
+      clearTimeout(t);
+      if (res.ok) {
+        const data = await res.json();
+        ytEnabled = data.youtube_enabled;
+        if (!ytEnabled) {
+          ytWarning.classList.add('visible');
+          ytTag.classList.add('disabled');
+          ytTag.title = 'YouTube currently unavailable';
+        }
+        return;
+      }
+    } catch (_) {
+      if (i === 0) await new Promise(r => setTimeout(r, 8000)); // server may be cold
+    }
+  }
+}
+checkYtStatus();
+
+// ── Status helpers ────────────────────────────────────────────────────────────
 function setStatus(msg, type) {
   statusTxt.innerHTML = type ? `<span class="${type}">${msg}</span>` : msg;
 }
@@ -452,15 +715,64 @@ function setProgress(pct) {
   progFill.style.width = pct + '%';
 }
 
+// ── Wake-up ping (Render free tier cold start) ────────────────────────────────
+async function wakeServer() {
+  // Fase 1: ping com no-cors — nunca falha por CORS mesmo durante cold start
+  // O Render precisa receber a requisição pra acordar, independente da resposta
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 22000);
+    await fetch(`${API_URL}/`, { method: 'GET', mode: 'no-cors', signal: ctrl });
+    clearTimeout(t);
+  } catch (e) {
+    if (e.name === 'AbortError') {
+      throw new Error('Server did not respond after 22 seconds. Try again in a moment.');
+    }
+    // Erro de rede puro (offline, DNS) — propaga
+    if (e.message && e.message !== 'Failed to fetch') throw e;
+    // "Failed to fetch" com no-cors = rede ok mas servidor ainda subindo, continua
+  }
+
+  // Fase 2: aguarda e confirma com CORS normal
+  for (let i = 1; i <= 5; i++) {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 8000);
+      const res = await fetch(`${API_URL}/`, { signal: ctrl });
+      clearTimeout(t);
+      if (res.ok) return true;
+    } catch (_) {
+      // ainda acordando
+    }
+    if (i < 5) {
+      let dots = 0;
+      const dotTimer = setInterval(() => {
+        dots = (dots + 1) % 4;
+        setStatus('Server is starting up, please wait' + '.'.repeat(dots));
+      }, 500);
+      await new Promise(r => setTimeout(r, 4000));
+      clearInterval(dotTimer);
+    }
+  }
+  return false;
+}
+
+// ── Download ──────────────────────────────────────────────────────────────────
 async function startDownload() {
   const url = urlInput.value.trim();
   if (!url) { urlInput.focus(); return; }
 
-  // Block YouTube if server says it's unavailable
-  if (isYouTubeUrl(url) && !ytEnabled) {
+  const source = detectSource(url);
+  if (!source) {
     statusBox.classList.add('visible');
-    progFill.classList.remove('indeterminate');
-    progFill.style.width = '0%';
+    setProgress(0);
+    setStatus('Unrecognized URL. Paste a valid Spotify, YouTube or SoundCloud link.', 'err');
+    return;
+  }
+
+  if (source === 'youtube' && !ytEnabled) {
+    statusBox.classList.add('visible');
+    setProgress(0);
     setStatus('YouTube downloads are not available at this time.', 'err');
     return;
   }
@@ -468,10 +780,16 @@ async function startDownload() {
   dlBtn.disabled = true;
   statusBox.classList.add('visible');
   progFill.classList.add('indeterminate');
-  setStatus('Connecting to server...');
+  setStatus('Connecting to server&hellip;');
 
   try {
-    setStatus('Downloading &mdash; large albums may take a few minutes...');
+    // Wake the server first — handles Render cold start silently
+    const alive = await wakeServer();
+    if (!alive) {
+      throw new Error('Server is not responding. It may be starting up — wait a moment and try again.');
+    }
+
+    setStatus('Downloading &mdash; large albums may take a few minutes&hellip;');
 
     const response = await fetch(`${API_URL}/download`, {
       method: 'POST',
@@ -484,12 +802,11 @@ async function startDownload() {
       throw new Error(err.detail || `HTTP ${response.status}`);
     }
 
-    setStatus('Packaging ZIP...');
+    setStatus('Packaging ZIP&hellip;');
     setProgress(85);
 
     const blob = await response.blob();
     const blobUrl = URL.createObjectURL(blob);
-
     const disposition = response.headers.get('Content-Disposition') || '';
     const nameMatch = disposition.match(/filename="?([^"]+)"?/);
     const filename = nameMatch ? nameMatch[1] : 'download.zip';
@@ -508,7 +825,11 @@ async function startDownload() {
   } catch (err) {
     progFill.classList.remove('indeterminate');
     progFill.style.width = '0%';
-    setStatus('Error: ' + err.message, 'err');
+    // Friendly message for network errors
+    const msg = (err.message === 'Failed to fetch' || err.name === 'TypeError')
+      ? 'Could not reach the server. It may be starting up &mdash; wait 30 seconds and try again.'
+      : err.message;
+    setStatus('Error: ' + msg, 'err');
   } finally {
     dlBtn.disabled = false;
   }
