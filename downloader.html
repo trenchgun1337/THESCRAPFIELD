@@ -78,10 +78,8 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
 ::-webkit-scrollbar-thumb { background:rgba(140,140,140,.50); border-radius:3px; }
 ::-webkit-scrollbar-thumb:hover { background:rgba(200,200,200,.72); }
 
-/* ── Page wrapper (matches #websiteContainer width) ── */
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; }
 
-/* ── Aero bar — identical to site h1/h2 ── */
 .aero-bar {
   background: var(--bar-grad);
   border: 1px solid var(--bar-border-s);
@@ -110,7 +108,6 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
 .aero-bar .back-link:hover { color:var(--accent); text-decoration:underline; }
 .aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:60px; }
 
-/* ── Glass box (matches .glass-borders) ── */
 .glass-box {
   background-image: linear-gradient(rgb(255 255 255 / 12%), rgb(0 0 0 / 100%));
   box-shadow:
@@ -122,11 +119,9 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
   margin-bottom: 7px;
 }
 
-/* ── Aero inner border ── */
 .aero-inner { border: 1px solid var(--aero-border); background: rgba(6,6,6,.92); }
 .aero-pad   { padding: 10px 12px; }
 
-/* ── Section h2 bar ── */
 h2 {
   background: var(--bar-grad);
   box-shadow:
@@ -147,7 +142,6 @@ h2::before {
   background: var(--bar-glow-top); pointer-events:none;
 }
 
-/* ── URL input + format selector ── */
 .url-row {
   display:flex;
   border: 1px solid rgba(100,100,100,.50);
@@ -179,7 +173,6 @@ h2::before {
 }
 .fmt-select option { background:#0a0a0a; }
 
-/* ── Download button — red Aero ── */
 .main-dl-btn {
   width:100%;
   background:linear-gradient(to bottom, rgba(255, 255, 255, .20) 0%, rgba(190, 190, 190, .90) 0%, rgb(157 251 156 / 80%) 4%, rgb(25 180 20 / 98%) 52%, rgb(4 100 11) 52%, rgb(24 140 8 / 96%) 100%);
@@ -209,7 +202,54 @@ h2::before {
   border-color:rgba(80,80,80,.50) !important;
 }
 
-/* ── Status bar ── */
+/* ── YouTube unavailable banner ── */
+#ytWarning {
+  display: none;
+  width: 100%;
+  margin-top: 6px;
+}
+#ytWarning.visible { display: block; }
+
+.yt-warn-bar {
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,.14) 0%,
+    rgba(160,130,80,.72)  0%,
+    rgba(100,70,20,.70)   4%,
+    rgba(40,22,4,.98)    52%,
+    rgba(20,10,2,1)      52%,
+    rgba(36,18,4,.96)   100%);
+  border: 1px solid rgba(140,100,30,.55);
+  border-top-color: rgba(255,210,100,.18);
+  border-bottom-color: rgba(0,0,0,.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255,220,120,.14),
+    inset 0 2px 4px rgba(255,255,255,.04),
+    0 3px 8px rgba(0,0,0,.52);
+  color: #d4a84b;
+  font-family: Tahoma, sans-serif;
+  font-size: 11.5px;
+  font-weight: 400;
+  padding: 6px 10px 8px;
+  text-shadow: 0 1px 3px rgba(0,0,0,.96);
+  position: relative;
+  overflow: hidden;
+  line-height: 1.6;
+}
+.yt-warn-bar::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:50%;
+  background: linear-gradient(180deg,rgba(255,220,100,.10) 0%,rgba(200,160,60,.02) 100%);
+  pointer-events:none;
+}
+.yt-warn-bar span { position: relative; z-index: 1; }
+.yt-warn-bar .warn-label {
+  color: #e8c060;
+  font-size: 11px;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
 #statusBox {
   display:none;
   background: var(--status-grad);
@@ -252,7 +292,6 @@ h2::before {
   100% { left:110%; }
 }
 
-/* ── Source tags ── */
 .src-row {
   display:flex; gap:4px; flex-wrap:wrap;
   margin-top:8px; padding-top:7px;
@@ -270,9 +309,9 @@ h2::before {
 }
 .src-tag.sp { color:#1db954; border-color:rgba(29,185,84,.32); }
 .src-tag.yt { color:#d03030; border-color:rgba(200,48,48,.32); }
+.src-tag.yt.disabled { color:#555; border-color:rgba(80,80,80,.30); text-decoration: line-through; }
 .src-tag.sc { color:#c85010; border-color:rgba(200,80,16,.32); }
 
-/* ── Note ── */
 .note {
   background:rgba(6,6,6,.88);
   border:1px solid rgba(70,70,70,.40);
@@ -281,7 +320,6 @@ h2::before {
   font-size:11.5px; color:#888; line-height:1.6;
 }
 
-/* ── Format tags ── */
 .fmt-row {
   display:flex; flex-wrap:wrap; gap:4px;
   margin-top:7px; padding-top:7px;
@@ -333,6 +371,13 @@ h2::before {
           DOWNLOAD AS ZIP
         </button>
 
+        <div id="ytWarning">
+          <div class="yt-warn-bar">
+            <span class="warn-label">YouTube — Temporarily Unavailable</span>
+            <span>YouTube downloads require server-side authentication. This feature is currently not configured. Spotify and SoundCloud downloads remain fully functional.</span>
+          </div>
+        </div>
+
         <div id="statusBox">
           <div id="statusText">Connecting...</div>
           <div class="prog-track">
@@ -342,7 +387,7 @@ h2::before {
 
         <div class="src-row">
           <span class="src-tag sp">Spotify &mdash; albums &amp; playlists</span>
-          <span class="src-tag yt">YouTube &mdash; playlists &amp; videos</span>
+          <span class="src-tag yt" id="ytTag">YouTube &mdash; playlists &amp; videos</span>
           <span class="src-tag sc">SoundCloud &mdash; sets &amp; profiles</span>
         </div>
 
@@ -361,19 +406,43 @@ h2::before {
     </div>
   </div>
 
- 
-
 </div>
 
 <script>
 const API_URL = "https://watanagashi-api.onrender.com";
 
-const urlInput = document.getElementById('urlInput');
+const urlInput  = document.getElementById('urlInput');
 const fmtSelect = document.getElementById('fmtSelect');
-const dlBtn    = document.getElementById('dlBtn');
+const dlBtn     = document.getElementById('dlBtn');
 const statusBox = document.getElementById('statusBox');
 const statusTxt = document.getElementById('statusText');
 const progFill  = document.getElementById('progFill');
+const ytWarning = document.getElementById('ytWarning');
+const ytTag     = document.getElementById('ytTag');
+
+let ytEnabled = true; // assume enabled until server says otherwise
+
+// Check YouTube status on load
+(async () => {
+  try {
+    const res = await fetch(`${API_URL}/yt-status`);
+    if (res.ok) {
+      const data = await res.json();
+      ytEnabled = data.youtube_enabled;
+      if (!ytEnabled) {
+        ytWarning.classList.add('visible');
+        ytTag.classList.add('disabled');
+        ytTag.title = 'YouTube currently unavailable';
+      }
+    }
+  } catch (_) {
+    // If we can't reach the server, assume all is fine and let the download attempt handle errors
+  }
+})();
+
+function isYouTubeUrl(url) {
+  return url.includes('youtube.com') || url.includes('youtu.be');
+}
 
 function setStatus(msg, type) {
   statusTxt.innerHTML = type ? `<span class="${type}">${msg}</span>` : msg;
@@ -387,13 +456,22 @@ async function startDownload() {
   const url = urlInput.value.trim();
   if (!url) { urlInput.focus(); return; }
 
+  // Block YouTube if server says it's unavailable
+  if (isYouTubeUrl(url) && !ytEnabled) {
+    statusBox.classList.add('visible');
+    progFill.classList.remove('indeterminate');
+    progFill.style.width = '0%';
+    setStatus('YouTube downloads are not available at this time.', 'err');
+    return;
+  }
+
   dlBtn.disabled = true;
   statusBox.classList.add('visible');
   progFill.classList.add('indeterminate');
   setStatus('Connecting to server...');
 
   try {
-    setStatus('Downloading — large albums may take a few minutes...');
+    setStatus('Downloading &mdash; large albums may take a few minutes...');
 
     const response = await fetch(`${API_URL}/download`, {
       method: 'POST',
