@@ -80,7 +80,7 @@ const PREFS = {
       this.videoSort        = s.videoSort   || 'newest';
       this.gallerySort      = s.gallerySort || 'newest';
       this.layoutAlign      = s.layoutAlign || 'left';
-      this.adaptiveAccent = s.adaptiveAccent !== false;
+      this.adaptiveAccent   = s.adaptiveAccent !== false;
       this.soundsOn         = s.soundsOn !== false;
     } catch(e) {}
   },
@@ -129,6 +129,13 @@ function applyDarkThemeBg() {
     }
   `;
   document.head.appendChild(s);
+  /* Re-apply adaptive accent when background changes */
+  if (_adaptiveAccentActive) {
+    if (_adaptiveAccentRefreshTimer) clearTimeout(_adaptiveAccentRefreshTimer);
+    _adaptiveAccentRefreshTimer = setTimeout(() => {
+      if (_adaptiveAccentActive) applyAdaptiveAccent(true);
+    }, 600);
+  }
 }
 
 /* ================================================================
@@ -156,7 +163,9 @@ function applyLayoutAlign(align) {
 /* ================================================================
    ADAPTIVE ACCENT COLOR
    ================================================================ */
-let _adaptiveAccentActive = false;
+let _adaptiveAccentActive  = false;
+let _adaptiveAccentObserver = null;
+let _adaptiveAccentRefreshTimer = null;
 
 window._vizAccentColor = null;
 
@@ -225,6 +234,43 @@ function _sampleBgColor(cb) {
   } catch(e) { FALLBACK(); }
 }
 
+/* Watch background / theme changes and re-apply accent automatically */
+function _setupAdaptiveAccentWatcher() {
+  if (_adaptiveAccentObserver) return;
+
+  function scheduleRefresh() {
+    if (!_adaptiveAccentActive) return;
+    if (_adaptiveAccentRefreshTimer) clearTimeout(_adaptiveAccentRefreshTimer);
+    _adaptiveAccentRefreshTimer = setTimeout(() => {
+      if (_adaptiveAccentActive) applyAdaptiveAccent(true);
+    }, 500);
+  }
+
+  _adaptiveAccentObserver = new MutationObserver(mutations => {
+    for (const m of mutations) {
+      /* data-theme attribute on <html> */
+      if (m.type === 'attributes' && m.target === document.documentElement) {
+        scheduleRefresh(); break;
+      }
+      /* style attribute on body (background-image changed) */
+      if (m.type === 'attributes' && m.target === document.body) {
+        scheduleRefresh(); break;
+      }
+      /* <style> tags added/removed in <head> (theme style injection) */
+      if (m.type === 'childList' && m.target === document.head) {
+        const relevant = [...m.addedNodes, ...m.removedNodes].some(
+          n => n.nodeType === 1 && (n.id === '_darkThemeBgStyle' || n.id === '_themeStyle')
+        );
+        if (relevant) { scheduleRefresh(); break; }
+      }
+    }
+  });
+
+  _adaptiveAccentObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  _adaptiveAccentObserver.observe(document.body,            { attributes: true, attributeFilter: ['style', 'class'] });
+  _adaptiveAccentObserver.observe(document.head,            { childList: true });
+}
+
 function applyAdaptiveAccent(enable) {
   _adaptiveAccentActive = enable;
   if (!enable) {
@@ -232,8 +278,12 @@ function applyAdaptiveAccent(enable) {
     if (old) old.remove();
     window._vizAccentColor = null;
     document.body.classList.remove('adaptive-accent-on');
+    if (_adaptiveAccentObserver) { _adaptiveAccentObserver.disconnect(); _adaptiveAccentObserver = null; }
     return;
   }
+
+  /* Set up watcher so accent refreshes whenever theme/background changes */
+  _setupAdaptiveAccentWatcher();
 
   _sampleBgColor((r, g, b) => {
     if (!_adaptiveAccentActive) return;
@@ -277,9 +327,40 @@ a:hover { color: ${hex} !important; }
 .vi-link-btn, .vi-link-url, .vi-desc-link, .email-contact-link { color: ${hex} !important; }
 #mainContent .hl:not(#commPanelBlog *):not([style*="color:#cc"]) { color: ${hex} !important; }
 #mainContent strong:not(#commPanelBlog *):not(.comm-wip *) { color: ${hex} !important; }
+/* These always stay red — intentional brand elements */
 .na-span { color: #cc1a1a !important; }
 #commPanelBlog .hl, .comm-wip strong, [style*="color:#cc1a1a"] { color: #cc1a1a !important; }
+._nav-badge { background: #cc1a1a !important; }
 .gi-avg { color: #ffffff !important; }
+/* Community tab active state — override hardcoded red in patch */
+.comm-tab.active,
+#commTabChat.active,
+#commTabBlog.active,
+button.comm-tab.active {
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,.18) 0%,
+    rgba(${ar},${ag},${ab},.45) 18%,
+    rgba(${Math.round(ar*.55)},${Math.round(ag*.55)},${Math.round(ab*.55)},.85) 60%,
+    rgba(${Math.round(ar*.22)},${Math.round(ag*.22)},${Math.round(ab*.22)},.95) 60%,
+    rgba(${Math.round(ar*.33)},${Math.round(ag*.33)},${Math.round(ab*.33)},.82) 100%
+  ) !important;
+  border-color: ${rgba(0.70)} !important;
+  color: #fff !important;
+}
+.comm-ok-btn, a.comm-ok-btn {
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,.20) 0%,
+    rgba(${ar},${ag},${ab},.92) 0%,
+    rgba(${Math.round(ar*.7)},${Math.round(ag*.7)},${Math.round(ab*.7)},.82) 4%,
+    rgba(${Math.round(ar*.4)},${Math.round(ag*.4)},${Math.round(ab*.4)},.97) 52%,
+    rgba(${Math.round(ar*.22)},${Math.round(ag*.22)},${Math.round(ab*.22)},1) 52%,
+    rgba(${Math.round(ar*.33)},${Math.round(ag*.33)},${Math.round(ab*.33)},.90) 100%
+  ) !important;
+  border-color: ${rgba(0.70)} !important;
+  border-top-color: rgba(255,255,255,.20) !important;
+}
+.comm-tab-bar { border-bottom: 2px solid ${rgba(0.50)} !important; }
+.comm-tab { border-color: ${rgba(0.45)} !important; }
 #mpPlusPopup   { border-color: ${rgba(0.50)} !important; background: rgba(4,4,4,.97) !important; }
 #galPlusPopup  { border-color: ${rgba(0.40)} !important; background: rgba(5,5,5,.98) !important; }
 #vPlusPopup    { border-color: ${rgba(0.40)} !important; background: rgba(5,5,5,.98) !important; }
@@ -287,7 +368,6 @@ a:hover { color: ${hex} !important; }
 #mpPlusPopup div:hover, #mpPlusPopup a:hover { background: rgba(50,50,50,0.80) !important; color: #fff !important; }
 #vPlusPopup div:hover, #vPlusPopup a:hover   { background: rgba(50,50,50,0.80) !important; color: #fff !important; }
 #galPlusPopup div:hover                       { background: rgba(50,50,50,0.80) !important; color: #fff !important; }
-.comm-tab:not(.active) { border-color: ${rgba(0.50)} !important; }
 ::selection      { background: ${rgba(0.75)} !important; }
 ::-moz-selection { background: ${rgba(0.75)} !important; }
 .gi-card.gi-card-awarded { border-color: ${rgba(0.80)} !important; }
@@ -310,18 +390,6 @@ body.adaptive-accent-on .nav-icons {
   filter: hue-rotate(1deg) saturate(1.05) !important;
   -webkit-filter: hue-rotate(1deg) saturate(1.05) !important;
 }
-.comm-tab-bar { border-bottom: 2px solid ${rgba(0.50)} !important; }
-.comm-tab { border-color: ${rgba(0.45)} !important; }
-.comm-tab.active, #commTabChat.active, #commTabBlog.active, button.comm-tab.active {
-  background: linear-gradient(to bottom,rgba(255,255,255,.18) 0%,rgba(${ar},${ag},${ab},.45) 18%,rgba(${Math.round(ar*.55)},${Math.round(ag*.55)},${Math.round(ab*.55)},.85) 60%,rgba(${Math.round(ar*.22)},${Math.round(ag*.22)},${Math.round(ab*.22)},.95) 60%,rgba(${Math.round(ar*.33)},${Math.round(ag*.33)},${Math.round(ab*.33)},.82) 100%) !important;
-  border-color: ${rgba(0.70)} !important; color: #fff !important;
-}
-.comm-ok-btn, a.comm-ok-btn {
-  background: linear-gradient(to bottom,rgba(255,255,255,.20) 0%,rgba(${ar},${ag},${ab},.92) 0%,rgba(${Math.round(ar*.7)},${Math.round(ag*.7)},${Math.round(ab*.7)},.82) 4%,rgba(${Math.round(ar*.4)},${Math.round(ag*.4)},${Math.round(ab*.4)},.97) 52%,rgba(${Math.round(ar*.22)},${Math.round(ag*.22)},${Math.round(ab*.22)},1) 52%,rgba(${Math.round(ar*.33)},${Math.round(ag*.33)},${Math.round(ab*.33)},.90) 100%) !important;
-  border-color: ${rgba(0.70)} !important;
-  border-top-color: rgba(255,255,255,.20) !important;
-}
-._nav-badge { background: #cc1a1a !important; }
 #vPopAutoplayDot.dot-on { background: ${hex} !important; }
 .vg-vote-badge { display: none !important; }
 ${imgFilter}
@@ -643,7 +711,6 @@ function seekTo(pct) {
 function setControlsEnabled(on) {
   ['audioPlayPause','audioBack','audioForward','audioLoop','progressBar']
     .forEach(id=>{const b=$(id);if(!b)return;b.disabled=!on;b.classList.toggle('ctrl-disabled',!on);});
-  /* mpPlusBtn: always visible and clickable regardless of controls state */
   const pb=$('mpPlusBtn');
   if(pb){ pb.style.opacity='1'; pb.style.pointerEvents='auto'; }
   if(DISK) DISK.classList.toggle('ctrl-disabled',!on);
@@ -665,7 +732,6 @@ function buildPlaylist() {
   else if(_musicSort==='highest') sorted.sort((a,b)=>LIKES.getScore(b.videoId)-LIKES.getScore(a.videoId));
   else if(_musicSort==='unrated')  sorted=sorted.filter(t=>{const d=LIKES.get(t.videoId);return d.up===0&&d.down===0;});
   else if(_musicSort==='oldest')   sorted=[...sorted].reverse();
-  /* newest = default array order (index 0 = newest) */
 
   if(PREFS.showMusicOfWeek) {
     const motwId=MOTW.resolve(), motwTrack=motwId?TRACKS.find(t=>t.videoId===motwId):null;
@@ -965,7 +1031,7 @@ function _initCDPlayer() {
 }
 
 /* ================================================================
-   VIDEO PAGINATION — 9 per page, numbered pager with < > arrows
+   VIDEO PAGINATION
    ================================================================ */
 (function() {
   const PAGE_SIZE = 9;
@@ -1002,16 +1068,12 @@ function _initCDPlayer() {
       for (let i = start; i < Math.min(start + PAGE_SIZE, entries.length); i++) grid.appendChild(entries[i]);
 
       pager.innerHTML = '';
-
-      /* Prev arrow */
       const prev = document.createElement('span');
       prev.className = 'vg-pager-btn vg-pager-arrow';
       prev.textContent = '<';
-      prev.title = 'Previous page';
       prev.addEventListener('click', () => { if (curPage > 0) showPage(curPage - 1); });
       pager.appendChild(prev);
 
-      /* Page numbers */
       for (let p = 0; p < totalPages; p++) {
         const btn = document.createElement('span');
         btn.className = 'vg-pager-btn' + (p === curPage ? ' active' : '');
@@ -1020,11 +1082,9 @@ function _initCDPlayer() {
         pager.appendChild(btn);
       }
 
-      /* Next arrow */
       const next = document.createElement('span');
       next.className = 'vg-pager-btn vg-pager-arrow';
       next.textContent = '>';
-      next.title = 'Next page';
       next.addEventListener('click', () => { if (curPage < totalPages - 1) showPage(curPage + 1); });
       pager.appendChild(next);
     }
@@ -1054,7 +1114,7 @@ function _initCDPlayer() {
 })();
 
 /* ================================================================
-   GALLERY PAGINATION — 9 per page with < > arrows
+   GALLERY PAGINATION
    ================================================================ */
 (function() {
   const GALLERY_PAGE_SIZE = 9;
@@ -1086,15 +1146,12 @@ function _initCDPlayer() {
       }
       pager.innerHTML = '';
 
-      /* Prev arrow */
       const prev = document.createElement('span');
       prev.className = 'vg-pager-btn vg-pager-arrow';
       prev.textContent = '<';
-      prev.title = 'Previous page';
       prev.addEventListener('click', () => { if (curPage > 0) showPage(curPage - 1); });
       pager.appendChild(prev);
 
-      /* Page numbers */
       for (let p = 0; p < totalPages; p++) {
         const btn = document.createElement('span');
         btn.className = 'vg-pager-btn' + (p === curPage ? ' active' : '');
@@ -1103,11 +1160,9 @@ function _initCDPlayer() {
         pager.appendChild(btn);
       }
 
-      /* Next arrow */
       const next = document.createElement('span');
       next.className = 'vg-pager-btn vg-pager-arrow';
       next.textContent = '>';
-      next.title = 'Next page';
       next.addEventListener('click', () => { if (curPage < totalPages - 1) showPage(curPage + 1); });
       pager.appendChild(next);
     }
@@ -1184,7 +1239,6 @@ function buildPreferencesUI() {
   const genBody=mkSectionBody();
   genBody.appendChild(mkToggle('Intro: Do Not Play \u2014 On','Intro: Do Not Play \u2014 Off',PREFS.alwaysSkipIntro,on=>{PREFS.alwaysSkipIntro=on;PREFS.save();}));
 
-  /* Sounds toggle in preferences */
   genBody.appendChild(mkToggle('Sounds \u2014 On','Sounds \u2014 Off',PREFS.soundsOn!==false,on=>{
     PREFS.soundsOn=on;PREFS.save();
     if(window.SiteSound) window.SiteSound.setOn(on);
@@ -1307,10 +1361,20 @@ function gotoPage(name){
     stopViz();
   }
 
+  /* FIX: Auto-select Chat tab when entering Community — show panel immediately */
   if (name === 'community') {
     setTimeout(() => {
+      /* Reset to chat tab every time community is entered */
+      const panelChat = document.getElementById('commPanelChat');
+      const panelBlog = document.getElementById('commPanelBlog');
+      const tabChat   = document.getElementById('commTabChat');
+      const tabBlog   = document.getElementById('commTabBlog');
+      if (panelChat) panelChat.style.display = 'block';
+      if (panelBlog) panelBlog.style.display = 'none';
+      if (tabChat)   { tabChat.classList.add('active'); }
+      if (tabBlog)   { tabBlog.classList.remove('active'); }
       try { if (typeof _loadChatango === 'function') _loadChatango(); } catch(e) {}
-    }, 300);
+    }, 80);
   }
 
   _currentPage=name;
@@ -1482,7 +1546,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   NavBadges.init();
   _musicSort=PREFS.musicSort||'newest';
 
-  /* Sync sounds.js with loaded prefs */
   if (window.SiteSound) window.SiteSound.setOn(PREFS.soundsOn !== false);
 
   applyLayoutAlign(PREFS.layoutAlign);
@@ -1526,7 +1589,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
   initIntroVideo();initPlaylists();initNaUnlock();
 
-  /* Lazy spawn Rena after page is ready */
   setTimeout(() => {
     if (!document.getElementById('renaChan')) {
       const el = document.createElement('div');
@@ -1576,7 +1638,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     galBtn.addEventListener('mouseleave',()=>{if(!_galOpen)galBtn.style.color='rgba(200,200,200,.55)';});
   })();
 
-  /* "+" popup music status bar */
+  /* "+" popup music */
   (function(){
     const plusBtn=$('mpPlusBtn'),plusPopup=$('mpPlusPopup');
     if(!plusBtn||!plusPopup) return;
@@ -1621,7 +1683,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     }
   })();
 
-  /* Vote buttons */
   const likeBtn=$('mpLikeBtn'),dislikeBtn=$('mpDislikeBtn');
   if(likeBtn) likeBtn.addEventListener('click',async()=>{if(curIdx<0||!TRACKS.length)return;const t=TRACKS[curIdx];await LIKES.upvote(t.videoId);updateVoteDisplay(t);buildPlaylist();markActiveTrack(curIdx);});
   if(dislikeBtn) dislikeBtn.addEventListener('click',async()=>{if(curIdx<0||!TRACKS.length)return;const t=TRACKS[curIdx];await LIKES.downvote(t.videoId);updateVoteDisplay(t);buildPlaylist();markActiveTrack(curIdx);});
