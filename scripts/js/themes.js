@@ -35,7 +35,7 @@
     }
 
     var bgMap = {
-      darkaero: "url('assets/images/BACKGROUNDRENA.jpg') no-repeat center center fixed",
+      
       legacy:   "url('assets/images/SITEBACKGROUND.png') no-repeat center center fixed"
     };
     document.body.style.background     = bgMap[name];
