@@ -8,8 +8,8 @@
   'use strict';
 
   var THEMES = {
-    darkaero: { name: 'Dark Aero', accent: '#cc1a1a' },
-    legacy:   { name: 'Legacy',    accent: '#ffc820' }
+    darkaero: { name: 'Dark Aero', accent: '#ffffff' },
+    legacy:   { name: 'Legacy',    accent: '#ffffff' }
   };
 
   var _current        = 'darkaero';
@@ -107,7 +107,6 @@
       'max-height:78vh',
       'overflow-y:auto',
       'font-family:Tahoma,sans-serif',
-      'box-shadow:-4px -4px 20px rgba(0,0,0,.90)',
       'scrollbar-width:thin',
       'scrollbar-color:rgba(110,110,110,.4) rgba(0,0,0,.2)'
     ].join(';');
