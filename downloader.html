@@ -57,7 +57,7 @@
 body {
   font-family: Tahoma, 'Segoe UI', Geneva, Verdana, sans-serif;
   font-size: 12px;
-  background: #000 url('assets/images/BACKGROUND2.jpg') center/cover fixed no-repeat;
+  background: #000 url('https://i.pinimg.com/736x/dc/65/76/dc65762050be55fe12ec93405994de5d.jpg') center/cover fixed no-repeat;
   color: var(--text);
   min-height: 100vh;
   padding: 12px 6px 30px;
@@ -86,13 +86,10 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
   border: 1px solid var(--bar-border-s);
   border-top-color: var(--bar-border-t);
   border-bottom-color: var(--bar-border-b);
-  box-shadow:
-    inset 0 1px 0 var(--bar-shine),
-    inset 0 2px 4px rgba(255,255,255,.10),
-    0 3px 10px rgba(0,0,0,.48);
+  box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
   color: var(--bar-text);
   font-size: 14.6px; font-weight: 400;
-  padding: 1px 1px 1px;
+  padding: 1px;
   text-shadow: var(--bar-tshadow);
   position: relative; overflow: hidden;
   display: flex; align-items: center;
@@ -102,20 +99,14 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
   background: var(--bar-glow-top); pointer-events:none;
 }
-.aero-bar .back-link {
-  font-size:11px; color:rgba(200,200,200,.55); z-index:1;
-  flex-shrink:0; padding:0 6px 0 2px;
-}
+.aero-bar .back-link { font-size:11px; color:rgba(200,200,200,.55); z-index:1; flex-shrink:0; padding:0 6px 0 2px; }
 .aero-bar .back-link:hover { color:var(--accent); text-decoration:underline; }
 .aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:60px; }
 
 /* ── Glass box ── */
 .glass-box {
   background-image: linear-gradient(rgb(255 255 255 / 12%), rgb(0 0 0 / 100%));
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.07),
-    inset 0 0 10px rgba(200,200,200,.04),
-    0 5px 6px rgba(0,0,0,.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 10px rgba(200,200,200,.04), 0 5px 6px rgba(0,0,0,.55);
   border: 1px solid var(--glass-border);
   padding: 5px;
   margin-bottom: 7px;
@@ -126,10 +117,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
 
 h2 {
   background: var(--bar-grad);
-  box-shadow:
-    inset 0 1px 0 var(--bar-shine),
-    inset 0 2px 4px rgba(255,255,255,.10),
-    0 3px 10px rgba(0,0,0,.48);
+  box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
   border: 1px solid var(--bar-border-s);
   border-top-color: var(--bar-border-t);
   border-bottom-color: var(--bar-border-b);
@@ -153,10 +141,8 @@ h2::before {
   margin-bottom:6px;
 }
 .url-input {
-  flex:1;
-  background: rgba(255,255,255,0.9);
-  border:none; outline:none;
-  color:#000;
+  flex:1; background: rgba(255,255,255,0.9);
+  border:none; outline:none; color:#000;
   font-family:Tahoma,sans-serif; font-size:12px;
   padding:7px 10px;
 }
@@ -165,38 +151,23 @@ h2::before {
 
 .fmt-select {
   background: var(--ctrl-grad);
-  border:none;
-  border-left:1px solid rgba(100,100,100,.44);
-  border-top:1px solid rgba(255,255,255,.10);
-  color:#d0d0d0;
-  font-family:Tahoma,sans-serif; font-size:11.5px;
-  padding:0 10px;
-  cursor:pointer; outline:none; flex-shrink:0;
+  border:none; border-left:1px solid rgba(100,100,100,.44); border-top:1px solid rgba(255,255,255,.10);
+  color:#d0d0d0; font-family:Tahoma,sans-serif; font-size:11.5px;
+  padding:0 10px; cursor:pointer; outline:none; flex-shrink:0;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
 }
 .fmt-select option { background:#0a0a0a; }
 
-/* ── Download button — green Aero ── */
+/* ── Download button ── */
 .main-dl-btn {
   width:100%;
-  background:linear-gradient(to bottom,
-    rgba(255,255,255,.20) 0%,
-    rgba(190,190,190,.90) 0%,
-    rgb(157 251 156 / 80%) 4%,
-    rgb(25 180 20 / 98%) 52%,
-    rgb(4 100 11) 52%,
-    rgb(24 140 8 / 96%) 100%);
+  background:linear-gradient(to bottom, rgba(255,255,255,.20) 0%, rgba(190,190,190,.90) 0%, rgb(157 251 156 / 80%) 4%, rgb(25 180 20 / 98%) 52%, rgb(4 100 11) 52%, rgb(24 140 8 / 96%) 100%);
   border:1px solid rgb(20 180 23 / 80%);
   border-top-color: rgba(100,255,100,0.28);
   border-bottom-color: rgba(0,0,0,.88);
-  box-shadow:
-    inset 0 1px 0 rgba(255,180,180,.18),
-    inset 0 2px 4px rgba(255,255,255,.06),
-    0 3px 8px rgba(0,0,0,.52);
-  color:#fff;
-  font-family:Tahoma,sans-serif; font-size:13px; font-weight:400;
-  padding:7px 0 9px;
-  cursor:pointer;
+  box-shadow: inset 0 1px 0 rgba(255,180,180,.18), inset 0 2px 4px rgba(255,255,255,.06), 0 3px 8px rgba(0,0,0,.52);
+  color:#fff; font-family:Tahoma,sans-serif; font-size:13px; font-weight:400;
+  padding:7px 0 9px; cursor:pointer;
   text-shadow:0 1px 3px rgba(0,0,0,.96);
   position:relative; letter-spacing:.3px;
 }
@@ -206,48 +177,7 @@ h2::before {
   pointer-events:none;
 }
 .main-dl-btn:hover:not(:disabled) { filter:brightness(1.14); }
-.main-dl-btn:disabled {
-  opacity:.45; cursor:not-allowed;
-  background: var(--bar-grad) !important;
-  border-color:rgba(80,80,80,.50) !important;
-}
-
-/* ── YouTube unavailable banner ── */
-#ytWarning { display:none; width:100%; margin-top:6px; }
-#ytWarning.visible { display:block; }
-
-.yt-warn-bar {
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.14) 0%,
-    rgba(160,130,80,.72)  0%,
-    rgba(100,70,20,.70)   4%,
-    rgba(40,22,4,.98)    52%,
-    rgba(20,10,2,1)      52%,
-    rgba(36,18,4,.96)   100%);
-  border: 1px solid rgba(140,100,30,.55);
-  border-top-color: rgba(255,210,100,.18);
-  border-bottom-color: rgba(0,0,0,.88);
-  box-shadow:
-    inset 0 1px 0 rgba(255,220,120,.14),
-    inset 0 2px 4px rgba(255,255,255,.04),
-    0 3px 8px rgba(0,0,0,.52);
-  color: #d4a84b;
-  font-family: Tahoma, sans-serif;
-  font-size: 11.5px; font-weight: 400;
-  padding: 6px 10px 8px;
-  text-shadow: 0 1px 3px rgba(0,0,0,.96);
-  position: relative; overflow: hidden; line-height: 1.6;
-}
-.yt-warn-bar::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background: linear-gradient(180deg,rgba(255,220,100,.10) 0%,rgba(200,160,60,.02) 100%);
-  pointer-events:none;
-}
-.yt-warn-bar span { position:relative; z-index:1; }
-.yt-warn-bar .warn-label {
-  color:#e8c060; font-size:11px; letter-spacing:.4px;
-  text-transform:uppercase; display:block; margin-bottom:2px;
-}
+.main-dl-btn:disabled { opacity:.45; cursor:not-allowed; background: var(--bar-grad) !important; border-color:rgba(80,80,80,.50) !important; }
 
 /* ── Status box ── */
 #statusBox {
@@ -260,14 +190,41 @@ h2::before {
 }
 #statusBox.visible { display:block; }
 
+/* Status text + timer row */
+.status-row {
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  margin-bottom:5px;
+}
 #statusText {
   font-size:11.5px; color:#aaa;
-  text-align:center;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  margin-bottom:5px;
+  flex:1; text-align:center;
 }
 #statusText .ok  { color:#3cda56; }
 #statusText .err { color:var(--accent); }
+
+/* Countdown timer badge */
+#wakeTimer {
+  display:none;
+  font-size:11px; color:#888;
+  background: rgba(0,0,0,.60);
+  border:1px solid rgba(70,70,70,.50);
+  padding:1px 8px;
+  white-space:nowrap; flex-shrink:0;
+  font-variant-numeric: tabular-nums;
+}
+#wakeTimer.visible { display:block; }
+#wakeTimer .timer-sec { color:#bbb; }
+
+/* Download info row (size + ETA) */
+#dlInfo {
+  display:none;
+  font-size:11px; color:#666;
+  text-align:center;
+  margin-bottom:4px;
+}
+#dlInfo.visible { display:block; }
+#dlInfo .info-val { color:#999; }
 
 .prog-track {
   height:8px;
@@ -287,33 +244,97 @@ h2::before {
   width:38% !important;
   animation:progAnim 1.4s infinite ease-in-out;
 }
-@keyframes progAnim {
-  0%   { left:-38%; }
-  100% { left:110%; }
-}
+@keyframes progAnim { 0% { left:-38%; } 100% { left:110%; } }
 
 /* ── Source tags ── */
 .src-row {
-  display:flex; gap:4px; flex-wrap:wrap;
+  display:flex; gap:6px; flex-wrap:wrap;
   margin-top:8px; padding-top:7px;
   border-top:1px solid rgba(50,50,50,.80);
+  align-items:center;
 }
+
+/* Base: grayscale / dim — unavailable */
 .src-tag {
-  font-size:10.5px; padding:2px 6px;
+  font-size:10.5px; padding:2px 8px 2px 5px;
   display:flex; align-items:center; gap:5px;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.10) 0%,
-    rgba(80,80,80,.08)   60%,
-    rgba(14,14,14,.30)   100%);
-  border:1px solid rgba(80,80,80,.44);
-  color:#777;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+  border:1px solid rgba(50,50,50,.44);
+  color:#444;
+  background: rgba(8,8,8,.70);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+  position: relative;
+  cursor: default;
+  transition: color .15s, border-color .15s, background .15s;
 }
-.src-tag img { height:14px; width:14px; object-fit:contain; flex-shrink:0; }
-.src-tag.sp { color:#1db954; border-color:rgba(29,185,84,.32); }
-.src-tag.yt { color:#d03030; border-color:rgba(200,48,48,.32); }
-.src-tag.yt.disabled { color:#555; border-color:rgba(80,80,80,.30); text-decoration:line-through; }
-.src-tag.sc { color:#c85010; border-color:rgba(200,80,16,.32); }
+.src-tag img {
+  height:15px; width:15px; object-fit:contain; flex-shrink:0;
+  filter: grayscale(1) brightness(0.35);
+  transition: filter .15s;
+}
+
+/* Available state — colored */
+.src-tag.available {
+  color:#aaa;
+  border-color:rgba(100,100,100,.44);
+  background: linear-gradient(to bottom, rgba(255,255,255,.08) 0%, rgba(40,40,40,.10) 60%, rgba(10,10,10,.30) 100%);
+}
+.src-tag.available img { filter: none; }
+.src-tag.sp.available  { color:#1db954; border-color:rgba(29,185,84,.32); }
+.src-tag.yt.available  { color:#d03030; border-color:rgba(200,48,48,.32); }
+.src-tag.sc.available  { color:#c85010; border-color:rgba(200,80,16,.32); }
+
+/* YouTube tooltip — shows on hover over the yt tag when unavailable */
+.src-tag.yt:not(.available) { cursor: help; }
+.yt-tooltip {
+  display:none;
+  position:absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  z-index: 200;
+  pointer-events: none;
+}
+.src-tag.yt:not(.available):hover .yt-tooltip { display:block; }
+
+.yt-tooltip-inner {
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,.14) 0%,
+    rgba(160,130,80,.72)  0%,
+    rgba(100,70,20,.70)   4%,
+    rgba(40,22,4,.98)    52%,
+    rgba(20,10,2,1)      52%,
+    rgba(36,18,4,.96)   100%);
+  border: 1px solid rgba(140,100,30,.55);
+  border-top-color: rgba(255,210,100,.18);
+  border-bottom-color: rgba(0,0,0,.88);
+  box-shadow: inset 0 1px 0 rgba(255,220,120,.14), 0 4px 12px rgba(0,0,0,.72);
+  color: #d4a84b;
+  font-family: Tahoma, sans-serif;
+  font-size: 11px; font-weight: 400;
+  padding: 6px 10px 7px;
+  text-shadow: 0 1px 3px rgba(0,0,0,.96);
+  position: relative; overflow: hidden; line-height: 1.6;
+}
+.yt-tooltip-inner::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:50%;
+  background: linear-gradient(180deg,rgba(255,220,100,.10) 0%,rgba(200,160,60,.02) 100%);
+  pointer-events:none;
+}
+.yt-tooltip-inner span { position:relative; z-index:1; }
+.yt-tooltip-inner .warn-label {
+  color:#e8c060; font-size:10px; letter-spacing:.4px;
+  text-transform:uppercase; display:block; margin-bottom:2px;
+}
+/* Arrow */
+.yt-tooltip::after {
+  content:'';
+  position:absolute; bottom:-5px; left:50%; transform:translateX(-50%);
+  width:0; height:0;
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-top:5px solid rgba(140,100,30,.55);
+}
 
 /* ── Note ── */
 .note {
@@ -330,25 +351,15 @@ h2::before {
   margin-top:7px; padding-top:7px;
   border-top:1px solid rgba(40,40,40,.80);
 }
-.fmt-tag {
-  font-size:10px; padding:1px 7px;
-  border:1px solid rgba(70,70,70,.40);
-  color:#666; background:rgba(10,10,10,.60);
-}
+.fmt-tag { font-size:10px; padding:1px 7px; border:1px solid rgba(70,70,70,.40); color:#666; background:rgba(10,10,10,.60); }
 
 /* ── Link Preview Panel ── */
-#previewPanel {
-  display:none;
-  margin-bottom: 7px;
-}
+#previewPanel { display:none; margin-bottom:7px; }
 #previewPanel.visible { display:block; }
 
 .preview-header {
   background: var(--bar-grad);
-  box-shadow:
-    inset 0 1px 0 var(--bar-shine),
-    inset 0 2px 4px rgba(255,255,255,.10),
-    0 3px 10px rgba(0,0,0,.48);
+  box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
   border: 1px solid var(--bar-border-s);
   border-top-color: var(--bar-border-t);
   border-bottom-color: var(--bar-border-b);
@@ -366,31 +377,17 @@ h2::before {
 .preview-header img  { height:14px; width:14px; object-fit:contain; z-index:1; flex-shrink:0; }
 .preview-header span { z-index:1; }
 
-.preview-body {
-  border: 1px solid var(--aero-border);
-  border-top: none;
-  background: rgba(4,4,4,.96);
-}
+.preview-body { border:1px solid var(--aero-border); border-top:none; background:rgba(4,4,4,.96); }
 
-/* Spotify embed */
 .sp-embed-wrap { width:100%; overflow:hidden; background:#000; }
 .sp-embed-wrap iframe { width:100%; border:none; display:block; }
 
-/* YouTube embed */
-.yt-embed-wrap {
-  position:relative; padding-bottom:56.25%;
-  height:0; overflow:hidden; background:#000;
-}
-.yt-embed-wrap iframe {
-  position:absolute; top:0; left:0;
-  width:100%; height:100%; border:none;
-}
+.yt-embed-wrap { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; background:#000; }
+.yt-embed-wrap iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
 
-/* SoundCloud embed */
 .sc-embed-wrap { width:100%; overflow:hidden; background:#000; }
 .sc-embed-wrap iframe { width:100%; border:none; display:block; }
 
-/* Meta info row below embed */
 .preview-meta {
   display:flex; align-items:center; gap:10px;
   padding:7px 10px;
@@ -399,25 +396,11 @@ h2::before {
 }
 .preview-meta-icon { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
 .preview-meta-info { flex:1; min-width:0; }
-.preview-meta-title {
-  font-size:12px; color:#ccc;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  margin-bottom:2px;
-}
-.preview-meta-sub { font-size:10.5px; color:#555; }
-.preview-meta-badge {
-  font-size:10px; padding:2px 7px;
-  border:1px solid rgba(70,70,70,.50);
-  color:#777; background:rgba(12,12,12,.80);
-  white-space:nowrap; flex-shrink:0;
-}
+.preview-meta-title { font-size:12px; color:#ccc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
+.preview-meta-sub   { font-size:10.5px; color:#555; }
+.preview-meta-badge { font-size:10px; padding:2px 7px; border:1px solid rgba(70,70,70,.50); color:#777; background:rgba(12,12,12,.80); white-space:nowrap; flex-shrink:0; }
 
-/* States */
-.preview-checking, .preview-invalid {
-  padding:12px;
-  font-size:11.5px;
-  text-align:center;
-}
+.preview-checking, .preview-invalid { padding:12px; font-size:11.5px; text-align:center; }
 .preview-checking { color:#555; }
 .preview-invalid  { color:var(--accent); }
 </style>
@@ -430,7 +413,6 @@ h2::before {
     <span class="bar-title">Ultimate Downloader Converter</span>
   </div>
 
-  <!-- Download form -->
   <div class="glass-box">
     <h2>Download</h2>
     <div class="aero-inner">
@@ -438,14 +420,9 @@ h2::before {
         <p style="margin-bottom:9px;">Paste a Spotify album, YouTube playlist or SoundCloud set link below. The content will be packaged as a <strong>ZIP</strong> and downloaded directly to your computer.</p>
 
         <div class="url-row">
-          <input
-            type="text"
-            id="urlInput"
-            class="url-input"
+          <input type="text" id="urlInput" class="url-input"
             placeholder="Insert Your Link Here..."
-            autocomplete="off"
-            spellcheck="false"
-          >
+            autocomplete="off" spellcheck="false">
           <select id="fmtSelect" class="fmt-select">
             <option value="mp3">MP3</option>
             <option value="flac">FLAC</option>
@@ -457,30 +434,37 @@ h2::before {
           DOWNLOAD AS ZIP
         </button>
 
-        <div id="ytWarning">
-          <div class="yt-warn-bar">
-            <span class="warn-label">YouTube &mdash; Temporarily Unavailable</span>
-            <span>YouTube downloads require server-side authentication. This feature is currently not configured. Spotify and SoundCloud downloads remain fully functional.</span>
-          </div>
-        </div>
-
         <div id="statusBox">
-          <div id="statusText">Connecting...</div>
+          <div class="status-row">
+            <div id="statusText">Connecting...</div>
+            <div id="wakeTimer"><span class="timer-sec" id="timerVal">0</span>s</div>
+          </div>
+          <div id="dlInfo">
+            Size: <span class="info-val" id="dlSize">&mdash;</span>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            Estimated time: <span class="info-val" id="dlEta">&mdash;</span>
+          </div>
           <div class="prog-track">
             <div class="prog-fill" id="progFill"></div>
           </div>
         </div>
 
         <div class="src-row">
-          <span class="src-tag sp">
+          <span class="src-tag sp" id="tagSp">
             <img src="assets/images/SPOTIFYAERO.jpeg" alt="">
             Spotify &mdash; albums &amp; playlists
           </span>
-          <span class="src-tag yt" id="ytTag">
+          <span class="src-tag yt" id="tagYt">
             <img src="assets/images/YOUTUBEAERO.png" alt="">
             YouTube &mdash; playlists &amp; videos
+            <span class="yt-tooltip">
+              <span class="yt-tooltip-inner">
+                <span class="warn-label">YouTube &mdash; Unavailable</span>
+                <span>YouTube downloads require server authentication. Not configured. Spotify &amp; SoundCloud work normally.</span>
+              </span>
+            </span>
           </span>
-          <span class="src-tag sc">
+          <span class="src-tag sc" id="tagSc">
             <img src="assets/images/SOUNDCLOUDAERO.png" alt="">
             SoundCloud &mdash; sets &amp; profiles
           </span>
@@ -501,7 +485,6 @@ h2::before {
     </div>
   </div>
 
-  <!-- Link Preview Panel — appears between boxes once URL is typed -->
   <div id="previewPanel" class="glass-box" style="padding:0;">
     <div class="preview-header">
       <img id="previewHeaderIcon" src="" alt="" style="display:none;">
@@ -522,25 +505,33 @@ const fmtSelect         = document.getElementById('fmtSelect');
 const dlBtn             = document.getElementById('dlBtn');
 const statusBox         = document.getElementById('statusBox');
 const statusTxt         = document.getElementById('statusText');
+const wakeTimer         = document.getElementById('wakeTimer');
+const timerVal          = document.getElementById('timerVal');
+const dlInfo            = document.getElementById('dlInfo');
+const dlSize            = document.getElementById('dlSize');
+const dlEta             = document.getElementById('dlEta');
 const progFill          = document.getElementById('progFill');
-const ytWarning         = document.getElementById('ytWarning');
-const ytTag             = document.getElementById('ytTag');
+const tagSp             = document.getElementById('tagSp');
+const tagYt             = document.getElementById('tagYt');
+const tagSc             = document.getElementById('tagSc');
 const previewPanel      = document.getElementById('previewPanel');
 const previewHeaderIcon = document.getElementById('previewHeaderIcon');
 const previewHeaderTitle= document.getElementById('previewHeaderTitle');
 const previewBody       = document.getElementById('previewBody');
 
-let ytEnabled = true;
+let ytEnabled    = true;
 let previewTimer = null;
+// Timer state
+let wakeInterval = null;
+let wakeSeconds  = 0;
 
-// ── Icons matching index.html contact links ───────────────────────────────────
 const ICONS = {
   spotify:    'assets/images/SPOTIFYAERO.jpeg',
   youtube:    'assets/images/YOUTUBEAERO.png',
   soundcloud: 'assets/images/SOUNDCLOUDAERO.png',
 };
 
-// ── Detect platform from URL ──────────────────────────────────────────────────
+// ── Detect platform ───────────────────────────────────────────────────────────
 function detectSource(url) {
   if (/spotify\.com/i.test(url))           return 'spotify';
   if (/youtube\.com|youtu\.be/i.test(url)) return 'youtube';
@@ -548,163 +539,47 @@ function detectSource(url) {
   return null;
 }
 
-// ── Build embed HTML per platform ────────────────────────────────────────────
-function buildSpotifyEmbed(url) {
-  const m = url.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
-  if (!m) return null;
-  const [, type, id] = m;
-  const height = (type === 'track' || type === 'episode') ? 152 : 352;
-  const embedUrl = `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
-  const label = type.charAt(0).toUpperCase() + type.slice(1);
-
-  previewHeaderIcon.src = ICONS.spotify;
-  previewHeaderIcon.style.display = '';
-  previewHeaderTitle.textContent = `Spotify \u2014 ${label} Preview`;
-
-  return `
-    <div class="sp-embed-wrap">
-      <iframe src="${embedUrl}" height="${height}" frameborder="0"
-        allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
-    </div>
-    <div class="preview-meta">
-      <img class="preview-meta-icon" src="${ICONS.spotify}" alt="Spotify">
-      <div class="preview-meta-info">
-        <div class="preview-meta-title">Spotify ${label}</div>
-        <div class="preview-meta-sub">Verify the content above, then click Download.</div>
-      </div>
-      <span class="preview-meta-badge">${label.toUpperCase()}</span>
-    </div>`;
+// ── Apply colored/dim state to src tags ───────────────────────────────────────
+function applyTagStates() {
+  tagSp.classList.add('available');
+  tagSc.classList.add('available');
+  if (ytEnabled) tagYt.classList.add('available');
+  // YouTube stays dim + gets tooltip if unavailable
 }
 
-function buildYouTubeEmbed(url) {
-  const pl = url.match(/[?&]list=([^&]+)/);
-  const v  = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
-  if (!pl && !v) return null;
-
-  const type = pl ? 'Playlist' : 'Video';
-  const embedUrl = pl
-    ? `https://www.youtube.com/embed/videoseries?list=${pl[1]}`
-    : `https://www.youtube.com/embed/${v[1]}`;
-
-  previewHeaderIcon.src = ICONS.youtube;
-  previewHeaderIcon.style.display = '';
-  previewHeaderTitle.textContent = `YouTube \u2014 ${type} Preview`;
-
-  const sub = ytEnabled
-    ? 'Ready to download.'
-    : 'YouTube downloads currently unavailable \u2014 see warning above.';
-
-  return `
-    <div class="yt-embed-wrap">
-      <iframe src="${embedUrl}" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen loading="lazy"></iframe>
-    </div>
-    <div class="preview-meta">
-      <img class="preview-meta-icon" src="${ICONS.youtube}" alt="YouTube">
-      <div class="preview-meta-info">
-        <div class="preview-meta-title">YouTube ${type}</div>
-        <div class="preview-meta-sub">${sub}</div>
-      </div>
-      <span class="preview-meta-badge">${type.toUpperCase()}</span>
-    </div>`;
+// ── Format bytes ──────────────────────────────────────────────────────────────
+function fmtBytes(b) {
+  if (b < 1024)       return b + ' B';
+  if (b < 1048576)    return (b/1024).toFixed(1) + ' KB';
+  if (b < 1073741824) return (b/1048576).toFixed(1) + ' MB';
+  return (b/1073741824).toFixed(2) + ' GB';
 }
 
-function buildSoundCloudEmbed(url) {
-  const isSet = /\/sets\//i.test(url);
-  const type  = isSet ? 'Set' : 'Track';
-  const height = isSet ? 450 : 166;
-  const encoded = encodeURIComponent(url);
-  const embedUrl = `https://w.soundcloud.com/player/?url=${encoded}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
-
-  previewHeaderIcon.src = ICONS.soundcloud;
-  previewHeaderIcon.style.display = '';
-  previewHeaderTitle.textContent = `SoundCloud \u2014 ${type} Preview`;
-
-  return `
-    <div class="sc-embed-wrap">
-      <iframe scrolling="no" frameborder="no" allow="autoplay"
-        src="${embedUrl}" height="${height}" loading="lazy"></iframe>
-    </div>
-    <div class="preview-meta">
-      <img class="preview-meta-icon" src="${ICONS.soundcloud}" alt="SoundCloud">
-      <div class="preview-meta-info">
-        <div class="preview-meta-title">SoundCloud ${type}</div>
-        <div class="preview-meta-sub">Verify the content above, then click Download.</div>
-      </div>
-      <span class="preview-meta-badge">${type.toUpperCase()}</span>
-    </div>`;
+// ── Estimate download time from content-length ────────────────────────────────
+function fmtEta(bytes) {
+  // Assume ~2 MB/s average (conservative for most connections)
+  const secs = bytes / (2 * 1048576);
+  if (secs < 5)   return 'a few seconds';
+  if (secs < 60)  return Math.ceil(secs) + 's';
+  const m = Math.floor(secs / 60), s = Math.ceil(secs % 60);
+  return m + 'm ' + (s > 0 ? s + 's' : '');
 }
 
-// ── Render preview ────────────────────────────────────────────────────────────
-function renderPreview(raw) {
-  const url = raw.trim();
-
-  if (!url) {
-    previewPanel.classList.remove('visible');
-    return;
-  }
-
-  const source = detectSource(url);
-
-  previewPanel.classList.add('visible');
-  previewHeaderIcon.style.display = 'none';
-  previewHeaderTitle.textContent = 'Link Preview';
-
-  if (!source) {
-    previewBody.innerHTML = '<div class="preview-invalid">Unrecognized URL &mdash; paste a valid Spotify, YouTube or SoundCloud link.</div>';
-    return;
-  }
-
-  previewBody.innerHTML = '<div class="preview-checking">Loading preview&hellip;</div>';
-
-  let html = null;
-  if (source === 'spotify')    html = buildSpotifyEmbed(url);
-  if (source === 'youtube')    html = buildYouTubeEmbed(url);
-  if (source === 'soundcloud') html = buildSoundCloudEmbed(url);
-
-  previewBody.innerHTML = html
-    ? html
-    : '<div class="preview-invalid">Could not generate preview. Double-check the URL.</div>';
+// ── Wake-up timer UI ─────────────────────────────────────────────────────────
+function startWakeTimer() {
+  wakeSeconds = 0;
+  timerVal.textContent = '0';
+  wakeTimer.classList.add('visible');
+  wakeInterval = setInterval(() => {
+    wakeSeconds++;
+    timerVal.textContent = wakeSeconds;
+  }, 1000);
 }
-
-// ── Debounced input ───────────────────────────────────────────────────────────
-function schedulePreview() {
-  clearTimeout(previewTimer);
-  previewTimer = setTimeout(() => renderPreview(urlInput.value), 500);
+function stopWakeTimer() {
+  clearInterval(wakeInterval);
+  wakeInterval = null;
+  wakeTimer.classList.remove('visible');
 }
-
-urlInput.addEventListener('input', schedulePreview);
-urlInput.addEventListener('paste', () => {
-  clearTimeout(previewTimer);
-  previewTimer = setTimeout(() => renderPreview(urlInput.value), 250);
-});
-
-// ── YouTube status check (non-blocking, retries once after 8s) ───────────────
-async function checkYtStatus() {
-  for (let i = 0; i < 2; i++) {
-    try {
-      const controller = new AbortController();
-      const t = setTimeout(() => controller.abort(), 10000);
-      const res = await fetch(`${API_URL}/yt-status`, { signal: controller.signal });
-      clearTimeout(t);
-      if (res.ok) {
-        const data = await res.json();
-        ytEnabled = data.youtube_enabled;
-        if (!ytEnabled) {
-          ytWarning.classList.add('visible');
-          ytTag.classList.add('disabled');
-          ytTag.title = 'YouTube currently unavailable';
-        }
-        return;
-      }
-    } catch (_) {
-      if (i === 0) await new Promise(r => setTimeout(r, 8000)); // server may be cold
-    }
-  }
-}
-checkYtStatus();
 
 // ── Status helpers ────────────────────────────────────────────────────────────
 function setStatus(msg, type) {
@@ -715,47 +590,132 @@ function setProgress(pct) {
   progFill.style.width = pct + '%';
 }
 
-// ── Wake-up ping (Render free tier cold start) ────────────────────────────────
+// ── Wake server (handles Render cold start + CORS block) ──────────────────────
 async function wakeServer() {
-  // Fase 1: ping com no-cors — nunca falha por CORS mesmo durante cold start
-  // O Render precisa receber a requisição pra acordar, independente da resposta
+  // Phase 1 — no-cors ping: browser never blocks this even if server has no CORS yet.
+  // This is what actually wakes Render. We don't care about the response.
+  startWakeTimer();
+  setStatus('Connecting to server...');
   try {
     const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 22000);
+    const t = setTimeout(() => ctrl.abort(), 25000);
     await fetch(`${API_URL}/`, { method: 'GET', mode: 'no-cors', signal: ctrl });
     clearTimeout(t);
   } catch (e) {
     if (e.name === 'AbortError') {
-      throw new Error('Server did not respond after 22 seconds. Try again in a moment.');
+      stopWakeTimer();
+      throw new Error(`Server did not respond after ${wakeSeconds}s. It may be down — try again later.`);
     }
-    // Erro de rede puro (offline, DNS) — propaga
-    if (e.message && e.message !== 'Failed to fetch') throw e;
-    // "Failed to fetch" com no-cors = rede ok mas servidor ainda subindo, continua
+    // "Failed to fetch" with no-cors = CORS blocked (normal during cold start), keep going
   }
 
-  // Fase 2: aguarda e confirma com CORS normal
-  for (let i = 1; i <= 5; i++) {
+  // Phase 2 — wait for server to fully initialize, then confirm with normal CORS fetch
+  for (let i = 0; i < 8; i++) {
     try {
       const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 8000);
+      const t = setTimeout(() => ctrl.abort(), 6000);
       const res = await fetch(`${API_URL}/`, { signal: ctrl });
       clearTimeout(t);
-      if (res.ok) return true;
-    } catch (_) {
-      // ainda acordando
-    }
-    if (i < 5) {
-      let dots = 0;
-      const dotTimer = setInterval(() => {
-        dots = (dots + 1) % 4;
-        setStatus('Server is starting up, please wait' + '.'.repeat(dots));
-      }, 500);
-      await new Promise(r => setTimeout(r, 4000));
-      clearInterval(dotTimer);
-    }
+      if (res.ok) { stopWakeTimer(); return true; }
+    } catch (_) { /* still starting */ }
+
+    // Show dots animation while waiting
+    let dots = 0;
+    const dot = setInterval(() => {
+      dots = (dots + 1) % 4;
+      setStatus('Server is starting up, please wait' + '.'.repeat(dots));
+    }, 400);
+    await new Promise(r => setTimeout(r, 3500));
+    clearInterval(dot);
   }
+
+  stopWakeTimer();
   return false;
 }
+
+// ── YouTube status check (non-blocking) ───────────────────────────────────────
+async function checkYtStatus() {
+  for (let i = 0; i < 3; i++) {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 10000);
+      const res = await fetch(`${API_URL}/yt-status`, { signal: ctrl });
+      clearTimeout(t);
+      if (res.ok) {
+        const data = await res.json();
+        ytEnabled = data.youtube_enabled;
+        applyTagStates();
+        return;
+      }
+    } catch (_) {
+      if (i < 2) await new Promise(r => setTimeout(r, 6000));
+    }
+  }
+  // If we can't reach server, default to assuming all available
+  applyTagStates();
+}
+checkYtStatus();
+
+// ── Preview ───────────────────────────────────────────────────────────────────
+function buildSpotifyEmbed(url) {
+  const m = url.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
+  if (!m) return null;
+  const [, type, id] = m;
+  const height   = (type === 'track' || type === 'episode') ? 152 : 352;
+  const embedUrl = `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
+  const label    = type.charAt(0).toUpperCase() + type.slice(1);
+  previewHeaderIcon.src = ICONS.spotify; previewHeaderIcon.style.display = '';
+  previewHeaderTitle.textContent = `Spotify \u2014 ${label} Preview`;
+  return `<div class="sp-embed-wrap"><iframe src="${embedUrl}" height="${height}" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+  <div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.spotify}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">Spotify ${label}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${label.toUpperCase()}</span></div>`;
+}
+
+function buildYouTubeEmbed(url) {
+  const pl = url.match(/[?&]list=([^&]+)/);
+  const v  = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
+  if (!pl && !v) return null;
+  const type     = pl ? 'Playlist' : 'Video';
+  const embedUrl = pl ? `https://www.youtube.com/embed/videoseries?list=${pl[1]}` : `https://www.youtube.com/embed/${v[1]}`;
+  const sub      = ytEnabled ? 'Ready to download.' : 'YouTube downloads currently unavailable.';
+  previewHeaderIcon.src = ICONS.youtube; previewHeaderIcon.style.display = '';
+  previewHeaderTitle.textContent = `YouTube \u2014 ${type} Preview`;
+  return `<div class="yt-embed-wrap"><iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+  <div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.youtube}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">YouTube ${type}</div><div class="preview-meta-sub">${sub}</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
+}
+
+function buildSoundCloudEmbed(url) {
+  const isSet    = /\/sets\//i.test(url);
+  const type     = isSet ? 'Set' : 'Track';
+  const height   = isSet ? 450 : 166;
+  const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
+  previewHeaderIcon.src = ICONS.soundcloud; previewHeaderIcon.style.display = '';
+  previewHeaderTitle.textContent = `SoundCloud \u2014 ${type} Preview`;
+  return `<div class="sc-embed-wrap"><iframe scrolling="no" frameborder="no" allow="autoplay" src="${embedUrl}" height="${height}" loading="lazy"></iframe></div>
+  <div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.soundcloud}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">SoundCloud ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
+}
+
+function renderPreview(raw) {
+  const url = raw.trim();
+  if (!url) { previewPanel.classList.remove('visible'); return; }
+  const source = detectSource(url);
+  previewPanel.classList.add('visible');
+  previewHeaderIcon.style.display = 'none';
+  previewHeaderTitle.textContent = 'Link Preview';
+  if (!source) { previewBody.innerHTML = '<div class="preview-invalid">Unrecognized URL &mdash; paste a valid Spotify, YouTube or SoundCloud link.</div>'; return; }
+  previewBody.innerHTML = '<div class="preview-checking">Loading preview&hellip;</div>';
+  let html = null;
+  if (source === 'spotify')    html = buildSpotifyEmbed(url);
+  if (source === 'youtube')    html = buildYouTubeEmbed(url);
+  if (source === 'soundcloud') html = buildSoundCloudEmbed(url);
+  previewBody.innerHTML = html || '<div class="preview-invalid">Could not generate preview. Double-check the URL.</div>';
+}
+
+function schedulePreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(() => renderPreview(urlInput.value), 500);
+}
+urlInput.addEventListener('input', schedulePreview);
+urlInput.addEventListener('paste', () => { clearTimeout(previewTimer); previewTimer = setTimeout(() => renderPreview(urlInput.value), 250); });
 
 // ── Download ──────────────────────────────────────────────────────────────────
 async function startDownload() {
@@ -769,7 +729,6 @@ async function startDownload() {
     setStatus('Unrecognized URL. Paste a valid Spotify, YouTube or SoundCloud link.', 'err');
     return;
   }
-
   if (source === 'youtube' && !ytEnabled) {
     statusBox.classList.add('visible');
     setProgress(0);
@@ -779,17 +738,19 @@ async function startDownload() {
 
   dlBtn.disabled = true;
   statusBox.classList.add('visible');
+  dlInfo.classList.remove('visible');
   progFill.classList.add('indeterminate');
-  setStatus('Connecting to server&hellip;');
 
   try {
-    // Wake the server first — handles Render cold start silently
+    // Wake server — handles cold start + CORS block gracefully
     const alive = await wakeServer();
     if (!alive) {
-      throw new Error('Server is not responding. It may be starting up — wait a moment and try again.');
+      throw new Error(`Server did not come up after ${wakeSeconds}s. Try again in a moment.`);
     }
 
     setStatus('Downloading &mdash; large albums may take a few minutes&hellip;');
+
+    const dlStart = Date.now();
 
     const response = await fetch(`${API_URL}/download`, {
       method: 'POST',
@@ -802,33 +763,48 @@ async function startDownload() {
       throw new Error(err.detail || `HTTP ${response.status}`);
     }
 
+    // Show size + ETA from Content-Length if available
+    const contentLength = parseInt(response.headers.get('Content-Length') || '0', 10);
+    if (contentLength > 0) {
+      dlSize.textContent = fmtBytes(contentLength);
+      dlEta.textContent  = fmtEta(contentLength);
+      dlInfo.classList.add('visible');
+    }
+
     setStatus('Packaging ZIP&hellip;');
     setProgress(85);
 
-    const blob = await response.blob();
-    const blobUrl = URL.createObjectURL(blob);
+    const blob     = await response.blob();
+    const blobUrl  = URL.createObjectURL(blob);
     const disposition = response.headers.get('Content-Disposition') || '';
-    const nameMatch = disposition.match(/filename="?([^"]+)"?/);
-    const filename = nameMatch ? nameMatch[1] : 'download.zip';
+    const nameMatch   = disposition.match(/filename="?([^"]+)"?/);
+    const filename    = nameMatch ? nameMatch[1] : 'download.zip';
+
+    // Update size from actual blob if header was missing
+    if (contentLength === 0 && blob.size > 0) {
+      dlSize.textContent = fmtBytes(blob.size);
+      const elapsed = (Date.now() - dlStart) / 1000;
+      dlEta.textContent = 'done in ' + (elapsed < 60 ? Math.ceil(elapsed) + 's' : Math.floor(elapsed/60) + 'm ' + Math.ceil(elapsed%60) + 's');
+      dlInfo.classList.add('visible');
+    }
 
     const a = document.createElement('a');
-    a.href = blobUrl;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    a.href = blobUrl; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(blobUrl);
 
     setProgress(100);
     setStatus('Download started. Check your downloads folder.', 'ok');
 
   } catch (err) {
+    stopWakeTimer();
     progFill.classList.remove('indeterminate');
     progFill.style.width = '0%';
-    // Friendly message for network errors
-    const msg = (err.message === 'Failed to fetch' || err.name === 'TypeError')
-      ? 'Could not reach the server. It may be starting up &mdash; wait 30 seconds and try again.'
-      : err.message;
+    // Never show raw "Failed to fetch" to the user
+    const raw = err.message || '';
+    const msg = (raw === 'Failed to fetch' || err.name === 'TypeError')
+      ? 'Could not reach the server. It may still be starting &mdash; wait a moment and try again.'
+      : raw;
     setStatus('Error: ' + msg, 'err');
   } finally {
     dlBtn.disabled = false;
