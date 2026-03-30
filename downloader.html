@@ -208,10 +208,10 @@ h2::before {
   font-family: Tahoma, sans-serif; font-size: 13px; font-weight: 400;
   letter-spacing: .3px;
   text-shadow: 0 1px 3px rgba(0,0,0,.96);
-  padding: 8px 0 10px;
+  padding: 8px 12px 10px;
   cursor: pointer;
   position: relative;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
+  display: flex; align-items: center; justify-content: center;
   min-height: 44px;
   transition: filter .15s;
 }
@@ -228,13 +228,42 @@ h2::before {
   border-color: rgba(80,80,80,.50);
   box-shadow: none;
 }
+#dlBtnLabel {
+  position:relative; z-index:1;
+  flex:1; text-align:center;
+  padding-left: 26px; /* compensate icon width so text stays centered */
+}
 #dlBtnIcon {
   height:26px; width:26px; object-fit:contain; flex-shrink:0;
   position:relative; z-index:1;
   opacity:0; transition:opacity .3s;
+  margin-left: auto; /* push to right */
+  filter: grayscale(1) brightness(0.55);
 }
 #dlBtnIcon.loaded { opacity:1; }
-#dlBtnLabel { position:relative; z-index:1; }
+/* Remove gray filter once init done (set via JS class on button) */
+.main-dl-btn.init-done #dlBtnIcon { filter: none; }
+
+/* ── Sound toggle — fixed bottom left ── */
+#soundToggle {
+  position: fixed;
+  bottom: 8px;
+  left: 10px;
+  z-index: 9999;
+  font-family: Tahoma, sans-serif;
+  font-size: 10px;
+  color: rgba(140,140,140,.55);
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: .2px;
+  padding: 2px 0;
+  background: none;
+  border: none;
+  outline: none;
+  transition: color .15s;
+}
+#soundToggle:hover { color: rgba(200,200,200,.80); }
+#soundToggle.off   { color: rgba(90,90,90,.50); }
 
 /* ── Status Box ── */
 #statusBox {
@@ -467,12 +496,12 @@ h2::before {
         </div>
 
         <button class="main-dl-btn" id="dlBtn" disabled>
+          <span id="dlBtnLabel">DOWNLOAD</span>
           <img id="dlBtnIcon"
             src="https://img1.picmix.com/output/stamp/thumb/3/3/8/9/2799833_954c8.png"
             alt=""
             onload="onDlIconLoad(this)"
             onerror="onDlIconError(this)">
-          <span id="dlBtnLabel">DOWNLOAD</span>
         </button>
 
         <div id="statusBox">
@@ -524,6 +553,8 @@ h2::before {
 
 </div>
 
+<button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
+
 <script>
 const API_URL = "https://watanagashi-api.onrender.com";
 
@@ -538,18 +569,25 @@ const SOUNDS = {
   button:  SOUND_BASE + 'sitebuttonclick.mp3',
   hover:   SOUND_BASE + 'text.mp3',
 };
+let _soundsOn = true;
 const _audioCache = {};
 function _getAudio(key) {
   if (!_audioCache[key]) { const a = new Audio(SOUNDS[key]); a.preload='auto'; _audioCache[key]=a; }
   return _audioCache[key];
 }
 function playSound(key) {
+  if (!_soundsOn) return;
   try {
-    const a = _getAudio(key);
-    const clone = a.cloneNode();
+    const clone = _getAudio(key).cloneNode();
     clone.volume = key==='hover' ? 0.30 : 0.52;
     clone.play().catch(()=>{});
   } catch(e) {}
+}
+function toggleSound() {
+  _soundsOn = !_soundsOn;
+  const btn = document.getElementById('soundToggle');
+  if (btn) { btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off'; btn.classList.toggle('off', !_soundsOn); }
+  if (_soundsOn) playSound('button');
 }
 /* Start sound once per session */
 document.addEventListener('DOMContentLoaded', () => {
@@ -575,9 +613,11 @@ function _isInteractive(el) {
 document.addEventListener('mouseover', e=>{
   const now=Date.now();
   if (now-_hoverThrottle<90) return;
-  if (_isInteractive(e.target)) { _hoverThrottle=now; playSound('hover'); }
+  if (_isInteractive(e.target) && e.target.id!=='soundToggle') { _hoverThrottle=now; playSound('hover'); }
 },{passive:true});
 document.addEventListener('click', e=>{
+  /* soundToggle handled by toggleSound(), skip generic button sound for it */
+  if (e.target.id==='soundToggle') return;
   if (_isInteractive(e.target)) playSound('button');
 },true);
 
@@ -638,6 +678,8 @@ function onDlIconError(el) { el.style.display='none'; dlIconLoaded = true; tryEn
 /* ── Enable button: requires init + icon + valid url ── */
 function tryEnableButton() {
   if (!initDone || !dlIconLoaded) { dlBtn.disabled = true; return; }
+  /* Mark init done on button so icon loses gray filter */
+  dlBtn.classList.add('init-done');
   const url = urlInput.value.trim();
   const src = detectSource(url);
   if (!src || !isValidUrl(url, src)) { dlBtn.disabled = true; return; }
@@ -808,13 +850,27 @@ async function initCheck() {
   fmtSelect.disabled = true;
   srvBanner.classList.add('visible');
 
-  for (let i = 0; i < 5; i++) {
+  const MAX_MS   = 90_000; /* give up after 90s total */
+  const INTERVAL = 3_000;
+  const deadline = Date.now() + MAX_MS;
+  let   got      = false;
+
+  while (Date.now() < deadline) {
     try {
-      const r = await fetch(`${API_URL}/yt-status`);
-      if (r.ok) { const d = await r.json(); ytEnabled = d.youtube_enabled; break; }
-    } catch(_) {}
-    if (i < 4) await sleep(4000);
+      const ctrl = new AbortController();
+      const tid  = setTimeout(()=>ctrl.abort(), 5000); /* 5s per attempt */
+      const r    = await fetch(`${API_URL}/yt-status`, { signal: ctrl.signal });
+      clearTimeout(tid);
+      if (r.ok) {
+        const d  = await r.json();
+        ytEnabled = d.youtube_enabled;
+        got       = true;
+        break;
+      }
+    } catch(_) { /* timeout or network error — keep trying */ }
+    if (Date.now() < deadline) await sleep(INTERVAL);
   }
+
   [tagSp, tagYt, tagSc].forEach(t => t.classList.remove('initializing'));
   tagSp.classList.add('available');
   tagSc.classList.add('available');
@@ -824,7 +880,7 @@ async function initCheck() {
   srvBanner.classList.remove('visible');
 
   /* Unlock inputs */
-  urlInput.disabled = false;
+  urlInput.disabled  = false;
   fmtSelect.disabled = false;
 
   tryEnableButton();
