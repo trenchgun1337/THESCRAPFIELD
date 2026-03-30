@@ -11,17 +11,12 @@
 :root {
   --accent:       #cc1a1a;
   --text:         #c8c8c8;
-  --text-dim:     #666;
   --glass-border: rgba(150,150,150,.40);
   --aero-border:  rgba(140,140,140,.40);
-
   --bar-grad: linear-gradient(to bottom,
-    rgba(255,255,255,.22) 0%,
-    rgba(185,185,185,.88) 0%,
-    rgba(120,120,120,.76) 4%,
-    rgba(26,26,26,.98)   52%,
-    rgba(4,4,4,1)        52%,
-    rgba(14,14,14,.99)   100%);
+    rgba(255,255,255,.22) 0%, rgba(185,185,185,.88) 0%,
+    rgba(120,120,120,.76) 4%, rgba(26,26,26,.98) 52%,
+    rgba(4,4,4,1) 52%, rgba(14,14,14,.99) 100%);
   --bar-shine:    rgba(255,255,255,.24);
   --bar-border-t: rgba(255,255,255,.18);
   --bar-border-b: rgba(0,0,0,.88);
@@ -29,29 +24,19 @@
   --bar-glow-top: linear-gradient(180deg,rgba(255,255,255,.14) 0%,rgba(200,200,200,.02) 100%);
   --bar-text:     #f2f2f2;
   --bar-tshadow:  0 1px 3px rgba(0,0,0,.98), 0 0 10px rgba(200,200,200,.20);
-
   --ctrl-grad: linear-gradient(to bottom,
-    rgba(255,255,255,.18) 0%,
-    rgba(165,165,165,.86) 0%,
-    rgba(100,100,100,.76) 4%,
-    rgba(32,32,32,.98)   52%,
-    rgba(7,7,7,1)        52%,
-    rgba(90,90,90,.68)   100%);
-
+    rgba(255,255,255,.18) 0%, rgba(165,165,165,.86) 0%,
+    rgba(100,100,100,.76) 4%, rgba(32,32,32,.98) 52%,
+    rgba(7,7,7,1) 52%, rgba(90,90,90,.68) 100%);
   --prog-fill: linear-gradient(to bottom,
-    rgba(230,230,230,.94) 0%,
-    rgba(175,175,175,.97) 45%,
-    rgba(115,115,115,.92) 50%,
-    rgba(165,165,165,.90) 100%);
+    rgba(230,230,230,.94) 0%, rgba(175,175,175,.97) 45%,
+    rgba(115,115,115,.92) 50%, rgba(165,165,165,.90) 100%);
   --prog-glow:   rgba(210,210,210,.24);
   --prog-track:  linear-gradient(to bottom,#050505 0%,#0f0f0f 100%);
   --prog-border: rgba(90,90,90,.75);
-
   --status-grad: linear-gradient(to bottom,
-    rgba(55,55,55,.64)  0%,
-    rgba(26,26,26,.92) 30%,
-    rgba(5,5,5,1)      50%,
-    rgba(9,9,9,1)      100%);
+    rgba(55,55,55,.64) 0%, rgba(26,26,26,.92) 30%,
+    rgba(5,5,5,1) 50%, rgba(9,9,9,1) 100%);
 }
 
 body {
@@ -61,19 +46,17 @@ body {
   color: var(--text);
   min-height: 100vh;
   padding: 12px 6px 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: flex; flex-direction: column; align-items: center;
 }
 
-a       { color: var(--text); text-decoration: none; }
-a:hover { color: var(--accent); text-decoration: underline; }
-p       { font-size: 12.5px; line-height: 18px; color: var(--text); margin:0; }
-p + p   { margin-top: 5px; }
-strong  { color: var(--accent); font-weight: 400; }
+a { color: var(--text); text-decoration: none; }
+a:hover { color: #3cda56; text-decoration: underline; }
+p { font-size: 12.5px; line-height: 18px; color: var(--text); margin:0; }
+p + p { margin-top: 5px; }
+strong { color: var(--accent); font-weight: 400; }
 
 html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent; }
-::-webkit-scrollbar       { width:6px; }
+::-webkit-scrollbar { width:6px; }
 ::-webkit-scrollbar-track { background:transparent; }
 ::-webkit-scrollbar-thumb { background:rgba(140,140,140,.50); border-radius:3px; }
 ::-webkit-scrollbar-thumb:hover { background:rgba(200,200,200,.72); }
@@ -84,53 +67,57 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
 .aero-bar {
   background: var(--bar-grad);
   border: 1px solid var(--bar-border-s);
-  border-top-color: var(--bar-border-t);
-  border-bottom-color: var(--bar-border-b);
+  border-top-color: var(--bar-border-t); border-bottom-color: var(--bar-border-b);
   box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
-  color: var(--bar-text);
-  font-size: 14.6px; font-weight: 400;
-  padding: 1px;
-  text-shadow: var(--bar-tshadow);
-  position: relative; overflow: hidden;
-  display: flex; align-items: center;
-  margin-bottom: 7px;
+  color: var(--bar-text); font-size: 14.6px; font-weight: 400;
+  padding: 1px; text-shadow: var(--bar-tshadow);
+  position:relative; overflow:hidden; display:flex; align-items:center; margin-bottom:7px;
 }
 .aero-bar::before {
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
   background: var(--bar-glow-top); pointer-events:none;
 }
-.aero-bar .back-link { font-size:11px; color:rgba(200,200,200,.55); z-index:1; flex-shrink:0; padding:0 6px 0 2px; }
-.aero-bar .back-link:hover { color:var(--accent); text-decoration:underline; }
+.aero-bar .back-link {
+  font-size:11px; color:rgba(200,200,200,.55); z-index:1; flex-shrink:0; padding:0 6px 0 2px;
+}
+.aero-bar .back-link:hover { color:#3cda56; text-decoration:underline; }
 .aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:60px; }
 
-/* ── Server status banner ── */
+/* ── Server banner — aero glossy white ── */
 #serverBanner {
   display: none;
-  background: linear-gradient(to bottom, rgba(40,30,5,.95) 0%, rgba(20,14,2,1) 100%);
-  border: 1px solid rgba(120,90,20,.50);
-  border-top-color: rgba(200,160,60,.20);
-  padding: 5px 10px;
-  margin-bottom: 7px;
-  font-size: 11px;
-  color: #a08030;
-  display: flex;
-  align-items: center;
-  gap: 7px;
+  position: relative; overflow: hidden;
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,.30) 0%,
+    rgba(235,235,235,.97) 0%,
+    rgba(210,210,210,.92) 4%,
+    rgba(225,225,225,.98) 52%,
+    rgba(200,200,200,1)  52%,
+    rgba(215,215,215,.97) 100%);
+  border: 1px solid rgba(160,160,160,.70);
+  border-top-color: rgba(255,255,255,.90);
+  border-bottom-color: rgba(100,100,100,.50);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.80), 0 3px 8px rgba(0,0,0,.35);
+  padding: 5px 10px; margin-bottom: 7px;
+  align-items: center; gap: 8px;
+  color: #1a1a1a; font-size: 11.5px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.60);
 }
-#serverBanner.hidden { display: none !important; }
-#serverBanner img { height: 16px; width: 16px; flex-shrink: 0; }
-#serverBanner span { flex: 1; }
-#serverBannerDots { color: #c0a040; }
+#serverBanner::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:50%;
+  background: linear-gradient(180deg,rgba(255,255,255,.50) 0%,rgba(255,255,255,.05) 100%);
+  pointer-events:none;
+}
+#serverBanner.visible { display: flex; }
+#serverBanner img { height:18px; width:18px; flex-shrink:0; z-index:1; }
+#serverBanner span { z-index:1; }
 
 /* ── Glass box ── */
 .glass-box {
   background-image: linear-gradient(rgb(255 255 255 / 12%), rgb(0 0 0 / 100%));
   box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 10px rgba(200,200,200,.04), 0 5px 6px rgba(0,0,0,.55);
-  border: 1px solid var(--glass-border);
-  padding: 5px;
-  margin-bottom: 7px;
+  border: 1px solid var(--glass-border); padding: 5px; margin-bottom: 7px;
 }
-
 .aero-inner { border: 1px solid var(--aero-border); background: rgba(6,6,6,.92); }
 .aero-pad   { padding: 10px 12px; }
 
@@ -138,12 +125,9 @@ h2 {
   background: var(--bar-grad);
   box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
   border: 1px solid var(--bar-border-s);
-  border-top-color: var(--bar-border-t);
-  border-bottom-color: var(--bar-border-b);
+  border-top-color: var(--bar-border-t); border-bottom-color: var(--bar-border-b);
   padding: 5px 8px 7px; margin:0;
-  font-weight:400; font-size:13px;
-  color: var(--bar-text);
-  text-shadow: var(--bar-tshadow);
+  font-weight:400; font-size:13px; color: var(--bar-text); text-shadow: var(--bar-tshadow);
   position:relative; overflow:hidden;
 }
 h2::before {
@@ -156,29 +140,24 @@ h2::before {
   display:flex;
   border: 1px solid rgba(100,100,100,.50);
   border-top-color: rgba(255,255,255,.08);
-  overflow: visible;
-  margin-bottom:6px;
-  position: relative;
+  overflow: hidden; margin-bottom:6px;
 }
 .url-input {
   flex:1; background: rgba(255,255,255,0.9);
   border:none; outline:none; color:#000;
-  font-family:Tahoma,sans-serif; font-size:12px;
-  padding:7px 10px;
+  font-family:Tahoma,sans-serif; font-size:12px; padding:7px 10px;
 }
 .url-input::placeholder { color:#696969; }
 .url-input:focus { background:rgba(216,216,216,0.96); }
 
-/* ── URL status icon ── */
+/* URL icon — transparent background, inside the white input area */
 #urlIcon {
   display: none;
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-  flex-shrink: 0;
+  width: 22px; height: 22px;
+  object-fit: contain; flex-shrink: 0;
   align-self: center;
-  background: rgba(255,255,255,0.9);
-  padding: 3px;
+  margin: 0 5px;
+  background: transparent;
 }
 #urlIcon.visible { display: block; }
 
@@ -194,16 +173,18 @@ h2::before {
 /* ── Download button ── */
 .main-dl-btn {
   width:100%;
-  background:linear-gradient(to bottom, rgba(255,255,255,.20) 0%, rgba(190,190,190,.90) 0%, rgb(157 251 156 / 80%) 4%, rgb(25 180 20 / 98%) 52%, rgb(4 100 11) 52%, rgb(24 140 8 / 96%) 100%);
+  background:linear-gradient(to bottom,
+    rgba(255,255,255,.20) 0%, rgba(190,190,190,.90) 0%,
+    rgb(157 251 156 / 80%) 4%, rgb(25 180 20 / 98%) 52%,
+    rgb(4 100 11) 52%, rgb(24 140 8 / 96%) 100%);
   border:1px solid rgb(20 180 23 / 80%);
-  border-top-color: rgba(100,255,100,0.28);
-  border-bottom-color: rgba(0,0,0,.88);
+  border-top-color: rgba(100,255,100,0.28); border-bottom-color: rgba(0,0,0,.88);
   box-shadow: inset 0 1px 0 rgba(255,180,180,.18), inset 0 2px 4px rgba(255,255,255,.06), 0 3px 8px rgba(0,0,0,.52);
   color:#fff; font-family:Tahoma,sans-serif; font-size:13px; font-weight:400;
-  padding:6px 0 8px; cursor:pointer;
+  padding:5px 0 7px; cursor:pointer;
   text-shadow:0 1px 3px rgba(0,0,0,.96);
   position:relative; letter-spacing:.3px;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
+  display:flex; align-items:center; justify-content:center; gap:6px;
 }
 .main-dl-btn::before {
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
@@ -211,24 +192,27 @@ h2::before {
   pointer-events:none;
 }
 .main-dl-btn:hover:not(:disabled) { filter:brightness(1.14); }
-.main-dl-btn:disabled { opacity:.45; cursor:not-allowed; background: var(--bar-grad) !important; border-color:rgba(80,80,80,.50) !important; }
-.main-dl-btn img { height: 22px; width: 22px; object-fit: contain; flex-shrink: 0; position: relative; z-index: 1; }
-.main-dl-btn span { position: relative; z-index: 1; }
+.main-dl-btn:disabled {
+  opacity:.45; cursor:not-allowed;
+  background: var(--bar-grad) !important; border-color:rgba(80,80,80,.50) !important;
+}
+#dlBtnIcon {
+  height:22px; width:22px; object-fit:contain;
+  flex-shrink:0; position:relative; z-index:1;
+}
+#dlBtnLabel { position:relative; z-index:1; }
 
 /* ── Status box ── */
 #statusBox {
   display:none;
   background: var(--status-grad);
-  border:1px solid rgba(65,65,65,.95);
-  border-top:1px solid rgba(80,80,80,.50);
-  padding:6px 10px 8px;
-  margin-top:5px;
+  border:1px solid rgba(65,65,65,.95); border-top:1px solid rgba(80,80,80,.50);
+  padding:6px 10px 8px; margin-top:5px;
 }
 #statusBox.visible { display:block; }
 
 .status-row {
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  margin-bottom:5px;
+  display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:5px;
 }
 #statusText {
   font-size:11.5px; color:#aaa;
@@ -239,83 +223,61 @@ h2::before {
 #statusText .err { color:var(--accent); }
 
 #wakeTimer {
-  display:none;
-  font-size:11px; color:#888;
-  background: rgba(0,0,0,.60);
-  border:1px solid rgba(70,70,70,.50);
-  padding:1px 8px;
-  white-space:nowrap; flex-shrink:0;
+  display:none; font-size:11px; color:#888;
+  background: rgba(0,0,0,.60); border:1px solid rgba(70,70,70,.50);
+  padding:1px 8px; white-space:nowrap; flex-shrink:0;
   font-variant-numeric: tabular-nums;
 }
 #wakeTimer.visible { display:block; }
 #wakeTimer .timer-sec { color:#bbb; }
 
 #dlInfo {
-  display:none;
-  font-size:11px; color:#666;
-  text-align:center;
-  margin-bottom:4px;
+  display:none; font-size:11px; color:#666; text-align:center; margin-bottom:4px;
 }
 #dlInfo.visible { display:block; }
 #dlInfo .info-val { color:#999; }
 
 .prog-track {
-  height:8px;
-  background: var(--prog-track);
+  height:8px; background: var(--prog-track);
   border:1px solid var(--prog-border);
   box-shadow: inset 0 1px 3px rgba(0,0,0,.72);
   position:relative; overflow:hidden;
 }
 .prog-fill {
   position:absolute; left:0; top:0; bottom:0; width:0%;
-  background: var(--prog-fill);
-  box-shadow: 0 0 5px var(--prog-glow);
-  transition:width .4s ease;
-  pointer-events:none;
+  background: var(--prog-fill); box-shadow: 0 0 5px var(--prog-glow);
+  transition:width .4s ease; pointer-events:none;
 }
 .prog-fill.indeterminate {
   width:38% !important;
   animation:progAnim 1.4s infinite ease-in-out;
 }
-@keyframes progAnim { 0% { left:-38%; } 100% { left:110%; } }
+@keyframes progAnim { 0%{left:-38%} 100%{left:110%} }
 
 /* ── Source tags ── */
 .src-row {
   display:flex; gap:6px; flex-wrap:wrap;
   margin-top:8px; padding-top:7px;
-  border-top:1px solid rgba(50,50,50,.80);
-  align-items:center;
+  border-top:1px solid rgba(50,50,50,.80); align-items:center;
 }
-
 .src-tag {
   font-size:10.5px; padding:2px 8px 2px 5px;
   display:flex; align-items:center; gap:5px;
-  border:1px solid rgba(50,50,50,.44);
-  color:#444;
+  border:1px solid rgba(50,50,50,.44); color:#444;
   background: rgba(8,8,8,.70);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
-  position: relative;
-  cursor: default;
+  position:relative; cursor:default;
   transition: color .15s, border-color .15s, background .15s;
 }
 .src-tag img {
   height:15px; width:15px; object-fit:contain; flex-shrink:0;
-  filter: grayscale(1) brightness(0.35);
-  transition: filter .15s;
+  filter: grayscale(1) brightness(0.35); transition: filter .15s;
 }
-
-/* initializing state — dimmed with pulsing text */
-.src-tag.initializing {
-  color: #555;
-  border-color: rgba(60,60,60,.44);
-  animation: tagPulse 1.8s infinite ease-in-out;
-}
-.src-tag.initializing img { filter: grayscale(1) brightness(0.20); }
-@keyframes tagPulse { 0%,100% { opacity:.5; } 50% { opacity:.9; } }
+.src-tag.initializing { animation: tagPulse 1.8s infinite ease-in-out; }
+@keyframes tagPulse { 0%,100%{opacity:.4} 50%{opacity:.85} }
 
 .src-tag.available {
-  color:#aaa;
-  border-color:rgba(100,100,100,.44);
+  color:#aaa; border-color:rgba(100,100,100,.44);
   background: linear-gradient(to bottom, rgba(255,255,255,.08) 0%, rgba(40,40,40,.10) 60%, rgba(10,10,10,.30) 100%);
 }
 .src-tag.available img { filter: none; }
@@ -323,76 +285,18 @@ h2::before {
 .src-tag.yt.available  { color:#d03030; border-color:rgba(200,48,48,.32); }
 .src-tag.sc.available  { color:#c85010; border-color:rgba(200,80,16,.32); }
 
-/* YouTube tooltip — shows on hover over the yt tag when unavailable (and not initializing) */
-.src-tag.yt:not(.available):not(.initializing) { cursor: help; }
-.yt-tooltip {
-  display:none;
-  position:absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: 260px;
-  z-index: 200;
-  pointer-events: none;
-}
-.src-tag.yt:not(.available):not(.initializing):hover .yt-tooltip { display:block; }
-
-.yt-tooltip-inner {
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.14) 0%,
-    rgba(160,130,80,.72)  0%,
-    rgba(100,70,20,.70)   4%,
-    rgba(40,22,4,.98)    52%,
-    rgba(20,10,2,1)      52%,
-    rgba(36,18,4,.96)   100%);
-  border: 1px solid rgba(140,100,30,.55);
-  border-top-color: rgba(255,210,100,.18);
-  border-bottom-color: rgba(0,0,0,.88);
-  box-shadow: inset 0 1px 0 rgba(255,220,120,.14), 0 4px 12px rgba(0,0,0,.72);
-  color: #d4a84b;
-  font-family: Tahoma, sans-serif;
-  font-size: 11px; font-weight: 400;
-  padding: 6px 10px 7px;
-  text-shadow: 0 1px 3px rgba(0,0,0,.96);
-  position: relative; overflow: hidden; line-height: 1.6;
-}
-.yt-tooltip-inner::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background: linear-gradient(180deg,rgba(255,220,100,.10) 0%,rgba(200,160,60,.02) 100%);
-  pointer-events:none;
-}
-.yt-tooltip-inner span { position:relative; z-index:1; }
-.yt-tooltip-inner .warn-label {
-  color:#e8c060; font-size:10px; letter-spacing:.4px;
-  text-transform:uppercase; display:block; margin-bottom:2px;
-}
-.yt-tooltip::after {
-  content:'';
-  position:absolute; bottom:-5px; left:50%; transform:translateX(-50%);
-  width:0; height:0;
-  border-left:5px solid transparent;
-  border-right:5px solid transparent;
-  border-top:5px solid rgba(140,100,30,.55);
-}
-
 /* ── Note ── */
 .note {
-  background:rgba(6,6,6,.88);
-  border:1px solid rgba(70,70,70,.40);
+  background:rgba(6,6,6,.88); border:1px solid rgba(70,70,70,.40);
   border-left:2px solid rgba(100,100,100,.60);
-  padding:7px 10px; margin-top:6px;
-  font-size:11.5px; color:#888; line-height:1.6;
+  padding:7px 10px; margin-top:6px; font-size:11.5px; color:#888; line-height:1.6;
 }
 
 /* ── Format tags ── */
-.fmt-row {
-  display:flex; flex-wrap:wrap; gap:4px;
-  margin-top:7px; padding-top:7px;
-  border-top:1px solid rgba(40,40,40,.80);
-}
+.fmt-row { display:flex; flex-wrap:wrap; gap:4px; margin-top:7px; padding-top:7px; border-top:1px solid rgba(40,40,40,.80); }
 .fmt-tag { font-size:10px; padding:1px 7px; border:1px solid rgba(70,70,70,.40); color:#666; background:rgba(10,10,10,.60); }
 
-/* ── Link Preview Panel ── */
+/* ── Preview ── */
 #previewPanel { display:none; margin-bottom:7px; }
 #previewPanel.visible { display:block; }
 
@@ -400,13 +304,9 @@ h2::before {
   background: var(--bar-grad);
   box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
   border: 1px solid var(--bar-border-s);
-  border-top-color: var(--bar-border-t);
-  border-bottom-color: var(--bar-border-b);
-  padding: 5px 8px 7px;
-  font-weight:400; font-size:12px;
-  color: var(--bar-text);
-  text-shadow: var(--bar-tshadow);
-  position:relative; overflow:hidden;
+  border-top-color: var(--bar-border-t); border-bottom-color: var(--bar-border-b);
+  padding: 5px 8px 7px; font-weight:400; font-size:12px; color: var(--bar-text);
+  text-shadow: var(--bar-tshadow); position:relative; overflow:hidden;
   display:flex; align-items:center; gap:6px;
 }
 .preview-header::before {
@@ -415,30 +315,22 @@ h2::before {
 }
 .preview-header img  { height:14px; width:14px; object-fit:contain; z-index:1; flex-shrink:0; }
 .preview-header span { z-index:1; }
-
 .preview-body { border:1px solid var(--aero-border); border-top:none; background:rgba(4,4,4,.96); }
-
 .sp-embed-wrap { width:100%; overflow:hidden; background:#000; }
 .sp-embed-wrap iframe { width:100%; border:none; display:block; }
-
 .yt-embed-wrap { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; background:#000; }
 .yt-embed-wrap iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
-
 .sc-embed-wrap { width:100%; overflow:hidden; background:#000; }
 .sc-embed-wrap iframe { width:100%; border:none; display:block; }
-
 .preview-meta {
-  display:flex; align-items:center; gap:10px;
-  padding:7px 10px;
-  border-top:1px solid rgba(40,40,40,.80);
-  background:rgba(5,5,5,.94);
+  display:flex; align-items:center; gap:10px; padding:7px 10px;
+  border-top:1px solid rgba(40,40,40,.80); background:rgba(5,5,5,.94);
 }
 .preview-meta-icon { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
 .preview-meta-info { flex:1; min-width:0; }
 .preview-meta-title { font-size:12px; color:#ccc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
 .preview-meta-sub   { font-size:10.5px; color:#555; }
 .preview-meta-badge { font-size:10px; padding:2px 7px; border:1px solid rgba(70,70,70,.50); color:#777; background:rgba(12,12,12,.80); white-space:nowrap; flex-shrink:0; }
-
 .preview-checking, .preview-invalid { padding:12px; font-size:11.5px; text-align:center; }
 .preview-checking { color:#555; }
 .preview-invalid  { color:var(--accent); }
@@ -452,23 +344,22 @@ h2::before {
     <span class="bar-title">Ultimate Downloader Converter</span>
   </div>
 
-  <!-- Server initializing banner -->
   <div id="serverBanner">
     <img src="https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif" alt="">
-    <span>Server is initializing, please wait<span id="serverBannerDots">...</span></span>
+    <span>Server is initializing, please wait</span>
   </div>
 
   <div class="glass-box">
     <h2>Download</h2>
     <div class="aero-inner">
       <div class="aero-pad">
-        <p style="margin-bottom:9px;">Paste a <strong>Spotify</strong> album, track or playlist — <strong>YouTube</strong> video or playlist — or <strong>SoundCloud</strong> track or set link below. The content will be packaged as a <strong>ZIP</strong> and downloaded directly to your computer.</p>
+        <p style="margin-bottom:9px;">Paste a <strong>Spotify</strong> album, track or playlist &mdash; <strong>YouTube</strong> video or playlist &mdash; or <strong>SoundCloud</strong> track or set link below. Content will be downloaded directly to your computer.</p>
 
         <div class="url-row">
           <input type="text" id="urlInput" class="url-input"
             placeholder="Insert Your Link Here..."
             autocomplete="off" spellcheck="false">
-          <img id="urlIcon" src="" alt="" class="url-icon">
+          <img id="urlIcon" src="" alt="">
           <select id="fmtSelect" class="fmt-select">
             <option value="mp3">MP3</option>
             <option value="flac">FLAC</option>
@@ -477,9 +368,13 @@ h2::before {
         </div>
 
         <button class="main-dl-btn" id="dlBtn" onclick="startDownload()">
-          <img src="https://dl.dropboxusercontent.com/scl/fi/placeholder/Android-Jelly-Bean-Downloads-Icon.png" id="dlBtnIcon" alt=""
-               onerror="this.src='https://img1.picmix.com/output/stamp/normal/3/3/8/2/2842833_4e2d6.gif'">
-          <span>DOWNLOAD AS ZIP</span>
+          <img id="dlBtnIcon"
+            src="https://www.picmix.com/stamp/Android-Jelly-Bean-Downloads-Icon-2799833"
+            alt=""
+            onload="this.style.display='block'"
+            onerror="this.style.display='none'"
+            style="display:none;">
+          <span id="dlBtnLabel">DOWNLOAD AS ZIP</span>
         </button>
 
         <div id="statusBox">
@@ -492,9 +387,7 @@ h2::before {
             &nbsp;&nbsp;|&nbsp;&nbsp;
             Estimated time: <span class="info-val" id="dlEta">&mdash;</span>
           </div>
-          <div class="prog-track">
-            <div class="prog-fill" id="progFill"></div>
-          </div>
+          <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
         </div>
 
         <div class="src-row">
@@ -505,12 +398,6 @@ h2::before {
           <span class="src-tag yt initializing" id="tagYt">
             <img src="assets/images/YOUTUBEAERO.png" alt="">
             YouTube &mdash; videos &amp; playlists
-            <span class="yt-tooltip">
-              <span class="yt-tooltip-inner">
-                <span class="warn-label">YouTube &mdash; Unavailable</span>
-                <span>YouTube downloads require server authentication. Not configured. Spotify &amp; SoundCloud work normally.</span>
-              </span>
-            </span>
           </span>
           <span class="src-tag sc initializing" id="tagSc">
             <img src="assets/images/SOUNDCLOUDAERO.png" alt="">
@@ -519,7 +406,7 @@ h2::before {
         </div>
 
         <div class="note">
-          Large albums or playlists may take several minutes to process. Do not close the page while downloading. The server may take up to 50 seconds to wake up if it was idle.
+          Individual tracks download faster. Large playlists or albums may take several minutes. The server may need up to 60 seconds to wake if it was idle. Do not close the page while downloading.
         </div>
 
         <div class="fmt-row">
@@ -544,47 +431,41 @@ h2::before {
   </div>
 
 </div>
-
 <script>
 const API_URL = "https://watanagashi-api.onrender.com";
 
-// Icon URLs
-const ICON_LOADING  = 'https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif';
-const ICON_UNKNOWN  = 'https://img1.picmix.com/output/stamp/normal/2/8/4/8/2848482_a4aff.png';
-const ICON_VALID    = 'https://img1.picmix.com/output/stamp/normal/9/7/4/6/2866479_1ede5.gif';
-const ICON_INVALID  = 'https://img1.picmix.com/output/stamp/normal/7/0/2/4/1104207_1c291.png';
-// Download button icon — Jelly Bean Downloads
-const ICON_DOWNLOAD = 'https://www.picmix.com/stamp/Android-Jelly-Bean-Downloads-Icon-2799833';
+const ICON_LOADING = 'https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif';
+const ICON_UNKNOWN = 'https://img1.picmix.com/output/stamp/normal/2/8/4/8/2848482_a4aff.png';
+const ICON_VALID   = 'https://img1.picmix.com/output/stamp/normal/9/7/4/6/2866479_1ede5.gif';
+const ICON_INVALID = 'https://img1.picmix.com/output/stamp/normal/7/0/2/4/1104207_1c291.png';
 
-const urlInput          = document.getElementById('urlInput');
-const fmtSelect         = document.getElementById('fmtSelect');
-const dlBtn             = document.getElementById('dlBtn');
-const dlBtnIcon         = document.getElementById('dlBtnIcon');
-const statusBox         = document.getElementById('statusBox');
-const statusTxt         = document.getElementById('statusText');
-const wakeTimer         = document.getElementById('wakeTimer');
-const timerVal          = document.getElementById('timerVal');
-const dlInfo            = document.getElementById('dlInfo');
-const dlSize            = document.getElementById('dlSize');
-const dlEta             = document.getElementById('dlEta');
-const progFill          = document.getElementById('progFill');
-const tagSp             = document.getElementById('tagSp');
-const tagYt             = document.getElementById('tagYt');
-const tagSc             = document.getElementById('tagSc');
-const previewPanel      = document.getElementById('previewPanel');
-const previewHeaderIcon = document.getElementById('previewHeaderIcon');
-const previewHeaderTitle= document.getElementById('previewHeaderTitle');
-const previewBody       = document.getElementById('previewBody');
-const serverBanner      = document.getElementById('serverBanner');
-const serverBannerDots  = document.getElementById('serverBannerDots');
-const urlIcon           = document.getElementById('urlIcon');
+const urlInput           = document.getElementById('urlInput');
+const fmtSelect          = document.getElementById('fmtSelect');
+const dlBtn              = document.getElementById('dlBtn');
+const dlBtnLabel         = document.getElementById('dlBtnLabel');
+const statusBox          = document.getElementById('statusBox');
+const statusTxt          = document.getElementById('statusText');
+const wakeTimerEl        = document.getElementById('wakeTimer');
+const timerVal           = document.getElementById('timerVal');
+const dlInfo             = document.getElementById('dlInfo');
+const dlSize             = document.getElementById('dlSize');
+const dlEta              = document.getElementById('dlEta');
+const progFill           = document.getElementById('progFill');
+const tagSp              = document.getElementById('tagSp');
+const tagYt              = document.getElementById('tagYt');
+const tagSc              = document.getElementById('tagSc');
+const previewPanel       = document.getElementById('previewPanel');
+const previewHeaderIcon  = document.getElementById('previewHeaderIcon');
+const previewHeaderTitle = document.getElementById('previewHeaderTitle');
+const previewBody        = document.getElementById('previewBody');
+const serverBanner       = document.getElementById('serverBanner');
+const urlIcon            = document.getElementById('urlIcon');
 
-let ytEnabled    = false; // start false, update after check
-let serverReady  = false;
+let ytEnabled    = false;
 let previewTimer = null;
 let wakeInterval = null;
 let wakeSeconds  = 0;
-let bannerDotsInterval = null;
+let iconTimer    = null;
 
 const ICONS = {
   spotify:    'assets/images/SPOTIFYAERO.jpeg',
@@ -592,45 +473,7 @@ const ICONS = {
   soundcloud: 'assets/images/SOUNDCLOUDAERO.png',
 };
 
-// Try to load the download button icon
-dlBtnIcon.src = ICON_DOWNLOAD;
-dlBtnIcon.onerror = function() {
-  // fallback: hide icon if can't load
-  this.style.display = 'none';
-};
-
-// ── URL icon ─────────────────────────────────────────────────────────────────
-function setUrlIcon(state) {
-  // state: 'loading' | 'valid' | 'invalid' | 'unknown' | 'none'
-  if (state === 'none') {
-    urlIcon.classList.remove('visible');
-    return;
-  }
-  const map = {
-    loading: ICON_LOADING,
-    valid:   ICON_VALID,
-    invalid: ICON_INVALID,
-    unknown: ICON_UNKNOWN,
-  };
-  urlIcon.src = map[state] || ICON_UNKNOWN;
-  urlIcon.classList.add('visible');
-}
-
-// ── Server banner ─────────────────────────────────────────────────────────────
-function showServerBanner() {
-  serverBanner.classList.remove('hidden');
-  let d = 0;
-  bannerDotsInterval = setInterval(() => {
-    d = (d + 1) % 4;
-    serverBannerDots.textContent = '.'.repeat(d) || '.';
-  }, 500);
-}
-function hideServerBanner() {
-  serverBanner.classList.add('hidden');
-  clearInterval(bannerDotsInterval);
-}
-
-// ── Detect platform ───────────────────────────────────────────────────────────
+// ── Platform detection ────────────────────────────────────────────────────────
 function detectSource(url) {
   if (/spotify\.com/i.test(url))           return 'spotify';
   if (/youtube\.com|youtu\.be/i.test(url)) return 'youtube';
@@ -638,51 +481,93 @@ function detectSource(url) {
   return null;
 }
 
-// ── Apply colored/dim state to src tags ───────────────────────────────────────
-function applyTagStates() {
-  // Remove initializing from all
-  tagSp.classList.remove('initializing');
-  tagYt.classList.remove('initializing');
-  tagSc.classList.remove('initializing');
+function isValidUrl(url, source) {
+  if (source === 'spotify')
+    return /spotify\.com\/(album|track|playlist|artist|episode)\/[A-Za-z0-9]+/.test(url);
+  if (source === 'youtube')
+    return /[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url) || /[?&]list=[^&]+/.test(url);
+  if (source === 'soundcloud')
+    return /soundcloud\.com\/[^/?#]+\/[^/?#]+/.test(url);
+  return false;
+}
 
+function isSingleItem(url, source) {
+  if (source === 'spotify')
+    return /spotify\.com\/track\//.test(url);
+  if (source === 'youtube')
+    return (/[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url)) && !/[?&]list=/.test(url);
+  if (source === 'soundcloud')
+    return !/\/sets\//.test(url) && /soundcloud\.com\/[^/?#]+\/[^/?#]+/.test(url);
+  return false;
+}
+
+// ── URL icon + button label ───────────────────────────────────────────────────
+function setUrlIcon(state) {
+  if (state === 'none') { urlIcon.classList.remove('visible'); return; }
+  const map = { loading: ICON_LOADING, valid: ICON_VALID, invalid: ICON_INVALID, unknown: ICON_UNKNOWN };
+  urlIcon.src = map[state];
+  urlIcon.classList.add('visible');
+}
+
+function scheduleIconUpdate() {
+  const raw = urlInput.value;
+  if (!raw.trim()) {
+    setUrlIcon('none');
+    dlBtnLabel.textContent = 'DOWNLOAD AS ZIP';
+    return;
+  }
+  setUrlIcon('loading');
+  clearTimeout(iconTimer);
+  iconTimer = setTimeout(() => {
+    const url = raw.trim();
+    const source = detectSource(url);
+    if (!source) {
+      setUrlIcon('unknown');
+      dlBtnLabel.textContent = 'DOWNLOAD AS ZIP';
+    } else if (isValidUrl(url, source)) {
+      setUrlIcon('valid');
+      dlBtnLabel.textContent = isSingleItem(url, source) ? 'DOWNLOAD' : 'DOWNLOAD AS ZIP';
+    } else {
+      setUrlIcon('invalid');
+      dlBtnLabel.textContent = 'DOWNLOAD AS ZIP';
+    }
+  }, 380);
+}
+
+urlInput.addEventListener('input', scheduleIconUpdate);
+urlInput.addEventListener('paste', () => setTimeout(scheduleIconUpdate, 80));
+
+// ── Tags ──────────────────────────────────────────────────────────────────────
+function applyTagStates() {
+  [tagSp, tagYt, tagSc].forEach(t => t.classList.remove('initializing'));
   tagSp.classList.add('available');
   tagSc.classList.add('available');
   if (ytEnabled) tagYt.classList.add('available');
 }
 
-// ── Format bytes ──────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 function fmtBytes(b) {
   if (b < 1024)       return b + ' B';
   if (b < 1048576)    return (b/1024).toFixed(1) + ' KB';
   if (b < 1073741824) return (b/1048576).toFixed(1) + ' MB';
   return (b/1073741824).toFixed(2) + ' GB';
 }
-
 function fmtEta(bytes) {
-  const secs = bytes / (2 * 1048576);
-  if (secs < 5)   return 'a few seconds';
-  if (secs < 60)  return Math.ceil(secs) + 's';
-  const m = Math.floor(secs / 60), s = Math.ceil(secs % 60);
-  return m + 'm ' + (s > 0 ? s + 's' : '');
+  const secs = bytes / (2*1048576);
+  if (secs < 5)  return 'a few seconds';
+  if (secs < 60) return Math.ceil(secs) + 's';
+  const m = Math.floor(secs/60), s = Math.ceil(secs%60);
+  return m + 'm ' + (s > 0 ? s+'s' : '');
 }
-
-// ── Wake-up timer UI ─────────────────────────────────────────────────────────
 function startWakeTimer() {
-  wakeSeconds = 0;
-  timerVal.textContent = '0';
-  wakeTimer.classList.add('visible');
-  wakeInterval = setInterval(() => {
-    wakeSeconds++;
-    timerVal.textContent = wakeSeconds;
-  }, 1000);
+  wakeSeconds = 0; timerVal.textContent = '0';
+  wakeTimerEl.classList.add('visible');
+  wakeInterval = setInterval(() => { wakeSeconds++; timerVal.textContent = wakeSeconds; }, 1000);
 }
 function stopWakeTimer() {
-  clearInterval(wakeInterval);
-  wakeInterval = null;
-  wakeTimer.classList.remove('visible');
+  clearInterval(wakeInterval); wakeInterval = null;
+  wakeTimerEl.classList.remove('visible');
 }
-
-// ── Status helpers ────────────────────────────────────────────────────────────
 function setStatus(msg, type) {
   statusTxt.innerHTML = type ? `<span class="${type}">${msg}</span>` : msg;
 }
@@ -691,51 +576,10 @@ function setProgress(pct) {
   progFill.style.width = pct + '%';
 }
 
-// ── Wake server ───────────────────────────────────────────────────────────────
-async function wakeServer() {
-  startWakeTimer();
-  setStatus('Connecting to server...');
-  // Phase 1 — no-cors ping to wake Render
-  try {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 55000); // 55s — render can take up to 50s
-    await fetch(`${API_URL}/`, { method: 'GET', mode: 'no-cors', signal: ctrl });
-    clearTimeout(t);
-  } catch (e) {
-    if (e.name === 'AbortError') {
-      stopWakeTimer();
-      throw new Error(`Server did not respond after ${wakeSeconds}s. It may be down — try again later.`);
-    }
-  }
-
-  // Phase 2 — poll until CORS responds properly (up to ~60s total)
-  for (let i = 0; i < 16; i++) {
-    try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 6000);
-      const res = await fetch(`${API_URL}/`, { signal: ctrl });
-      clearTimeout(t);
-      if (res.ok) { stopWakeTimer(); return true; }
-    } catch (_) { /* still starting */ }
-
-    let dots = 0;
-    const dot = setInterval(() => {
-      dots = (dots + 1) % 4;
-      setStatus('Server is starting up, please wait' + '.'.repeat(dots));
-    }, 400);
-    await new Promise(r => setTimeout(r, 3500));
-    clearInterval(dot);
-  }
-
-  stopWakeTimer();
-  return false;
-}
-
-// ── YouTube status check + initial server check ───────────────────────────────
-async function initServerCheck() {
-  showServerBanner();
-  // Try to reach the server quietly
-  for (let i = 0; i < 3; i++) {
+// ── Initial server check ──────────────────────────────────────────────────────
+async function initCheck() {
+  serverBanner.classList.add('visible');
+  for (let i = 0; i < 5; i++) {
     try {
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), 12000);
@@ -744,103 +588,112 @@ async function initServerCheck() {
       if (res.ok) {
         const data = await res.json();
         ytEnabled = data.youtube_enabled;
-        serverReady = true;
         applyTagStates();
-        hideServerBanner();
+        serverBanner.classList.remove('visible');
         return;
       }
     } catch (_) {
-      if (i < 2) await new Promise(r => setTimeout(r, 5000));
+      if (i < 4) await new Promise(r => setTimeout(r, 4000));
     }
   }
-  // Server not reachable — still show tags as available (optimistic), hide banner
   applyTagStates();
-  hideServerBanner();
+  serverBanner.classList.remove('visible');
 }
-initServerCheck();
+initCheck();
 
-// ── URL icon logic ────────────────────────────────────────────────────────────
-let iconTimer = null;
-function updateUrlIcon(raw) {
-  const url = raw.trim();
-  if (!url) { setUrlIcon('none'); return; }
+// ── Wake server ───────────────────────────────────────────────────────────────
+async function wakeServer() {
+  startWakeTimer();
+  setStatus('Connecting to server...');
 
-  // Show loading immediately while debouncing
-  setUrlIcon('loading');
-  clearTimeout(iconTimer);
-  iconTimer = setTimeout(() => {
-    const source = detectSource(url);
-    if (!source) {
-      // Has content but unknown platform
-      setUrlIcon('unknown');
-    } else {
-      // Known platform — validate URL has enough structure
-      const isValid =
-        (source === 'spotify'    && /spotify\.com\/(album|track|playlist|artist|episode)\/[A-Za-z0-9]+/.test(url)) ||
-        (source === 'youtube'    && (/[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url) || /[?&]list=[^&]+/.test(url))) ||
-        (source === 'soundcloud' && /soundcloud\.com\/[^/]+/.test(url));
-      setUrlIcon(isValid ? 'valid' : 'invalid');
+  // Phase 1 — no-cors ping to physically wake Render's container
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 70000);
+    await fetch(`${API_URL}/`, { method:'GET', mode:'no-cors', signal: ctrl });
+    clearTimeout(t);
+  } catch(e) {
+    if (e.name === 'AbortError') {
+      stopWakeTimer();
+      throw new Error(`Server timed out after ${wakeSeconds}s. Try again.`);
     }
-  }, 400);
-}
+    // "Failed to fetch" is normal on cold start — keep polling
+  }
 
-urlInput.addEventListener('input',  () => updateUrlIcon(urlInput.value));
-urlInput.addEventListener('paste',  () => setTimeout(() => updateUrlIcon(urlInput.value), 100));
+  // Phase 2 — poll until CORS responds (up to ~70s total)
+  const waitMsgs = [
+    'Server is waking up, please wait...',
+    'Still starting up...',
+    'Almost ready...',
+    'Hang tight...',
+  ];
+  for (let i = 0; i < 22; i++) {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 5000);
+      const res = await fetch(`${API_URL}/`, { signal: ctrl });
+      clearTimeout(t);
+      if (res.ok) { stopWakeTimer(); return true; }
+    } catch (_) {}
+    setStatus(waitMsgs[Math.min(Math.floor(i/5), waitMsgs.length-1)]);
+    await new Promise(r => setTimeout(r, 3000));
+  }
+
+  stopWakeTimer();
+  return false;
+}
 
 // ── Preview ───────────────────────────────────────────────────────────────────
 function buildSpotifyEmbed(url) {
   const m = url.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
   if (!m) return null;
   const [, type, id] = m;
-  const height   = (type === 'track' || type === 'episode') ? 152 : 352;
+  const height   = (type==='track'||type==='episode') ? 152 : 352;
   const embedUrl = `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
-  const label    = type.charAt(0).toUpperCase() + type.slice(1);
-  previewHeaderIcon.src = ICONS.spotify; previewHeaderIcon.style.display = '';
+  const label    = type.charAt(0).toUpperCase()+type.slice(1);
+  previewHeaderIcon.src = ICONS.spotify; previewHeaderIcon.style.display='';
   previewHeaderTitle.textContent = `Spotify \u2014 ${label} Preview`;
   return `<div class="sp-embed-wrap"><iframe src="${embedUrl}" height="${height}" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
   <div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.spotify}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">Spotify ${label}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${label.toUpperCase()}</span></div>`;
 }
-
 function buildYouTubeEmbed(url) {
   const pl = url.match(/[?&]list=([^&]+)/);
   const v  = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
   if (!pl && !v) return null;
-  const type     = pl ? 'Playlist' : 'Video';
-  const embedUrl = pl ? `https://www.youtube.com/embed/videoseries?list=${pl[1]}` : `https://www.youtube.com/embed/${v[1]}`;
-  const sub      = ytEnabled ? 'Ready to download.' : 'YouTube downloads currently unavailable.';
-  previewHeaderIcon.src = ICONS.youtube; previewHeaderIcon.style.display = '';
+  const type = pl ? 'Playlist' : 'Video';
+  const embedUrl = pl
+    ? `https://www.youtube.com/embed/videoseries?list=${pl[1]}`
+    : `https://www.youtube.com/embed/${v[1]}`;
+  previewHeaderIcon.src = ICONS.youtube; previewHeaderIcon.style.display='';
   previewHeaderTitle.textContent = `YouTube \u2014 ${type} Preview`;
   return `<div class="yt-embed-wrap"><iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-  <div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.youtube}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">YouTube ${type}</div><div class="preview-meta-sub">${sub}</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
+  <div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.youtube}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">YouTube ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
 }
-
 function buildSoundCloudEmbed(url) {
-  const isSet    = /\/sets\//i.test(url);
-  const type     = isSet ? 'Set' : 'Track';
-  const height   = isSet ? 450 : 166;
+  const isSet  = /\/sets\//i.test(url);
+  const type   = isSet ? 'Set' : 'Track';
+  const height = isSet ? 450 : 166;
   const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
-  previewHeaderIcon.src = ICONS.soundcloud; previewHeaderIcon.style.display = '';
+  previewHeaderIcon.src = ICONS.soundcloud; previewHeaderIcon.style.display='';
   previewHeaderTitle.textContent = `SoundCloud \u2014 ${type} Preview`;
   return `<div class="sc-embed-wrap"><iframe scrolling="no" frameborder="no" allow="autoplay" src="${embedUrl}" height="${height}" loading="lazy"></iframe></div>
   <div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.soundcloud}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">SoundCloud ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
 }
-
 function renderPreview(raw) {
   const url = raw.trim();
   if (!url) { previewPanel.classList.remove('visible'); return; }
   const source = detectSource(url);
   previewPanel.classList.add('visible');
-  previewHeaderIcon.style.display = 'none';
-  previewHeaderTitle.textContent = 'Link Preview';
-  if (!source) { previewBody.innerHTML = '<div class="preview-invalid">Unrecognized URL &mdash; paste a valid Spotify, YouTube or SoundCloud link.</div>'; return; }
-  previewBody.innerHTML = '<div class="preview-checking">Loading preview&hellip;</div>';
+  previewHeaderIcon.style.display='none';
+  previewHeaderTitle.textContent='Link Preview';
+  if (!source) { previewBody.innerHTML='<div class="preview-invalid">Unrecognized URL &mdash; paste a valid Spotify, YouTube or SoundCloud link.</div>'; return; }
+  previewBody.innerHTML='<div class="preview-checking">Loading preview&hellip;</div>';
   let html = null;
-  if (source === 'spotify')    html = buildSpotifyEmbed(url);
-  if (source === 'youtube')    html = buildYouTubeEmbed(url);
-  if (source === 'soundcloud') html = buildSoundCloudEmbed(url);
+  if (source==='spotify')    html = buildSpotifyEmbed(url);
+  if (source==='youtube')    html = buildYouTubeEmbed(url);
+  if (source==='soundcloud') html = buildSoundCloudEmbed(url);
   previewBody.innerHTML = html || '<div class="preview-invalid">Could not generate preview. Double-check the URL.</div>';
 }
-
 function schedulePreview() {
   clearTimeout(previewTimer);
   previewTimer = setTimeout(() => renderPreview(urlInput.value), 500);
@@ -855,14 +708,12 @@ async function startDownload() {
 
   const source = detectSource(url);
   if (!source) {
-    statusBox.classList.add('visible');
-    setProgress(0);
+    statusBox.classList.add('visible'); setProgress(0);
     setStatus('Unrecognized URL. Paste a valid Spotify, YouTube or SoundCloud link.', 'err');
     return;
   }
   if (source === 'youtube' && !ytEnabled) {
-    statusBox.classList.add('visible');
-    setProgress(0);
+    statusBox.classList.add('visible'); setProgress(0);
     setStatus('YouTube downloads are not available at this time.', 'err');
     return;
   }
@@ -874,12 +725,9 @@ async function startDownload() {
 
   try {
     const alive = await wakeServer();
-    if (!alive) {
-      throw new Error(`Server did not come up after ${wakeSeconds}s. Try again in a moment.`);
-    }
+    if (!alive) throw new Error('Server did not respond. It may be down — try again in a moment.');
 
-    setStatus('Downloading &mdash; large albums may take a few minutes&hellip;');
-
+    setStatus('Downloading &mdash; this may take a few minutes&hellip;');
     const dlStart = Date.now();
 
     const response = await fetch(`${API_URL}/download`, {
@@ -900,19 +748,19 @@ async function startDownload() {
       dlInfo.classList.add('visible');
     }
 
-    setStatus('Packaging ZIP&hellip;');
+    setStatus('Packaging file&hellip;');
     setProgress(85);
 
-    const blob     = await response.blob();
-    const blobUrl  = URL.createObjectURL(blob);
+    const blob        = await response.blob();
+    const blobUrl     = URL.createObjectURL(blob);
     const disposition = response.headers.get('Content-Disposition') || '';
     const nameMatch   = disposition.match(/filename="?([^"]+)"?/);
     const filename    = nameMatch ? nameMatch[1] : 'download.zip';
 
     if (contentLength === 0 && blob.size > 0) {
       dlSize.textContent = fmtBytes(blob.size);
-      const elapsed = (Date.now() - dlStart) / 1000;
-      dlEta.textContent = 'done in ' + (elapsed < 60 ? Math.ceil(elapsed) + 's' : Math.floor(elapsed/60) + 'm ' + Math.ceil(elapsed%60) + 's');
+      const elapsed = (Date.now()-dlStart)/1000;
+      dlEta.textContent = 'done in '+(elapsed<60?Math.ceil(elapsed)+'s':Math.floor(elapsed/60)+'m '+Math.ceil(elapsed%60)+'s');
       dlInfo.classList.add('visible');
     }
 
@@ -938,7 +786,7 @@ async function startDownload() {
   }
 }
 
-urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') startDownload(); });
+urlInput.addEventListener('keydown', e => { if (e.key==='Enter') startDownload(); });
 </script>
 </body>
 </html>
