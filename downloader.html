@@ -79,11 +79,12 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
 }
 .aero-bar .back-link {
   font-size:11px; color:rgba(200,200,200,.55); z-index:1; flex-shrink:0; padding:0 6px 0 2px;
+  white-space: nowrap;
 }
 .aero-bar .back-link:hover { color:#3cda56; text-decoration:underline; }
 .aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:60px; }
 
-/* ── Server banner — aero glossy white ── */
+/* ── Server banner ── */
 #serverBanner {
   display: none;
   position: relative; overflow: hidden;
@@ -146,11 +147,11 @@ h2::before {
   flex:1; background: rgba(255,255,255,0.9);
   border:none; outline:none; color:#000;
   font-family:Tahoma,sans-serif; font-size:12px; padding:7px 10px;
+  min-width: 0; /* prevent flex overflow */
 }
 .url-input::placeholder { color:#696969; }
 .url-input:focus { background:rgba(216,216,216,0.96); }
 
-/* URL icon — transparent background, inside the white input area */
 #urlIcon {
   display: none;
   width: 22px; height: 22px;
@@ -165,8 +166,9 @@ h2::before {
   background: var(--ctrl-grad);
   border:none; border-left:1px solid rgba(100,100,100,.44); border-top:1px solid rgba(255,255,255,.10);
   color:#d0d0d0; font-family:Tahoma,sans-serif; font-size:11.5px;
-  padding:0 10px; cursor:pointer; outline:none; flex-shrink:0;
+  padding:0 8px; cursor:pointer; outline:none; flex-shrink:0;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+  min-width: 60px;
 }
 .fmt-select option { background:#0a0a0a; }
 
@@ -181,10 +183,13 @@ h2::before {
   border-top-color: rgba(100,255,100,0.28); border-bottom-color: rgba(0,0,0,.88);
   box-shadow: inset 0 1px 0 rgba(255,180,180,.18), inset 0 2px 4px rgba(255,255,255,.06), 0 3px 8px rgba(0,0,0,.52);
   color:#fff; font-family:Tahoma,sans-serif; font-size:13px; font-weight:400;
-  padding:5px 0 7px; cursor:pointer;
+  padding:7px 0 9px; cursor:pointer;
   text-shadow:0 1px 3px rgba(0,0,0,.96);
   position:relative; letter-spacing:.3px;
   display:flex; align-items:center; justify-content:center; gap:6px;
+  /* Bigger tap target on mobile */
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
 }
 .main-dl-btn::before {
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
@@ -192,6 +197,7 @@ h2::before {
   pointer-events:none;
 }
 .main-dl-btn:hover:not(:disabled) { filter:brightness(1.14); }
+.main-dl-btn:active:not(:disabled) { filter:brightness(0.92); }
 .main-dl-btn:disabled {
   opacity:.45; cursor:not-allowed;
   background: var(--bar-grad) !important; border-color:rgba(80,80,80,.50) !important;
@@ -261,13 +267,16 @@ h2::before {
   border-top:1px solid rgba(50,50,50,.80); align-items:center;
 }
 .src-tag {
-  font-size:10.5px; padding:2px 8px 2px 5px;
+  font-size:10.5px; padding:4px 8px 4px 5px;
   display:flex; align-items:center; gap:5px;
   border:1px solid rgba(50,50,50,.44); color:#444;
   background: rgba(8,8,8,.70);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
   position:relative; cursor:default;
   transition: color .15s, border-color .15s, background .15s;
+  /* Wrap text on very small screens */
+  flex-shrink: 1;
+  min-width: 0;
 }
 .src-tag img {
   height:15px; width:15px; object-fit:contain; flex-shrink:0;
@@ -325,6 +334,7 @@ h2::before {
 .preview-meta {
   display:flex; align-items:center; gap:10px; padding:7px 10px;
   border-top:1px solid rgba(40,40,40,.80); background:rgba(5,5,5,.94);
+  flex-wrap: wrap;
 }
 .preview-meta-icon { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
 .preview-meta-info { flex:1; min-width:0; }
@@ -334,6 +344,98 @@ h2::before {
 .preview-checking, .preview-invalid { padding:12px; font-size:11.5px; text-align:center; }
 .preview-checking { color:#555; }
 .preview-invalid  { color:var(--accent); }
+
+/* ════════════════════════════════════════════
+   MOBILE STYLES
+   ════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  body {
+    padding: 8px 4px 24px;
+    font-size: 13px;
+    /* Prevent background-attachment:fixed lag on iOS */
+    background-attachment: scroll;
+  }
+
+  #pageWrap { width: 100%; }
+
+  /* Bigger bar text on mobile */
+  .aero-bar { font-size: 13px; }
+  .aero-bar .back-link { font-size: 10.5px; padding: 4px 6px 4px 4px; }
+  .aero-bar .bar-title { padding-right: 0; font-size: 12px; }
+
+  h2 { font-size: 12.5px; }
+
+  .aero-pad { padding: 10px 10px; }
+
+  p { font-size: 12px; line-height: 17px; }
+
+  /* URL row: stack icon below on very narrow screens */
+  .url-row { flex-wrap: nowrap; }
+
+  .url-input {
+    font-size: 14px; /* Prevents iOS auto-zoom (must be ≥16px… or we suppress zoom) */
+    padding: 9px 8px;
+  }
+
+  /* iOS prevents zoom when font-size < 16px via this meta viewport trick;
+     bump to 16px to be safe */
+  .url-input { font-size: 16px; }
+
+  .fmt-select {
+    font-size: 13px;
+    padding: 0 6px;
+    min-width: 56px;
+  }
+
+  /* Bigger button tap target */
+  .main-dl-btn {
+    font-size: 14px;
+    min-height: 50px;
+    padding: 10px 0 12px;
+  }
+
+  /* Status text can wrap on mobile */
+  #statusText {
+    white-space: normal;
+    font-size: 11px;
+  }
+
+  /* Source tags: stack vertically and full-width */
+  .src-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .src-tag {
+    font-size: 11px;
+    padding: 6px 10px 6px 8px;
+    width: 100%;
+  }
+  .src-tag img { height: 17px; width: 17px; }
+
+  /* Note text slightly larger */
+  .note { font-size: 11px; }
+
+  /* Format tags wrap naturally — no change needed but increase tap comfort */
+  .fmt-tag { font-size: 10px; padding: 2px 8px; }
+
+  /* Preview meta stacks */
+  .preview-meta { gap: 8px; }
+  .preview-meta-info { min-width: 120px; }
+
+  /* Server banner */
+  #serverBanner { font-size: 11px; }
+
+  /* Glass box tighter border */
+  .glass-box { padding: 4px; }
+
+  /* dlInfo wraps on narrow screens */
+  #dlInfo { white-space: normal; line-height: 1.7; }
+}
+
+@media (max-width: 380px) {
+  .aero-bar .bar-title { font-size: 11px; }
+  .main-dl-btn { font-size: 13px; }
+}
 </style>
 </head>
 <body>
@@ -358,7 +460,8 @@ h2::before {
         <div class="url-row">
           <input type="text" id="urlInput" class="url-input"
             placeholder="Insert Your Link Here..."
-            autocomplete="off" spellcheck="false">
+            autocomplete="off" spellcheck="false"
+            inputmode="url">
           <img id="urlIcon" src="" alt="">
           <select id="fmtSelect" class="fmt-select">
             <option value="mp3">MP3</option>
@@ -473,7 +576,6 @@ const ICONS = {
   soundcloud: 'assets/images/SOUNDCLOUDAERO.png',
 };
 
-// ── Platform detection ────────────────────────────────────────────────────────
 function detectSource(url) {
   if (/spotify\.com/i.test(url))           return 'spotify';
   if (/youtube\.com|youtu\.be/i.test(url)) return 'youtube';
@@ -501,7 +603,6 @@ function isSingleItem(url, source) {
   return false;
 }
 
-// ── URL icon + button label ───────────────────────────────────────────────────
 function setUrlIcon(state) {
   if (state === 'none') { urlIcon.classList.remove('visible'); return; }
   const map = { loading: ICON_LOADING, valid: ICON_VALID, invalid: ICON_INVALID, unknown: ICON_UNKNOWN };
@@ -537,7 +638,6 @@ function scheduleIconUpdate() {
 urlInput.addEventListener('input', scheduleIconUpdate);
 urlInput.addEventListener('paste', () => setTimeout(scheduleIconUpdate, 80));
 
-// ── Tags ──────────────────────────────────────────────────────────────────────
 function applyTagStates() {
   [tagSp, tagYt, tagSc].forEach(t => t.classList.remove('initializing'));
   tagSp.classList.add('available');
@@ -545,7 +645,6 @@ function applyTagStates() {
   if (ytEnabled) tagYt.classList.add('available');
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 function fmtBytes(b) {
   if (b < 1024)       return b + ' B';
   if (b < 1048576)    return (b/1024).toFixed(1) + ' KB';
@@ -576,7 +675,6 @@ function setProgress(pct) {
   progFill.style.width = pct + '%';
 }
 
-// ── Initial server check ──────────────────────────────────────────────────────
 async function initCheck() {
   serverBanner.classList.add('visible');
   for (let i = 0; i < 5; i++) {
@@ -601,12 +699,10 @@ async function initCheck() {
 }
 initCheck();
 
-// ── Wake server ───────────────────────────────────────────────────────────────
 async function wakeServer() {
   startWakeTimer();
   setStatus('Connecting to server...');
 
-  // Phase 1 — no-cors ping to physically wake Render's container
   try {
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), 70000);
@@ -617,10 +713,8 @@ async function wakeServer() {
       stopWakeTimer();
       throw new Error(`Server timed out after ${wakeSeconds}s. Try again.`);
     }
-    // "Failed to fetch" is normal on cold start — keep polling
   }
 
-  // Phase 2 — poll until CORS responds (up to ~70s total)
   const waitMsgs = [
     'Server is waking up, please wait...',
     'Still starting up...',
@@ -643,7 +737,6 @@ async function wakeServer() {
   return false;
 }
 
-// ── Preview ───────────────────────────────────────────────────────────────────
 function buildSpotifyEmbed(url) {
   const m = url.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
   if (!m) return null;
@@ -701,7 +794,6 @@ function schedulePreview() {
 urlInput.addEventListener('input', schedulePreview);
 urlInput.addEventListener('paste', () => { clearTimeout(previewTimer); previewTimer = setTimeout(() => renderPreview(urlInput.value), 250); });
 
-// ── Download ──────────────────────────────────────────────────────────────────
 async function startDownload() {
   const url = urlInput.value.trim();
   if (!url) { urlInput.focus(); return; }
