@@ -132,31 +132,42 @@ h2::before {
   background:var(--bar-glow-top); pointer-events:none;
 }
 
-/* ── URL Row — icon INSIDE the text input ── */
+/* ── URL Row — icon OUTSIDE input, after the input wrap ── */
 .url-row {
-  display:flex;
+  display:flex; align-items:stretch;
   border:1px solid rgba(100,100,100,.50);
   border-top-color:rgba(255,255,255,.08);
-  overflow:hidden; margin-bottom:6px;
+  margin-bottom:6px;
 }
 .url-input-wrap { flex:1; position:relative; min-width:0; }
 .url-input {
   width:100%; background:rgba(255,255,255,0.9);
   border:none; outline:none; color:#000;
   font-family:Tahoma,sans-serif; font-size:12px;
-  padding:7px 38px 7px 10px;
-  display:block;
+  padding:7px 10px;
+  display:block; height:100%;
 }
 .url-input::placeholder { color:#696969; }
 .url-input:focus { background:rgba(216,216,216,0.96); }
 .url-input:disabled { background:rgba(220,220,220,0.5); cursor:not-allowed; color:#888; }
 
-#urlIcon {
-  position:absolute; right:10px; top:50%; transform:translateY(-50%);
-  width:20px; height:20px; object-fit:contain;
-  display:none; pointer-events:none;
+#urlIconWrap {
+  display:none; align-items:center; justify-content:center;
+  width:30px; flex-shrink:0;
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,.07) 0%, rgba(30,30,30,.80) 50%,
+    rgba(8,8,8,.95) 100%);
+  border-left:1px solid rgba(80,80,80,.50);
 }
-#urlIcon.visible { display:block; }
+#urlIconWrap.visible { display:flex; }
+#urlIcon {
+  width:18px; height:18px; object-fit:contain; pointer-events:none; display:block;
+}
+
+/* ── Back link — glow on hover ── */
+.aero-bar .back-link:hover img {
+  filter: drop-shadow(0 0 6px rgba(255,255,255,.70)) drop-shadow(0 0 12px rgba(200,200,200,.45)) brightness(1.2);
+}
 
 /* ── Format Select — aero black/white ── */
 .fmt-select {
@@ -220,7 +231,7 @@ h2::before {
   background:linear-gradient(to bottom,rgba(255,255,255,.16) 0%,rgba(255,255,255,.04) 100%);
   pointer-events:none;
 }
-.main-dl-btn:hover:not(:disabled) { filter:brightness(1.14); }
+.main-dl-btn:hover:not(:disabled) { filter:brightness(1.30); }
 .main-dl-btn:active:not(:disabled) { filter:brightness(0.90); }
 .main-dl-btn:disabled {
   opacity: .36; cursor: not-allowed;
@@ -481,8 +492,8 @@ h2::before {
             <input type="text" id="urlInput" class="url-input"
               placeholder="Paste your link here..."
               autocomplete="off" spellcheck="false" inputmode="url">
-            <img id="urlIcon" src="" alt="">
           </div>
+          <div id="urlIconWrap"><img id="urlIcon" src="" alt=""></div>
           <select id="fmtSelect" class="fmt-select">
             <option value="mp3">MP3</option>
             <option value="flac">FLAC</option>
@@ -599,8 +610,9 @@ document.addEventListener('DOMContentLoaded', () => {
 /* Preload on first interaction */
 document.addEventListener('pointerdown', ()=>Object.keys(SOUNDS).forEach(k=>_getAudio(k)), {once:true,passive:true});
 
-/* ── Hover sound throttle ── */
+/* ── Hover sound throttle: 400ms delay ── */
 let _hoverThrottle = 0;
+let _hoverTimer = null;
 function _isInteractive(el) {
   if (!el||el===document.body||el===document.documentElement) return false;
   const tag=el.tagName;
@@ -611,12 +623,20 @@ function _isInteractive(el) {
   return false;
 }
 document.addEventListener('mouseover', e=>{
-  const now=Date.now();
-  if (now-_hoverThrottle<90) return;
-  if (_isInteractive(e.target) && e.target.id!=='soundToggle') { _hoverThrottle=now; playSound('hover'); }
+  if (e.target.id==='soundToggle') return;
+  if (!_isInteractive(e.target)) return;
+  clearTimeout(_hoverTimer);
+  _hoverTimer = setTimeout(()=>{
+    const now=Date.now();
+    if (now-_hoverThrottle<400) return;
+    _hoverThrottle=now;
+    playSound('hover');
+  }, 400);
+},{passive:true});
+document.addEventListener('mouseout', e=>{
+  if (_isInteractive(e.target)) clearTimeout(_hoverTimer);
 },{passive:true});
 document.addEventListener('click', e=>{
-  /* soundToggle handled by toggleSound(), skip generic button sound for it */
   if (e.target.id==='soundToggle') return;
   if (_isInteractive(e.target)) playSound('button');
 },true);
@@ -636,6 +656,7 @@ const VIDEO_FMTS = new Set(['mp4','webm','mkv']);
 /* ── DOM ── */
 const $  = id => document.getElementById(id);
 const urlInput   = $('urlInput');
+const urlIconWrap = $('urlIconWrap');
 const fmtSelect  = $('fmtSelect');
 const dlBtn      = $('dlBtn');
 const dlBtnLabel = $('dlBtnLabel');
@@ -756,14 +777,19 @@ function stopWakeTimer() {
   wakeTimerEl.classList.remove('visible');
 }
 
-/* ── URL Icon — always the musical note stamp when valid ── */
+/* ── URL Icon — slot outside input, shows when valid ── */
 function setUrlIcon(state) {
-  if (state==='none') { urlIcon.classList.remove('visible'); urlIcon.src=''; return; }
-  if (state==='valid') {
+  if (state === 'none') {
+    urlIconWrap.classList.remove('visible');
+    urlIcon.src = '';
+    return;
+  }
+  if (state === 'valid') {
     urlIcon.src = ICON_VALID;
-    urlIcon.classList.add('visible');
+    urlIconWrap.classList.add('visible');
   } else {
-    urlIcon.classList.remove('visible'); urlIcon.src='';
+    urlIconWrap.classList.remove('visible');
+    urlIcon.src = '';
   }
 }
 
@@ -910,6 +936,7 @@ async function startDownload() {
     'Nearly there…',
   ];
 
+  let progInterval = null;
   try {
     /* Wake phase with progress advancement */
     let alive = false;
@@ -929,7 +956,7 @@ async function startDownload() {
 
     /* Poll-based progress simulation while waiting for response */
     let progVal = 10;
-    const progInterval = setInterval(() => {
+    progInterval = setInterval(() => {
       if (progVal < 75) {
         progVal += Math.random() * 2.5;
         setProgValue(Math.min(progVal, 75));
@@ -980,12 +1007,14 @@ async function startDownload() {
     document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(blobUrl);
 
+    /* Stop progress at 100% — leave it visible as confirmation */
     setProgValue(100);
     setStatus('Download started — check your downloads folder.', 'ok');
     playSound('like');
 
   } catch(err) {
     stopWakeTimer();
+    clearInterval(progInterval);
     setProgError();
     const raw = err.message || '';
     const msg = (raw==='Failed to fetch'||err.name==='TypeError')
