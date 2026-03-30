@@ -510,9 +510,7 @@ h2::before {
           <span id="dlBtnLabel">DOWNLOAD</span>
           <img id="dlBtnIcon"
             src="https://img1.picmix.com/output/stamp/thumb/3/3/8/9/2799833_954c8.png"
-            alt=""
-            onload="onDlIconLoad(this)"
-            onerror="onDlIconError(this)">
+            alt="">
         </button>
 
         <div id="statusBox">
@@ -692,9 +690,18 @@ let _previewSrc = null; /* last source type shown */
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-/* ── Button icon ── */
-function onDlIconLoad(el) { el.classList.add('loaded'); dlIconLoaded = true; tryEnableButton(); }
-function onDlIconError(el) { el.style.display='none'; dlIconLoaded = true; tryEnableButton(); }
+/* ── Wire button icon load/error in JS (avoids inline onload timing issues) ── */
+const dlBtnIcon = $('dlBtnIcon');
+if (dlBtnIcon) {
+  dlBtnIcon.addEventListener('load',  () => { dlBtnIcon.classList.add('loaded'); dlIconLoaded = true; tryEnableButton(); });
+  dlBtnIcon.addEventListener('error', () => { dlBtnIcon.style.display='none';   dlIconLoaded = true; tryEnableButton(); });
+  /* If image was already cached and loaded before this script ran */
+  if (dlBtnIcon.complete && dlBtnIcon.naturalWidth > 0) {
+    dlBtnIcon.classList.add('loaded'); dlIconLoaded = true;
+  } else if (dlBtnIcon.complete) {
+    dlBtnIcon.style.display = 'none'; dlIconLoaded = true;
+  }
+}
 
 /* ── Enable button: requires init + icon + valid url ── */
 function tryEnableButton() {
@@ -718,7 +725,8 @@ function detectSource(url) {
 }
 function isValidUrl(url, src) {
   if (src === 'spotify')
-    return /spotify\.com\/(album|track|playlist|artist|episode)\/[A-Za-z0-9]+/.test(url);
+    /* strip optional /intl-xx/ locale segment before matching */
+    return /spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|playlist|artist|episode)\/[A-Za-z0-9]+/.test(url);
   if (src === 'youtube')
     return /[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url) || /[?&]list=[^&]+/.test(url);
   if (src === 'soundcloud')
@@ -726,15 +734,15 @@ function isValidUrl(url, src) {
   return false;
 }
 function isSingle(url, src) {
-  if (src === 'spotify')    return /spotify\.com\/track\//.test(url);
+  if (src === 'spotify')    return /spotify\.com\/(?:intl-[a-z-]+\/)?track\//.test(url);
   if (src === 'youtube')    return (/[?&]v=[^&]+/.test(url)||/youtu\.be\/[^?&#]+/.test(url)) && !/[?&]list=/.test(url);
   if (src === 'soundcloud') return !/\/sets\//.test(url);
   return false;
 }
 function estCount(url, src) {
   if (src === 'spotify') {
-    if (/\/track\//.test(url))    return 1;
-    if (/\/album\//.test(url))    return 12;
+    if (/spotify\.com\/(?:intl-[a-z-]+\/)?track\//.test(url))    return 1;
+    if (/spotify\.com\/(?:intl-[a-z-]+\/)?album\//.test(url))    return 12;
     return 25;
   }
   if (src === 'youtube')    return /[?&]list=/.test(url) ? 20 : 1;
@@ -937,13 +945,17 @@ async function startDownload() {
   ];
 
   let progInterval = null;
+
   try {
-    /* Wake phase with progress advancement */
+    /* ── Wake: keep pinging until alive ── */
     let alive = false;
     for (let i = 0; i < 20; i++) {
       setStatus(msgs[Math.min(Math.floor(i/4), msgs.length-1)]);
       try {
-        const r = await fetch(`${API_URL}/`, {method:'GET'});
+        const ctrl = new AbortController();
+        const tid  = setTimeout(()=>ctrl.abort(), 5000);
+        const r    = await fetch(`${API_URL}/`, {method:'GET', signal:ctrl.signal});
+        clearTimeout(tid);
         if (r.ok) { alive = true; break; }
       } catch(_) {}
       await sleep(3000);
@@ -954,29 +966,53 @@ async function startDownload() {
     setStatus('Processing — this may take several minutes…');
     setProgValue(10);
 
-    /* Poll-based progress simulation while waiting for response */
+    /* ── Simulate progress while waiting ── */
     let progVal = 10;
     progInterval = setInterval(() => {
-      if (progVal < 75) {
-        progVal += Math.random() * 2.5;
-        setProgValue(Math.min(progVal, 75));
-      }
+      if (progVal < 75) { progVal += Math.random() * 2; setProgValue(Math.min(progVal, 75)); }
     }, 1500);
 
-    const dlStart = Date.now();
-    const resp = await fetch(`${API_URL}/download`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ url, format: fmtSelect.value }),
-    });
-
-    clearInterval(progInterval);
-
-    if (!resp.ok) {
-      const err = await resp.json().catch(() => ({detail:'Unknown error.'}));
-      throw new Error(err.detail || `HTTP ${resp.status}`);
+    /* ── POST with automatic retry on transient server restart ── */
+    let resp = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const ctrl = new AbortController();
+        /* No timeout on download itself — can take minutes */
+        resp = await fetch(`${API_URL}/download`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ url, format: fmtSelect.value }),
+          signal: ctrl.signal,
+        });
+        /* If server restarted mid-request we get a network error on attempt>0 */
+        if (resp.ok || (resp.status !== 503 && resp.status !== 502)) break;
+        /* 502/503 = server restarting; wait and retry */
+        setStatus('Server restarting, retrying…');
+        await sleep(5000);
+      } catch(netErr) {
+        if (attempt === 2) throw netErr;
+        setStatus('Connection lost, retrying…');
+        await sleep(5000);
+        /* Re-wake before retry */
+        for (let i = 0; i < 10; i++) {
+          try {
+            const r = await fetch(`${API_URL}/`, {method:'GET'});
+            if (r.ok) break;
+          } catch(_) {}
+          await sleep(3000);
+        }
+      }
     }
 
+    clearInterval(progInterval);
+    progInterval = null;
+
+    if (!resp || !resp.ok) {
+      const err = await resp.json().catch(() => ({detail:`HTTP ${resp?.status || 'error'}`}));
+      throw new Error(err.detail || `HTTP ${resp?.status}`);
+    }
+
+    const dlStart = Date.now();
     const cl = parseInt(resp.headers.get('Content-Length') || '0', 10);
     if (cl > 0) {
       dlSize.textContent = fmtBytes(cl);
@@ -1007,14 +1043,13 @@ async function startDownload() {
     document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(blobUrl);
 
-    /* Stop progress at 100% — leave it visible as confirmation */
     setProgValue(100);
     setStatus('Download started — check your downloads folder.', 'ok');
     playSound('like');
 
   } catch(err) {
     stopWakeTimer();
-    clearInterval(progInterval);
+    if (progInterval) { clearInterval(progInterval); progInterval = null; }
     setProgError();
     const raw = err.message || '';
     const msg = (raw==='Failed to fetch'||err.name==='TypeError')
@@ -1029,7 +1064,9 @@ async function startDownload() {
 
 /* ── Preview ── */
 function buildSpotifyEmbed(url) {
-  const m = url.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
+  /* Normalize: remove /intl-xx/ locale prefix so regex matches */
+  const clean = url.replace(/spotify\.com\/intl-[a-z-]+\//i, 'spotify.com/');
+  const m = clean.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
   if (!m) return null;
   const [,type,id] = m;
   const h = (type==='track'||type==='episode') ? 152 : 352;
