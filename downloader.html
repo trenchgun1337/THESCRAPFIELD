@@ -78,8 +78,8 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
   background: var(--bar-glow-top); pointer-events:none;
 }
 .aero-bar .back-link {
-  font-size:11px; color:rgba(200,200,200,.55); z-index:1; flex-shrink:0; padding:0 6px 0 2px;
-  white-space: nowrap;
+  font-size:11px; color:rgba(200,200,200,.55); z-index:1; flex-shrink:0;
+  padding:0 6px 0 2px; white-space:nowrap;
 }
 .aero-bar .back-link:hover { color:#3cda56; text-decoration:underline; }
 .aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:60px; }
@@ -89,12 +89,9 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
   display: none;
   position: relative; overflow: hidden;
   background: linear-gradient(to bottom,
-    rgba(255,255,255,.30) 0%,
-    rgba(235,235,235,.97) 0%,
-    rgba(210,210,210,.92) 4%,
-    rgba(225,225,225,.98) 52%,
-    rgba(200,200,200,1)  52%,
-    rgba(215,215,215,.97) 100%);
+    rgba(255,255,255,.30) 0%, rgba(235,235,235,.97) 0%,
+    rgba(210,210,210,.92) 4%, rgba(225,225,225,.98) 52%,
+    rgba(200,200,200,1) 52%, rgba(215,215,215,.97) 100%);
   border: 1px solid rgba(160,160,160,.70);
   border-top-color: rgba(255,255,255,.90);
   border-bottom-color: rgba(100,100,100,.50);
@@ -147,20 +144,17 @@ h2::before {
   flex:1; background: rgba(255,255,255,0.9);
   border:none; outline:none; color:#000;
   font-family:Tahoma,sans-serif; font-size:12px; padding:7px 10px;
-  min-width: 0; /* prevent flex overflow */
+  min-width:0;
 }
 .url-input::placeholder { color:#696969; }
 .url-input:focus { background:rgba(216,216,216,0.96); }
 
 #urlIcon {
-  display: none;
-  width: 22px; height: 22px;
-  object-fit: contain; flex-shrink: 0;
-  align-self: center;
-  margin: 0 5px;
-  background: transparent;
+  display:none; width:22px; height:22px;
+  object-fit:contain; flex-shrink:0;
+  align-self:center; margin:0 5px; background:transparent;
 }
-#urlIcon.visible { display: block; }
+#urlIcon.visible { display:block; }
 
 .fmt-select {
   background: var(--ctrl-grad);
@@ -168,7 +162,7 @@ h2::before {
   color:#d0d0d0; font-family:Tahoma,sans-serif; font-size:11.5px;
   padding:0 8px; cursor:pointer; outline:none; flex-shrink:0;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
-  min-width: 60px;
+  min-width:60px;
 }
 .fmt-select option { background:#0a0a0a; }
 
@@ -180,32 +174,27 @@ h2::before {
     rgb(157 251 156 / 80%) 4%, rgb(25 180 20 / 98%) 52%,
     rgb(4 100 11) 52%, rgb(24 140 8 / 96%) 100%);
   border:1px solid rgb(20 180 23 / 80%);
-  border-top-color: rgba(100,255,100,0.28); border-bottom-color: rgba(0,0,0,.88);
+  border-top-color:rgba(100,255,100,0.28); border-bottom-color:rgba(0,0,0,.88);
   box-shadow: inset 0 1px 0 rgba(255,180,180,.18), inset 0 2px 4px rgba(255,255,255,.06), 0 3px 8px rgba(0,0,0,.52);
   color:#fff; font-family:Tahoma,sans-serif; font-size:13px; font-weight:400;
   padding:7px 0 9px; cursor:pointer;
   text-shadow:0 1px 3px rgba(0,0,0,.96);
   position:relative; letter-spacing:.3px;
   display:flex; align-items:center; justify-content:center; gap:6px;
-  /* Bigger tap target on mobile */
-  min-height: 44px;
-  -webkit-tap-highlight-color: transparent;
+  min-height:44px; -webkit-tap-highlight-color:transparent;
 }
 .main-dl-btn::before {
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
   background:linear-gradient(to bottom,rgba(255,255,255,.16) 0%,rgba(255,255,255,.04) 100%);
   pointer-events:none;
 }
-.main-dl-btn:hover:not(:disabled) { filter:brightness(1.14); }
+.main-dl-btn:hover:not(:disabled)  { filter:brightness(1.14); }
 .main-dl-btn:active:not(:disabled) { filter:brightness(0.92); }
 .main-dl-btn:disabled {
   opacity:.45; cursor:not-allowed;
-  background: var(--bar-grad) !important; border-color:rgba(80,80,80,.50) !important;
+  background:var(--bar-grad) !important; border-color:rgba(80,80,80,.50) !important;
 }
-#dlBtnIcon {
-  height:22px; width:22px; object-fit:contain;
-  flex-shrink:0; position:relative; z-index:1;
-}
+#dlBtnIcon  { height:22px; width:22px; object-fit:contain; flex-shrink:0; position:relative; z-index:1; }
 #dlBtnLabel { position:relative; z-index:1; }
 
 /* ── Status box ── */
@@ -217,9 +206,7 @@ h2::before {
 }
 #statusBox.visible { display:block; }
 
-.status-row {
-  display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:5px;
-}
+.status-row { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:5px; }
 #statusText {
   font-size:11.5px; color:#aaa;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
@@ -230,34 +217,29 @@ h2::before {
 
 #wakeTimer {
   display:none; font-size:11px; color:#888;
-  background: rgba(0,0,0,.60); border:1px solid rgba(70,70,70,.50);
+  background:rgba(0,0,0,.60); border:1px solid rgba(70,70,70,.50);
   padding:1px 8px; white-space:nowrap; flex-shrink:0;
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric:tabular-nums;
 }
 #wakeTimer.visible { display:block; }
 #wakeTimer .timer-sec { color:#bbb; }
 
-#dlInfo {
-  display:none; font-size:11px; color:#666; text-align:center; margin-bottom:4px;
-}
+#dlInfo { display:none; font-size:11px; color:#666; text-align:center; margin-bottom:4px; }
 #dlInfo.visible { display:block; }
 #dlInfo .info-val { color:#999; }
 
 .prog-track {
-  height:8px; background: var(--prog-track);
+  height:8px; background:var(--prog-track);
   border:1px solid var(--prog-border);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,.72);
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.72);
   position:relative; overflow:hidden;
 }
 .prog-fill {
   position:absolute; left:0; top:0; bottom:0; width:0%;
-  background: var(--prog-fill); box-shadow: 0 0 5px var(--prog-glow);
+  background:var(--prog-fill); box-shadow:0 0 5px var(--prog-glow);
   transition:width .4s ease; pointer-events:none;
 }
-.prog-fill.indeterminate {
-  width:38% !important;
-  animation:progAnim 1.4s infinite ease-in-out;
-}
+.prog-fill.indeterminate { width:38% !important; animation:progAnim 1.4s infinite ease-in-out; }
 @keyframes progAnim { 0%{left:-38%} 100%{left:110%} }
 
 /* ── Source tags ── */
@@ -270,26 +252,23 @@ h2::before {
   font-size:10.5px; padding:4px 8px 4px 5px;
   display:flex; align-items:center; gap:5px;
   border:1px solid rgba(50,50,50,.44); color:#444;
-  background: rgba(8,8,8,.70);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
-  position:relative; cursor:default;
-  transition: color .15s, border-color .15s, background .15s;
-  /* Wrap text on very small screens */
-  flex-shrink: 1;
-  min-width: 0;
+  background:rgba(8,8,8,.70);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+  cursor:default; flex-shrink:1; min-width:0;
+  transition:color .15s, border-color .15s, background .15s;
 }
 .src-tag img {
   height:15px; width:15px; object-fit:contain; flex-shrink:0;
-  filter: grayscale(1) brightness(0.35); transition: filter .15s;
+  filter:grayscale(1) brightness(0.35); transition:filter .15s;
 }
-.src-tag.initializing { animation: tagPulse 1.8s infinite ease-in-out; }
+.src-tag.initializing { animation:tagPulse 1.8s infinite ease-in-out; }
 @keyframes tagPulse { 0%,100%{opacity:.4} 50%{opacity:.85} }
 
 .src-tag.available {
   color:#aaa; border-color:rgba(100,100,100,.44);
-  background: linear-gradient(to bottom, rgba(255,255,255,.08) 0%, rgba(40,40,40,.10) 60%, rgba(10,10,10,.30) 100%);
+  background:linear-gradient(to bottom,rgba(255,255,255,.08) 0%,rgba(40,40,40,.10) 60%,rgba(10,10,10,.30) 100%);
 }
-.src-tag.available img { filter: none; }
+.src-tag.available img { filter:none; }
 .src-tag.sp.available  { color:#1db954; border-color:rgba(29,185,84,.32); }
 .src-tag.yt.available  { color:#d03030; border-color:rgba(200,48,48,.32); }
 .src-tag.sc.available  { color:#c85010; border-color:rgba(200,80,16,.32); }
@@ -310,17 +289,17 @@ h2::before {
 #previewPanel.visible { display:block; }
 
 .preview-header {
-  background: var(--bar-grad);
-  box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
-  border: 1px solid var(--bar-border-s);
-  border-top-color: var(--bar-border-t); border-bottom-color: var(--bar-border-b);
-  padding: 5px 8px 7px; font-weight:400; font-size:12px; color: var(--bar-text);
-  text-shadow: var(--bar-tshadow); position:relative; overflow:hidden;
+  background:var(--bar-grad);
+  box-shadow:inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
+  border:1px solid var(--bar-border-s);
+  border-top-color:var(--bar-border-t); border-bottom-color:var(--bar-border-b);
+  padding:5px 8px 7px; font-weight:400; font-size:12px; color:var(--bar-text);
+  text-shadow:var(--bar-tshadow); position:relative; overflow:hidden;
   display:flex; align-items:center; gap:6px;
 }
 .preview-header::before {
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background: var(--bar-glow-top); pointer-events:none;
+  background:var(--bar-glow-top); pointer-events:none;
 }
 .preview-header img  { height:14px; width:14px; object-fit:contain; z-index:1; flex-shrink:0; }
 .preview-header span { z-index:1; }
@@ -333,11 +312,10 @@ h2::before {
 .sc-embed-wrap iframe { width:100%; border:none; display:block; }
 .preview-meta {
   display:flex; align-items:center; gap:10px; padding:7px 10px;
-  border-top:1px solid rgba(40,40,40,.80); background:rgba(5,5,5,.94);
-  flex-wrap: wrap;
+  border-top:1px solid rgba(40,40,40,.80); background:rgba(5,5,5,.94); flex-wrap:wrap;
 }
-.preview-meta-icon { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
-.preview-meta-info { flex:1; min-width:0; }
+.preview-meta-icon  { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
+.preview-meta-info  { flex:1; min-width:0; }
 .preview-meta-title { font-size:12px; color:#ccc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
 .preview-meta-sub   { font-size:10.5px; color:#555; }
 .preview-meta-badge { font-size:10px; padding:2px 7px; border:1px solid rgba(70,70,70,.50); color:#777; background:rgba(12,12,12,.80); white-space:nowrap; flex-shrink:0; }
@@ -346,95 +324,36 @@ h2::before {
 .preview-invalid  { color:var(--accent); }
 
 /* ════════════════════════════════════════════
-   MOBILE STYLES
+   MOBILE
    ════════════════════════════════════════════ */
 @media (max-width: 600px) {
-  body {
-    padding: 8px 4px 24px;
-    font-size: 13px;
-    /* Prevent background-attachment:fixed lag on iOS */
-    background-attachment: scroll;
-  }
-
-  #pageWrap { width: 100%; }
-
-  /* Bigger bar text on mobile */
-  .aero-bar { font-size: 13px; }
-  .aero-bar .back-link { font-size: 10.5px; padding: 4px 6px 4px 4px; }
-  .aero-bar .bar-title { padding-right: 0; font-size: 12px; }
-
-  h2 { font-size: 12.5px; }
-
-  .aero-pad { padding: 10px 10px; }
-
-  p { font-size: 12px; line-height: 17px; }
-
-  /* URL row: stack icon below on very narrow screens */
-  .url-row { flex-wrap: nowrap; }
-
-  .url-input {
-    font-size: 14px; /* Prevents iOS auto-zoom (must be ≥16px… or we suppress zoom) */
-    padding: 9px 8px;
-  }
-
-  /* iOS prevents zoom when font-size < 16px via this meta viewport trick;
-     bump to 16px to be safe */
-  .url-input { font-size: 16px; }
-
-  .fmt-select {
-    font-size: 13px;
-    padding: 0 6px;
-    min-width: 56px;
-  }
-
-  /* Bigger button tap target */
-  .main-dl-btn {
-    font-size: 14px;
-    min-height: 50px;
-    padding: 10px 0 12px;
-  }
-
-  /* Status text can wrap on mobile */
-  #statusText {
-    white-space: normal;
-    font-size: 11px;
-  }
-
-  /* Source tags: stack vertically and full-width */
-  .src-row {
-    flex-direction: column;
-    gap: 5px;
-  }
-  .src-tag {
-    font-size: 11px;
-    padding: 6px 10px 6px 8px;
-    width: 100%;
-  }
-  .src-tag img { height: 17px; width: 17px; }
-
-  /* Note text slightly larger */
-  .note { font-size: 11px; }
-
-  /* Format tags wrap naturally — no change needed but increase tap comfort */
-  .fmt-tag { font-size: 10px; padding: 2px 8px; }
-
-  /* Preview meta stacks */
-  .preview-meta { gap: 8px; }
-  .preview-meta-info { min-width: 120px; }
-
-  /* Server banner */
-  #serverBanner { font-size: 11px; }
-
-  /* Glass box tighter border */
-  .glass-box { padding: 4px; }
-
-  /* dlInfo wraps on narrow screens */
-  #dlInfo { white-space: normal; line-height: 1.7; }
+  body { padding:8px 4px 24px; font-size:13px; background-attachment:scroll; }
+  #pageWrap { width:100%; }
+  .aero-bar { font-size:13px; }
+  .aero-bar .back-link { font-size:10.5px; padding:4px 6px 4px 4px; }
+  .aero-bar .bar-title  { padding-right:0; font-size:12px; }
+  h2 { font-size:12.5px; }
+  .aero-pad { padding:10px; }
+  p { font-size:12px; line-height:17px; }
+  .url-row { flex-wrap:nowrap; }
+  .url-input { font-size:16px; padding:9px 8px; } /* 16px prevents iOS auto-zoom */
+  .fmt-select { font-size:13px; padding:0 6px; min-width:56px; }
+  .main-dl-btn { font-size:14px; min-height:50px; padding:10px 0 12px; }
+  #statusText { white-space:normal; font-size:11px; }
+  .src-row { flex-direction:column; gap:5px; }
+  .src-tag { font-size:11px; padding:6px 10px 6px 8px; width:100%; }
+  .src-tag img { height:17px; width:17px; }
+  .note { font-size:11px; }
+  .fmt-tag { padding:2px 8px; }
+  .preview-meta { gap:8px; }
+  .preview-meta-info { min-width:120px; }
+  #serverBanner { font-size:11px; }
+  .glass-box { padding:4px; }
+  #dlInfo { white-space:normal; line-height:1.7; }
 }
-
 @media (max-width: 380px) {
-  .aero-bar .bar-title { font-size: 11px; }
-  .main-dl-btn { font-size: 13px; }
+  .aero-bar .bar-title { font-size:11px; }
+  .main-dl-btn { font-size:13px; }
 }
 </style>
 </head>
@@ -460,8 +379,7 @@ h2::before {
         <div class="url-row">
           <input type="text" id="urlInput" class="url-input"
             placeholder="Insert Your Link Here..."
-            autocomplete="off" spellcheck="false"
-            inputmode="url">
+            autocomplete="off" spellcheck="false" inputmode="url">
           <img id="urlIcon" src="" alt="">
           <select id="fmtSelect" class="fmt-select">
             <option value="mp3">MP3</option>
@@ -535,6 +453,7 @@ h2::before {
 
 </div>
 <script>
+// ── Config ────────────────────────────────────────────────────────────────────
 const API_URL = "https://watanagashi-api.onrender.com";
 
 const ICON_LOADING = 'https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif';
@@ -542,6 +461,13 @@ const ICON_UNKNOWN = 'https://img1.picmix.com/output/stamp/normal/2/8/4/8/284848
 const ICON_VALID   = 'https://img1.picmix.com/output/stamp/normal/9/7/4/6/2866479_1ede5.gif';
 const ICON_INVALID = 'https://img1.picmix.com/output/stamp/normal/7/0/2/4/1104207_1c291.png';
 
+const ICONS = {
+  spotify:    'assets/images/SPOTIFYAERO.jpeg',
+  youtube:    'assets/images/YOUTUBEAERO.png',
+  soundcloud: 'assets/images/SOUNDCLOUDAERO.png',
+};
+
+// ── DOM refs ──────────────────────────────────────────────────────────────────
 const urlInput           = document.getElementById('urlInput');
 const fmtSelect          = document.getElementById('fmtSelect');
 const dlBtn              = document.getElementById('dlBtn');
@@ -564,17 +490,15 @@ const previewBody        = document.getElementById('previewBody');
 const serverBanner       = document.getElementById('serverBanner');
 const urlIcon            = document.getElementById('urlIcon');
 
+// ── State ─────────────────────────────────────────────────────────────────────
 let ytEnabled    = false;
 let previewTimer = null;
 let wakeInterval = null;
 let wakeSeconds  = 0;
 let iconTimer    = null;
 
-const ICONS = {
-  spotify:    'assets/images/SPOTIFYAERO.jpeg',
-  youtube:    'assets/images/YOUTUBEAERO.png',
-  soundcloud: 'assets/images/SOUNDCLOUDAERO.png',
-};
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function detectSource(url) {
   if (/spotify\.com/i.test(url))           return 'spotify';
@@ -582,69 +506,18 @@ function detectSource(url) {
   if (/soundcloud\.com/i.test(url))        return 'soundcloud';
   return null;
 }
-
 function isValidUrl(url, source) {
-  if (source === 'spotify')
-    return /spotify\.com\/(album|track|playlist|artist|episode)\/[A-Za-z0-9]+/.test(url);
-  if (source === 'youtube')
-    return /[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url) || /[?&]list=[^&]+/.test(url);
-  if (source === 'soundcloud')
-    return /soundcloud\.com\/[^/?#]+\/[^/?#]+/.test(url);
+  if (source === 'spotify')    return /spotify\.com\/(album|track|playlist|artist|episode)\/[A-Za-z0-9]+/.test(url);
+  if (source === 'youtube')    return /[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url) || /[?&]list=[^&]+/.test(url);
+  if (source === 'soundcloud') return /soundcloud\.com\/[^/?#]+\/[^/?#]+/.test(url);
   return false;
 }
-
 function isSingleItem(url, source) {
-  if (source === 'spotify')
-    return /spotify\.com\/track\//.test(url);
-  if (source === 'youtube')
-    return (/[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url)) && !/[?&]list=/.test(url);
-  if (source === 'soundcloud')
-    return !/\/sets\//.test(url) && /soundcloud\.com\/[^/?#]+\/[^/?#]+/.test(url);
+  if (source === 'spotify')    return /spotify\.com\/track\//.test(url);
+  if (source === 'youtube')    return (/[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url)) && !/[?&]list=/.test(url);
+  if (source === 'soundcloud') return !/\/sets\//.test(url) && /soundcloud\.com\/[^/?#]+\/[^/?#]+/.test(url);
   return false;
 }
-
-function setUrlIcon(state) {
-  if (state === 'none') { urlIcon.classList.remove('visible'); return; }
-  const map = { loading: ICON_LOADING, valid: ICON_VALID, invalid: ICON_INVALID, unknown: ICON_UNKNOWN };
-  urlIcon.src = map[state];
-  urlIcon.classList.add('visible');
-}
-
-function scheduleIconUpdate() {
-  const raw = urlInput.value;
-  if (!raw.trim()) {
-    setUrlIcon('none');
-    dlBtnLabel.textContent = 'DOWNLOAD AS ZIP';
-    return;
-  }
-  setUrlIcon('loading');
-  clearTimeout(iconTimer);
-  iconTimer = setTimeout(() => {
-    const url = raw.trim();
-    const source = detectSource(url);
-    if (!source) {
-      setUrlIcon('unknown');
-      dlBtnLabel.textContent = 'DOWNLOAD AS ZIP';
-    } else if (isValidUrl(url, source)) {
-      setUrlIcon('valid');
-      dlBtnLabel.textContent = isSingleItem(url, source) ? 'DOWNLOAD' : 'DOWNLOAD AS ZIP';
-    } else {
-      setUrlIcon('invalid');
-      dlBtnLabel.textContent = 'DOWNLOAD AS ZIP';
-    }
-  }, 380);
-}
-
-urlInput.addEventListener('input', scheduleIconUpdate);
-urlInput.addEventListener('paste', () => setTimeout(scheduleIconUpdate, 80));
-
-function applyTagStates() {
-  [tagSp, tagYt, tagSc].forEach(t => t.classList.remove('initializing'));
-  tagSp.classList.add('available');
-  tagSc.classList.add('available');
-  if (ytEnabled) tagYt.classList.add('available');
-}
-
 function fmtBytes(b) {
   if (b < 1024)       return b + ' B';
   if (b < 1048576)    return (b/1024).toFixed(1) + ' KB';
@@ -656,7 +529,14 @@ function fmtEta(bytes) {
   if (secs < 5)  return 'a few seconds';
   if (secs < 60) return Math.ceil(secs) + 's';
   const m = Math.floor(secs/60), s = Math.ceil(secs%60);
-  return m + 'm ' + (s > 0 ? s+'s' : '');
+  return m + 'm' + (s > 0 ? ' ' + s + 's' : '');
+}
+function setStatus(msg, type) {
+  statusTxt.innerHTML = type ? `<span class="${type}">${msg}</span>` : msg;
+}
+function setProgress(pct) {
+  progFill.classList.remove('indeterminate');
+  progFill.style.width = pct + '%';
 }
 function startWakeTimer() {
   wakeSeconds = 0; timerVal.textContent = '0';
@@ -667,22 +547,53 @@ function stopWakeTimer() {
   clearInterval(wakeInterval); wakeInterval = null;
   wakeTimerEl.classList.remove('visible');
 }
-function setStatus(msg, type) {
-  statusTxt.innerHTML = type ? `<span class="${type}">${msg}</span>` : msg;
-}
-function setProgress(pct) {
-  progFill.classList.remove('indeterminate');
-  progFill.style.width = pct + '%';
+
+// ── Fetch with timeout ────────────────────────────────────────────────────────
+async function fetchWithTimeout(url, opts = {}, ms = 8000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const res = await fetch(url, { ...opts, signal: ctrl.signal });
+    clearTimeout(t); return res;
+  } catch(e) { clearTimeout(t); throw e; }
 }
 
+// ── URL icon ──────────────────────────────────────────────────────────────────
+function setUrlIcon(state) {
+  if (state === 'none') { urlIcon.classList.remove('visible'); return; }
+  const map = { loading:ICON_LOADING, valid:ICON_VALID, invalid:ICON_INVALID, unknown:ICON_UNKNOWN };
+  urlIcon.src = map[state];
+  urlIcon.classList.add('visible');
+}
+function scheduleIconUpdate() {
+  const raw = urlInput.value;
+  if (!raw.trim()) { setUrlIcon('none'); dlBtnLabel.textContent = 'DOWNLOAD AS ZIP'; return; }
+  setUrlIcon('loading');
+  clearTimeout(iconTimer);
+  iconTimer = setTimeout(() => {
+    const url = raw.trim(), source = detectSource(url);
+    if (!source)                      { setUrlIcon('unknown');  dlBtnLabel.textContent = 'DOWNLOAD AS ZIP'; }
+    else if (isValidUrl(url, source)) { setUrlIcon('valid');    dlBtnLabel.textContent = isSingleItem(url, source) ? 'DOWNLOAD' : 'DOWNLOAD AS ZIP'; }
+    else                              { setUrlIcon('invalid');  dlBtnLabel.textContent = 'DOWNLOAD AS ZIP'; }
+  }, 380);
+}
+urlInput.addEventListener('input', scheduleIconUpdate);
+urlInput.addEventListener('paste', () => setTimeout(scheduleIconUpdate, 80));
+
+// ── Source tags ───────────────────────────────────────────────────────────────
+function applyTagStates() {
+  [tagSp, tagYt, tagSc].forEach(t => t.classList.remove('initializing'));
+  tagSp.classList.add('available');
+  tagSc.classList.add('available');
+  if (ytEnabled) tagYt.classList.add('available');
+}
+
+// ── Initial server check ──────────────────────────────────────────────────────
 async function initCheck() {
   serverBanner.classList.add('visible');
   for (let i = 0; i < 5; i++) {
     try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 12000);
-      const res = await fetch(`${API_URL}/yt-status`, { signal: ctrl });
-      clearTimeout(t);
+      const res = await fetchWithTimeout(`${API_URL}/yt-status`, {}, 12000);
       if (res.ok) {
         const data = await res.json();
         ytEnabled = data.youtube_enabled;
@@ -690,53 +601,51 @@ async function initCheck() {
         serverBanner.classList.remove('visible');
         return;
       }
-    } catch (_) {
-      if (i < 4) await new Promise(r => setTimeout(r, 4000));
-    }
+    } catch(_) {}
+    if (i < 4) await sleep(4000);
   }
   applyTagStates();
   serverBanner.classList.remove('visible');
 }
 initCheck();
 
+// ── Wake server ───────────────────────────────────────────────────────────────
+// Render free tier spins down after inactivity; cold-start takes ~30–60s.
+// Fire a no-cors kick to nudge the container, then poll until we get a real 200.
 async function wakeServer() {
   startWakeTimer();
   setStatus('Connecting to server...');
 
-  try {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 70000);
-    await fetch(`${API_URL}/`, { method:'GET', mode:'no-cors', signal: ctrl });
-    clearTimeout(t);
-  } catch(e) {
-    if (e.name === 'AbortError') {
-      stopWakeTimer();
-      throw new Error(`Server timed out after ${wakeSeconds}s. Try again.`);
-    }
-  }
+  // Fire without awaiting — just a nudge, response doesn't matter
+  fetch(`${API_URL}/`, { method:'GET', mode:'no-cors' }).catch(() => {});
 
-  const waitMsgs = [
-    'Server is waking up, please wait...',
-    'Still starting up...',
+  const msgs = [
+    'Connecting to server...',
+    'Server is waking up — this can take up to 60s...',
+    'Still starting up, please wait...',
     'Almost ready...',
-    'Hang tight...',
+    'Hang tight, nearly there...',
   ];
-  for (let i = 0; i < 22; i++) {
+
+  // 45 attempts × (4s timeout + 2s gap) ≈ 4.5 min ceiling
+  // Render cold-starts in 30–60s → success around attempt 10–15
+  for (let i = 0; i < 45; i++) {
+    setStatus(msgs[Math.min(Math.floor(i / 2), msgs.length - 1)]);
     try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 5000);
-      const res = await fetch(`${API_URL}/`, { signal: ctrl });
-      clearTimeout(t);
+      const res = await fetchWithTimeout(`${API_URL}/`, {}, 4000);
       if (res.ok) { stopWakeTimer(); return true; }
-    } catch (_) {}
-    setStatus(waitMsgs[Math.min(Math.floor(i/5), waitMsgs.length-1)]);
-    await new Promise(r => setTimeout(r, 3000));
+      // Non-ok (503 during startup) — keep waiting
+    } catch(_) {
+      // Timeout / network error — server still booting
+    }
+    await sleep(2000);
   }
 
   stopWakeTimer();
   return false;
 }
 
+// ── Preview ───────────────────────────────────────────────────────────────────
 function buildSpotifyEmbed(url) {
   const m = url.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
   if (!m) return null;
@@ -747,30 +656,30 @@ function buildSpotifyEmbed(url) {
   previewHeaderIcon.src = ICONS.spotify; previewHeaderIcon.style.display='';
   previewHeaderTitle.textContent = `Spotify \u2014 ${label} Preview`;
   return `<div class="sp-embed-wrap"><iframe src="${embedUrl}" height="${height}" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
-  <div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.spotify}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">Spotify ${label}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${label.toUpperCase()}</span></div>`;
+<div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.spotify}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">Spotify ${label}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${label.toUpperCase()}</span></div>`;
 }
 function buildYouTubeEmbed(url) {
   const pl = url.match(/[?&]list=([^&]+)/);
   const v  = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
   if (!pl && !v) return null;
-  const type = pl ? 'Playlist' : 'Video';
+  const type     = pl ? 'Playlist' : 'Video';
   const embedUrl = pl
     ? `https://www.youtube.com/embed/videoseries?list=${pl[1]}`
     : `https://www.youtube.com/embed/${v[1]}`;
   previewHeaderIcon.src = ICONS.youtube; previewHeaderIcon.style.display='';
   previewHeaderTitle.textContent = `YouTube \u2014 ${type} Preview`;
   return `<div class="yt-embed-wrap"><iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-  <div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.youtube}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">YouTube ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
+<div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.youtube}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">YouTube ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
 }
 function buildSoundCloudEmbed(url) {
-  const isSet  = /\/sets\//i.test(url);
-  const type   = isSet ? 'Set' : 'Track';
-  const height = isSet ? 450 : 166;
+  const isSet    = /\/sets\//i.test(url);
+  const type     = isSet ? 'Set' : 'Track';
+  const height   = isSet ? 450 : 166;
   const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
   previewHeaderIcon.src = ICONS.soundcloud; previewHeaderIcon.style.display='';
   previewHeaderTitle.textContent = `SoundCloud \u2014 ${type} Preview`;
   return `<div class="sc-embed-wrap"><iframe scrolling="no" frameborder="no" allow="autoplay" src="${embedUrl}" height="${height}" loading="lazy"></iframe></div>
-  <div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.soundcloud}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">SoundCloud ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
+<div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.soundcloud}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">SoundCloud ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
 }
 function renderPreview(raw) {
   const url = raw.trim();
@@ -794,6 +703,7 @@ function schedulePreview() {
 urlInput.addEventListener('input', schedulePreview);
 urlInput.addEventListener('paste', () => { clearTimeout(previewTimer); previewTimer = setTimeout(() => renderPreview(urlInput.value), 250); });
 
+// ── Download ──────────────────────────────────────────────────────────────────
 async function startDownload() {
   const url = urlInput.value.trim();
   if (!url) { urlInput.focus(); return; }
@@ -817,11 +727,12 @@ async function startDownload() {
 
   try {
     const alive = await wakeServer();
-    if (!alive) throw new Error('Server did not respond. It may be down — try again in a moment.');
+    if (!alive) throw new Error('Server did not respond after 90 seconds. Try again — Render may be restarting.');
 
     setStatus('Downloading &mdash; this may take a few minutes&hellip;');
     const dlStart = Date.now();
 
+    // No timeout on the actual download — let the server take its time
     const response = await fetch(`${API_URL}/download`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -852,7 +763,7 @@ async function startDownload() {
     if (contentLength === 0 && blob.size > 0) {
       dlSize.textContent = fmtBytes(blob.size);
       const elapsed = (Date.now()-dlStart)/1000;
-      dlEta.textContent = 'done in '+(elapsed<60?Math.ceil(elapsed)+'s':Math.floor(elapsed/60)+'m '+Math.ceil(elapsed%60)+'s');
+      dlEta.textContent = 'done in ' + (elapsed<60 ? Math.ceil(elapsed)+'s' : Math.floor(elapsed/60)+'m '+Math.ceil(elapsed%60)+'s');
       dlInfo.classList.add('visible');
     }
 
@@ -864,7 +775,7 @@ async function startDownload() {
     setProgress(100);
     setStatus('Download started. Check your downloads folder.', 'ok');
 
-  } catch (err) {
+  } catch(err) {
     stopWakeTimer();
     progFill.classList.remove('indeterminate');
     progFill.style.width = '0%';
