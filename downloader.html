@@ -42,7 +42,7 @@
 body {
   font-family: Tahoma, 'Segoe UI', Geneva, Verdana, sans-serif;
   font-size: 12px;
-  background: #000 url('https://i.pinimg.com/736x/dc/65/76/dc65762050be55fe12ec93405994de5d.jpg') center/cover fixed no-repeat;
+  background: #000 url('https://static.myfigurecollection.net/upload/pictures/2022/10/24/3309088.jpeg') center/cover fixed no-repeat;
   color: var(--text);
   min-height: 100vh;
   padding: 12px 6px 30px;
@@ -63,7 +63,6 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
 
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; }
 
-/* ── Aero bar ── */
 .aero-bar {
   background: var(--bar-grad);
   border: 1px solid var(--bar-border-s);
@@ -84,7 +83,6 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
 .aero-bar .back-link:hover { color:#3cda56; text-decoration:underline; }
 .aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:60px; }
 
-/* ── Server banner ── */
 #serverBanner {
   display: none;
   position: relative; overflow: hidden;
@@ -110,7 +108,6 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
 #serverBanner img { height:18px; width:18px; flex-shrink:0; z-index:1; }
 #serverBanner span { z-index:1; }
 
-/* ── Glass box ── */
 .glass-box {
   background-image: linear-gradient(rgb(255 255 255 / 12%), rgb(0 0 0 / 100%));
   box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 10px rgba(200,200,200,.04), 0 5px 6px rgba(0,0,0,.55);
@@ -133,7 +130,6 @@ h2::before {
   background: var(--bar-glow-top); pointer-events:none;
 }
 
-/* ── URL row ── */
 .url-row {
   display:flex;
   border: 1px solid rgba(100,100,100,.50);
@@ -166,7 +162,6 @@ h2::before {
 }
 .fmt-select option { background:#0a0a0a; }
 
-/* ── Download button ── */
 .main-dl-btn {
   width:100%;
   background:linear-gradient(to bottom,
@@ -197,7 +192,6 @@ h2::before {
 #dlBtnIcon  { height:22px; width:22px; object-fit:contain; flex-shrink:0; position:relative; z-index:1; }
 #dlBtnLabel { position:relative; z-index:1; }
 
-/* ── Status box ── */
 #statusBox {
   display:none;
   background: var(--status-grad);
@@ -242,7 +236,6 @@ h2::before {
 .prog-fill.indeterminate { width:38% !important; animation:progAnim 1.4s infinite ease-in-out; }
 @keyframes progAnim { 0%{left:-38%} 100%{left:110%} }
 
-/* ── Source tags ── */
 .src-row {
   display:flex; gap:6px; flex-wrap:wrap;
   margin-top:8px; padding-top:7px;
@@ -273,7 +266,6 @@ h2::before {
 .src-tag.yt.available  { color:#d03030; border-color:rgba(200,48,48,.32); }
 .src-tag.sc.available  { color:#c85010; border-color:rgba(200,80,16,.32); }
 
-/* ── Note ── */
 .note {
   background:rgba(6,6,6,.88); border:1px solid rgba(70,70,70,.40);
   border-left:2px solid rgba(100,100,100,.60);
@@ -281,11 +273,9 @@ h2::before {
   text-align: center;
 }
 
-/* ── Format tags ── */
 .fmt-row { display:flex; flex-wrap:wrap; gap:4px; margin-top:7px; padding-top:7px; border-top:1px solid rgba(40,40,40,.80); }
 .fmt-tag { font-size:10px; padding:1px 7px; border:1px solid rgba(70,70,70,.40); color:#666; background:rgba(10,10,10,.60); }
 
-/* ── Preview ── */
 #previewPanel { display:none; margin-bottom:7px; }
 #previewPanel.visible { display:block; }
 
@@ -324,9 +314,6 @@ h2::before {
 .preview-checking { color:#555; }
 .preview-invalid  { color:var(--accent); }
 
-/* ════════════════════════════════════════════
-   MOBILE
-   ════════════════════════════════════════════ */
 @media (max-width: 600px) {
   body { padding:8px 4px 24px; font-size:13px; background-attachment:scroll; }
   #pageWrap { width:100%; }
@@ -468,7 +455,6 @@ const ICONS = {
   soundcloud: 'assets/images/SOUNDCLOUDAERO.png',
 };
 
-// ── DOM refs ──────────────────────────────────────────────────────────────────
 const urlInput           = document.getElementById('urlInput');
 const fmtSelect          = document.getElementById('fmtSelect');
 const dlBtn              = document.getElementById('dlBtn');
@@ -491,14 +477,12 @@ const previewBody        = document.getElementById('previewBody');
 const serverBanner       = document.getElementById('serverBanner');
 const urlIcon            = document.getElementById('urlIcon');
 
-// ── State ─────────────────────────────────────────────────────────────────────
 let ytEnabled    = false;
 let previewTimer = null;
 let wakeInterval = null;
 let wakeSeconds  = 0;
 let iconTimer    = null;
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function detectSource(url) {
@@ -549,7 +533,6 @@ function stopWakeTimer() {
   wakeTimerEl.classList.remove('visible');
 }
 
-// ── URL icon ──────────────────────────────────────────────────────────────────
 function setUrlIcon(state) {
   if (state === 'none') { urlIcon.classList.remove('visible'); return; }
   const map = { loading:ICON_LOADING, valid:ICON_VALID, invalid:ICON_INVALID, unknown:ICON_UNKNOWN };
@@ -571,7 +554,6 @@ function scheduleIconUpdate() {
 urlInput.addEventListener('input', scheduleIconUpdate);
 urlInput.addEventListener('paste', () => setTimeout(scheduleIconUpdate, 80));
 
-// ── Source tags ───────────────────────────────────────────────────────────────
 function applyTagStates() {
   [tagSp, tagYt, tagSc].forEach(t => t.classList.remove('initializing'));
   tagSp.classList.add('available');
@@ -579,7 +561,6 @@ function applyTagStates() {
   if (ytEnabled) tagYt.classList.add('available');
 }
 
-// ── Initial server check ──────────────────────────────────────────────────────
 async function initCheck() {
   serverBanner.classList.add('visible');
   for (let i = 0; i < 5; i++) {
@@ -600,13 +581,33 @@ async function initCheck() {
 }
 initCheck();
 
-// ── Wake server ───────────────────────────────────────────────────────────────
-// FIX: usa fetch direto (sem fetchWithTimeout) para evitar abort prematuro.
-// Retorna true assim que receber o primeiro 200 OK, sem continuar o loop.
-async function wakeServer() {
+// ── Download — abordagem em 2 fases ──────────────────────────────────────────
+// Fase 1: pinga GET / até o servidor responder 200 (máx 60s)
+// Fase 2: manda POST /download apenas depois que o servidor confirmou estar vivo
+// Isso evita o bug antigo onde o loop nunca parava e o POST nunca era enviado.
+async function startDownload() {
+  const url = urlInput.value.trim();
+  if (!url) { urlInput.focus(); return; }
+
+  const source = detectSource(url);
+  if (!source) {
+    statusBox.classList.add('visible'); setProgress(0);
+    setStatus('Unrecognized URL. Paste a valid Spotify, YouTube or SoundCloud link.', 'err');
+    return;
+  }
+  if (source === 'youtube' && !ytEnabled) {
+    statusBox.classList.add('visible'); setProgress(0);
+    setStatus('YouTube downloads are not available at this time.', 'err');
+    return;
+  }
+
+  dlBtn.disabled = true;
+  statusBox.classList.add('visible');
+  dlInfo.classList.remove('visible');
+  progFill.classList.add('indeterminate');
   startWakeTimer();
 
-  const msgs = [
+  const wakeMessages = [
     'Connecting to server...',
     'Server is waking up — this can take up to 60s...',
     'Still starting up, please wait...',
@@ -614,24 +615,84 @@ async function wakeServer() {
     'Hang tight, nearly there...',
   ];
 
-  setStatus(msgs[0]);
-
-  for (let i = 0; i < 45; i++) {
-    setStatus(msgs[Math.min(Math.floor(i / 2), msgs.length - 1)]);
-    try {
-      const res = await fetch(`${API_URL}/`, { method: 'GET' });
-      if (res.ok) {
-        stopWakeTimer();
-        return true;   // ← sai imediatamente ao receber 200
-      }
-    } catch(_) {
-      // servidor ainda inicializando, continua tentando
+  try {
+    // ── Fase 1: acordar o servidor ──────────────────────────────────────────
+    let serverAlive = false;
+    for (let i = 0; i < 20; i++) {
+      setStatus(wakeMessages[Math.min(Math.floor(i / 4), wakeMessages.length - 1)]);
+      try {
+        const ping = await fetch(`${API_URL}/`, { method: 'GET' });
+        if (ping.ok) { serverAlive = true; break; }
+      } catch(_) { /* ainda inicializando */ }
+      await sleep(3000);
     }
-    await sleep(2000);
-  }
 
-  stopWakeTimer();
-  return false;
+    if (!serverAlive) {
+      throw new Error('Server did not respond after 60 seconds. Try again in a moment.');
+    }
+
+    stopWakeTimer();
+
+    // ── Fase 2: enviar o download ───────────────────────────────────────────
+    setStatus('Downloading — this may take a few minutes…');
+    const dlStart = Date.now();
+
+    const response = await fetch(`${API_URL}/download`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, format: fmtSelect.value }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ detail: 'Unknown error.' }));
+      throw new Error(err.detail || `HTTP ${response.status}`);
+    }
+
+    const contentLength = parseInt(response.headers.get('Content-Length') || '0', 10);
+    if (contentLength > 0) {
+      dlSize.textContent = fmtBytes(contentLength);
+      dlEta.textContent  = fmtEta(contentLength);
+      dlInfo.classList.add('visible');
+    }
+
+    setStatus('Packaging file…');
+    setProgress(85);
+
+    const blob        = await response.blob();
+    const blobUrl     = URL.createObjectURL(blob);
+    const disposition = response.headers.get('Content-Disposition') || '';
+    const nameMatch   = disposition.match(/filename="?([^"]+)"?/);
+    const filename    = nameMatch ? nameMatch[1] : 'download.zip';
+
+    if (contentLength === 0 && blob.size > 0) {
+      dlSize.textContent = fmtBytes(blob.size);
+      const elapsed = (Date.now() - dlStart) / 1000;
+      dlEta.textContent = 'done in ' + (elapsed < 60
+        ? Math.ceil(elapsed) + 's'
+        : Math.floor(elapsed / 60) + 'm ' + Math.ceil(elapsed % 60) + 's');
+      dlInfo.classList.add('visible');
+    }
+
+    const a = document.createElement('a');
+    a.href = blobUrl; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(blobUrl);
+
+    setProgress(100);
+    setStatus('Download started. Check your downloads folder.', 'ok');
+
+  } catch(err) {
+    stopWakeTimer();
+    progFill.classList.remove('indeterminate');
+    progFill.style.width = '0%';
+    const raw = err.message || '';
+    const msg = (raw === 'Failed to fetch' || err.name === 'TypeError')
+      ? 'Could not reach the server. Wait a moment and try again.'
+      : raw;
+    setStatus('Error: ' + msg, 'err');
+  } finally {
+    dlBtn.disabled = false;
+  }
 }
 
 // ── Preview ───────────────────────────────────────────────────────────────────
@@ -691,92 +752,6 @@ function schedulePreview() {
 }
 urlInput.addEventListener('input', schedulePreview);
 urlInput.addEventListener('paste', () => { clearTimeout(previewTimer); previewTimer = setTimeout(() => renderPreview(urlInput.value), 250); });
-
-// ── Download ──────────────────────────────────────────────────────────────────
-async function startDownload() {
-  const url = urlInput.value.trim();
-  if (!url) { urlInput.focus(); return; }
-
-  const source = detectSource(url);
-  if (!source) {
-    statusBox.classList.add('visible'); setProgress(0);
-    setStatus('Unrecognized URL. Paste a valid Spotify, YouTube or SoundCloud link.', 'err');
-    return;
-  }
-  if (source === 'youtube' && !ytEnabled) {
-    statusBox.classList.add('visible'); setProgress(0);
-    setStatus('YouTube downloads are not available at this time.', 'err');
-    return;
-  }
-
-  dlBtn.disabled = true;
-  statusBox.classList.add('visible');
-  dlInfo.classList.remove('visible');
-  progFill.classList.add('indeterminate');
-
-  try {
-    const alive = await wakeServer();
-    if (!alive) throw new Error('Server did not respond after 90 seconds. Try again — Render may be restarting.');
-
-    setStatus('Downloading &mdash; this may take a few minutes&hellip;');
-    const dlStart = Date.now();
-
-    const response = await fetch(`${API_URL}/download`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url, format: fmtSelect.value }),
-    });
-
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({ detail: 'Unknown error.' }));
-      throw new Error(err.detail || `HTTP ${response.status}`);
-    }
-
-    const contentLength = parseInt(response.headers.get('Content-Length') || '0', 10);
-    if (contentLength > 0) {
-      dlSize.textContent = fmtBytes(contentLength);
-      dlEta.textContent  = fmtEta(contentLength);
-      dlInfo.classList.add('visible');
-    }
-
-    setStatus('Packaging file&hellip;');
-    setProgress(85);
-
-    const blob        = await response.blob();
-    const blobUrl     = URL.createObjectURL(blob);
-    const disposition = response.headers.get('Content-Disposition') || '';
-    const nameMatch   = disposition.match(/filename="?([^"]+)"?/);
-    const filename    = nameMatch ? nameMatch[1] : 'download.zip';
-
-    if (contentLength === 0 && blob.size > 0) {
-      dlSize.textContent = fmtBytes(blob.size);
-      const elapsed = (Date.now()-dlStart)/1000;
-      dlEta.textContent = 'done in ' + (elapsed<60 ? Math.ceil(elapsed)+'s' : Math.floor(elapsed/60)+'m '+Math.ceil(elapsed%60)+'s');
-      dlInfo.classList.add('visible');
-    }
-
-    const a = document.createElement('a');
-    a.href = blobUrl; a.download = filename;
-    document.body.appendChild(a); a.click(); a.remove();
-    URL.revokeObjectURL(blobUrl);
-
-    setProgress(100);
-    setStatus('Download started. Check your downloads folder.', 'ok');
-
-  } catch(err) {
-    stopWakeTimer();
-    progFill.classList.remove('indeterminate');
-    progFill.style.width = '0%';
-    const raw = err.message || '';
-    const msg = (raw === 'Failed to fetch' || err.name === 'TypeError')
-      ? 'Could not reach the server. It may still be starting &mdash; wait a moment and try again.'
-      : raw;
-    setStatus('Error: ' + msg, 'err');
-  } finally {
-    dlBtn.disabled = false;
-  }
-}
-
 urlInput.addEventListener('keydown', e => { if (e.key==='Enter') startDownload(); });
 </script>
 </body>
