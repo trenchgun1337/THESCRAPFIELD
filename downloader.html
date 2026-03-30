@@ -7,11 +7,20 @@
 <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 <link rel="stylesheet" href="https://unpkg.com/7.css">
 <style>
+/* ── Reset ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+/* ── Override 7.css global blue interactions ── */
+* { -webkit-tap-highlight-color: transparent; }
+::selection { background: rgba(60,218,86,.35) !important; color:#fff !important; }
+::-moz-selection { background: rgba(60,218,86,.35) !important; color:#fff !important; }
+*:focus { outline: none !important; }
+button:active, button:focus, button:focus-visible { outline:none !important; box-shadow:none !important; }
 
 :root {
   --accent:       #cc1a1a;
   --text:         #c8c8c8;
+  --green:        #3cda56;
   --glass-border: rgba(150,150,150,.40);
   --aero-border:  rgba(140,140,140,.40);
   --bar-grad: linear-gradient(to bottom,
@@ -25,10 +34,6 @@
   --bar-glow-top: linear-gradient(180deg,rgba(255,255,255,.14) 0%,rgba(200,200,200,.02) 100%);
   --bar-text:     #f2f2f2;
   --bar-tshadow:  0 1px 3px rgba(0,0,0,.98), 0 0 10px rgba(200,200,200,.20);
-  --ctrl-grad: linear-gradient(to bottom,
-    rgba(255,255,255,.18) 0%, rgba(165,165,165,.86) 0%,
-    rgba(100,100,100,.76) 4%, rgba(32,32,32,.98) 52%,
-    rgba(7,7,7,1) 52%, rgba(90,90,90,.68) 100%);
 }
 
 body {
@@ -42,7 +47,7 @@ body {
 }
 
 a { color: var(--text); text-decoration: none; }
-a:hover { color: #3cda56; text-decoration: underline; }
+a:hover { color: var(--green); text-decoration: underline; }
 p { font-size: 12.5px; line-height: 18px; color: var(--text); margin:0; }
 p + p { margin-top: 5px; }
 strong { color: var(--accent); font-weight: 400; }
@@ -62,153 +67,170 @@ html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent
   border-top-color: var(--bar-border-t); border-bottom-color: var(--bar-border-b);
   box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
   color: var(--bar-text); font-size: 14.6px; font-weight: 400;
-  padding: 1px; text-shadow: var(--bar-tshadow);
-  position:relative; overflow:hidden; display:flex; align-items:center; margin-bottom:7px;
+  padding: 2px 4px; text-shadow: var(--bar-tshadow);
+  position:relative; overflow:hidden; display:flex; align-items:center; gap:4px; margin-bottom:7px;
 }
 .aero-bar::before {
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
   background: var(--bar-glow-top); pointer-events:none;
 }
 .aero-bar .back-link {
-  z-index:1; flex-shrink:0;
-  padding:2px 6px 2px 2px; display:flex; align-items:center;
+  z-index:1; flex-shrink:0; padding:2px 3px;
+  display:flex; align-items:center; line-height:0;
 }
 .aero-bar .back-link img {
-  height:28px; width:28px; object-fit:contain;
+  height:30px; width:auto; object-fit:contain; display:block;
   filter: drop-shadow(0 1px 2px rgba(0,0,0,.80));
-  transition: filter .15s;
+  transition: filter .15s, transform .15s;
 }
-.aero-bar .back-link:hover img { filter: drop-shadow(0 0 4px rgba(60,218,86,.70)) brightness(1.2); }
-.aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:40px; }
+.aero-bar .back-link:hover img {
+  filter: drop-shadow(0 0 5px rgba(60,218,86,.80)) brightness(1.15);
+  transform: translateX(-1px);
+}
+.aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:36px; }
 
 /* ── Server Banner ── */
 #serverBanner {
-  display: none;
-  position: relative; overflow: hidden;
+  display:none; position:relative; overflow:hidden;
   background: linear-gradient(to bottom,
     rgba(255,255,255,.30) 0%, rgba(235,235,235,.97) 0%,
     rgba(210,210,210,.92) 4%, rgba(225,225,225,.98) 52%,
     rgba(200,200,200,1) 52%, rgba(215,215,215,.97) 100%);
-  border: 1px solid rgba(160,160,160,.70);
-  border-top-color: rgba(255,255,255,.90);
-  border-bottom-color: rgba(100,100,100,.50);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.80), 0 3px 8px rgba(0,0,0,.35);
-  padding: 5px 10px; margin-bottom: 7px;
-  align-items: center; gap: 8px;
-  color: #1a1a1a; font-size: 11.5px;
-  text-shadow: 0 1px 0 rgba(255,255,255,.60);
+  border:1px solid rgba(160,160,160,.70);
+  border-top-color:rgba(255,255,255,.90); border-bottom-color:rgba(100,100,100,.50);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.80), 0 3px 8px rgba(0,0,0,.35);
+  padding:5px 10px; margin-bottom:7px;
+  align-items:center; gap:8px;
+  color:#1a1a1a; font-size:11.5px;
+  text-shadow:0 1px 0 rgba(255,255,255,.60);
 }
 #serverBanner::before {
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background: linear-gradient(180deg,rgba(255,255,255,.50) 0%,rgba(255,255,255,.05) 100%);
+  background:linear-gradient(180deg,rgba(255,255,255,.50) 0%,rgba(255,255,255,.05) 100%);
   pointer-events:none;
 }
-#serverBanner.visible { display: flex; }
+#serverBanner.visible { display:flex; }
 #serverBanner img { height:18px; width:18px; flex-shrink:0; z-index:1; }
 #serverBanner span { z-index:1; }
 
 /* ── Glass Box ── */
 .glass-box {
   background-image: linear-gradient(rgb(255 255 255 / 12%), rgb(0 0 0 / 100%));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 10px rgba(200,200,200,.04), 0 5px 6px rgba(0,0,0,.55);
-  border: 1px solid var(--glass-border); padding: 5px; margin-bottom: 7px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 10px rgba(200,200,200,.04), 0 5px 6px rgba(0,0,0,.55);
+  border:1px solid var(--glass-border); padding:5px; margin-bottom:7px;
 }
-.aero-inner { border: 1px solid var(--aero-border); background: rgba(6,6,6,.92); }
-.aero-pad   { padding: 10px 12px; }
+.aero-inner { border:1px solid var(--aero-border); background:rgba(6,6,6,.92); }
+.aero-pad   { padding:10px 12px; }
 
 h2 {
   background: var(--bar-grad);
-  box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
-  border: 1px solid var(--bar-border-s);
-  border-top-color: var(--bar-border-t); border-bottom-color: var(--bar-border-b);
-  padding: 5px 8px 7px; margin:0;
-  font-weight:400; font-size:13px; color: var(--bar-text); text-shadow: var(--bar-tshadow);
+  box-shadow:inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
+  border:1px solid var(--bar-border-s);
+  border-top-color:var(--bar-border-t); border-bottom-color:var(--bar-border-b);
+  padding:5px 8px 7px; margin:0;
+  font-weight:400; font-size:13px; color:var(--bar-text); text-shadow:var(--bar-tshadow);
   position:relative; overflow:hidden;
 }
 h2::before {
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background: var(--bar-glow-top); pointer-events:none;
+  background:var(--bar-glow-top); pointer-events:none;
 }
 
-/* ── URL Row ── */
+/* ── URL Row — icon INSIDE the text input ── */
 .url-row {
   display:flex;
-  border: 1px solid rgba(100,100,100,.50);
-  border-top-color: rgba(255,255,255,.08);
-  overflow: hidden; margin-bottom:6px;
+  border:1px solid rgba(100,100,100,.50);
+  border-top-color:rgba(255,255,255,.08);
+  overflow:hidden; margin-bottom:6px;
 }
+.url-input-wrap { flex:1; position:relative; min-width:0; }
 .url-input {
-  flex:1; background: rgba(255,255,255,0.9);
+  width:100%; background:rgba(255,255,255,0.9);
   border:none; outline:none; color:#000;
-  font-family:Tahoma,sans-serif; font-size:12px; padding:7px 10px;
-  min-width:0;
+  font-family:Tahoma,sans-serif; font-size:12px;
+  padding:7px 30px 7px 10px;
+  display:block;
 }
 .url-input::placeholder { color:#696969; }
 .url-input:focus { background:rgba(216,216,216,0.96); }
 
 #urlIcon {
-  display:none; width:22px; height:22px;
-  object-fit:contain; flex-shrink:0;
-  align-self:center; margin:0 5px; background:transparent;
+  position:absolute; right:5px; top:50%; transform:translateY(-50%);
+  width:20px; height:20px; object-fit:contain;
+  display:none; pointer-events:none;
 }
 #urlIcon.visible { display:block; }
 
-/* ── Format Select — black/green aero ── */
+/* ── Format Select — aero dark green ── */
 .fmt-select {
-  background: linear-gradient(to bottom,
-    rgba(0,60,0,.92) 0%,
-    rgba(0,40,0,.97) 4%,
-    rgba(0,20,0,1) 52%,
-    rgba(0,10,0,1) 52%,
-    rgba(0,30,0,.95) 100%);
-  border:none;
-  border-left:1px solid rgba(0,120,0,.55);
-  border-top:1px solid rgba(0,180,0,.18);
-  color:#3cda56;
-  font-family:Tahoma,sans-serif; font-size:11.5px;
-  padding:0 8px; cursor:pointer; outline:none; flex-shrink:0;
-  box-shadow: inset 0 1px 0 rgba(0,255,0,.08), inset 0 0 6px rgba(0,0,0,.60);
-  min-width:70px;
-  text-shadow: 0 0 6px rgba(60,218,86,.50);
+  appearance: none; -webkit-appearance: none;
+  background-color: #010d01;
+  background-image:
+    linear-gradient(to bottom,
+      rgba(0,80,0,.88) 0%, rgba(0,50,0,.96) 3%,
+      rgba(0,18,0,1) 50%, rgba(0,8,0,1) 50%,
+      rgba(0,30,0,.94) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5'%3E%3Cpath d='M0 0l5 5 5-5z' fill='%233cda56'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat;
+  background-position: 0 0, calc(100% - 7px) 55%;
+  border: none;
+  border-left: 1px solid rgba(0,120,0,.40);
+  border-top: 1px solid rgba(60,218,86,.10);
+  border-bottom: 1px solid rgba(0,0,0,.80);
+  color: var(--green);
+  font-family: Tahoma, sans-serif; font-size: 11.5px;
+  padding: 0 22px 0 8px;
+  cursor: pointer; outline: none; flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(0,255,0,.06), inset 0 0 8px rgba(0,0,0,.70);
+  min-width: 80px;
+  text-shadow: 0 0 8px rgba(60,218,86,.35);
 }
 .fmt-select option {
-  background:#020d02;
-  color:#3cda56;
+  background: #020d02; color: var(--green);
+  font-family: Tahoma, sans-serif;
 }
 
-/* ── Download Button ── */
+/* ── Download Button — full override of 7.css ── */
 .main-dl-btn {
-  width:100%;
-  background:linear-gradient(to bottom,
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  background: linear-gradient(to bottom,
     rgba(255,255,255,.20) 0%, rgba(190,190,190,.90) 0%,
     rgb(157 251 156 / 80%) 4%, rgb(25 180 20 / 98%) 52%,
     rgb(4 100 11) 52%, rgb(24 140 8 / 96%) 100%);
-  border:1px solid rgb(20 180 23 / 80%);
-  border-top-color:rgba(100,255,100,0.28); border-bottom-color:rgba(0,0,0,.88);
-  box-shadow: inset 0 1px 0 rgba(255,180,180,.18), inset 0 2px 4px rgba(255,255,255,.06), 0 3px 8px rgba(0,0,0,.52);
-  color:#fff; font-family:Tahoma,sans-serif; font-size:13px; font-weight:400;
-  padding:7px 0 9px; cursor:pointer;
-  text-shadow:0 1px 3px rgba(0,0,0,.96);
-  position:relative; letter-spacing:.3px;
-  display:flex; align-items:center; justify-content:center; gap:8px;
-  min-height:44px; -webkit-tap-highlight-color:transparent;
-  transition: opacity .2s, filter .15s;
+  border: 1px solid rgba(20,180,23,.80);
+  border-top-color: rgba(100,255,100,.28);
+  border-bottom-color: rgba(0,0,0,.88);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 2px 4px rgba(255,255,255,.06), 0 3px 8px rgba(0,0,0,.52);
+  color: #fff;
+  font-family: Tahoma, sans-serif; font-size: 13px; font-weight: 400;
+  letter-spacing: .3px;
+  text-shadow: 0 1px 3px rgba(0,0,0,.96);
+  padding: 8px 0 10px;
+  cursor: pointer;
+  position: relative;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px;
+  transition: filter .15s;
 }
 .main-dl-btn::before {
   content:''; position:absolute; top:0; left:0; right:0; height:50%;
   background:linear-gradient(to bottom,rgba(255,255,255,.16) 0%,rgba(255,255,255,.04) 100%);
   pointer-events:none;
 }
-.main-dl-btn:hover:not(:disabled)  { filter:brightness(1.14); }
-.main-dl-btn:active:not(:disabled) { filter:brightness(0.92); }
+.main-dl-btn:hover:not(:disabled) { filter:brightness(1.14); }
+.main-dl-btn:active:not(:disabled) { filter:brightness(0.90); }
 .main-dl-btn:disabled {
-  opacity:.38; cursor:not-allowed;
-  background:var(--bar-grad) !important; border-color:rgba(80,80,80,.50) !important;
+  opacity: .36; cursor: not-allowed;
+  background: var(--bar-grad);
+  border-color: rgba(80,80,80,.50);
+  box-shadow: none;
 }
-#dlBtnIcon  {
-  height:28px; width:28px; object-fit:contain; flex-shrink:0; position:relative; z-index:1;
-  /* hidden until loaded */
-  opacity:0; transition: opacity .3s;
+#dlBtnIcon {
+  height:26px; width:26px; object-fit:contain; flex-shrink:0;
+  position:relative; z-index:1;
+  opacity:0; transition:opacity .3s;
 }
 #dlBtnIcon.loaded { opacity:1; }
 #dlBtnLabel { position:relative; z-index:1; }
@@ -224,13 +246,13 @@ h2::before {
 }
 #statusBox.visible { display:block; }
 
-.status-row { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:6px; }
+.status-row { display:flex; align-items:center; gap:10px; margin-bottom:5px; }
 #statusText {
   font-size:11.5px; color:#aaa;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   flex:1; text-align:center;
 }
-#statusText .ok  { color:#3cda56; }
+#statusText .ok  { color:var(--green); }
 #statusText .err { color:var(--accent); }
 
 #wakeTimer {
@@ -242,149 +264,120 @@ h2::before {
 #wakeTimer.visible { display:block; }
 #wakeTimer .timer-sec { color:#bbb; }
 
-#dlInfo { display:none; font-size:11px; color:#666; text-align:center; margin-bottom:6px; }
+#dlInfo { display:none; font-size:11px; color:#666; text-align:center; margin-bottom:5px; }
 #dlInfo.visible { display:block; }
 #dlInfo .info-val { color:#999; }
 
-/* ── 7.css progress bar overrides to match aero dark theme ── */
+/* ── 7.css progress bar — dark skin ── */
 #statusBox [role=progressbar] {
-  width: 100%;
-  margin: 0;
+  width:100%; margin:0;
+  border: 1px solid rgba(80,80,80,.80) !important;
+  background: #070707 !important;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.85) !important;
 }
-/* override 7.css default light background for dark theme */
 #statusBox [role=progressbar] > div {
+  background: linear-gradient(to bottom,
+    rgba(220,220,220,.90) 0%, rgba(165,165,165,.94) 45%,
+    rgba(105,105,105,.88) 50%, rgba(155,155,155,.86) 100%) !important;
   transition: width .4s ease;
 }
+#statusBox [role=progressbar].error > div {
+  background: linear-gradient(to bottom,
+    rgba(220,60,60,.90) 0%, rgba(160,30,30,.94) 50%,
+    rgba(100,10,10,.88) 50%, rgba(140,20,20,.86) 100%) !important;
+}
 
-/* ── Source Row — now aero style ── */
+/* ── Source Row — aero tiles ── */
 .src-row {
-  display:flex; gap:6px; flex-wrap:wrap;
+  display:flex; gap:5px; flex-wrap:wrap;
   margin-top:8px; padding-top:7px;
   border-top:1px solid rgba(50,50,50,.80); align-items:stretch;
 }
-
 .src-tag {
   font-size:10.5px; padding:5px 10px 5px 7px;
   display:flex; align-items:center; gap:6px;
-  flex:1; min-width:140px;
-  cursor:default; flex-shrink:0;
+  flex:1; min-width:145px;
+  cursor:default;
   position:relative; overflow:hidden;
-
-  /* aero glass */
   background: linear-gradient(to bottom,
-    rgba(255,255,255,.08) 0%,
-    rgba(60,60,60,.15) 49%,
-    rgba(20,20,20,.60) 50%,
-    rgba(10,10,10,.80) 100%);
-  border: 1px solid rgba(80,80,80,.55);
-  border-top-color: rgba(140,140,140,.30);
-  border-bottom-color: rgba(0,0,0,.70);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 2px 4px rgba(0,0,0,.40);
-  color: #444;
-
-  transition: color .15s, border-color .15s, background .15s, box-shadow .15s;
+    rgba(255,255,255,.07) 0%, rgba(50,50,50,.14) 49%,
+    rgba(15,15,15,.65) 50%, rgba(8,8,8,.88) 100%);
+  border:1px solid rgba(70,70,70,.55);
+  border-top-color:rgba(130,130,130,.25);
+  border-bottom-color:rgba(0,0,0,.75);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 2px 4px rgba(0,0,0,.45);
+  color:#333;
+  transition: color .18s, border-color .18s, background .18s, box-shadow .18s, text-shadow .18s;
 }
 .src-tag::before {
   content:''; position:absolute; top:0; left:0; right:0; height:49%;
-  background: linear-gradient(to bottom, rgba(255,255,255,.07) 0%, transparent 100%);
+  background:linear-gradient(to bottom,rgba(255,255,255,.055) 0%,transparent 100%);
   pointer-events:none;
 }
 .src-tag img {
   height:16px; width:16px; object-fit:contain; flex-shrink:0;
-  filter:grayscale(1) brightness(0.30); transition:filter .20s;
+  filter:grayscale(1) brightness(0.22); transition:filter .22s;
   position:relative; z-index:1;
 }
 .src-tag span { position:relative; z-index:1; }
-
 .src-tag.initializing { animation:tagPulse 1.8s infinite ease-in-out; }
-@keyframes tagPulse { 0%,100%{opacity:.35} 50%{opacity:.75} }
+@keyframes tagPulse { 0%,100%{opacity:.28} 50%{opacity:.68} }
 
 .src-tag.available {
-  color:#999;
-  border-color: rgba(120,120,120,.50);
-  border-top-color: rgba(200,200,200,.18);
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.14) 0%,
-    rgba(80,80,80,.18) 49%,
-    rgba(25,25,25,.75) 50%,
-    rgba(12,12,12,.92) 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.10), 0 2px 6px rgba(0,0,0,.50);
+  color:#888;
+  border-color:rgba(110,110,110,.50); border-top-color:rgba(190,190,190,.18);
+  background:linear-gradient(to bottom,
+    rgba(255,255,255,.12) 0%, rgba(70,70,70,.16) 49%,
+    rgba(20,20,20,.80) 50%, rgba(10,10,10,.94) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09), 0 2px 6px rgba(0,0,0,.52);
 }
-.src-tag.available img { filter: none; }
-
-.src-tag.sp.available {
-  color:#1db954;
-  border-color: rgba(29,185,84,.35);
-  border-top-color: rgba(29,185,84,.18);
-  box-shadow: inset 0 1px 0 rgba(29,185,84,.10), 0 2px 6px rgba(0,0,0,.50), 0 0 8px rgba(29,185,84,.06);
-  text-shadow: 0 0 8px rgba(29,185,84,.30);
-}
-.src-tag.yt.available {
-  color:#d03030;
-  border-color: rgba(200,48,48,.35);
-  border-top-color: rgba(200,48,48,.18);
-  box-shadow: inset 0 1px 0 rgba(200,48,48,.10), 0 2px 6px rgba(0,0,0,.50), 0 0 8px rgba(200,48,48,.06);
-  text-shadow: 0 0 8px rgba(200,48,48,.30);
-}
-.src-tag.sc.available {
-  color:#c85010;
-  border-color: rgba(200,80,16,.35);
-  border-top-color: rgba(200,80,16,.18);
-  box-shadow: inset 0 1px 0 rgba(200,80,16,.10), 0 2px 6px rgba(0,0,0,.50), 0 0 8px rgba(200,80,16,.06);
-  text-shadow: 0 0 8px rgba(200,80,16,.30);
-}
+.src-tag.available img { filter:none; }
+.src-tag.sp.available { color:#1db954; border-color:rgba(29,185,84,.32); border-top-color:rgba(29,185,84,.16);
+  box-shadow:inset 0 1px 0 rgba(29,185,84,.09),0 2px 6px rgba(0,0,0,.52),0 0 10px rgba(29,185,84,.05);
+  text-shadow:0 0 10px rgba(29,185,84,.25); }
+.src-tag.yt.available { color:#d03030; border-color:rgba(200,48,48,.32); border-top-color:rgba(200,48,48,.16);
+  box-shadow:inset 0 1px 0 rgba(200,48,48,.09),0 2px 6px rgba(0,0,0,.52),0 0 10px rgba(200,48,48,.05);
+  text-shadow:0 0 10px rgba(200,48,48,.25); }
+.src-tag.sc.available { color:#c85010; border-color:rgba(200,80,16,.32); border-top-color:rgba(200,80,16,.16);
+  box-shadow:inset 0 1px 0 rgba(200,80,16,.09),0 2px 6px rgba(0,0,0,.52),0 0 10px rgba(200,80,16,.05);
+  text-shadow:0 0 10px rgba(200,80,16,.25); }
 
 /* ── Note ── */
 .note {
   background:rgba(6,6,6,.88); border:1px solid rgba(70,70,70,.40);
-  border-left:2px solid rgba(100,100,100,.60);
-  padding:7px 10px; margin-top:6px; font-size:11.5px; color:#888; line-height:1.6;
-  text-align: center;
+  border-left:2px solid rgba(100,100,100,.55);
+  padding:7px 10px; margin-top:6px; font-size:11px; color:#777; line-height:1.65;
+  text-align:center;
 }
 
-/* ── Format Info — aero table ── */
+/* ── Format chips — plain inline text ── */
 .fmt-info {
   margin-top:8px; padding-top:7px;
   border-top:1px solid rgba(40,40,40,.80);
+  display:flex; flex-wrap:wrap; gap:2px 10px; align-items:center;
 }
-.fmt-info-title {
-  font-size:10.5px; color:#555; margin-bottom:5px; letter-spacing:.5px; text-transform:uppercase;
+.fmt-chip {
+  font-size:10.5px; color:#545454;
+  display:inline-flex; align-items:center; gap:5px;
+  padding:2px 0;
 }
-.fmt-grid {
-  display:grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap:4px;
+.fmt-chip::before {
+  content:''; display:inline-block;
+  width:5px; height:5px; border-radius:50%; flex-shrink:0;
 }
-.fmt-item {
-  display:flex; align-items:center; gap:6px;
-  padding:4px 8px;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.06) 0%,
-    rgba(30,30,30,.12) 49%,
-    rgba(10,10,10,.55) 50%,
-    rgba(5,5,5,.80) 100%);
-  border:1px solid rgba(55,55,55,.55);
-  border-top-color:rgba(120,120,120,.20);
-  border-bottom-color:rgba(0,0,0,.60);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
-  position:relative; overflow:hidden;
-}
-.fmt-item::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:49%;
-  background:linear-gradient(to bottom,rgba(255,255,255,.05) 0%,transparent 100%);
-  pointer-events:none;
-}
-.fmt-dot {
-  width:6px; height:6px; border-radius:50%; flex-shrink:0; position:relative; z-index:1;
-}
-.fmt-label { font-size:10px; color:#777; position:relative; z-index:1; }
-.fmt-label strong { color:#aaa; font-weight:400; }
+.fmt-chip.cb::before  { background:#5b9bd5; box-shadow:0 0 3px #5b9bd588; }
+.fmt-chip.cg::before  { background:#3cda56; box-shadow:0 0 3px #3cda5688; }
+.fmt-chip.co::before  { background:#c88020; box-shadow:0 0 3px #c8802088; }
+.fmt-chip.cr::before  { background:#c04040; box-shadow:0 0 3px #c0404088; }
+.fmt-chip.cp::before  { background:#8090c0; box-shadow:0 0 3px #8090c088; }
+.fmt-chip strong { color:#6a6a6a; font-weight:400; }
 
 /* ── Preview Panel ── */
 #previewPanel { display:none; margin-bottom:7px; }
 #previewPanel.visible { display:block; }
-
 .preview-header {
   background:var(--bar-grad);
-  box-shadow:inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
+  box-shadow:inset 0 1px 0 var(--bar-shine),inset 0 2px 4px rgba(255,255,255,.10),0 3px 10px rgba(0,0,0,.48);
   border:1px solid var(--bar-border-s);
   border-top-color:var(--bar-border-t); border-bottom-color:var(--bar-border-b);
   padding:5px 8px 7px; font-weight:400; font-size:12px; color:var(--bar-text);
@@ -408,71 +401,49 @@ h2::before {
   display:flex; align-items:center; gap:10px; padding:7px 10px;
   border-top:1px solid rgba(40,40,40,.80); background:rgba(5,5,5,.94); flex-wrap:wrap;
 }
-.preview-meta-icon  { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
-.preview-meta-info  { flex:1; min-width:0; }
+.preview-meta-icon { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
+.preview-meta-info { flex:1; min-width:0; }
 .preview-meta-title { font-size:12px; color:#ccc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
 .preview-meta-sub   { font-size:10.5px; color:#555; }
 .preview-meta-badge {
-  font-size:10px; padding:2px 7px;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.08) 0%, rgba(40,40,40,.15) 49%,
-    rgba(10,10,10,.70) 50%, rgba(5,5,5,.90) 100%);
-  border:1px solid rgba(70,70,70,.50);
-  border-top-color:rgba(140,140,140,.20);
-  color:#777; white-space:nowrap; flex-shrink:0;
+  font-size:10px; padding:3px 8px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.08) 0%,rgba(40,40,40,.14) 49%,rgba(10,10,10,.72) 50%,rgba(5,5,5,.90) 100%);
+  border:1px solid rgba(70,70,70,.50); border-top-color:rgba(140,140,140,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+  color:#666; white-space:nowrap; flex-shrink:0;
 }
 .preview-checking, .preview-invalid { padding:12px; font-size:11.5px; text-align:center; }
 .preview-checking { color:#555; }
 .preview-invalid  { color:var(--accent); }
 
-/* ── Est. size badge (shown on link paste) ── */
-#estSizeBadge {
-  display:none;
-  font-size:10.5px; padding:3px 9px;
-  background:rgba(0,20,0,.80);
-  border:1px solid rgba(0,100,0,.35);
-  border-top-color:rgba(0,180,0,.15);
-  color:#3cda56; margin-left:4px; white-space:nowrap;
-  text-shadow:0 0 6px rgba(60,218,86,.40);
-}
-#estSizeBadge.visible { display:inline-block; }
-
 /* ── Mobile ── */
-@media (max-width: 600px) {
-  body {
-    padding:8px 4px 24px;
-    font-size:13px;
-    background-size:cover;
-    background-attachment:scroll;
-    background-position:center top;
-  }
+@media (max-width:600px) {
+  body { padding:8px 4px 24px; font-size:13px;
+    background-size:cover; background-attachment:scroll; background-position:center center; }
   #pageWrap { width:100%; }
   .aero-bar { font-size:13px; }
-  .aero-bar .back-link img { height:26px; width:26px; }
-  .aero-bar .bar-title  { padding-right:0; font-size:12px; }
+  .aero-bar .back-link img { height:26px; }
+  .aero-bar .bar-title { padding-right:0; font-size:12px; }
   h2 { font-size:12.5px; }
   .aero-pad { padding:10px; }
   p { font-size:12px; line-height:17px; }
-  .url-row { flex-wrap:nowrap; }
-  .url-input { font-size:16px; padding:9px 8px; }
-  .fmt-select { font-size:13px; padding:0 6px; min-width:68px; }
+  .url-input { font-size:16px; padding:9px 30px 9px 8px; }
+  .fmt-select { font-size:13px; min-width:80px; }
   .main-dl-btn { font-size:14px; min-height:50px; padding:10px 0 12px; }
   #statusText { white-space:normal; font-size:11px; }
-  .src-row { flex-direction:column; gap:5px; }
+  .src-row { flex-direction:column; gap:4px; }
   .src-tag { font-size:11px; padding:7px 10px 7px 8px; width:100%; min-width:0; }
   .src-tag img { height:17px; width:17px; }
-  .note { font-size:11px; }
-  .fmt-grid { grid-template-columns: 1fr 1fr; }
+  .note { font-size:10.5px; }
   .preview-meta { gap:8px; }
   .preview-meta-info { min-width:120px; }
   #serverBanner { font-size:11px; }
   .glass-box { padding:4px; }
   #dlInfo { white-space:normal; line-height:1.7; }
 }
-@media (max-width: 380px) {
+@media (max-width:380px) {
   .aero-bar .bar-title { font-size:11px; }
   .main-dl-btn { font-size:13px; }
-  .fmt-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -480,66 +451,69 @@ h2::before {
 <div id="pageWrap">
 
   <div class="aero-bar">
-    <a class="back-link" href="index.html#resources" title="Back to Resources">
-      <img src="https://www.picmix.com/stamp/frutiger-aero-arrow-2608469" alt="Back"
-        onerror="this.src='';this.alt='&laquo;'">
+    <a class="back-link" href="index.html#resources" title="Back">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&lsaquo;"
+        onerror="this.outerHTML='<span style=\'color:#bbb;font-size:22px;line-height:1;z-index:1;\'>&#8249;</span>'">
     </a>
     <span class="bar-title">Ultimate Downloader Converter</span>
   </div>
 
   <div id="serverBanner">
     <img src="https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif" alt="">
-    <span>Server is initializing, please wait</span>
+    <span>Server is initializing, please wait&hellip;</span>
   </div>
 
   <div class="glass-box">
     <h2>Download</h2>
     <div class="aero-inner">
       <div class="aero-pad">
-        <p style="margin-bottom:9px;">Paste a <strong>Spotify</strong> album, track or playlist &mdash; <strong>YouTube</strong> video or playlist &mdash; or <strong>SoundCloud</strong> track or set link below. Content will be downloaded directly to your computer.</p>
+
+        <p style="margin-bottom:9px;">
+          Supports <strong>Spotify</strong> tracks, albums &amp; playlists &mdash;
+          <strong>YouTube</strong> videos &amp; playlists &mdash;
+          <strong>SoundCloud</strong> tracks &amp; sets.
+          Files are delivered as ZIP directly to your browser.
+        </p>
 
         <div class="url-row">
-          <input type="text" id="urlInput" class="url-input"
-            placeholder="Insert Your Link Here..."
-            autocomplete="off" spellcheck="false" inputmode="url">
-          <img id="urlIcon" src="" alt="">
+          <div class="url-input-wrap">
+            <input type="text" id="urlInput" class="url-input"
+              placeholder="Paste your link here..."
+              autocomplete="off" spellcheck="false" inputmode="url">
+            <img id="urlIcon" src="" alt="">
+          </div>
           <select id="fmtSelect" class="fmt-select">
-            <optgroup label="Audio" style="background:#020d02;color:#3cda56;">
-              <option value="mp3">MP3</option>
-              <option value="flac">FLAC</option>
-              <option value="ogg">OGG</option>
-              <option value="opus">OPUS</option>
-              <option value="aac">AAC</option>
-            </optgroup>
-            <optgroup label="Video (YT only)" id="videoGroup" style="background:#020d02;color:#3cda56;">
-              <option value="mp4">MP4</option>
-              <option value="webm">WEBM</option>
-              <option value="mkv">MKV</option>
-            </optgroup>
+            <option value="mp3">MP3</option>
+            <option value="flac">FLAC</option>
+            <option value="ogg">OGG</option>
+            <option value="opus">OPUS</option>
+            <option value="aac">AAC</option>
+            <option value="mp4"  id="optMp4" >MP4 ▶</option>
+            <option value="webm" id="optWebm">WEBM ▶</option>
+            <option value="mkv"  id="optMkv" >MKV ▶</option>
           </select>
         </div>
 
-        <button class="main-dl-btn" id="dlBtn" disabled onclick="startDownload()">
+        <button class="main-dl-btn" id="dlBtn" disabled>
           <img id="dlBtnIcon"
-            src="https://www.picmix.com/stamp/Android-Jelly-Bean-Downloads-Icon-2799833"
+            src="https://img1.picmix.com/output/stamp/normal/3/3/8/2/2792833_cd2d2.gif"
             alt=""
-            onload="onDlIconLoad()"
-            onerror="onDlIconError()">
+            onload="onDlIconLoad(this)"
+            onerror="onDlIconError(this)">
           <span id="dlBtnLabel">DOWNLOAD</span>
         </button>
 
         <div id="statusBox">
           <div class="status-row">
-            <div id="statusText">Connecting...</div>
+            <div id="statusText">—</div>
             <div id="wakeTimer"><span class="timer-sec" id="timerVal">0</span>s</div>
           </div>
           <div id="dlInfo">
-            Est. size: <span class="info-val" id="dlSize">&mdash;</span>
+            Est. size: <span class="info-val" id="dlSize">—</span>
             &nbsp;&nbsp;|&nbsp;&nbsp;
-            Estimated time: <span class="info-val" id="dlEta">&mdash;</span>
+            Est. time: <span class="info-val" id="dlEta">—</span>
           </div>
-          <!-- 7.css progress bar -->
-          <div role="progressbar" id="progressBar" class="marquee"></div>
+          <div role="progressbar" id="progressBar"></div>
         </div>
 
         <div class="src-row">
@@ -558,38 +532,16 @@ h2::before {
         </div>
 
         <div class="note">
-          Individual tracks download faster. Large playlists or albums may take several minutes. The server may need up to 60 seconds to wake if it was idle. Do not close the page while downloading.
+          Individual tracks download fastest. Large playlists may take several minutes.
+          Server may need up to 60s to wake from idle &mdash; do not close the page.
         </div>
 
-        <!-- Aero format info grid -->
         <div class="fmt-info">
-          <div class="fmt-info-title">Supported Formats</div>
-          <div class="fmt-grid">
-            <div class="fmt-item">
-              <div class="fmt-dot" style="background:#5b9bd5;box-shadow:0 0 4px #5b9bd5aa;"></div>
-              <div class="fmt-label"><strong>MP3</strong> &mdash; universal compatibility</div>
-            </div>
-            <div class="fmt-item">
-              <div class="fmt-dot" style="background:#3cda56;box-shadow:0 0 4px #3cda56aa;"></div>
-              <div class="fmt-label"><strong>FLAC</strong> &mdash; lossless quality</div>
-            </div>
-            <div class="fmt-item">
-              <div class="fmt-dot" style="background:#c88020;box-shadow:0 0 4px #c88020aa;"></div>
-              <div class="fmt-label"><strong>OGG/OPUS</strong> &mdash; smaller file size</div>
-            </div>
-            <div class="fmt-item">
-              <div class="fmt-dot" style="background:#c04040;box-shadow:0 0 4px #c04040aa;"></div>
-              <div class="fmt-label"><strong>MP4/WEBM</strong> &mdash; video (YouTube only)</div>
-            </div>
-            <div class="fmt-item">
-              <div class="fmt-dot" style="background:#9b59b6;box-shadow:0 0 4px #9b59b6aa;"></div>
-              <div class="fmt-label"><strong>Cover art</strong> &mdash; embedded in file</div>
-            </div>
-            <div class="fmt-item">
-              <div class="fmt-dot" style="background:#aaaaaa;box-shadow:0 0 4px #aaaaaaaa;"></div>
-              <div class="fmt-label"><strong>Metadata</strong> &mdash; title, artist, album</div>
-            </div>
-          </div>
+          <span class="fmt-chip cb"><strong>MP3</strong> universal</span>
+          <span class="fmt-chip cg"><strong>FLAC</strong> lossless</span>
+          <span class="fmt-chip co"><strong>OGG/OPUS</strong> compact</span>
+          <span class="fmt-chip cp"><strong>AAC</strong> high quality</span>
+          <span class="fmt-chip cr"><strong>MP4/WEBM/MKV</strong> video &mdash; YouTube only</span>
         </div>
 
       </div>
@@ -609,375 +561,300 @@ h2::before {
 </div>
 
 <script>
-// ── Config ────────────────────────────────────────────────────────────────────
 const API_URL = "https://watanagashi-api.onrender.com";
 
 const ICON_LOADING = 'https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif';
 const ICON_UNKNOWN = 'https://img1.picmix.com/output/stamp/normal/2/8/4/8/2848482_a4aff.png';
 const ICON_VALID   = 'https://img1.picmix.com/output/stamp/normal/9/7/4/6/2866479_1ede5.gif';
 const ICON_INVALID = 'https://img1.picmix.com/output/stamp/normal/7/0/2/4/1104207_1c291.png';
-
-const ICONS = {
-  spotify:    'assets/images/SPOTIFYAERO.jpeg',
-  youtube:    'assets/images/YOUTUBEAERO.png',
-  soundcloud: 'assets/images/SOUNDCLOUDAERO.png',
+const SRC_ICONS = {
+  spotify:'assets/images/SPOTIFYAERO.jpeg',
+  youtube:'assets/images/YOUTUBEAERO.png',
+  soundcloud:'assets/images/SOUNDCLOUDAERO.png',
 };
 
-// Approximate sizes in MB for estimation
-const SIZE_ESTIMATES = {
-  // [min, max] per track in MB
-  mp3:  [3, 8],
-  flac: [20, 40],
-  ogg:  [2, 6],
-  opus: [2, 5],
-  aac:  [4, 8],
-  mp4:  [30, 120],
-  webm: [20, 80],
-  mkv:  [25, 100],
-};
+/* ── Size estimate: MB per average item ── */
+const EST_MB = { mp3:5, flac:30, ogg:4, opus:3.5, aac:6, mp4:80, webm:55, mkv:70 };
+const VIDEO_FMTS = new Set(['mp4','webm','mkv']);
 
-const VIDEO_FORMATS = ['mp4','webm','mkv'];
+/* ── DOM ── */
+const $  = id => document.getElementById(id);
+const urlInput   = $('urlInput');
+const fmtSelect  = $('fmtSelect');
+const dlBtn      = $('dlBtn');
+const dlBtnLabel = $('dlBtnLabel');
+const statusBox  = $('statusBox');
+const statusTxt  = $('statusText');
+const wakeTimerEl= $('wakeTimer');
+const timerVal   = $('timerVal');
+const dlInfo     = $('dlInfo');
+const dlSize     = $('dlSize');
+const dlEta      = $('dlEta');
+const progBar    = $('progressBar');
+const tagSp      = $('tagSp');
+const tagYt      = $('tagYt');
+const tagSc      = $('tagSc');
+const prevPanel  = $('previewPanel');
+const prevHIcon  = $('previewHeaderIcon');
+const prevHTitle = $('previewHeaderTitle');
+const prevBody   = $('previewBody');
+const srvBanner  = $('serverBanner');
+const urlIcon    = $('urlIcon');
 
-const urlInput           = document.getElementById('urlInput');
-const fmtSelect          = document.getElementById('fmtSelect');
-const dlBtn              = document.getElementById('dlBtn');
-const dlBtnLabel         = document.getElementById('dlBtnLabel');
-const statusBox          = document.getElementById('statusBox');
-const statusTxt          = document.getElementById('statusText');
-const wakeTimerEl        = document.getElementById('wakeTimer');
-const timerVal           = document.getElementById('timerVal');
-const dlInfo             = document.getElementById('dlInfo');
-const dlSize             = document.getElementById('dlSize');
-const dlEta              = document.getElementById('dlEta');
-const progressBar        = document.getElementById('progressBar');
-const tagSp              = document.getElementById('tagSp');
-const tagYt              = document.getElementById('tagYt');
-const tagSc              = document.getElementById('tagSc');
-const previewPanel       = document.getElementById('previewPanel');
-const previewHeaderIcon  = document.getElementById('previewHeaderIcon');
-const previewHeaderTitle = document.getElementById('previewHeaderTitle');
-const previewBody        = document.getElementById('previewBody');
-const serverBanner       = document.getElementById('serverBanner');
-const urlIcon            = document.getElementById('urlIcon');
-const videoGroup         = document.getElementById('videoGroup');
+/* ── State ── */
+let ytEnabled    = false;
+let initDone     = false;
+let dlIconLoaded = false;
+let previewTimer = null;
+let wakeInterval = null;
+let wakeSeconds  = 0;
+let iconTimer    = null;
 
-let ytEnabled     = false;
-let initDone      = false;
-let dlIconLoaded  = false;
-let previewTimer  = null;
-let wakeInterval  = null;
-let wakeSeconds   = 0;
-let iconTimer     = null;
-let currentSource = null;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+/* ── Button icon ── */
+function onDlIconLoad(el) { el.classList.add('loaded'); dlIconLoaded = true; tryEnableButton(); }
+function onDlIconError(el) { el.style.display='none'; dlIconLoaded = true; tryEnableButton(); }
 
-// Called when download icon image loads successfully
-function onDlIconLoad() {
-  dlIconLoaded = true;
-  document.getElementById('dlBtnIcon').classList.add('loaded');
-  tryEnableButton();
-}
-function onDlIconError() {
-  dlIconLoaded = true; // still counts as "loaded" (just failed)
-  document.getElementById('dlBtnIcon').style.display = 'none';
-  tryEnableButton();
-}
-
-// Enable button only when: init done + icon loaded + valid URL
+/* ── Enable button: requires init + icon + valid url ── */
 function tryEnableButton() {
-  if (!initDone || !dlIconLoaded) return;
+  if (!initDone || !dlIconLoaded) { dlBtn.disabled = true; return; }
   const url = urlInput.value.trim();
-  const source = detectSource(url);
-  const valid = source && isValidUrl(url, source);
-  const videoFmt = VIDEO_FORMATS.includes(fmtSelect.value);
-  // Video only allowed for YouTube
-  if (videoFmt && source !== 'youtube') {
-    dlBtn.disabled = true;
-    return;
-  }
-  dlBtn.disabled = !valid;
+  const src = detectSource(url);
+  if (!src || !isValidUrl(url, src)) { dlBtn.disabled = true; return; }
+  if (src === 'youtube' && !ytEnabled) { dlBtn.disabled = true; return; }
+  if (VIDEO_FMTS.has(fmtSelect.value) && src !== 'youtube') { dlBtn.disabled = true; return; }
+  dlBtn.disabled = false;
 }
 
+/* ── Source / URL logic ── */
 function detectSource(url) {
   if (/spotify\.com/i.test(url))           return 'spotify';
   if (/youtube\.com|youtu\.be/i.test(url)) return 'youtube';
   if (/soundcloud\.com/i.test(url))        return 'soundcloud';
   return null;
 }
-function isValidUrl(url, source) {
-  if (source === 'spotify')    return /spotify\.com\/(album|track|playlist|artist|episode)\/[A-Za-z0-9]+/.test(url);
-  if (source === 'youtube')    return /[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url) || /[?&]list=[^&]+/.test(url);
-  if (source === 'soundcloud') return /soundcloud\.com\/[^/?#]+\/[^/?#]+/.test(url);
+function isValidUrl(url, src) {
+  if (src === 'spotify')
+    return /spotify\.com\/(album|track|playlist|artist|episode)\/[A-Za-z0-9]+/.test(url);
+  if (src === 'youtube')
+    return /[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url) || /[?&]list=[^&]+/.test(url);
+  if (src === 'soundcloud')
+    return /soundcloud\.com\/[^/?#]+\/[^/?#]+/.test(url);
   return false;
 }
-function isSingleItem(url, source) {
-  if (source === 'spotify')    return /spotify\.com\/track\//.test(url);
-  if (source === 'youtube')    return (/[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url)) && !/[?&]list=/.test(url);
-  if (source === 'soundcloud') return !/\/sets\//.test(url) && /soundcloud\.com\/[^/?#]+\/[^/?#]+/.test(url);
+function isSingle(url, src) {
+  if (src === 'spotify')    return /spotify\.com\/track\//.test(url);
+  if (src === 'youtube')    return (/[?&]v=[^&]+/.test(url)||/youtu\.be\/[^?&#]+/.test(url)) && !/[?&]list=/.test(url);
+  if (src === 'soundcloud') return !/\/sets\//.test(url);
   return false;
 }
-
-function estimateTrackCount(url, source) {
-  if (source === 'spotify') {
-    if (/\/track\//.test(url)) return 1;
-    if (/\/album\//.test(url)) return 12; // avg album
-    if (/\/playlist\//.test(url)) return 25; // rough estimate
+function estCount(url, src) {
+  if (src === 'spotify') {
+    if (/\/track\//.test(url))    return 1;
+    if (/\/album\//.test(url))    return 12;
+    return 25;
   }
-  if (source === 'youtube') {
-    if (/[?&]list=/.test(url)) return 20;
-    return 1;
-  }
-  if (source === 'soundcloud') {
-    if (/\/sets\//.test(url)) return 15;
-    return 1;
-  }
+  if (src === 'youtube')    return /[?&]list=/.test(url) ? 20 : 1;
+  if (src === 'soundcloud') return /\/sets\//.test(url) ? 15 : 1;
   return 1;
 }
 
-function getEstimatedSize(url, source, fmt) {
-  const tracks = estimateTrackCount(url, source);
-  const [minMB, maxMB] = SIZE_ESTIMATES[fmt] || SIZE_ESTIMATES.mp3;
-  const avgMB = (minMB + maxMB) / 2;
-  return tracks * avgMB; // in MB
-}
-
+/* ── Helpers ── */
 function fmtBytes(b) {
-  if (b < 1024)       return b + ' B';
-  if (b < 1048576)    return (b/1024).toFixed(1) + ' KB';
+  if (b < 1048576)    return (b/1024).toFixed(0) + ' KB';
   if (b < 1073741824) return (b/1048576).toFixed(1) + ' MB';
   return (b/1073741824).toFixed(2) + ' GB';
 }
-function fmtMB(mb) {
-  if (mb < 1000) return mb.toFixed(0) + ' MB';
-  return (mb/1024).toFixed(1) + ' GB';
+function fmtMBdisp(mb) {
+  return mb < 1000 ? mb.toFixed(0) + ' MB' : (mb/1024).toFixed(1) + ' GB';
 }
-function fmtEta(bytes) {
-  const secs = bytes / (2*1048576);
+function fmtEtaMB(mb) {
+  const secs = mb / 1.5;  // ~1.5 MB/s effective
   if (secs < 5)  return 'a few seconds';
-  if (secs < 60) return Math.ceil(secs) + 's';
-  const m = Math.floor(secs/60), s = Math.ceil(secs%60);
-  return m + 'm' + (s > 0 ? ' ' + s + 's' : '');
+  if (secs < 60) return '~' + Math.ceil(secs) + 's';
+  return '~' + Math.floor(secs/60) + 'm ' + Math.ceil(secs%60) + 's';
 }
+
+/* ── Status / progress ── */
 function setStatus(msg, type) {
   statusTxt.innerHTML = type ? `<span class="${type}">${msg}</span>` : msg;
 }
-
-// 7.css progress bar helpers
-function setProgressIndeterminate() {
-  progressBar.className = 'marquee';
-  progressBar.innerHTML = '';
-}
-function setProgressValue(pct) {
-  progressBar.className = 'animate';
-  progressBar.innerHTML = `<div style="width:${pct}%"></div>`;
-}
-function setProgressError() {
-  progressBar.className = 'error';
-  progressBar.innerHTML = `<div style="width:100%"></div>`;
-}
-function resetProgress() {
-  progressBar.className = 'marquee';
-  progressBar.innerHTML = '';
-}
+function setProgMarquee() { progBar.className='marquee'; progBar.innerHTML=''; }
+function setProgValue(p)  { progBar.className='animate'; progBar.innerHTML=`<div style="width:${p}%"></div>`; }
+function setProgError()   { progBar.className='error';   progBar.innerHTML=`<div style="width:100%"></div>`; }
+function resetProg()      { progBar.className='';        progBar.innerHTML=''; }
 
 function startWakeTimer() {
-  wakeSeconds = 0; timerVal.textContent = '0';
+  wakeSeconds=0; timerVal.textContent='0';
   wakeTimerEl.classList.add('visible');
-  wakeInterval = setInterval(() => { wakeSeconds++; timerVal.textContent = wakeSeconds; }, 1000);
+  wakeInterval = setInterval(()=>{ wakeSeconds++; timerVal.textContent=wakeSeconds; },1000);
 }
 function stopWakeTimer() {
-  clearInterval(wakeInterval); wakeInterval = null;
+  clearInterval(wakeInterval); wakeInterval=null;
   wakeTimerEl.classList.remove('visible');
 }
 
+/* ── URL Icon ── */
 function setUrlIcon(state) {
-  if (state === 'none') { urlIcon.classList.remove('visible'); return; }
-  const map = { loading:ICON_LOADING, valid:ICON_VALID, invalid:ICON_INVALID, unknown:ICON_UNKNOWN };
+  if (state==='none') { urlIcon.classList.remove('visible'); return; }
+  const map = {loading:ICON_LOADING, valid:ICON_VALID, invalid:ICON_INVALID, unknown:ICON_UNKNOWN};
   urlIcon.src = map[state];
   urlIcon.classList.add('visible');
 }
 
-// Update format dropdown: disable video formats for non-YouTube
-function updateFormatOptions(source) {
-  const isYt = source === 'youtube';
-  Array.from(videoGroup.options).forEach(o => o.disabled = !isYt);
-  // If a video format is selected but source isn't YT, switch to mp3
-  if (!isYt && VIDEO_FORMATS.includes(fmtSelect.value)) {
-    fmtSelect.value = 'mp3';
-  }
-  // Update label hint
-  const label = videoGroup.label;
-  videoGroup.label = isYt ? 'Video' : 'Video (YT only)';
+/* ── Show instant estimate ── */
+function showEstimate(url, src) {
+  const fmt  = fmtSelect.value;
+  const n    = estCount(url, src);
+  const mb   = n * (EST_MB[fmt] || 5);
+  dlSize.textContent = fmtMBdisp(mb) + (n > 1 ? ` (~${n} items)` : '');
+  dlEta.textContent  = fmtEtaMB(mb);
+  dlInfo.classList.add('visible');
 }
 
-function scheduleIconUpdate() {
+/* ── Lock video options for non-YT ── */
+function updateVideoOpts(src) {
+  const ytOnly = src !== 'youtube';
+  ['optMp4','optWebm','optMkv'].forEach(id => {
+    const el = $(id); if (el) el.disabled = ytOnly;
+  });
+  if (ytOnly && VIDEO_FMTS.has(fmtSelect.value)) fmtSelect.value = 'mp3';
+}
+
+/* ── Input change handler ── */
+function onUrlChange() {
   const raw = urlInput.value;
   if (!raw.trim()) {
     setUrlIcon('none');
     dlBtnLabel.textContent = 'DOWNLOAD';
-    currentSource = null;
-    updateFormatOptions(null);
+    dlInfo.classList.remove('visible');
+    statusBox.classList.remove('visible');
+    updateVideoOpts(null);
     tryEnableButton();
     return;
   }
   setUrlIcon('loading');
   clearTimeout(iconTimer);
   iconTimer = setTimeout(() => {
-    const url = raw.trim(), source = detectSource(url);
-    currentSource = source;
-    updateFormatOptions(source);
-    if (!source)                      { setUrlIcon('unknown');  dlBtnLabel.textContent = 'DOWNLOAD'; }
-    else if (isValidUrl(url, source)) {
+    const url = raw.trim(), src = detectSource(url);
+    updateVideoOpts(src);
+    if (!src) {
+      setUrlIcon('unknown'); dlBtnLabel.textContent = 'DOWNLOAD';
+    } else if (isValidUrl(url, src)) {
       setUrlIcon('valid');
-      dlBtnLabel.textContent = isSingleItem(url, source) ? 'DOWNLOAD' : 'DOWNLOAD AS ZIP';
-      // Show estimated size
-      showEstimatedSize(url, source);
+      dlBtnLabel.textContent = isSingle(url, src) ? 'DOWNLOAD' : 'DOWNLOAD AS ZIP';
+      showEstimate(url, src);
+      statusBox.classList.add('visible');
+      setStatus('Ready to download');
+      resetProg();
     } else {
-      setUrlIcon('invalid');
-      dlBtnLabel.textContent = 'DOWNLOAD';
+      setUrlIcon('invalid'); dlBtnLabel.textContent = 'DOWNLOAD';
     }
     tryEnableButton();
-  }, 380);
+  }, 350);
 }
 
-function showEstimatedSize(url, source) {
-  const fmt = fmtSelect.value;
-  const estMB = getEstimatedSize(url, source, fmt);
-  const tracks = estimateTrackCount(url, source);
-  if (tracks === 1) {
-    dlSize.textContent = `~${fmtMB(estMB)}`;
-  } else {
-    dlSize.textContent = `~${fmtMB(estMB)} (${tracks} tracks est.)`;
-  }
-  dlEta.textContent = fmtEta(estMB * 1048576);
-  dlInfo.classList.add('visible');
-  statusBox.classList.add('visible');
-  resetProgress();
-}
-
-urlInput.addEventListener('input', scheduleIconUpdate);
-urlInput.addEventListener('paste', () => setTimeout(scheduleIconUpdate, 80));
+urlInput.addEventListener('input', onUrlChange);
+urlInput.addEventListener('paste', () => setTimeout(onUrlChange, 80));
 fmtSelect.addEventListener('change', () => {
-  // Refresh estimate when format changes
-  const url = urlInput.value.trim();
-  const source = detectSource(url);
-  if (source && isValidUrl(url, source)) showEstimatedSize(url, source);
+  const url = urlInput.value.trim(), src = detectSource(url);
+  if (src && isValidUrl(url, src)) showEstimate(url, src);
   tryEnableButton();
 });
 
-function applyTagStates() {
+/* ── Init check ── */
+async function initCheck() {
+  srvBanner.classList.add('visible');
+  for (let i = 0; i < 5; i++) {
+    try {
+      const r = await fetch(`${API_URL}/yt-status`);
+      if (r.ok) { const d = await r.json(); ytEnabled = d.youtube_enabled; break; }
+    } catch(_) {}
+    if (i < 4) await sleep(4000);
+  }
   [tagSp, tagYt, tagSc].forEach(t => t.classList.remove('initializing'));
   tagSp.classList.add('available');
   tagSc.classList.add('available');
   if (ytEnabled) tagYt.classList.add('available');
   initDone = true;
+  srvBanner.classList.remove('visible');
   tryEnableButton();
-}
-
-async function initCheck() {
-  serverBanner.classList.add('visible');
-  for (let i = 0; i < 5; i++) {
-    try {
-      const res = await fetch(`${API_URL}/yt-status`);
-      if (res.ok) {
-        const data = await res.json();
-        ytEnabled = data.youtube_enabled;
-        applyTagStates();
-        serverBanner.classList.remove('visible');
-        return;
-      }
-    } catch(_) {}
-    if (i < 4) await sleep(4000);
-  }
-  applyTagStates();
-  serverBanner.classList.remove('visible');
 }
 initCheck();
 
-// ── Download ──────────────────────────────────────────────────────────────────
+/* ── Download click ── */
+dlBtn.addEventListener('click', startDownload);
+urlInput.addEventListener('keydown', e => { if (e.key==='Enter' && !dlBtn.disabled) startDownload(); });
+
 async function startDownload() {
   const url = urlInput.value.trim();
-  if (!url) { urlInput.focus(); return; }
-
-  const source = detectSource(url);
-  if (!source) {
-    statusBox.classList.add('visible');
-    setProgressError();
-    setStatus('Unrecognized URL. Paste a valid Spotify, YouTube or SoundCloud link.', 'err');
-    return;
-  }
-  if (source === 'youtube' && !ytEnabled) {
-    statusBox.classList.add('visible');
-    setProgressError();
-    setStatus('YouTube downloads are not available at this time.', 'err');
-    return;
-  }
+  if (!url || dlBtn.disabled) return;
 
   dlBtn.disabled = true;
   statusBox.classList.add('visible');
   dlInfo.classList.remove('visible');
-  setProgressIndeterminate();
+  setProgMarquee();
   startWakeTimer();
 
-  const wakeMessages = [
-    'Connecting to server...',
-    'Server is waking up — this can take up to 60s...',
-    'Still starting up, please wait...',
-    'Almost ready...',
-    'Hang tight, nearly there...',
+  const msgs = [
+    'Connecting to server…',
+    'Server waking up — may take up to 60s…',
+    'Still starting, please wait…',
+    'Almost ready…',
+    'Nearly there…',
   ];
 
   try {
-    let serverAlive = false;
+    /* Wake phase */
+    let alive = false;
     for (let i = 0; i < 20; i++) {
-      setStatus(wakeMessages[Math.min(Math.floor(i / 4), wakeMessages.length - 1)]);
+      setStatus(msgs[Math.min(Math.floor(i/4), msgs.length-1)]);
       try {
-        const ping = await fetch(`${API_URL}/`, { method: 'GET' });
-        if (ping.ok) { serverAlive = true; break; }
+        const r = await fetch(`${API_URL}/`, {method:'GET'});
+        if (r.ok) { alive = true; break; }
       } catch(_) {}
       await sleep(3000);
     }
-
-    if (!serverAlive) throw new Error('Server did not respond after 60 seconds. Try again in a moment.');
+    if (!alive) throw new Error('Server did not respond after 60s. Try again in a moment.');
 
     stopWakeTimer();
-    setStatus('Downloading — this may take a few minutes…');
-    const dlStart = Date.now();
+    setStatus('Processing — this may take several minutes…');
 
-    const response = await fetch(`${API_URL}/download`, {
+    const dlStart = Date.now();
+    const resp = await fetch(`${API_URL}/download`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ url, format: fmtSelect.value }),
     });
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({ detail: 'Unknown error.' }));
-      throw new Error(err.detail || `HTTP ${response.status}`);
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({detail:'Unknown error.'}));
+      throw new Error(err.detail || `HTTP ${resp.status}`);
     }
 
-    const contentLength = parseInt(response.headers.get('Content-Length') || '0', 10);
-    if (contentLength > 0) {
-      dlSize.textContent = fmtBytes(contentLength);
-      dlEta.textContent  = fmtEta(contentLength);
+    const cl = parseInt(resp.headers.get('Content-Length') || '0', 10);
+    if (cl > 0) {
+      dlSize.textContent = fmtBytes(cl);
+      dlEta.textContent = 'downloading…';
       dlInfo.classList.add('visible');
     }
 
-    setStatus('Packaging file…');
-    setProgressValue(85);
+    setStatus('Packaging…');
+    setProgValue(80);
 
-    const blob        = await response.blob();
-    const blobUrl     = URL.createObjectURL(blob);
-    const disposition = response.headers.get('Content-Disposition') || '';
-    const nameMatch   = disposition.match(/filename="?([^"]+)"?/);
-    const filename    = nameMatch ? nameMatch[1] : 'download.zip';
+    const blob = await resp.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const disp = resp.headers.get('Content-Disposition') || '';
+    const nm = disp.match(/filename="?([^"]+)"?/);
+    const filename = nm ? nm[1] : 'download.zip';
 
-    if (contentLength === 0 && blob.size > 0) {
+    if (cl === 0 && blob.size > 0) {
       dlSize.textContent = fmtBytes(blob.size);
-      const elapsed = (Date.now() - dlStart) / 1000;
+      const elapsed = (Date.now()-dlStart)/1000;
       dlEta.textContent = 'done in ' + (elapsed < 60
-        ? Math.ceil(elapsed) + 's'
-        : Math.floor(elapsed / 60) + 'm ' + Math.ceil(elapsed % 60) + 's');
+        ? Math.ceil(elapsed)+'s'
+        : Math.floor(elapsed/60)+'m '+Math.ceil(elapsed%60)+'s');
       dlInfo.classList.add('visible');
     }
 
@@ -986,81 +863,72 @@ async function startDownload() {
     document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(blobUrl);
 
-    setProgressValue(100);
-    setStatus('Download started. Check your downloads folder.', 'ok');
+    setProgValue(100);
+    setStatus('Download started — check your downloads folder.', 'ok');
 
   } catch(err) {
     stopWakeTimer();
-    setProgressError();
+    setProgError();
     const raw = err.message || '';
-    const msg = (raw === 'Failed to fetch' || err.name === 'TypeError')
-      ? 'Could not reach the server. Wait a moment and try again.'
+    const msg = (raw==='Failed to fetch'||err.name==='TypeError')
+      ? 'Could not reach server. Wait a moment and try again.'
       : raw;
     setStatus('Error: ' + msg, 'err');
   } finally {
-    dlBtn.disabled = false;
     tryEnableButton();
   }
 }
 
-// ── Preview ───────────────────────────────────────────────────────────────────
+/* ── Preview ── */
 function buildSpotifyEmbed(url) {
   const m = url.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
   if (!m) return null;
-  const [, type, id] = m;
-  const height   = (type==='track'||type==='episode') ? 152 : 352;
-  const embedUrl = `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
-  const label    = type.charAt(0).toUpperCase()+type.slice(1);
-  previewHeaderIcon.src = ICONS.spotify; previewHeaderIcon.style.display='';
-  previewHeaderTitle.textContent = `Spotify \u2014 ${label} Preview`;
-  return `<div class="sp-embed-wrap"><iframe src="${embedUrl}" height="${height}" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
-<div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.spotify}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">Spotify ${label}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${label.toUpperCase()}</span></div>`;
+  const [,type,id] = m;
+  const h = (type==='track'||type==='episode') ? 152 : 352;
+  const lbl = type.charAt(0).toUpperCase()+type.slice(1);
+  prevHIcon.src=SRC_ICONS.spotify; prevHIcon.style.display='';
+  prevHTitle.textContent=`Spotify — ${lbl} Preview`;
+  return `<div class="sp-embed-wrap"><iframe src="https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0" height="${h}" frameborder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe></div>
+<div class="preview-meta"><img class="preview-meta-icon" src="${SRC_ICONS.spotify}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">Spotify ${lbl}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${lbl.toUpperCase()}</span></div>`;
 }
 function buildYouTubeEmbed(url) {
   const pl = url.match(/[?&]list=([^&]+)/);
-  const v  = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
+  const v  = url.match(/[?&]v=([^&]+)/)||url.match(/youtu\.be\/([^?&#]+)/);
   if (!pl && !v) return null;
-  const type     = pl ? 'Playlist' : 'Video';
-  const embedUrl = pl
-    ? `https://www.youtube.com/embed/videoseries?list=${pl[1]}`
-    : `https://www.youtube.com/embed/${v[1]}`;
-  previewHeaderIcon.src = ICONS.youtube; previewHeaderIcon.style.display='';
-  previewHeaderTitle.textContent = `YouTube \u2014 ${type} Preview`;
-  return `<div class="yt-embed-wrap"><iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-<div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.youtube}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">YouTube ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
+  const type = pl ? 'Playlist' : 'Video';
+  const src  = pl ? `https://www.youtube.com/embed/videoseries?list=${pl[1]}`
+                  : `https://www.youtube.com/embed/${v[1]}`;
+  prevHIcon.src=SRC_ICONS.youtube; prevHIcon.style.display='';
+  prevHTitle.textContent=`YouTube — ${type} Preview`;
+  return `<div class="yt-embed-wrap"><iframe src="${src}" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+<div class="preview-meta"><img class="preview-meta-icon" src="${SRC_ICONS.youtube}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">YouTube ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
 }
 function buildSoundCloudEmbed(url) {
-  const isSet    = /\/sets\//i.test(url);
-  const type     = isSet ? 'Set' : 'Track';
-  const height   = isSet ? 450 : 166;
-  const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
-  previewHeaderIcon.src = ICONS.soundcloud; previewHeaderIcon.style.display='';
-  previewHeaderTitle.textContent = `SoundCloud \u2014 ${type} Preview`;
-  return `<div class="sc-embed-wrap"><iframe scrolling="no" frameborder="no" allow="autoplay" src="${embedUrl}" height="${height}" loading="lazy"></iframe></div>
-<div class="preview-meta"><img class="preview-meta-icon" src="${ICONS.soundcloud}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">SoundCloud ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
+  const isSet = /\/sets\//i.test(url);
+  const type  = isSet ? 'Set' : 'Track';
+  const h     = isSet ? 450 : 166;
+  const emb   = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
+  prevHIcon.src=SRC_ICONS.soundcloud; prevHIcon.style.display='';
+  prevHTitle.textContent=`SoundCloud — ${type} Preview`;
+  return `<div class="sc-embed-wrap"><iframe scrolling="no" frameborder="no" allow="autoplay" src="${emb}" height="${h}" loading="lazy"></iframe></div>
+<div class="preview-meta"><img class="preview-meta-icon" src="${SRC_ICONS.soundcloud}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">SoundCloud ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div><span class="preview-meta-badge">${type.toUpperCase()}</span></div>`;
 }
 function renderPreview(raw) {
   const url = raw.trim();
-  if (!url) { previewPanel.classList.remove('visible'); return; }
-  const source = detectSource(url);
-  previewPanel.classList.add('visible');
-  previewHeaderIcon.style.display='none';
-  previewHeaderTitle.textContent='Link Preview';
-  if (!source) { previewBody.innerHTML='<div class="preview-invalid">Unrecognized URL &mdash; paste a valid Spotify, YouTube or SoundCloud link.</div>'; return; }
-  previewBody.innerHTML='<div class="preview-checking">Loading preview&hellip;</div>';
+  if (!url) { prevPanel.classList.remove('visible'); return; }
+  const src = detectSource(url);
+  prevPanel.classList.add('visible');
+  prevHIcon.style.display='none'; prevHTitle.textContent='Link Preview';
+  if (!src) { prevBody.innerHTML='<div class="preview-invalid">Unrecognized URL — paste a valid Spotify, YouTube or SoundCloud link.</div>'; return; }
+  prevBody.innerHTML='<div class="preview-checking">Loading preview…</div>';
   let html = null;
-  if (source==='spotify')    html = buildSpotifyEmbed(url);
-  if (source==='youtube')    html = buildYouTubeEmbed(url);
-  if (source==='soundcloud') html = buildSoundCloudEmbed(url);
-  previewBody.innerHTML = html || '<div class="preview-invalid">Could not generate preview. Double-check the URL.</div>';
+  if (src==='spotify')    html = buildSpotifyEmbed(url);
+  if (src==='youtube')    html = buildYouTubeEmbed(url);
+  if (src==='soundcloud') html = buildSoundCloudEmbed(url);
+  prevBody.innerHTML = html || '<div class="preview-invalid">Could not generate preview. Check the URL.</div>';
 }
-function schedulePreview() {
-  clearTimeout(previewTimer);
-  previewTimer = setTimeout(() => renderPreview(urlInput.value), 500);
-}
-urlInput.addEventListener('input', schedulePreview);
-urlInput.addEventListener('paste', () => { clearTimeout(previewTimer); previewTimer = setTimeout(() => renderPreview(urlInput.value), 250); });
-urlInput.addEventListener('keydown', e => { if (e.key==='Enter' && !dlBtn.disabled) startDownload(); });
+urlInput.addEventListener('input', () => { clearTimeout(previewTimer); previewTimer = setTimeout(()=>renderPreview(urlInput.value),500); });
+urlInput.addEventListener('paste', () => { clearTimeout(previewTimer); previewTimer = setTimeout(()=>renderPreview(urlInput.value),250); });
 </script>
 </body>
 </html>
