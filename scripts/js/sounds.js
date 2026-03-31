@@ -1,206 +1,82 @@
 /* ================================================================
-   sounds.js — Site Sound Effects System
+   WATANAGASHI ARCHIVE — sounds.js
+   Sistema de sons compartilhado por todas as páginas.
+   Inclua este script ANTES do fechamento do </body>.
    ================================================================ */
-
 (function () {
   'use strict';
+  var BASE = 'assets/audio/';
+  var S = {
+    start:   BASE + 'sitestart.mp3',
+    alert:   BASE + 'sitealert.mp3',
+    button:  BASE + 'sitebuttonclick.mp3',
+    hover:   BASE + 'text.mp3',
+    like:    BASE + 'sitelikeclick.mp3',
+    dislike: BASE + 'sitedislikeclick.mp3',
+    sort:    BASE + 'sitesortclick.mp3',
+  };
+  var on = localStorage.getItem('_wa_sounds') !== 'off';
+  var cache = {};
 
-  const SOUND_BASE = 'assets/audio/';
+  function ga(k) {
+    if (!cache[k]) { var a = new Audio(S[k]); a.preload = 'auto'; cache[k] = a; }
+    return cache[k];
+  }
 
-  const SOUNDS = {
-    start:   SOUND_BASE + 'sitestart.mp3',
-    alert:   SOUND_BASE + 'sitealert.mp3',
-    dislike: SOUND_BASE + 'sitedislikeclick.mp3',
-    like:    SOUND_BASE + 'sitelikeclick.mp3',
-    sort:    SOUND_BASE + 'sitesortclick.mp3',
-    button:  SOUND_BASE + 'sitebuttonclick.mp3',
-    hover:   SOUND_BASE + 'text.mp3',
+  window.playSound = function (k) {
+    if (!on || !S[k]) return;
+    try { var c = ga(k).cloneNode(); c.volume = k === 'hover' ? 0.30 : 0.52; c.play().catch(function () {}); } catch (e) {}
   };
 
-  let _soundsOn = true;
-  const _cache  = {};
-
-  function _loadPref() {
-    try {
-      const s = JSON.parse(localStorage.getItem('_scrapPrefs') || '{}');
-      _soundsOn = s.soundsOn !== false;
-    } catch(e) { _soundsOn = true; }
-  }
-
-  function _savePref(val) {
-    try {
-      const s = JSON.parse(localStorage.getItem('_scrapPrefs') || '{}');
-      s.soundsOn = val;
-      localStorage.setItem('_scrapPrefs', JSON.stringify(s));
-    } catch(e) {}
-  }
-
-  function _getAudio(key) {
-    if (!_cache[key]) {
-      const a = new Audio(SOUNDS[key]);
-      a.preload = 'auto';
-      _cache[key] = a;
-    }
-    return _cache[key];
-  }
-
-  function _play(key) {
-    if (!_soundsOn) return;
-    try {
-      const a = _getAudio(key);
-      const clone = a.cloneNode();
-      clone.volume = key === 'hover' ? 0.30 : 0.52;
-      clone.play().catch(() => {});
-    } catch(e) {}
-  }
-
-  window.SiteSound = {
-    play:   _play,
-    isOn:   () => _soundsOn,
-    setOn:  function(val) {
-      _soundsOn = !!val;
-      _savePref(_soundsOn);
-      _updateNavBtn();
-    },
-    toggle: function() { this.setOn(!_soundsOn); },
-    preload: function() { Object.keys(SOUNDS).forEach(k => _getAudio(k)); }
+  window.toggleSound = function () {
+    on = !on;
+    localStorage.setItem('_wa_sounds', on ? 'on' : 'off');
+    document.querySelectorAll('.wa-sound-toggle').forEach(function (b) {
+      b.textContent = on ? 'Sounds: On' : 'Sounds: Off';
+      b.classList.toggle('off', !on);
+    });
+    if (on) window.playSound('button');
   };
 
-  function _updateNavBtn() {
-    const btn = document.getElementById('navSoundToggle');
-    if (!btn) return;
-    btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off';
-  }
-
-  function _createNavBtn() {
-    const nav = document.getElementById('navigationMenu');
-    if (!nav) return;
-
-    /* Se o botão já existe no HTML estático, só sincroniza label e adiciona listener */
-    const existing = document.getElementById('navSoundToggle');
-    if (existing) {
-      existing.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off';
-      if (!existing._soundWired) {
-        existing._soundWired = true;
-        existing.addEventListener('click', () => window.SiteSound.toggle());
-      }
-      return;
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.wa-sound-toggle').forEach(function (b) {
+      if (!on) { b.textContent = 'Sounds: Off'; b.classList.add('off'); }
+    });
+    if (!sessionStorage.getItem('_wa_sp')) {
+      sessionStorage.setItem('_wa_sp', '1');
+      setTimeout(function () { window.playSound('start'); }, 700);
     }
+  });
 
-    /* Cria dinamicamente caso não exista no HTML */
-    const wrap = document.createElement('div');
-    wrap.id = '_navSoundWrap';
-    wrap.style.cssText = 'padding:4px 5px 2px; margin-top:4px;';
+  /* Preload on first interaction */
+  document.addEventListener('pointerdown', function () {
+    Object.keys(S).forEach(function (k) { ga(k); });
+  }, { once: true, passive: true });
 
-    const btn = document.createElement('button');
-    btn.id = 'navSoundToggle';
-    btn._soundWired = true;
-    btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off';
-    btn.addEventListener('click', () => window.SiteSound.toggle());
-
-    wrap.appendChild(btn);
-
-    const themeWrap = document.getElementById('_themesBtnWrap');
-    if (themeWrap) {
-      nav.insertBefore(wrap, themeWrap);
-    } else {
-      nav.appendChild(wrap);
-    }
-  }
-
-  /* ── Hover throttle: max 1 per 90ms ── */
-  let _hoverThrottle = 0;
-
-  function _isInteractive(el) {
-    if (!el || el === document.body || el === document.documentElement) return false;
-    const tag = el.tagName;
-    if (tag === 'BUTTON' || tag === 'A' || tag === 'SELECT') return true;
-    if (tag === 'INPUT' && el.type !== 'range') return true;
-    const cl = el.classList;
-    if (cl && (
-      cl.contains('nav-link') ||
-      cl.contains('gi-star-interactive') ||
-      cl.contains('vg-entry') ||
-      cl.contains('gi-card-imgwrap') ||
-      cl.contains('mp-ctrl-btn') ||
-      cl.contains('vg-pager-btn') ||
-      cl.contains('comm-tab') ||
-      cl.contains('vi-icon-vote-btn') ||
-      cl.contains('mp-download-btn') ||
-      cl.contains('vi-url-full') ||
-      cl.contains('gi-lb-arrow') ||
-      cl.contains('gi-lb-close')
-    )) return true;
-    const cs = window.getComputedStyle(el);
-    if (cs && cs.cursor === 'pointer') return true;
+  /* Hover sounds (throttled 400ms) */
+  var _ht = 0, _htm = null;
+  function _ii(el) {
+    if (!el || el === document.body) return false;
+    var t = el.tagName;
+    if (t === 'BUTTON' || t === 'A') return true;
+    try { if (window.getComputedStyle(el).cursor === 'pointer') return true; } catch (e) {}
     return false;
   }
-
-  function _onHover(e) {
-    if (!_soundsOn) return;
-    const now = Date.now();
-    if (now - _hoverThrottle < 90) return;
-    if (_isInteractive(e.target)) {
-      _hoverThrottle = now;
-      _play('hover');
-    }
-  }
-
-  function _onClick(e) {
-    if (!_soundsOn) return;
-    const el = e.target;
-
-    if (el.closest) {
-      if (el.closest('#mpLikeBtn') || el.closest('#vUpvoteBtn'))   { _play('like');   return; }
-      if (el.closest('#mpDislikeBtn') || el.closest('#vDownvoteBtn')) { _play('dislike'); return; }
-      if (
-        el.closest('#vPopSortToggle') || el.closest('#mpPopSortToggle') ||
-        el.closest('#galPlusBtn')     || el.closest('#vPlusBtn') ||
-        el.closest('#mpPlusBtn')      || el.closest('#vSortSubmenu') ||
-        el.closest('#mpSortSubmenu')  || el.closest('#galSortItems') ||
-        el.closest('#galPlusPopup')
-      ) { _play('sort'); return; }
-    }
-
-    if (_isInteractive(el)) _play('button');
-  }
-
-  /* ── Patch _showExternalLinkWarn to play alert ── */
-  function _patchAlert() {
-    if (typeof window._showExternalLinkWarn !== 'function') return;
-    if (window._showExternalLinkWarn._sp) return;
-    const _orig = window._showExternalLinkWarn;
-    window._showExternalLinkWarn = function(url) {
-      _play('alert');
-      _orig(url);
-    };
-    window._showExternalLinkWarn._sp = true;
-  }
-
-  function _init() {
-    _loadPref();
-    _createNavBtn();
-    _patchAlert();
-
-    document.addEventListener('mouseover', _onHover, { passive: true });
-    document.addEventListener('click', _onClick, true);
-
-    /* Start sound — once per session */
-    if (!sessionStorage.getItem('_siteStartPlayed')) {
-      sessionStorage.setItem('_siteStartPlayed', '1');
-      setTimeout(() => _play('start'), 700);
-    }
-
-    /* Preload on first interaction */
-    document.addEventListener('pointerdown', () => window.SiteSound.preload(), { once: true, passive: true });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', _init);
-  } else {
-    _init();
-  }
-
-  window.addEventListener('load', _patchAlert);
-
+  document.addEventListener('mouseover', function (e) {
+    if (e.target.classList && e.target.classList.contains('wa-sound-toggle')) return;
+    if (!_ii(e.target)) return;
+    clearTimeout(_htm);
+    _htm = setTimeout(function () {
+      var n = Date.now();
+      if (n - _ht < 400) return;
+      _ht = n; window.playSound('hover');
+    }, 400);
+  }, { passive: true });
+  document.addEventListener('mouseout', function (e) {
+    if (_ii(e.target)) clearTimeout(_htm);
+  }, { passive: true });
+  document.addEventListener('click', function (e) {
+    if (e.target.classList && e.target.classList.contains('wa-sound-toggle')) return;
+    if (_ii(e.target)) window.playSound('button');
+  }, true);
 })();

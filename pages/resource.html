@@ -2,106 +2,78 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Resources &mdash; Watanagashi Archive</title>
 <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-<link rel="stylesheet" href="scripts/css/shared.css">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="scripts/css/style.css">
 </head>
 <body>
 <div id="pageWrap">
 
-  <div class="aero-topbar">
-    <a class="aero-topbar-brand" href="index.html" title="Home">
-      <img src="assets/images/watanagashilogo.png" alt="" class="aero-topbar-logo"
-        onerror="this.style.display='none'">
-      <span class="aero-topbar-title">Watanagashi Archive</span>
+  <div class="aero-bar">
+    <a href="contact.html" class="aero-nav-btn" title="Back: Contact">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="Back"
+        onerror="this.outerHTML='&lt;span style=&quot;color:#bbb;font-size:24px;line-height:1;z-index:1&quot;&gt;&amp;#8249;&lt;/span&gt;'">
     </a>
-    <nav class="aero-topbar-nav">
-      <a href="index.html">
-        <img src="https://frutigeraeroarchive.org/images/introduction.png" class="nav-icon" alt="">Introduction</a>
-      <a href="music.html">
-        <img src="https://frutigeraeroarchive.org/images/music.png" class="nav-icon" alt="">Music Player</a>
-      <a href="videos.html">
-        <img src="https://frutigeraeroarchive.org/images/videos.png" class="nav-icon" alt="">Video Player</a>
-      <a href="sketchbook.html">
-        <img src="https://frutigeraeroarchive.org/images/sketchbook.png" class="nav-icon" alt="">Sketchbook</a>
-      <a href="community.html">
-        <img src="https://frutigeraeroarchive.org/images/forum.png" class="nav-icon" alt="">Community</a>
-      <a href="contact.html">
-        <img src="https://frutigeraeroarchive.org/images/contact.png" class="nav-icon" alt="">Contact</a>
-      <a href="resources.html" class="active">
-        <img src="https://frutigeraeroarchive.org/images/resources.png" class="nav-icon" alt="">Resources</a>
-    </nav>
+    <span class="aero-bar-title">The Watanagashi Archive &mdash; Resources</span>
+    <!-- Last page — no forward -->
+    <span class="aero-nav-btn nav-disabled" aria-label="No next page">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt=""
+        style="transform:scaleX(-1)"
+        onerror="this.outerHTML='&lt;span style=&quot;color:#777;font-size:24px;line-height:1;z-index:1&quot;&gt;&amp;#8250;&lt;/span&gt;'">
+    </span>
   </div>
 
   <div class="glass-box">
-    <div class="styled-container aero-inner">
+    <div class="styled-containers-headers aero-inner">
       <p>A collection of tools, projects &amp; stuff &mdash; i'd like to maintain.</p>
     </div>
-
     <div class="aero-inner" style="background:#000;margin-top:5px">
-      <ul class="contact-links" id="resourcesList">
-
+      <ul class="contact-links">
         <li>
           <a href="downloader.html" target="_blank">
-            <img src="https://img1.picmix.com/output/stamp/thumb/2/4/9/3/2663942_6e48f.png" alt="">
-            <span style="flex:1">
-              <strong>Ultimate Downloader Converter</strong>
-            </span>
+            <img src="https://img1.picmix.com/output/stamp/thumb/2/4/9/3/2663942_6e48f.png" alt="" draggable="false">
+            <span class="link-label"><strong>Ultimate Downloader Converter</strong></span>
             <span class="link-note">Download Spotify / YouTube / SoundCloud as ZIP &mdash; IN DEV</span>
           </a>
         </li>
-
         <li>
           <a href="#" style="pointer-events:none;opacity:.45;">
-            <img src="https://img1.picmix.com/output/stamp/thumb/0/3/8/1/2841830_50b26.png" alt="">
-            <span style="flex:1">File Dumpster</span>
+            <img src="https://img1.picmix.com/output/stamp/thumb/0/3/8/1/2841830_50b26.png" alt="" draggable="false">
+            <span class="link-label">File Dumpster</span>
             <span class="link-note">coming soon</span>
           </a>
         </li>
-
         <li>
           <a href="#" style="pointer-events:none;opacity:.45;">
-            <img src="https://img1.picmix.com/output/stamp/thumb/5/5/9/3/2663955_e356e.png" alt="">
-            <span style="flex:1">RabbitHoles / WeirdSites / RandomSites</span>
+            <img src="https://img1.picmix.com/output/stamp/thumb/5/5/9/3/2663955_e356e.png" alt="" draggable="false">
+            <span class="link-label">RabbitHoles / WeirdSites / RandomSites</span>
             <span class="link-note">coming soon</span>
           </a>
         </li>
-
         <li>
           <a href="#" style="pointer-events:none;opacity:.45;">
-            <img src="https://img1.picmix.com/output/stamp/thumb/7/0/4/3/2653407_2a8c5.png" alt="">
-            <span style="flex:1">Projects</span>
+            <img src="https://img1.picmix.com/output/stamp/thumb/7/0/4/3/2653407_2a8c5.png" alt="" draggable="false">
+            <span class="link-label">Projects</span>
             <span class="link-note">coming soon</span>
           </a>
         </li>
-
       </ul>
     </div>
   </div>
 
 </div>
 
-<div class="bottom-util">
-  <button class="bottom-util-btn" id="soundToggle" onclick="toggleSound()">Sounds: On</button>
-  <button class="bottom-util-btn" onclick="window.location.href='preferences.html'">Preferences</button>
+<div id="bottomUtil">
+  <button class="bottom-btn wa-sound-toggle" onclick="toggleSound()">Sounds: On</button>
+  <a href="preferences.html" class="bottom-btn">Preferences</a>
 </div>
 
-<script>
-const SOUND_BASE='assets/audio/';
-const SOUNDS={start:SOUND_BASE+'sitestart.mp3',button:SOUND_BASE+'sitebuttonclick.mp3',hover:SOUND_BASE+'text.mp3'};
-let _soundsOn=localStorage.getItem('_wa_sounds')!=='off';
-const _ac={};
-function _ga(k){if(!_ac[k]){const a=new Audio(SOUNDS[k]);a.preload='auto';_ac[k]=a;}return _ac[k];}
-function playSound(k){if(!_soundsOn||!SOUNDS[k])return;try{const c=_ga(k).cloneNode();c.volume=k==='hover'?0.30:0.52;c.play().catch(()=>{});}catch(e){}}
-function toggleSound(){_soundsOn=!_soundsOn;localStorage.setItem('_wa_sounds',_soundsOn?'on':'off');const b=document.getElementById('soundToggle');if(b){b.textContent=_soundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_soundsOn);}if(_soundsOn)playSound('button');}
-document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('soundToggle');if(b&&!_soundsOn){b.textContent='Sounds: Off';b.classList.add('off');}if(!sessionStorage.getItem('_siteStartPlayed')){sessionStorage.setItem('_siteStartPlayed','1');setTimeout(()=>playSound('start'),700);}});
-document.addEventListener('pointerdown',()=>Object.keys(SOUNDS).forEach(k=>_ga(k)),{once:true,passive:true});
-let _ht=0,_htm=null;
-function _ii(el){if(!el||el===document.body)return false;const t=el.tagName;if(t==='BUTTON'||t==='A')return true;if(window.getComputedStyle(el).cursor==='pointer')return true;return false;}
-document.addEventListener('mouseover',e=>{if(e.target.id==='soundToggle')return;if(!_ii(e.target))return;clearTimeout(_htm);_htm=setTimeout(()=>{const n=Date.now();if(n-_ht<400)return;_ht=n;playSound('hover');},400);},{passive:true});
-document.addEventListener('mouseout',e=>{if(_ii(e.target))clearTimeout(_htm);},{passive:true});
-document.addEventListener('click',e=>{if(e.target.id==='soundToggle')return;if(_ii(e.target))playSound('button');},true);
-</script>
+<div id="renaChan" style="position:fixed;bottom:0;right:0;width:250px;height:350px;background-image:url('assets/images/renaidle1.png');background-size:contain;background-repeat:no-repeat;background-position:bottom right;z-index:9999;cursor:pointer;"></div>
+
+<script src="sounds.js"></script>
+<script src="scripts/js/codes.js"></script>
 </body>
 </html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preferences &mdash; Watanagashi Archive</title>
+<link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="scripts/css/style.css">
+<style>
+.pref-row {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:9px 12px;
+  border-bottom:1px solid rgba(30,30,30,.80);
+}
+.pref-row:last-child { border-bottom:none; }
+.pref-label { font-size:12px; color:var(--text); font-family:Tahoma,sans-serif; }
+.pref-desc  { font-size:10.5px; color:var(--text-dim); margin-top:2px; }
+.pref-btn {
+  background:rgba(24,24,24,.92);
+  border:1px solid rgba(120,120,120,.44);
+  color:rgba(200,200,200,.86);
+  font-size:11px; font-family:Tahoma,sans-serif;
+  cursor:pointer; padding:3px 12px 4px; white-space:nowrap;
+}
+.pref-btn:hover { color:#fff; border-color:rgba(200,200,200,.76); background:rgba(44,44,44,.92); }
+</style>
+</head>
+<body>
+<div id="pageWrap">
+
+  <div class="aero-bar">
+    <a href="index.html" class="aero-nav-btn" title="Back: Introduction">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="Back"
+        onerror="this.outerHTML='&lt;span style=&quot;color:#bbb;font-size:24px;line-height:1;z-index:1&quot;&gt;&amp;#8249;&lt;/span&gt;'">
+    </a>
+    <span class="aero-bar-title">The Watanagashi Archive &mdash; Preferences</span>
+    <span class="aero-nav-btn nav-disabled">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt=""
+        style="transform:scaleX(-1)"
+        onerror="this.outerHTML='&lt;span style=&quot;color:#777;font-size:24px;line-height:1;z-index:1&quot;&gt;&amp;#8250;&lt;/span&gt;'">
+    </span>
+  </div>
+
+  <div class="glass-box">
+    <h2><span>Preferences</span></h2>
+    <div class="aero-inner" style="background:var(--card-bg)">
+
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">Site Sounds</div>
+          <div class="pref-desc">Enable or disable UI sound effects across all pages.</div>
+        </div>
+        <button class="pref-btn wa-sound-toggle" onclick="toggleSound()">Sounds: On</button>
+      </div>
+
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">Back to Homepage</div>
+          <div class="pref-desc">Return to the Introduction page.</div>
+        </div>
+        <button class="pref-btn" onclick="window.location.href='index.html'">Go Home</button>
+      </div>
+
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">Clear Stored Data</div>
+          <div class="pref-desc">Reset all locally stored preferences (votes, settings, etc.).</div>
+        </div>
+        <button class="pref-btn" onclick="clearData()">Clear Data</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="note">
+    Preferences are stored in your browser's localStorage and are not shared with any server.
+  </div>
+
+</div>
+
+<div id="bottomUtil">
+  <button class="bottom-btn wa-sound-toggle" onclick="toggleSound()">Sounds: On</button>
+  <span class="bottom-btn" style="color:rgba(200,200,200,.80);cursor:default">Preferences</span>
+</div>
+
+<script src="sounds.js"></script>
+<script>
+function clearData() {
+  if (confirm('Clear all stored preferences? This cannot be undone.')) {
+    localStorage.clear();
+    /* reset toggles */
+    document.querySelectorAll('.wa-sound-toggle').forEach(function(b){
+      b.textContent='Sounds: On'; b.classList.remove('off');
+    });
+    if (window.playSound) window.playSound('button');
+  }
+}
+</script>
+</body>
+</html>

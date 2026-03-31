@@ -2,123 +2,51 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Community &mdash; Watanagashi Archive</title>
 <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-<link rel="stylesheet" href="scripts/css/shared.css">
-<style>
-/* ── Tab bar ── */
-.comm-tab-bar {
-  display: flex;
-  background: linear-gradient(to bottom,#0d0d0d 0%,#090909 49%,#000 50%,#0b0b0b 100%);
-  border-bottom: 2px solid var(--accent);
-  padding: 0 6px;
-  gap: 3px;
-}
-.comm-tab {
-  background: none;
-  border: 1px solid rgba(120,120,120,.38);
-  border-bottom: none;
-  color: var(--text-dim);
-  cursor: pointer;
-  font-family: Tahoma, sans-serif;
-  font-size: 11.5px;
-  padding: 6px 16px 7px;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-width: 80px;
-  justify-content: center;
-  margin-bottom: -2px;
-}
-.comm-tab:hover { color: var(--text); }
-.comm-tab.active {
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.16) 0%,
-    rgba(180,20,20,.44)  18%,
-    rgba(100,5,5,.86)    60%,
-    rgba(40,2,2,.96)     60%,
-    rgba(60,5,5,.82)     100%) !important;
-  border-color: var(--accent) !important;
-  border-bottom: 2px solid var(--card-bg) !important;
-  color: #fff !important;
-  z-index: 2;
-}
-.comm-tab img { height: 14px; width: auto; }
-.comm-panel { display: none; }
-.comm-panel.active { display: block; }
-
-/* ── Ok button ── */
-.comm-ok-btn {
-  display: inline-block;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.20) 0%, rgba(210,25,25,.92) 0%,
-    rgba(150,10,10,.82) 4%, rgba(90,4,4,.97) 52%,
-    rgba(45,2,2,1) 52%, rgba(75,5,5,.90) 100%);
-  border: 1px solid rgba(210,30,30,.70);
-  border-top-color: rgba(255,90,90,.30);
-  box-shadow: inset 0 1px 0 rgba(255,110,110,.20), 0 2px 6px rgba(0,0,0,.55);
-  color: #fff;
-  font-family: Tahoma, sans-serif;
-  font-size: 12px;
-  padding: 6px 24px 8px;
-  text-decoration: none;
-  cursor: pointer;
-  text-shadow: 0 1px 2px rgba(0,0,0,.8);
-  position: relative;
-}
-.comm-ok-btn:hover { filter: brightness(1.25); color: #ffdddd; text-decoration: underline; }
-</style>
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="scripts/css/style.css">
 </head>
 <body>
 <div id="pageWrap">
 
-  <div class="aero-topbar">
-    <a class="aero-topbar-brand" href="index.html" title="Home">
-      <img src="assets/images/watanagashilogo.png" alt="" class="aero-topbar-logo"
-        onerror="this.style.display='none'">
-      <span class="aero-topbar-title">Watanagashi Archive</span>
+  <div class="aero-bar">
+    <a href="sketchbook.html" class="aero-nav-btn" title="Back: Sketchbook">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="Back"
+        onerror="this.outerHTML='&lt;span style=&quot;color:#bbb;font-size:24px;line-height:1;z-index:1&quot;&gt;&amp;#8249;&lt;/span&gt;'">
     </a>
-    <nav class="aero-topbar-nav">
-      <a href="index.html">
-        <img src="https://frutigeraeroarchive.org/images/introduction.png" class="nav-icon" alt="">Introduction</a>
-      <a href="music.html">
-        <img src="https://frutigeraeroarchive.org/images/music.png" class="nav-icon" alt="">Music Player</a>
-      <a href="videos.html">
-        <img src="https://frutigeraeroarchive.org/images/videos.png" class="nav-icon" alt="">Video Player</a>
-      <a href="sketchbook.html">
-        <img src="https://frutigeraeroarchive.org/images/sketchbook.png" class="nav-icon" alt="">Sketchbook</a>
-      <a href="community.html" class="active">
-        <img src="https://frutigeraeroarchive.org/images/forum.png" class="nav-icon" alt="">Community</a>
-      <a href="contact.html">
-        <img src="https://frutigeraeroarchive.org/images/contact.png" class="nav-icon" alt="">Contact</a>
-      <a href="resources.html">
-        <img src="https://frutigeraeroarchive.org/images/resources.png" class="nav-icon" alt="">Resources</a>
-    </nav>
+    <span class="aero-bar-title">The Watanagashi Archive &mdash; Community</span>
+    <a href="contact.html" class="aero-nav-btn" title="Next: Contact">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="Next"
+        style="transform:scaleX(-1)"
+        onerror="this.outerHTML='&lt;span style=&quot;color:#bbb;font-size:24px;line-height:1;z-index:1&quot;&gt;&amp;#8250;&lt;/span&gt;'">
+    </a>
   </div>
 
   <!-- Tab bar -->
-  <div class="comm-tab-bar" style="margin-top:5px">
-    <button class="comm-tab active" id="tabChat" onclick="switchTab('chat')">Chat</button>
-    <button class="comm-tab" id="tabBlog" onclick="switchTab('blog')">
-      <img src="https://frutigeraeroarchive.org/images/blog.png" alt="">Blog
+  <div class="comm-tab-bar" style="margin-top:0">
+    <button class="comm-tab active" id="commTabChat" onclick="switchCommTab('chat')">Chat</button>
+    <button class="comm-tab" id="commTabBlog" onclick="switchCommTab('blog')">
+      <img src="https://frutigeraeroarchive.org/images/blog.png" style="height:14px;vertical-align:middle;" alt="" draggable="false">
+      Blog
     </button>
   </div>
 
   <!-- Chat panel -->
-  <div id="panelChat" class="comm-panel active">
+  <div id="commPanelChat" class="comm-panel active">
     <div class="glass-box" style="margin-top:7px">
-      <div class="styled-container aero-inner">
-        <p style="margin-bottom:6px">Welcome to the <span class="hl">Watanagashi Archive Community Chat</span>!</p>
+      <div class="styled-containers-headers aero-inner">
+        <p style="margin-bottom:6px;">Welcome to the <span class="hl">Watanagashi Archive Community Chat</span>!</p>
         <p>Feel free to talk about anime, music, nostalgia, or anything on your mind. Please be respectful and keep it civil.</p>
       </div>
     </div>
     <div class="glass-box">
-      <h2><span>Chat Rules</span></h2>
-      <div class="styled-container aero-inner" style="padding:10px 14px">
-        <p style="margin-bottom:5px;color:#aaa;font-size:11.5px">By participating you agree to the following:</p>
-        <ul style="margin:0 0 0 18px;padding:0;color:#bbb;font-size:11.5px;line-height:1.8">
+      <div class="rights-bar" style="margin:0">Chat Rules</div>
+      <div class="styled-containers aero-inner" style="padding:10px 14px;">
+        <p style="margin-bottom:5px;color:#aaa;font-size:11.5px;">By participating you agree to the following:</p>
+        <ul style="margin:0 0 0 18px;padding:0;color:#bbb;font-size:11.5px;line-height:1.8;">
           <li>Be respectful.</li>
           <li>No hate speech or targeted harassment.</li>
           <li>Keep links SFW &mdash; share or click at your own responsibility.</li>
@@ -128,24 +56,24 @@
       </div>
     </div>
     <div class="glass-box">
-      <h2><span>Live Chat</span></h2>
-      <div class="aero-inner" style="background:#000;padding:8px;display:flex;justify-content:center;align-items:center;min-height:392px">
-        <div id="chatangoWrap" style="width:400px;height:350px;display:flex;align-items:center;justify-content:center;margin:0 auto">
-          <span style="color:#555;font-size:12px;font-family:Tahoma,sans-serif">Chat loading&hellip;</span>
+      <div class="rights-bar" style="margin:0">Live Chat</div>
+      <div class="aero-inner" style="background:#000;padding:8px;display:flex;justify-content:center;align-items:center;min-height:392px;">
+        <div id="chatangoWrap" style="width:400px;height:350px;display:flex;align-items:center;justify-content:center;margin:0 auto;">
+          <span style="color:#555;font-size:12px;font-family:Tahoma,sans-serif;">Chat loading&hellip;</span>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Blog panel -->
-  <div id="panelBlog" class="comm-panel">
+  <div id="commPanelBlog" class="comm-panel">
     <div class="glass-box" style="margin-top:7px">
-      <div class="styled-container aero-inner" style="text-align:center;padding:30px 20px">
-        <p style="font-size:20px;color:var(--accent);margin-bottom:10px">UH OH! (X_X)</p>
-        <p style="color:#aaa;font-size:12.5px;margin-bottom:6px">
-          This tab is currently <span style="color:var(--accent);font-style:italic">in development</span>
+      <div class="styled-containers aero-inner" style="text-align:center;padding:30px 20px;">
+        <p style="font-size:20px;color:var(--accent);margin-bottom:10px;">UH OH! (X_X)</p>
+        <p style="color:#aaa;font-size:12.5px;margin-bottom:6px;">
+          This tab is currently <span style="color:var(--accent);font-style:italic;">in development</span>
         </p>
-        <p style="color:#666;font-size:11px;margin-bottom:16px">Still, you can visit the blog directly.</p>
+        <p style="color:#666;font-size:11px;margin-bottom:16px;">Still, you can visit the blog directly.</p>
         <a href="https://www.blogger.com/blog/post/edit/preview/8859082952765475894/8042083562940805194"
            target="_blank" rel="noopener noreferrer" class="comm-ok-btn">Visit Blog</a>
       </div>
@@ -154,10 +82,12 @@
 
 </div>
 
-<div class="bottom-util">
-  <button class="bottom-util-btn" id="soundToggle" onclick="toggleSound()">Sounds: On</button>
-  <button class="bottom-util-btn" onclick="window.location.href='preferences.html'">Preferences</button>
+<div id="bottomUtil">
+  <button class="bottom-btn wa-sound-toggle" onclick="toggleSound()">Sounds: On</button>
+  <a href="preferences.html" class="bottom-btn">Preferences</a>
 </div>
+
+<div id="renaChan" style="position:fixed;bottom:0;right:0;width:250px;height:350px;background-image:url('assets/images/renaidle1.png');background-size:contain;background-repeat:no-repeat;background-position:bottom right;z-index:9999;cursor:pointer;"></div>
 
 <script>
 var _chatangoLoaded = false;
@@ -170,39 +100,23 @@ function _loadChatango() {
   wrap.style.cssText = 'width:400px;height:350px;display:block;margin:0 auto;';
   var scr = document.createElement('script');
   scr.id = 'cid0020000434097606183';
-  scr.setAttribute('data-cfasync','false');
+  scr.setAttribute('data-cfasync', 'false');
   scr.async = true;
   scr.src = '//st.chatango.com/js/gz/emb.js';
   scr.style.cssText = 'width:400px;height:350px;';
   scr.text = '{"handle":"thewatanagashiarchiv","arch":"js","styles":{"a":"000000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"000000","l":"000000","m":"000000","n":"FFFFFF","p":"10","q":"000000","r":100,"cnrs":"0.35"}}';
   wrap.appendChild(scr);
 }
-
-function switchTab(tab) {
-  document.getElementById('panelChat').classList.toggle('active', tab==='chat');
-  document.getElementById('panelBlog').classList.toggle('active', tab==='blog');
-  document.getElementById('tabChat').classList.toggle('active', tab==='chat');
-  document.getElementById('tabBlog').classList.toggle('active', tab==='blog');
-  if (tab==='chat') setTimeout(_loadChatango, 100);
+function switchCommTab(tab) {
+  document.getElementById('commPanelChat').classList.toggle('active', tab === 'chat');
+  document.getElementById('commPanelBlog').classList.toggle('active', tab === 'blog');
+  document.getElementById('commTabChat').classList.toggle('active', tab === 'chat');
+  document.getElementById('commTabBlog').classList.toggle('active', tab === 'blog');
+  if (tab === 'chat') setTimeout(_loadChatango, 100);
 }
-
-document.addEventListener('DOMContentLoaded', () => setTimeout(_loadChatango, 400));
-
-/* ── Sounds ── */
-const SOUND_BASE='assets/audio/';
-const SOUNDS={start:SOUND_BASE+'sitestart.mp3',button:SOUND_BASE+'sitebuttonclick.mp3',hover:SOUND_BASE+'text.mp3'};
-let _soundsOn=localStorage.getItem('_wa_sounds')!=='off';
-const _ac={};
-function _ga(k){if(!_ac[k]){const a=new Audio(SOUNDS[k]);a.preload='auto';_ac[k]=a;}return _ac[k];}
-function playSound(k){if(!_soundsOn||!SOUNDS[k])return;try{const c=_ga(k).cloneNode();c.volume=k==='hover'?0.30:0.52;c.play().catch(()=>{});}catch(e){}}
-function toggleSound(){_soundsOn=!_soundsOn;localStorage.setItem('_wa_sounds',_soundsOn?'on':'off');const b=document.getElementById('soundToggle');if(b){b.textContent=_soundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_soundsOn);}if(_soundsOn)playSound('button');}
-document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('soundToggle');if(b&&!_soundsOn){b.textContent='Sounds: Off';b.classList.add('off');}if(!sessionStorage.getItem('_siteStartPlayed')){sessionStorage.setItem('_siteStartPlayed','1');setTimeout(()=>playSound('start'),700);}});
-document.addEventListener('pointerdown',()=>Object.keys(SOUNDS).forEach(k=>_ga(k)),{once:true,passive:true});
-let _ht=0,_htm=null;
-function _ii(el){if(!el||el===document.body)return false;const t=el.tagName;if(t==='BUTTON'||t==='A')return true;if(window.getComputedStyle(el).cursor==='pointer')return true;return false;}
-document.addEventListener('mouseover',e=>{if(e.target.id==='soundToggle')return;if(!_ii(e.target))return;clearTimeout(_htm);_htm=setTimeout(()=>{const n=Date.now();if(n-_ht<400)return;_ht=n;playSound('hover');},400);},{passive:true});
-document.addEventListener('mouseout',e=>{if(_ii(e.target))clearTimeout(_htm);},{passive:true});
-document.addEventListener('click',e=>{if(e.target.id==='soundToggle')return;if(_ii(e.target))playSound('button');},true);
+document.addEventListener('DOMContentLoaded', function () { setTimeout(_loadChatango, 400); });
 </script>
+<script src="sounds.js"></script>
+<script src="scripts/js/codes.js"></script>
 </body>
 </html>
