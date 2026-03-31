@@ -1769,91 +1769,134 @@ footer {
 }
 
 /* ================================================================
-   NEXT STAGE — Layout overrides
-   Sidebar becomes horizontal aero nav bar (matches downloader.html)
+   NEXT STAGE — Layout redesign
+   
+   Concept: single compact chrome bar at the top — left side holds
+   the site identity (title + motto), right side holds all nav links.
+   Below that: full-width content area. Each page feels like a
+   distinct "screen" loaded into the frame.
+   
+   The original #mainHeader pill is repurposed as the left identity
+   block inside a shared flex row with #navigationMenu.
    ================================================================ */
 
-/* Body: centered column */
+/* ── Body: centered, top-to-bottom ── */
 [data-theme="next-stage"] body {
   justify-content: center !important;
-  align-items: flex-start !important;
+  align-items: center !important;
   flex-direction: column !important;
-  padding: 12px 6px 30px !important;
+  padding: 10px 6px 30px !important;
 }
 
-/* Container: column stack, centered */
+/* ── Container: centered column, 800px ── */
 [data-theme="next-stage"] #websiteContainer {
+  display: flex !important;
+  flex-direction: column !important;
   align-self: center !important;
+  width: 800px !important;
+  max-width: 100% !important;
 }
 
-/* Header: flat rectangle (no pill) */
+/* ════════════════════════════════════════════
+   STEP 1: Suppress the original pill header.
+   We rebuild identity inside the nav chrome.
+   ════════════════════════════════════════════ */
 [data-theme="next-stage"] #mainHeader {
-  border-radius: 0 !important;
-  border-top-width: 1px !important;
-  padding: 5px 18px !important;
-  gap: 10px !important;
+  display: none !important;
 }
-[data-theme="next-stage"] #mainHeader::before { border-radius: 0 !important; }
-[data-theme="next-stage"] #mainHeader::after  { display: none !important; }
 
-/* Nav+content: stacked vertically */
+/* ── Nav+content container: column ── */
 [data-theme="next-stage"] #navAndContentContainer {
   flex-direction: column !important;
   align-items: stretch !important;
 }
 
-/* Sidebar aside: full width row */
+/* ── Sidebar aside: full width, is the chrome bar ── */
 [data-theme="next-stage"] #sidebarAside {
   width: 100% !important;
-  flex-direction: row !important;
+  flex-direction: column !important;
   align-items: stretch !important;
   flex-shrink: 0 !important;
 }
 
-/* Nav: horizontal aero bar — identical gradient to downloader .aero-bar */
+/* ════════════════════════════════════════════
+   STEP 2: #navigationMenu becomes the full
+   header+nav bar in one aero chrome strip.
+   It uses display:flex with the site title
+   injected via ::before as a left-anchored
+   identity block, nav links fill the rest.
+   ════════════════════════════════════════════ */
 [data-theme="next-stage"] #navigationMenu {
   width: 100% !important;
   height: auto !important;
-  min-height: 30px !important;
+  min-height: 36px !important;
+  display: flex !important;
   flex-direction: row !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
   gap: 0 !important;
-  padding: 2px 6px !important;
-  overflow: hidden !important;
+  padding: 0 !important;
+  overflow: visible !important;
   border-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
+
+  /* The dark aero bar gradient — same as downloader .aero-bar */
   background: var(--th-bar-grad) !important;
-  border: 1px solid var(--th-bar-border-s) !important;
-  border-top-color: var(--th-bar-border-t) !important;
-  border-bottom-color: var(--th-bar-border-b) !important;
-  border-left: none !important;
-  border-right: none !important;
+  border-top: 1px solid var(--th-bar-border-t) !important;
+  border-bottom: 1px solid var(--th-bar-border-b) !important;
+  border-left: 1px solid var(--th-bar-border-s) !important;
+  border-right: 1px solid var(--th-bar-border-s) !important;
   box-shadow:
     inset 0 1px 0 var(--th-bar-shine),
     inset 0 2px 4px rgba(255,255,255,.10),
-    0 3px 10px rgba(0,0,0,.48) !important;
+    0 4px 12px rgba(0,0,0,.55) !important;
   position: relative !important;
   scrollbar-width: none !important;
 }
-/* Gloss shine overlay on the nav bar */
+
+/* Gloss half-shine overlay on the bar */
 [data-theme="next-stage"] #navigationMenu::before {
   content: '' !important;
-  display: block !important;
   position: absolute !important;
   top: 0 !important; left: 0 !important; right: 0 !important;
   height: 50% !important;
   background: var(--th-bar-glow-top) !important;
   pointer-events: none !important;
   z-index: 0 !important;
+  display: block !important;
 }
 
-/* Nav categories: inline, no box */
+/* ── Site identity block: title + motto, left side ──
+   Injected via ::after on the aside wrapper so it
+   sits before the nav categories in visual order.    ── */
+[data-theme="next-stage"] #sidebarAside::before {
+  content: 'The Watanagashi Archive' !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  padding: 0 14px 0 10px !important;
+  font-family: Tahoma, 'Segoe UI', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: var(--th-bar-text) !important;
+  text-shadow: var(--th-bar-tshadow) !important;
+  letter-spacing: .3px !important;
+  white-space: nowrap !important;
+  border-right: 1px solid rgba(140,140,140,.28) !important;
+  position: relative !important;
+  z-index: 2 !important;
+  /* same bar background so it blends into #navigationMenu */
+  background: var(--th-bar-grad) !important;
+  /* sits outside nav but same visual layer — overlap trick */
+  margin-right: -1px !important;
+  order: -1 !important;
+}
+
+/* ── Nav categories: inline row, take remaining space ── */
 [data-theme="next-stage"] .nav-categories {
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: nowrap !important;
-  align-items: center !important;
+  align-items: stretch !important;
   gap: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -1861,99 +1904,159 @@ footer {
   border: none !important;
   position: relative !important;
   z-index: 1 !important;
-}
-/* Thin separator between groups */
-[data-theme="next-stage"] .nav-categories + .nav-categories {
-  margin-left: 4px !important;
-  padding-left: 6px !important;
-  border-left: 1px solid rgba(140,140,140,.30) !important;
+  flex-shrink: 0 !important;
 }
 
-/* Hide category titles */
+/* Thin rule between category groups */
+[data-theme="next-stage"] .nav-categories + .nav-categories {
+  border-left: 1px solid rgba(140,140,140,.22) !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Category titles hidden — links are self-explanatory in this layout */
 [data-theme="next-stage"] .navbar-titles { display: none !important; }
 
-/* Nav links: compact aero buttons in the bar */
+/* ── Nav links: flat tab style ──
+   Each link fills the bar height, underline on active.   ── */
 [data-theme="next-stage"] .nav-link {
+  display: flex !important;
+  align-items: center !important;
   width: auto !important;
   min-width: 0 !important;
   max-width: none !important;
   flex: 0 0 auto !important;
-  margin: 1px 1px !important;
-  padding: 2px 8px 3px !important;
+  margin: 0 !important;
+  padding: 0 10px !important;
   font-size: 11px !important;
   white-space: nowrap !important;
   border-radius: 0 !important;
-  position: relative !important;
-  z-index: 1 !important;
+  border: none !important;
+  border-right: 1px solid rgba(140,140,140,.16) !important;
+  box-shadow: none !important;
+  background: none !important;
   color: var(--th-bar-text) !important;
+  text-shadow: var(--th-bar-tshadow) !important;
+  position: relative !important;
+  z-index: 1 !important;
+  overflow: hidden !important;
 }
-/* No size-jump on hover */
-[data-theme="next-stage"] .nav-link:hover {
-  margin: 1px 1px !important;
-  width: auto !important;
-  padding: 2px 8px 3px !important;
-  min-width: 0 !important;
-  color: var(--th-accent) !important;
-}
+
+/* Active underline — red accent bar at bottom */
 [data-theme="next-stage"] .nav-link.active {
+  background: rgba(255,255,255,.06) !important;
   color: var(--th-accent) !important;
+  box-shadow: inset 0 -2px 0 var(--th-accent) !important;
 }
 
-/* Sound toggle wrap: inline in the bar */
+/* Hover: subtle brightening, no size jump */
+[data-theme="next-stage"] .nav-link:hover {
+  margin: 0 !important;
+  padding: 0 10px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  background: rgba(255,255,255,.08) !important;
+  color: var(--th-accent) !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
+/* Nav icon: slightly larger, matches bar height */
+[data-theme="next-stage"] .nav-icons {
+  height: 14px !important;
+  margin: 0 4px 0 0 !important;
+}
+
+/* ── Sounds + Themes: pushed to far right via auto margin ── */
+
+/* First nav-categories gets auto left margin to push utility btns right */
+[data-theme="next-stage"] .nav-categories:last-child {
+  margin-left: auto !important;
+  border-left: 1px solid rgba(140,140,140,.22) !important;
+  border-right: none !important;
+}
+
 [data-theme="next-stage"] #_navSoundWrap {
-  margin: 0 !important;
-  padding: 0 0 0 6px !important;
-  margin-left: 4px !important;
-  border-left: 1px solid rgba(140,140,140,.30) !important;
   display: flex !important;
-  align-items: center !important;
+  align-items: stretch !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
   position: relative !important;
   z-index: 1 !important;
-}
-[data-theme="next-stage"] #navSoundToggle {
-  padding: 2px 8px 3px !important;
-  font-size: 11px !important;
-  display: inline-block !important;
-  width: auto !important;
-  min-height: 0 !important;
 }
 
-/* Themes btn wrap: inline */
-[data-theme="next-stage"] #_themesBtnWrap {
-  margin: 0 !important;
-  padding: 0 0 0 6px !important;
-  margin-left: 4px !important;
-  border-left: 1px solid rgba(140,140,140,.30) !important;
+[data-theme="next-stage"] #navSoundToggle {
   display: flex !important;
   align-items: center !important;
+  padding: 0 10px !important;
+  font-size: 10.5px !important;
+  width: auto !important;
+  min-height: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  border-left: 1px solid rgba(140,140,140,.16) !important;
+}
+
+[data-theme="next-stage"] #_themesBtnWrap {
+  display: flex !important;
+  align-items: stretch !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
   position: relative !important;
   z-index: 1 !important;
 }
+
 [data-theme="next-stage"] #_themesBtn {
-  padding: 2px 8px 3px !important;
-  font-size: 11px !important;
-  display: inline-block !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 10px !important;
+  font-size: 10.5px !important;
   width: auto !important;
   min-height: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  border-left: 1px solid rgba(140,140,140,.16) !important;
 }
 
 /* Sidebar extender: not needed */
 [data-theme="next-stage"] #_sidebarExtender { display: none !important; }
 
-/* Main content: full width */
+/* ════════════════════════════════════════════
+   STEP 3: Main content — full width, each
+   .page feels like a distinct loaded screen.
+   ════════════════════════════════════════════ */
 [data-theme="next-stage"] #mainContent {
   width: 100% !important;
   flex: 1 !important;
   border-left: 1px solid var(--th-main-border) !important;
   border-right: 1px solid var(--th-main-border) !important;
   border-top: none !important;
-  min-height: 0 !important;
+  border-bottom: 1px solid var(--th-main-border) !important;
+  min-height: 500px !important;
   height: auto !important;
   overflow-y: visible !important;
   overflow-x: hidden !important;
 }
 
-/* Glass boxes: exactly like downloader — deep gradient */
+/* Each page: subtle inset shadow at top so it "loads" into the frame */
+[data-theme="next-stage"] .page.active {
+  box-shadow: inset 0 3px 10px rgba(0,0,0,.55) !important;
+  min-height: 500px !important;
+}
+
+/* Page h1 acts as a section title bar flush to the top */
+[data-theme="next-stage"] h1 {
+  font-size: 13px !important;
+  padding: 6px 10px 8px !important;
+  letter-spacing: .4px !important;
+  text-transform: uppercase !important;
+}
+
+[data-theme="next-stage"] h2 { font-size: 12px !important; }
+
+/* ── Glass boxes: match downloader exactly ── */
 [data-theme="next-stage"] .glass-borders {
   background-image: linear-gradient(
     rgba(255,255,255,.12),
@@ -1978,32 +2081,54 @@ footer {
   background: rgba(6,6,6,.92) !important;
 }
 
-/* Headers: match downloader h2 size */
-[data-theme="next-stage"] h1 { font-size: 14.6px !important; }
-[data-theme="next-stage"] h2 { font-size: 13px !important; }
+/* ── Responsive: next-stage ── */
+@media (max-width: 800px) {
+  [data-theme="next-stage"] #websiteContainer { width: 100% !important; }
+}
 
-/* Responsive for next-stage */
-@media (max-width: 600px) {
+@media (max-width: 680px) {
+  /* Identity block shrinks */
+  [data-theme="next-stage"] #sidebarAside::before {
+    font-size: 11px !important;
+    padding: 0 8px !important;
+  }
+  [data-theme="next-stage"] .nav-link {
+    padding: 0 7px !important;
+    font-size: 10.5px !important;
+  }
+  [data-theme="next-stage"] .nav-icons { display: none !important; }
+}
+
+@media (max-width: 520px) {
+  /* Stack nav below identity */
+  [data-theme="next-stage"] #sidebarAside {
+    flex-direction: column !important;
+  }
+  [data-theme="next-stage"] #sidebarAside::before {
+    padding: 5px 10px !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(140,140,140,.20) !important;
+    font-size: 12px !important;
+    background: linear-gradient(to bottom,rgba(60,60,60,.96) 0%,rgba(20,20,20,.98) 50%,rgba(4,4,4,1) 50%,rgba(14,14,14,.99) 100%) !important;
+  }
   [data-theme="next-stage"] #navigationMenu {
     flex-wrap: wrap !important;
-    padding: 2px 3px !important;
+    min-height: 28px !important;
+    border-top: none !important;
   }
-  [data-theme="next-stage"] .nav-categories {
-    flex-wrap: wrap !important;
-  }
-  [data-theme="next-stage"] .nav-categories + .nav-categories {
+  [data-theme="next-stage"] .nav-categories { flex-wrap: wrap !important; }
+  [data-theme="next-stage"] .nav-categories:last-child {
     margin-left: 0 !important;
-    padding-left: 0 !important;
     border-left: none !important;
   }
   [data-theme="next-stage"] .nav-link {
+    padding: 5px 8px !important;
     font-size: 10.5px !important;
-    padding: 3px 6px 4px !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(140,140,140,.12) !important;
   }
 }
-@media (max-width: 400px) {
-  [data-theme="next-stage"] .nav-link {
-    font-size: 10px !important;
-    padding: 2px 5px 3px !important;
-  }
+
+@media (max-width: 380px) {
+  [data-theme="next-stage"] .nav-link { font-size: 10px !important; padding: 4px 6px !important; }
 }
