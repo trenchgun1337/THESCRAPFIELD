@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact &mdash; Watanagashi Archive</title>
+<link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+<link rel="stylesheet" href="shared.css">
+<style>
+.contact-banner {
+  width: 100%; display: block; object-fit: fill;
+  height: 120px; filter: none !important;
+}
+</style>
+</head>
+<body>
+<div id="pageWrap">
+
+  <div class="aero-topbar">
+    <a class="aero-topbar-brand" href="index.html" title="Home">
+      <img src="assets/images/watanagashilogo.png" alt="" class="aero-topbar-logo"
+        onerror="this.style.display='none'">
+      <span class="aero-topbar-title">Watanagashi Archive</span>
+    </a>
+    <nav class="aero-topbar-nav">
+      <a href="index.html">
+        <img src="https://frutigeraeroarchive.org/images/introduction.png" class="nav-icon" alt="">Introduction</a>
+      <a href="music.html">
+        <img src="https://frutigeraeroarchive.org/images/music.png" class="nav-icon" alt="">Music Player</a>
+      <a href="videos.html">
+        <img src="https://frutigeraeroarchive.org/images/videos.png" class="nav-icon" alt="">Video Player</a>
+      <a href="sketchbook.html">
+        <img src="https://frutigeraeroarchive.org/images/sketchbook.png" class="nav-icon" alt="">Sketchbook</a>
+      <a href="community.html">
+        <img src="https://frutigeraeroarchive.org/images/forum.png" class="nav-icon" alt="">Community</a>
+      <a href="contact.html" class="active">
+        <img src="https://frutigeraeroarchive.org/images/contact.png" class="nav-icon" alt="">Contact</a>
+      <a href="resources.html">
+        <img src="https://frutigeraeroarchive.org/images/resources.png" class="nav-icon" alt="">Resources</a>
+    </nav>
+  </div>
+
+  <div class="glass-box">
+    <div class="aero-inner" style="overflow:hidden">
+      <img src="assets/images/CONTACTBANNER.png" alt="Contact Banner" class="contact-banner"
+        onerror="this.style.display='none'">
+    </div>
+    <div class="styled-container aero-inner" style="margin-top:5px">
+      <p>Feel free to reach out through any of my social links below.</p>
+    </div>
+
+    <h2 style="margin-top:5px"><span>Social</span></h2>
+    <div class="aero-inner" style="background:#000">
+      <ul class="contact-links">
+        <li><a href="https://www.youtube.com/@trenchgun1337" target="_blank">
+          <img src="assets/images/YOUTUBEAERO.png" alt="">
+          <span>YouTube</span></a></li>
+        <li><a href="https://br.pinterest.com/fxckmazl/" target="_blank">
+          <img src="assets/images/PINTERESTAERO.png" alt="">
+          <span>Pinterest</span></a></li>
+        <li><a href="https://steamcommunity.com/id/fxckmazl" target="_blank">
+          <img src="assets/images/STEAMAERO.png" alt="">
+          <span>Steam</span></a></li>
+        <li><a href="https://www.tiktok.com/@trenchgun1337" target="_blank">
+          <img src="assets/images/TIKTOKAERO.png" alt="">
+          <span>TikTok</span></a></li>
+        <li><a href="https://x.com/trenchgun1337" target="_blank">
+          <img src="assets/images/TWITTERAERO.png" alt="">
+          <span>Twitter / X</span></a></li>
+        <li><a href="https://www.instagram.com/trenchgun1337" target="_blank">
+          <img src="assets/images/INSTAGRAM%20AERO.png" alt="">
+          <span>Instagram</span></a></li>
+        <li><a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank">
+          <img src="assets/images/SPOTIFYAERO.jpeg" alt="">
+          <span>Spotify</span></a></li>
+        <li><a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank">
+          <img src="assets/images/ROBLOXAERO.png" alt="">
+          <span>Roblox</span></a></li>
+        <li><a href="https://soundcloud.com/trenchgun1337" target="_blank">
+          <img src="assets/images/SOUNDCLOUDAERO.png" alt="">
+          <span>SoundCloud</span></a></li>
+        <li>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank">
+            <img src="assets/images/GMAILAERO.png" alt="">
+            <span>Email</span>
+            <span class="link-note">(faster response)</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-util">
+  <button class="bottom-util-btn" id="soundToggle" onclick="toggleSound()">Sounds: On</button>
+  <button class="bottom-util-btn" onclick="window.location.href='preferences.html'">Preferences</button>
+</div>
+
+<script>
+const SOUND_BASE='assets/audio/';
+const SOUNDS={start:SOUND_BASE+'sitestart.mp3',button:SOUND_BASE+'sitebuttonclick.mp3',hover:SOUND_BASE+'text.mp3'};
+let _soundsOn=localStorage.getItem('_wa_sounds')!=='off';
+const _ac={};
+function _ga(k){if(!_ac[k]){const a=new Audio(SOUNDS[k]);a.preload='auto';_ac[k]=a;}return _ac[k];}
+function playSound(k){if(!_soundsOn||!SOUNDS[k])return;try{const c=_ga(k).cloneNode();c.volume=k==='hover'?0.30:0.52;c.play().catch(()=>{});}catch(e){}}
+function toggleSound(){_soundsOn=!_soundsOn;localStorage.setItem('_wa_sounds',_soundsOn?'on':'off');const b=document.getElementById('soundToggle');if(b){b.textContent=_soundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_soundsOn);}if(_soundsOn)playSound('button');}
+document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('soundToggle');if(b&&!_soundsOn){b.textContent='Sounds: Off';b.classList.add('off');}if(!sessionStorage.getItem('_siteStartPlayed')){sessionStorage.setItem('_siteStartPlayed','1');setTimeout(()=>playSound('start'),700);}});
+document.addEventListener('pointerdown',()=>Object.keys(SOUNDS).forEach(k=>_ga(k)),{once:true,passive:true});
+let _ht=0,_htm=null;
+function _ii(el){if(!el||el===document.body)return false;const t=el.tagName;if(t==='BUTTON'||t==='A')return true;if(window.getComputedStyle(el).cursor==='pointer')return true;return false;}
+document.addEventListener('mouseover',e=>{if(e.target.id==='soundToggle')return;if(!_ii(e.target))return;clearTimeout(_htm);_htm=setTimeout(()=>{const n=Date.now();if(n-_ht<400)return;_ht=n;playSound('hover');},400);},{passive:true});
+document.addEventListener('mouseout',e=>{if(_ii(e.target))clearTimeout(_htm);},{passive:true});
+document.addEventListener('click',e=>{if(e.target.id==='soundToggle')return;if(_ii(e.target))playSound('button');},true);
+</script>
+</body>
+</html>

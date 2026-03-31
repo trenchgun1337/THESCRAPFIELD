@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Player &mdash; Watanagashi Archive</title>
+<link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="scripts/css/style.css">
+</head>
+<body>
+<div id="pageWrap">
+
+  <div class="aero-topbar">
+    <a class="aero-topbar-brand" href="index.html" title="Home">
+      <img src="assets/images/watanagashilogo.png" alt="" class="aero-topbar-logo"
+        onerror="this.style.display='none'">
+      <span class="aero-topbar-title">Watanagashi Archive</span>
+    </a>
+    <nav class="aero-topbar-nav">
+      <a href="index.html">
+        <img src="https://frutigeraeroarchive.org/images/introduction.png" class="nav-icon" alt="">Introduction</a>
+      <a href="music.html">
+        <img src="https://frutigeraeroarchive.org/images/music.png" class="nav-icon" alt="">Music Player</a>
+      <a href="videos.html" class="active">
+        <img src="https://frutigeraeroarchive.org/images/videos.png" class="nav-icon" alt="">Video Player</a>
+      <a href="sketchbook.html">
+        <img src="https://frutigeraeroarchive.org/images/sketchbook.png" class="nav-icon" alt="">Sketchbook</a>
+      <a href="community.html">
+        <img src="https://frutigeraeroarchive.org/images/forum.png" class="nav-icon" alt="">Community</a>
+      <a href="contact.html">
+        <img src="https://frutigeraeroarchive.org/images/contact.png" class="nav-icon" alt="">Contact</a>
+      <a href="resources.html">
+        <img src="https://frutigeraeroarchive.org/images/resources.png" class="nav-icon" alt="">Resources</a>
+    </nav>
+  </div>
+
+  <!-- Video embed area -->
+  <div class="glass-box">
+    <div class="aero-inner" style="overflow:hidden">
+      <div class="video-embed-wrap">
+        <div id="videoEmbed"></div>
+      </div>
+    </div>
+    <div id="videoInfoBox" class="video-info-box aero-inner" style="margin-top:0"></div>
+  </div>
+
+  <!-- Animes -->
+  <div class="glass-box">
+    <h2><span>Animes</span></h2>
+    <div class="styled-container aero-inner">
+      <p class="section-desc" style="margin-bottom:6px;font-size:11.5px;color:#888;font-style:italic">Openings, endings &amp; classic anime clips.</p>
+      <div id="videoListAnimes" class="video-list"></div>
+      <p id="animes-empty" class="empty-msg" style="display:none;color:#666;font-size:11.5px;font-style:italic;margin-top:4px">No videos added yet.</p>
+    </div>
+  </div>
+
+  <!-- Internet Nostalgia -->
+  <div class="glass-box">
+    <h2><span>Internet Nostalgia</span></h2>
+    <div class="styled-container aero-inner">
+      <p class="section-desc" style="margin-bottom:6px;font-size:11.5px;color:#888;font-style:italic">Old internet classics and nostalgia videos.</p>
+      <div id="videoListNostalg" class="video-list"></div>
+      <p id="nostalg-empty" class="empty-msg" style="color:#666;font-size:11.5px;font-style:italic">No videos added yet.</p>
+    </div>
+  </div>
+
+  <!-- Awesome Internet Videos -->
+  <div class="glass-box">
+    <h2><span>Awesome Internet Videos</span></h2>
+    <div class="styled-container aero-inner">
+      <div id="videoListAwesome" class="video-list"></div>
+      <p id="awesome-empty" class="empty-msg" style="color:#666;font-size:11.5px;font-style:italic">No videos added yet.</p>
+    </div>
+  </div>
+
+  <!-- Copyright notice -->
+  <div class="glass-box">
+    <h2><span>Copyright Notice</span></h2>
+    <div class="styled-container aero-inner">
+      <p>All content on this website is for archiving, educational, or informational purposes and is not for profit.
+      We believe its use qualifies as fair use. If you own any content here and would like it removed or properly credited,
+      please contact me at
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank">
+      trenchgun1337@gmail.com
+      </a>
+      and I will take action as soon as possible to fulfill your request.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-util">
+  <button class="bottom-util-btn" id="soundToggle" onclick="toggleUiSound()">Sounds: On</button>
+  <button class="bottom-util-btn" onclick="window.location.href='preferences.html'">Preferences</button>
+</div>
+
+<script src="scripts/js/video.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+const SOUND_BASE='assets/audio/';
+const UI_SOUNDS={start:SOUND_BASE+'sitestart.mp3',button:SOUND_BASE+'sitebuttonclick.mp3',hover:SOUND_BASE+'text.mp3'};
+let _uiSoundsOn=localStorage.getItem('_wa_sounds')!=='off';
+const _uac={};
+function _uga(k){if(!_uac[k]){const a=new Audio(UI_SOUNDS[k]);a.preload='auto';_uac[k]=a;}return _uac[k];}
+function playUiSound(k){if(!_uiSoundsOn||!UI_SOUNDS[k])return;try{const c=_uga(k).cloneNode();c.volume=k==='hover'?0.30:0.52;c.play().catch(()=>{});}catch(e){}}
+function toggleUiSound(){_uiSoundsOn=!_uiSoundsOn;localStorage.setItem('_wa_sounds',_uiSoundsOn?'on':'off');const b=document.getElementById('soundToggle');if(b){b.textContent=_uiSoundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_uiSoundsOn);}if(_uiSoundsOn)playUiSound('button');}
+document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('soundToggle');if(b&&!_uiSoundsOn){b.textContent='Sounds: Off';b.classList.add('off');}if(!sessionStorage.getItem('_siteStartPlayed')){sessionStorage.setItem('_siteStartPlayed','1');setTimeout(()=>playUiSound('start'),700);}});
+</script>
+</body>
+</html>

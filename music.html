@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Player &mdash; Watanagashi Archive</title>
+<link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="scripts/css/style.css">
+<style>
+/* ── Music player overrides to fit new layout ── */
+#musicPlayerContainer {
+  border-left: 1px solid var(--aero-border);
+  border-right: 1px solid var(--aero-border);
+  position: relative; z-index: 1;
+}
+.music-header-img {
+  max-width: 76px; flex-shrink: 0; margin-right: 2px;
+  filter: sepia(100%) saturate(5) hue-rotate(300deg) brightness(0.85);
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<div id="pageWrap">
+
+  <div class="aero-topbar">
+    <a class="aero-topbar-brand" href="index.html" title="Home">
+      <img src="assets/images/watanagashilogo.png" alt="" class="aero-topbar-logo"
+        onerror="this.style.display='none'">
+      <span class="aero-topbar-title">Watanagashi Archive</span>
+    </a>
+    <nav class="aero-topbar-nav">
+      <a href="index.html">
+        <img src="https://frutigeraeroarchive.org/images/introduction.png" class="nav-icon" alt="">Introduction</a>
+      <a href="music.html" class="active">
+        <img src="https://frutigeraeroarchive.org/images/music.png" class="nav-icon" alt="">Music Player</a>
+      <a href="videos.html">
+        <img src="https://frutigeraeroarchive.org/images/videos.png" class="nav-icon" alt="">Video Player</a>
+      <a href="sketchbook.html">
+        <img src="https://frutigeraeroarchive.org/images/sketchbook.png" class="nav-icon" alt="">Sketchbook</a>
+      <a href="community.html">
+        <img src="https://frutigeraeroarchive.org/images/forum.png" class="nav-icon" alt="">Community</a>
+      <a href="contact.html">
+        <img src="https://frutigeraeroarchive.org/images/contact.png" class="nav-icon" alt="">Contact</a>
+      <a href="resources.html">
+        <img src="https://frutigeraeroarchive.org/images/resources.png" class="nav-icon" alt="">Resources</a>
+    </nav>
+  </div>
+
+  <div class="glass-box">
+    <div class="styled-container aero-inner" style="display:flex;align-items:flex-start;gap:10px">
+      <img src="assets/images/MUSICPLAYERNOTESYMBOL.png" alt="Music" class="music-header-img">
+      <div>
+        <p>Enjoy listening to some bangers below &mdash; based on personal picks :-)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-box" id="playerGlassBox">
+    <div id="musicPlayerContainer" class="aero-glass-overlay">
+      <div class="mp-header-bar">Music Player &#9834;</div>
+      <div class="mp-controls-row">
+        <button class="mp-ctrl-btn" id="audioBack" title="Previous">
+          <img class="player-img" src="https://frutigeraeroarchive.org/images/music_player/music_player_back.png" alt="Back" draggable="false">
+        </button>
+        <button class="mp-ctrl-btn" id="audioPlayPause" title="Play/Pause">
+          <img class="player-img" id="audioPlayPauseImage" src="https://frutigeraeroarchive.org/images/music_player/music_player_play.png" alt="Play" draggable="false">
+        </button>
+        <button class="mp-ctrl-btn" id="audioForward" title="Next">
+          <img class="player-img" src="https://frutigeraeroarchive.org/images/music_player/music_player_forward.png" alt="Forward" draggable="false">
+        </button>
+      </div>
+      <div id="ytContainer" style="position:fixed;bottom:0;right:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;">
+        <div id="_ytEl"></div>
+      </div>
+      <div id="musicBackground">
+        <div id="musicPlayerPlaylist">
+          <nav id="playlistLeft"></nav>
+          <div class="playlist-right" id="playlistRight">
+            <canvas id="visualizerCanvas" width="175" height="96"></canvas>
+            <img src="https://frutigeraeroarchive.org/images/music_player/cd.png" id="spinningDisk" alt="CD" draggable="false">
+          </div>
+        </div>
+      </div>
+      <div class="mp-status-bar" id="mpStatusBar" style="position:relative;display:flex;align-items:center;gap:6px;padding:4px 8px;">
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+          <button id="mpLikeBtn" title="Like" style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;opacity:0.3;">
+            <img src="https://cdn-icons-png.flaticon.com/128/739/739231.png" style="width:16px;height:16px;pointer-events:none;filter:grayscale(80%) brightness(0.5);" draggable="false">
+          </button>
+          <span id="mpLikeVal" style="font-size:11px;color:#ccc;min-width:12px;">0</span>
+          <button id="mpDislikeBtn" title="Dislike" style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;opacity:0.3;">
+            <img src="https://cdn-icons-png.flaticon.com/128/880/880613.png" style="width:16px;height:16px;pointer-events:none;filter:grayscale(80%) brightness(0.5);" draggable="false">
+          </button>
+          <span id="mpDislikeVal" style="font-size:11px;color:#ccc;min-width:12px;">0</span>
+        </div>
+        <span style="flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;">
+          Currently playing: <span id="audioName">&mdash;</span>
+        </span>
+        <span id="mpPlusBtn" title="Options" style="cursor:pointer;font-size:15px;font-weight:bold;color:rgba(200,200,200,.55);padding:0 3px;user-select:none;flex-shrink:0;line-height:1;">+</span>
+        <div id="mpPlusPopup" style="display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;background:#0a0202;border:1px solid rgba(180,20,20,.5);min-width:200px;font-family:Tahoma,sans-serif;font-size:12px;padding:4px 0;box-shadow:0 -4px 16px rgba(0,0,0,.8);" onclick="event.stopPropagation()">
+          <div id="mpPopRandom"     style="padding:7px 16px;cursor:pointer;color:#ccc;">Random</div>
+          <div id="mpPopShuffle"    style="padding:7px 16px;cursor:pointer;color:#ccc;">Shuffle: OFF</div>
+          <div style="border-top:1px solid rgba(80,80,80,.4);margin:3px 0;"></div>
+          <div id="mpPopSortToggle" style="padding:7px 16px;cursor:pointer;color:#ccc;display:flex;justify-content:space-between;align-items:center;">Sort <span style="opacity:.5;font-size:10px;">&#9654;</span></div>
+          <div id="mpSortSubmenu"   style="display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(80,80,80,.4);"></div>
+          <div style="border-top:1px solid rgba(80,80,80,.4);margin:3px 0;"></div>
+          <a id="mpPopUrl" style="display:block;padding:7px 16px;cursor:pointer;color:#ccc;text-decoration:none;" target="_blank" rel="noopener noreferrer">URL</a>
+        </div>
+      </div>
+      <div class="mp-progress-row">
+        <span style="font-size:10px;color:#aaa;white-space:nowrap;">Time Left:</span>
+        <span id="timeLeft" class="mp-time-val">0:00</span>
+        <div class="mp-progress-track" style="flex:1 1 auto;">
+          <div id="progressFill" class="mp-progress-fill"></div>
+          <input type="range" id="progressBar" class="mp-range" value="0" max="100" step="0.01">
+        </div>
+        <button id="muteButton" class="mp-mute-btn" title="Mute">
+          <img id="volumeImage" src="https://frutigeraeroarchive.org/images/music_player/volume_medium.png" alt="Vol" draggable="false">
+        </button>
+        <div class="mp-vol-wrap" id="volWrap">
+          <div class="mp-vol-fill" id="volFill"></div>
+          <input type="range" id="volumeSlider" class="mp-vol-range" min="0" max="100" step="1" value="30">
+        </div>
+        <span style="font-size:10px;color:#aaa;white-space:nowrap;">Vol: <span id="volumeIndicator">30</span></span>
+        <button id="audioLoop" class="mp-loop-btn" title="Loop">
+          <img id="audioLoopImage" src="https://frutigeraeroarchive.org/images/music_player/music_player_loop_off.png" alt="Loop" draggable="false">
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-util">
+  <button class="bottom-util-btn" id="soundToggle" onclick="toggleUiSound()">Sounds: On</button>
+  <button class="bottom-util-btn" onclick="window.location.href='preferences.html'">Preferences</button>
+</div>
+
+<script src="scripts/js/music.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+/* UI sounds separate from music player */
+const SOUND_BASE='assets/audio/';
+const UI_SOUNDS={start:SOUND_BASE+'sitestart.mp3',button:SOUND_BASE+'sitebuttonclick.mp3',hover:SOUND_BASE+'text.mp3'};
+let _uiSoundsOn=localStorage.getItem('_wa_sounds')!=='off';
+const _uac={};
+function _uga(k){if(!_uac[k]){const a=new Audio(UI_SOUNDS[k]);a.preload='auto';_uac[k]=a;}return _uac[k];}
+function playUiSound(k){if(!_uiSoundsOn||!UI_SOUNDS[k])return;try{const c=_uga(k).cloneNode();c.volume=k==='hover'?0.30:0.52;c.play().catch(()=>{});}catch(e){}}
+function toggleUiSound(){_uiSoundsOn=!_uiSoundsOn;localStorage.setItem('_wa_sounds',_uiSoundsOn?'on':'off');const b=document.getElementById('soundToggle');if(b){b.textContent=_uiSoundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_uiSoundsOn);}if(_uiSoundsOn)playUiSound('button');}
+document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('soundToggle');if(b&&!_uiSoundsOn){b.textContent='Sounds: Off';b.classList.add('off');}if(!sessionStorage.getItem('_siteStartPlayed')){sessionStorage.setItem('_siteStartPlayed','1');setTimeout(()=>playUiSound('start'),700);}});
+</script>
+</body>
+</html>

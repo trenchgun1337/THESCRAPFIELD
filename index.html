@@ -2,828 +2,224 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Watanagashi Archive</title>
-<link rel="icon" id="sitefavicon" type="image/x-icon" href="assets/images/favicon.ico">
-<link rel="stylesheet" href="scripts\css\style.css">
-<style id="watanagashi-patch">
-/* Fix: mainContent never locks to a tall height */
-#mainContent {
-  height: auto !important;
-  min-height: 0 !important;
-  overflow-y: visible !important;
-}
-
-/* Aero scrollbar — black, rectangular, low opacity */
-::-webkit-scrollbar { width: 7px; height: 7px; background: transparent; }
-::-webkit-scrollbar-track { background: rgba(0,0,0,.18); border-radius: 0; }
-::-webkit-scrollbar-thumb { background: rgba(10,10,10,.62); border-radius: 0; border: none; }
-::-webkit-scrollbar-thumb:hover { background: rgba(30,30,30,.80); }
-::-webkit-scrollbar-corner { background: transparent; }
-html { scrollbar-width: thin; scrollbar-color: rgba(10,10,10,.62) transparent; }
-
-#sidebarAside {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  flex-shrink: 0;
-}
-#navAndContentContainer { align-items: stretch !important; }
-#spinningDisk { display: none !important; }
-#cdDisc {
-  width: 155px; height: 136px;
-  display: block; flex-shrink: 0;
-  cursor: pointer; border-radius: 50%;
-  object-fit: contain; margin-top: 2px;
-  filter: drop-shadow(0 0 6px rgba(120,20,20,.5));
-  animation-name: _cdSpin;
-  animation-duration: 5000ms;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-play-state: paused;
-}
-#cdDisc.cd-playing { animation-play-state: running; }
-@keyframes _cdSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-#playlistRight {
-  display: flex !important; flex-direction: column !important;
-  align-items: center !important; justify-content: flex-start !important;
-  padding: 8px 6px !important; gap: 6px !important;
-  width: 183px !important; flex-shrink: 0 !important;
-  overflow: visible !important;
-}
-#visualizerCanvas {
-  background: rgba(4,4,4,.97) !important;
-  border: 1px solid rgba(100,100,100,.35);
-  width: 163px !important; display: block; cursor: default;
-}
-
-/* Fotos, banners e galeria — nunca recebem filter */
-body #introBanner,
-body .contact-banner,
-body .faa-logo-img,
-body .rights-content img,
-body #visitor-counter-wrap img,
-body .gi-awarded-img,
-body .gi-card-img,
-body .gi-card-imgwrap img,
-body .vg-thumb,
-body #renaChan,
-body #rikaChan,
-body #rikaTransformFlash,
-body #mpLikeBtn img,
-body #mpDislikeBtn img,
-body .vi-icon-vote-btn img,
-body .contact-links img,
-body .contact-links a img,
-body .contact-links li a img {
+<link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+<link rel="stylesheet" href="shared.css">
+<style>
+.intro-banner {
+  width: 100%; max-height: 175px;
+  object-fit: fill; object-position: center top;
+  display: block;
+  border-bottom: 2px solid var(--bar-border-s);
   filter: none !important;
-  -webkit-filter: none !important;
+  pointer-events: none;
 }
-
-/* Nav icons: no filter */
-body:not(.adaptive-accent-on) .nav-icons {
-  filter: none !important;
-  -webkit-filter: none !important;
-}
-
-/* Player buttons keep their --th-player-filter (red tint) from style.css.
-   Only the hover brightness override is needed here. */
-body:not(.adaptive-accent-on) .mp-ctrl-btn:hover img,
-body:not(.adaptive-accent-on) .mp-ctrl-btn:hover .player-img,
-body:not(.adaptive-accent-on) .mp-mute-btn:hover img,
-body:not(.adaptive-accent-on) .mp-loop-btn:hover img {
-  filter: sepia(100%) saturate(6) hue-rotate(300deg) brightness(1.25) !important;
-  -webkit-filter: sepia(100%) saturate(6) hue-rotate(300deg) brightness(1.25) !important;
-}
-
-#pg-preferences button,
-#pg-preferences select,
-#_prefBar button,
-#_prefBar select {
-  border-color: rgba(180,20,20,.5) !important;
-}
-#pg-preferences select,
-#_prefBar select {
-  border: 1px solid rgba(180,20,20,.6) !important;
-  background: #000 !important;
-  color: #fff !important;
-}
-#pg-preferences select:focus,
-#_prefBar select:focus {
-  border-color: rgba(73,220,73,0.6) !important;
-  outline: none;
-}
-#_prefBar button {
-  background: rgba(30,8,8,.9) !important;
-  border: 1px solid rgba(180,20,20,.5) !important;
-  color: rgba(200,200,200,0.85);
-  font-size: 11px;
-  font-family: Tahoma, sans-serif;
-  cursor: pointer;
-  padding: 2px 8px;
-}
-#_prefBar button:hover {
-  color: #fff !important;
-  border-color: rgba(73,220,73,0.6) !important;
-  background: rgba(15,44,15,.9) !important;
-}
-.comm-tab-bar {
-  border-bottom: 2px solid rgba(180,20,20,.5) !important;
-}
-.comm-tab {
-  border: 1px solid rgba(120,20,20,.55) !important;
-  border-bottom: none !important;
-}
-.comm-tab.active,
-#commTabChat.active,
-#commTabBlog.active,
-button.comm-tab.active {
-  background: linear-gradient(
-    to bottom,
-    rgba(255,255,255,.18) 0%,
-    rgba(180,20,20,.45)  18%,
-    rgba(100,5,5,.85)    60%,
-    rgba(40,2,2,.95)     60%,
-    rgba(60,5,5,.82)     100%
-  ) !important;
-  border-color: rgba(200,20,20,.7) !important;
-  border-bottom: none !important;
-  color: #fff !important;
-  z-index: 2;
-}
-.comm-ok-btn,
-a.comm-ok-btn {
-  display: inline-block !important;
-  background: linear-gradient(
-    to bottom,
-    rgba(255,255,255,.20) 0%,
-    rgba(210,25,25,.92)   0%,
-    rgba(150,10,10,.82)   4%,
-    rgba(90,4,4,.97)      52%,
-    rgba(45,2,2,1)        52%,
-    rgba(75,5,5,.90)      100%
-  ) !important;
-  border: 1px solid rgba(210,30,30,.70) !important;
-  border-top-color: rgba(255,90,90,.30) !important;
-  box-shadow: inset 0 1px 0 rgba(255,110,110,.20),
-              0 2px 6px rgba(0,0,0,.55) !important;
-  color: #fff !important;
-  font-family: Tahoma, sans-serif !important;
-  font-size: 12px !important;
-  padding: 6px 24px 8px !important;
-  text-decoration: none !important;
-  cursor: pointer !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,.8);
-  position: relative !important;
-}
-.comm-ok-btn:hover,
-a.comm-ok-btn:hover {
-  filter: brightness(1.25) !important;
-  color: #ffdddd !important;
-  text-decoration: underline !important;
-}
-#commPanelBlog .hl,
-#commPanelBlog strong,
-.comm-wip strong {
-  color: #cc1a1a !important;
-}
-.na-span { color: #cc1a1a !important; }
-.gi-avg  { color: #ffffff !important; }
-
-/* Nav icons: no filter in default mode; adaptive mode overrides via JS */
-body:not(.adaptive-accent-on) .nav-icons {
-  filter: none !important;
-  -webkit-filter: none !important;
-}
-/* In adaptive mode: minimal neutral filter for nav icons (green-safe) */
-body.adaptive-accent-on .nav-icons {
-  filter: hue-rotate(1deg) saturate(1.05) !important;
-  -webkit-filter: hue-rotate(1deg) saturate(1.05) !important;
-}
-
-/* vg-vote-badge: never visible */
-.vg-vote-badge { display: none !important; }
-
-/* pager */
-.vg-pager {
-  display: flex; align-items: center; justify-content: center;
-  gap: 4px; padding: 5px 0 2px; flex-wrap: wrap;
-  font-family: Tahoma, sans-serif; font-size: 11px;
-}
-.vg-pager-btn {
-  cursor: pointer; padding: 2px 7px;
-  font-family: Tahoma, sans-serif; font-size: 11px;
-  user-select: none;
-  border: 1px solid rgba(80,80,80,.4);
-  color: #888; background: rgba(10,10,10,.6);
-}
-.vg-pager-btn.active {
-  border-color: rgba(180,20,20,.7);
-  color: #cc1a1a;
-  background: rgba(60,5,5,.5);
-}
-
-/* ── Fix: disable hover dimension-change on touch/mobile devices ── */
-@media (hover: none), (pointer: coarse) {
-  .nav-link:hover {
-    margin: 0 auto 2px !important;
-    width: 96% !important;
-    padding: 2px !important;
-  }
-  .nav-link:active {
-    background: var(--th-nav-active-bg) !important;
-    color: var(--th-accent) !important;
-  }
-}
-
-/* ── Better mobile nav at ≤600px — overrides existing block ── */
-@media (max-width: 600px) {
-  #navAndContentContainer { flex-direction: column; }
-
-  #navigationMenu {
-    width: 100% !important;
-    height: auto !important;
-    border-bottom-left-radius: 0 !important;
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    padding: 4px !important;
-    gap: 3px !important;
-    overflow: visible !important;
-  }
-
-  .nav-categories {
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    margin-bottom: 2px;
-  }
-
-  .navbar-titles { display: none !important; }
-
-  .nav-link {
-    width: auto !important;
-    min-width: 70px !important;
-    max-width: 130px !important;
-    flex: 1 1 70px !important;
-    margin: 1px !important;
-    padding: 5px 4px !important;
-    font-size: 11px !important;
-    justify-content: center !important;
-    text-align: center !important;
-    white-space: nowrap;
-  }
-
-  .nav-link:hover {
-    margin: 1px !important;
-    width: auto !important;
-    padding: 5px 4px !important;
-    min-width: 70px !important;
-  }
-
-  .nav-link::before { display: none !important; }
-
-  .nav-icons {
-    height: 13px !important;
-    margin: 0 2px 0 0 !important;
-    flex-shrink: 0;
-  }
-
-  #mainContent { height: auto; min-height: 400px; }
-  #renaChan, #rikaChan { display: none !important; }
-}
-
-/* ── Smallest screens ── */
-@media (max-width: 400px) {
-  .nav-link {
-    font-size: 10px !important;
-    min-width: 58px !important;
-    padding: 4px 3px !important;
-  }
-  .nav-icons { display: none !important; }
-}
-
-/* ── Gallery pagination pager ── */
-#galleryPager {
+.rights-bar {
+  background: var(--bar-grad);
+  box-shadow:
+    inset 0 1px 0 var(--bar-shine),
+    inset 0 2px 4px rgba(255,255,255,.10),
+    0 3px 10px rgba(0,0,0,.48);
+  border: 1px solid var(--bar-border-s);
+  border-top-color: var(--bar-border-t);
+  border-bottom-color: var(--bar-border-b);
+  padding: 5px 8px 7px;
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--bar-text);
+  text-shadow: var(--bar-tshadow);
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 6px 0 2px;
-  flex-wrap: wrap;
-  font-family: Tahoma, sans-serif;
+  gap: 6px;
+  margin-top: 5px;
+}
+.rights-bar::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: var(--bar-glow-top);
+  pointer-events: none;
+}
+.rights-content {
+  background: var(--card-bg);
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.faa-logo-img { height: 22px; flex-shrink: 0; filter: none !important; pointer-events: none; }
+#visitor-counter-wrap {
+  text-align: center;
+  padding: 8px 0 4px;
   font-size: 11px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--main-border);
+}
+#visitor-counter-wrap img { vertical-align: middle; filter: none !important; pointer-events: auto; }
+
+/* site logo in header */
+.site-logo-img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,.80));
 }
 </style>
 </head>
 <body>
-<div id="websiteContainer">
+<div id="pageWrap">
 
-  <header id="mainHeader">
-    <div class="h-logo" id="logoBtn" title="Home">
-      <img src="https://frutigeraeroarchive.org/images/themes/default/logo.png" alt="logo" draggable="false">
+  <!-- ── TOP NAV BAR ── -->
+  <div class="aero-topbar">
+    <a class="aero-topbar-brand" href="index.html" title="Home">
+      <img src="assets/images/watanagashilogo.png" alt="Watanagashi Archive" class="site-logo-img"
+        onerror="this.style.display='none'">
+      <span class="aero-topbar-title">Watanagashi Archive</span>
+    </a>
+    <nav class="aero-topbar-nav">
+      <a href="index.html" class="active">
+        <img src="https://frutigeraeroarchive.org/images/introduction.png" class="nav-icon" alt="">
+        Introduction
+      </a>
+      <a href="music.html">
+        <img src="https://frutigeraeroarchive.org/images/music.png" class="nav-icon" alt="">
+        Music Player
+      </a>
+      <a href="videos.html">
+        <img src="https://frutigeraeroarchive.org/images/videos.png" class="nav-icon" alt="">
+        Video Player
+      </a>
+      <a href="sketchbook.html">
+        <img src="https://frutigeraeroarchive.org/images/sketchbook.png" class="nav-icon" alt="">
+        Sketchbook
+      </a>
+      <a href="community.html">
+        <img src="https://frutigeraeroarchive.org/images/forum.png" class="nav-icon" alt="">
+        Community
+      </a>
+      <a href="contact.html">
+        <img src="https://frutigeraeroarchive.org/images/contact.png" class="nav-icon" alt="">
+        Contact
+      </a>
+      <a href="resources.html">
+        <img src="https://frutigeraeroarchive.org/images/resources.png" class="nav-icon" alt="">
+        Resources
+      </a>
+    </nav>
+  </div>
+  <!-- ── END NAV BAR ── -->
+
+  <div class="glass-box">
+    <div class="aero-inner" style="overflow:hidden">
+      <img src="assets/images/rikasatoko.gif" alt="Banner" class="intro-banner"
+        onerror="this.style.display='none'">
     </div>
-    <div class="h-text">
-      <span class="h-title">The Watanagashi Archive</span>
-      <span class="h-motto">&#12402;&#12368;&#12425;&#12375;&#12398;<span class="na-span" style="color:#cc1a1a;cursor:pointer;" title="...">&#12394;</span>&#12367;&#38915;&#12395;</span>
+    <article class="styled-container aero-inner" style="margin-top:5px">
+      <p>Welcome to <span class="hl">The Watanagashi Archive</span> &mdash; a personal fan spin-off inspired by the
+        <a href="https://frutigeraeroarchive.org/" target="_blank" class="green">Frutiger Aero Archive</a>.</p>
+      <p style="margin-top:7px">This site is a personal space for self-expression, music, media &amp; projects. i'll try to keep it updated.</p>
+    </article>
+    <div class="styled-container aero-inner" style="margin-top:5px;text-align:center;padding:14px 10px;">
+      <p style="font-size:14px;">
+        <a href="https://en.wikipedia.org/wiki/Anti-Fascist_Action"><strong>161</strong></a>
+        <span style="color:#888"> // i regret nothing</span>
+      </p>
     </div>
-  </header>
-
-  <div id="navAndContentContainer">
-
-    <aside id="sidebarAside">
-      <div id="navigationMenu">
-        <nav class="nav-categories">
-          <span class="navbar-titles">Main Content</span>
-          <a class="nav-link" id="nbtn-introduction" href="#introduction" onclick="return navClick(event,'introduction')">
-            <img src="https://frutigeraeroarchive.org/images/introduction.png" class="nav-icons" alt="" draggable="false">Introduction</a>
-          <a class="nav-link" id="nbtn-contact" href="#contact" onclick="return navClick(event,'contact')">
-            <img src="https://frutigeraeroarchive.org/images/contact.png" class="nav-icons" alt="" draggable="false">Contact</a>
-          <a class="nav-link" id="nbtn-resources" href="#resources" onclick="return navClick(event,'resources')">
-            <img src="https://frutigeraeroarchive.org/images/resources.png" class="nav-icons" alt="" draggable="false">Resources</a>
-        </nav>
-
-        <nav class="nav-categories">
-          <span class="navbar-titles">Entertainment</span>
-          <a class="nav-link" id="nbtn-music" href="#music" onclick="return navClick(event,'music')">
-            <img src="https://frutigeraeroarchive.org/images/music.png" class="nav-icons" alt="" draggable="false">Music Player</a>
-          <a class="nav-link" id="nbtn-videos" href="#videos" onclick="return navClick(event,'videos')">
-            <img src="https://frutigeraeroarchive.org/images/videos.png" class="nav-icons" alt="" draggable="false">Video Player</a>
-          <a class="nav-link" id="nbtn-sketchbook" href="#sketchbook" onclick="return navClick(event,'sketchbook')">
-            <img src="https://frutigeraeroarchive.org/images/sketchbook.png" class="nav-icons" alt="" draggable="false">Sketchbook</a>
-        </nav>
-        <nav class="nav-categories">
-          <span class="navbar-titles">Community</span>
-          <a class="nav-link" id="nbtn-community" href="#community" onclick="return navClick(event,'community')">
-            <img src="https://frutigeraeroarchive.org/images/forum.png" class="nav-icons" alt="" draggable="false">Community</a>
-        </nav>
-        <nav class="nav-categories">
-          <span class="navbar-titles">Settings</span>
-          <a class="nav-link" id="nbtn-preferences" href="#preferences" onclick="return navClick(event,'preferences')">
-            <img src="https://frutigeraeroarchive.org/images/site_info.png" class="nav-icons" alt="" draggable="false">Preferences</a>
-        </nav>
-      
-        <div id="_themesBtnWrap" style="display:none;padding:4px 5px 2px;margin-top:4px;">
-          <button id="_themesBtn" onclick="window._themesPanelToggle && window._themesPanelToggle(event)">Themes</button>
-        </div>
-      </div>
-    </aside>
-
-    <main id="mainContent">
-
-      <div id="pg-introduction" class="page">
-        <h1>Introduction</h1>
-        <div class="glass-borders">
-          <div class="aero-borders aero-glass-overlay" style="overflow:hidden">
-            <img id="introBanner" src="assets/images/rikasatoko.gif" alt="Banner" draggable="false">
-          </div>
-          <article class="styled-containers-headers aero-borders">
-            <p>Welcome to <span class="hl">The Watanagashi Archive</span> &mdash; a personal fan spin-off inspired by the
-              <a href="https://frutigeraeroarchive.org/" target="_blank" class="green">Frutiger Aero Archive</a>.</p>
-            <p style="margin-top:7px">This site is a personal space for self-expression, music, media &amp; projects! i'll try to keep updating it up.</p>
-          </article>
-          <div class="styled-containers aero-borders" style="text-align:center;padding:14px 10px;">
-            <p style="font-size:14px;"><a href="https://en.wikipedia.org/wiki/Anti-Fascist_Action"><strong>161</strong></a> <span style="color:#888">// i regret nothing</span></p>
-          </div>
-          <div class="rights-bar">Credits</div>
-          <div class="rights-content aero-borders">
-            <img src="https://frutigeraeroarchive.org/images/themes/default/logo.png" alt="FAA logo" class="faa-logo-img" draggable="false">
-            <p><a href="https://frutigeraeroarchive.org/" target="_blank" class="green">Frutiger Aero Archive Website</a>
-              &mdash; a digital museum and tribute to old 2000s aesthetics, notably Frutiger Aero. Originally by: <a href="https://daniele63.com/" target="_blank" class="green">Daniele</a></p>
-          </div>
-        </div>
-        <div id="visitor-counter-wrap">
-          <a href="https://www.freecounterstat.com" title="visitor counter">
-            <img src="https://counter12.optistats.ovh/private/freecounterstat.php?c=kpapsmwpbskyh4gfxmmqdqb5y9bq14h8" border="0" title="visitor counter" alt="visitor counter" draggable="false">
-          </a>
-        </div>
-      </div>
-
-      <div id="pg-preferences" class="page">
-        <h1>Preferences</h1>
-      </div>
-
-      <div id="pg-resources" class="page">
-  <h1>Resources</h1>
-  <div class="glass-borders">
-    <div class="styled-containers-headers aero-borders">
-      <p>A collection of tools, projects &amp; stuff — i'd like to maintain.</p>
-    </div>
-
-    <div class="aero-borders" style="background:#000;">
-      <ul class="contact-links" id="resourcesList">
-
-        <li>
-          <a href="downloader.html" target="_blank">
-            <img src="https://img1.picmix.com/output/stamp/thumb/2/4/9/3/2663942_6e48f.png" alt="" draggable="false">
-            <span class="link-label"><strong style="color:var(--th-accent)">Ultimate Downloader Converter</strong></span>
-            <span class="link-note">Download Spotify/YouTube/Soundcloud videos/tracks/playlists/albums/ as ZIP — IN DEV</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="#" style="pointer-events:none;opacity:.45;">
-            <img src="https://img1.picmix.com/output/stamp/thumb/0/3/8/1/2841830_50b26.png" alt="" draggable="false">
-            <span class="link-label">File Dumpster</span>
-            <span class="link-note">coming soon</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="#" style="pointer-events:none;opacity:.45;">
-            <img src="https://img1.picmix.com/output/stamp/thumb/5/5/9/3/2663955_e356e.png" alt="" draggable="false">
-            <span class="link-label">RabbitHoles/WeirdSites/RandomSites</span>
-            <span class="link-note">coming soon</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="#" style="pointer-events:none;opacity:.45;">
-            <img src="https://img1.picmix.com/output/stamp/thumb/7/0/4/3/2653407_2a8c5.png" alt="" draggable="false">
-            <span class="link-label">Projects</span>
-            <span class="link-note">coming soon</span>
-          </a>
-        </li>
-
-      </ul>
+    <div class="rights-bar"><span>Credits</span></div>
+    <div class="rights-content aero-inner">
+      <img src="https://frutigeraeroarchive.org/images/themes/default/logo.png" alt="FAA logo" class="faa-logo-img">
+      <p>
+        <a href="https://frutigeraeroarchive.org/" target="_blank" class="green">Frutiger Aero Archive Website</a>
+        &mdash; a digital museum and tribute to old 2000s aesthetics, notably Frutiger Aero.
+        Originally by: <a href="https://daniele63.com/" target="_blank" class="green">Daniele</a>
+      </p>
     </div>
   </div>
-</div>
 
-      <div id="pg-music" class="page">
-        <h1>Listen to Music</h1>
-        <div class="glass-borders">
-          <div class="styled-containers aero-borders" style="display:flex;align-items:flex-start;gap:10px">
-            <img src="assets/images/MUSICPLAYERNOTESYMBOL.png" alt="Music" class="music-header-img" draggable="false">
-            <div>
-              <p>Enjoy listening to some bangers below &mdash; based on personal picks :-)</p>
-            </div>
-          </div>
-        </div>
-        <div class="glass-borders" id="playerGlassBox">
-          <div id="musicPlayerContainer" class="aero-glass-overlay">
-            <div class="mp-header-bar">Music Player &#9834;</div>
-            <div class="mp-controls-row">
-              <button class="mp-ctrl-btn" id="audioBack" title="Previous">
-                <img class="player-img" src="https://frutigeraeroarchive.org/images/music_player/music_player_back.png" alt="Back" draggable="false">
-              </button>
-              <button class="mp-ctrl-btn" id="audioPlayPause" title="Play/Pause">
-                <img class="player-img" id="audioPlayPauseImage" src="https://frutigeraeroarchive.org/images/music_player/music_player_play.png" alt="Play" draggable="false">
-              </button>
-              <button class="mp-ctrl-btn" id="audioForward" title="Next">
-                <img class="player-img" src="https://frutigeraeroarchive.org/images/music_player/music_player_forward.png" alt="Forward" draggable="false">
-              </button>
-            </div>
-            <div id="ytContainer" style="position:fixed;bottom:0;right:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;">
-              <div id="_ytEl"></div>
-            </div>
-            <div id="musicBackground">
-              <div id="musicPlayerPlaylist">
-                <nav id="playlistLeft"></nav>
-                <div class="playlist-right" id="playlistRight">
-                  <canvas id="visualizerCanvas" width="175" height="96"></canvas>
-                  <img src="https://frutigeraeroarchive.org/images/music_player/cd.png" id="spinningDisk" alt="CD" draggable="false">
-                </div>
-              </div>
-            </div>
-            <div class="mp-status-bar" id="mpStatusBar" style="position:relative;display:flex;align-items:center;gap:6px;padding:4px 8px;">
-              <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
-                <button id="mpLikeBtn" title="Like" style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;opacity:0.3;">
-                  <img src="https://cdn-icons-png.flaticon.com/128/739/739231.png" style="width:16px;height:16px;pointer-events:none;filter:grayscale(80%) brightness(0.5);" draggable="false">
-                </button>
-                <span id="mpLikeVal" style="font-size:11px;color:#ccc;min-width:12px;">0</span>
-                <button id="mpDislikeBtn" title="Dislike" style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;opacity:0.3;">
-                  <img src="https://cdn-icons-png.flaticon.com/128/880/880613.png" style="width:16px;height:16px;pointer-events:none;filter:grayscale(80%) brightness(0.5);" draggable="false">
-                </button>
-                <span id="mpDislikeVal" style="font-size:11px;color:#ccc;min-width:12px;">0</span>
-              </div>
-              <span style="flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;">
-                Currently playing: <span id="audioName">&mdash;</span>
-              </span>
-              <span id="mpPlusBtn" title="Options" style="cursor:pointer;font-size:15px;font-weight:bold;color:rgba(200,200,200,.55);padding:0 3px;user-select:none;flex-shrink:0;line-height:1;">+</span>
-              <div id="mpPlusPopup" style="display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;background:#0a0202;border:1px solid rgba(180,20,20,.5);min-width:200px;font-family:Tahoma,sans-serif;font-size:12px;padding:4px 0;box-shadow:0 -4px 16px rgba(0,0,0,.8);" onclick="event.stopPropagation()">
-                <div id="mpPopRandom"     style="padding:7px 16px;cursor:pointer;color:#ccc;">Random</div>
-                <div id="mpPopShuffle"    style="padding:7px 16px;cursor:pointer;color:#ccc;">Shuffle: OFF</div>
-                <div style="border-top:1px solid rgba(255 255 255);margin:3px 0;"></div>
-                <div id="mpPopSortToggle" style="padding:7px 16px;cursor:pointer;color:#ccc;display:flex;justify-content:space-between;align-items:center;">Sort <span style="opacity:.5;font-size:10px;">&#9654;</span></div>
-                <div id="mpSortSubmenu"   style="display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(255 255 255);"></div>
-                <div style="border-top:1px solid rgba(255 255 255);margin:3px 0;"></div>
-                <a id="mpPopUrl" style="display:block;padding:7px 16px;cursor:pointer;color:#ccc;text-decoration:none;" target="_blank" rel="noopener noreferrer">URL</a>
-              </div>
-            </div>
-            <div class="mp-progress-row">
-              <span style="font-size:10px;color:#aaa;white-space:nowrap;">Time Left:</span>
-              <span id="timeLeft" class="mp-time-val">0:00</span>
-              <div class="mp-progress-track" style="flex:1 1 auto;">
-                <div id="progressFill" class="mp-progress-fill"></div>
-                <input type="range" id="progressBar" class="mp-range" value="0" max="100" step="0.01">
-              </div>
-              <button id="muteButton" class="mp-mute-btn" title="Mute">
-                <img id="volumeImage" src="https://frutigeraeroarchive.org/images/music_player/volume_medium.png" alt="Vol" draggable="false">
-              </button>
-              <div class="mp-vol-wrap" id="volWrap">
-                <div class="mp-vol-fill" id="volFill"></div>
-                <input type="range" id="volumeSlider" class="mp-vol-range" min="0" max="100" step="1" value="30">
-              </div>
-              <span style="font-size:10px;color:#aaa;white-space:nowrap;">Vol: <span id="volumeIndicator">30</span></span>
-              <button id="audioLoop" class="mp-loop-btn" title="Loop">
-                <img id="audioLoopImage" src="https://frutigeraeroarchive.org/images/music_player/music_player_loop_off.png" alt="Loop" draggable="false">
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="pg-sketchbook" class="page">
-        <h1>Sketchbook</h1>
-        <div class="glass-borders">
-          <h2>JS Paint</h2>
-          <div class="aero-borders" style="overflow:hidden">
-            <div id="paintEmbedWrap"></div>
-          </div>
-        </div>
-        <div class="glass-borders">
-          <div class="rights-bar" style="margin:0">Awarded Art</div>
-          <div class="aero-borders" style="background:#000;padding:6px">
-            <div id="galleryAwarded"></div>
-          </div>
-        </div>
-        <div class="glass-borders">
-          <div class="section-header-row" style="position:relative;display:flex;align-items:center;justify-content:space-between;">
-            <h2>Gallery</h2>
-            <div style="position:relative;">
-              <span id="galPlusBtn" title="Sort Options" style="cursor:pointer;font-size:17px;font-weight:bold;color:rgba(200,200,200,.55);padding:2px 6px;user-select:none;line-height:1;display:inline-block;">+</span>
-              <div id="galPlusPopup" style="display:none;position:absolute;right:0;top:100%;z-index:300;background:#050505;border:1px solid rgba(180,20,20,.4);min-width:180px;font-family:Tahoma,sans-serif;font-size:12px;padding:4px 0;">
-                <div style="padding:4px 14px 2px;color:rgba(255 254 254);font-size:10px;letter-spacing:1px;text-transform:uppercase;">Sort</div>
-                <div id="galSortItems"></div>
-              </div>
-            </div>
-          </div>
-          <div class="styled-containers aero-borders">
-            <div id="galleryGrid" class="gi-grid"></div>
-          </div>
-        </div>
-      </div>
-
-      <div id="pg-videos" class="page">
-        <h1>Video Player</h1>
-        <div class="glass-borders">
-          <div class="aero-borders" style="overflow:hidden">
-            <div class="video-embed-wrap">
-              <div id="videoEmbed"></div>
-            </div>
-          </div>
-          <div id="videoInfoBox" class="video-info-box aero-borders"></div>
-        </div>
-        <div class="glass-borders">
-          <h2>Animes</h2>
-          <div class="aero-borders styled-containers">
-            <p class="section-desc">Openings, endings &amp; classic anime clips.</p>
-            <div id="videoListAnimes" class="video-list"></div>
-            <p id="animes-empty" class="empty-msg" style="display:none">No videos added yet.</p>
-          </div>
-        </div>
-        <div class="glass-borders">
-          <h2>Internet Nostalgia</h2>
-          <div class="aero-borders styled-containers">
-            <p class="section-desc">Old internet classics and nostalgia videos.</p>
-            <div id="videoListNostalg" class="video-list"></div>
-            <p id="nostalg-empty" class="empty-msg">No videos added yet.</p>
-          </div>
-        </div>
-        <div class="glass-borders">
-          <h2>Awesome Internet Videos</h2>
-          <div class="aero-borders styled-containers">
-            <div id="videoListAwesome" class="video-list"></div>
-            <p id="awesome-empty" class="empty-msg">No videos added yet.</p>
-          </div>
-        </div>
-        <div class="glass-borders">
-          <h2>Copyright Notice</h2>
-          <div class="copyright-notice aero-borders">
-    
-            <p>All content on this website is for archiving, educational, or informational purposes and is not for profit.
-            We believe its use qualifies as fair use. If you own any content here and would like it removed or properly credited,
-            please contact me at
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank">
-            trenchgun1337@gmail.com
-            </a>
-            and I will take action as soon as possible to fulfill your request.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div id="pg-community" class="page">
-        <h1>Community</h1>
-        <div class="comm-tab-bar">
-          <button class="comm-tab active" id="commTabChat" onclick="switchCommTab('chat')">Chat</button>
-          <button class="comm-tab" id="commTabBlog" onclick="switchCommTab('blog')">
-            <img src="https://frutigeraeroarchive.org/images/blog.png" style="height:23px;vertical-align:middle;margin-right:4px;" alt="" draggable="false">Blog</button>
-        </div>
-        <div id="commPanelChat" class="comm-panel">
-          <div class="glass-borders">
-            <div class="aero-borders styled-containers-headers">
-              <p style="margin-bottom:6px;">Welcome to the <span class="hl">Watanagashi Archive Community Chat</span>!</p>
-              <p>Feel free to talk about anime, music, nostalgia, or anything on your mind. Please be respectful and keep it civil.</p>
-            </div>
-          </div>
-          <div class="glass-borders">
-            <div class="rights-bar" style="margin:0">Chat Rules</div>
-            <div class="aero-borders styled-containers" style="padding:10px 14px;">
-              <p style="margin-bottom:5px;color:#aaa;font-size:11.5px;">By participating you agree to the following:</p>
-              <ul style="margin:0 0 0 18px;padding:0;color:#bbb;font-size:11.5px;line-height:1.8;">
-                <li>Be respectful.</li>
-                <li>No hate speech or targeted harassment.</li>
-                <li>Keep links SFW &mdash; share or click at your own responsibility.</li>
-                <li>No impersonation of the site owner or other users.</li>
-                <li>The site owner reserves the right to moderate without notice.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="glass-borders">
-            <div class="rights-bar" style="margin:0">Live Chat</div>
-            <div class="aero-borders" style="background:#000;padding:8px;display:flex;justify-content:center;align-items:center;min-height:392px;">
-              <div id="chatangoWrap" style="width:400px;height:350px;display:flex;align-items:center;justify-content:center;margin:0 auto;">
-                <span style="color:#555;font-size:12px;font-family:Tahoma,sans-serif;">Chat will load when you open this tab&hellip;</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="commPanelBlog" class="comm-panel" style="display:none;">
-          <div class="glass-borders">
-            <div class="aero-borders styled-containers" style="text-align:center;padding:30px 20px;">
-              <p style="font-size:20px;color:#cc1a1a;margin-bottom:10px;"><span style="color:#cc1a1a;">UH OH! (X_X)</span></p>
-              <p style="color:#aaa;font-size:12.5px;margin-bottom:6px;">The following tab is currently <span style="color:#cc1a1a;font-style:italic;">in development</span></p>
-              <p style="color:#666;font-size:11px;margin-bottom:16px;">Ehh, Still, you can visit the blog directly.</p>
-              <a href="https://www.blogger.com/blog/post/edit/preview/8859082952765475894/8042083562940805194"
-                 target="_blank" rel="noopener noreferrer"
-                 class="comm-ok-btn">Visit Blog</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="pg-contact" class="page">
-        <h1>Contact Me</h1>
-        <div class="glass-borders">
-          <div class="aero-borders" style="overflow:hidden">
-            <img src="assets/images/CONTACTBANNER.png"
-                 alt="Contact Banner" class="contact-banner" draggable="false"
-                 style="height:120px;">
-          </div>
-          <div class="styled-containers-headers aero-borders">
-            <p>Feel free to reach out through any of my social links below.</p>
-          </div>
-          <div class="rights-bar" style="margin-top:5px">Social</div>
-          <div class="aero-borders" style="background:#000">
-            <ul class="contact-links">
-              <li><a href="https://www.youtube.com/@trenchgun1337" target="_blank">
-                  <img src="assets/images/YOUTUBEAERO.png" alt="" draggable="false">
-                  <span class="link-label">YouTube</span></a></li>
-              <li><a href="https://br.pinterest.com/fxckmazl/" target="_blank">
-                  <img src="assets/images/PINTERESTAERO.png" alt="" draggable="false">
-                  <span class="link-label">Pinterest</span></a></li>
-              <li><a href="https://steamcommunity.com/id/fxckmazl" target="_blank">
-                  <img src="assets/images/STEAMAERO.png" alt="" draggable="false">
-                  <span class="link-label">Steam</span></a></li>
-              <li><a href="https://www.tiktok.com/@trenchgun1337" target="_blank">
-                  <img src="assets/images/TIKTOKAERO.png" alt="" draggable="false">
-                  <span class="link-label">TikTok</span></a></li>
-              <li><a href="https://x.com/trenchgun1337" target="_blank">
-                  <img src="assets/images/TWITTERAERO.png" alt="" draggable="false">
-                  <span class="link-label">Twitter / X</span></a></li>
-              <li><a href="https://www.instagram.com/trenchgun1337" target="_blank">
-                  <img src="assets/images/INSTAGRAM%20AERO.png" alt="" draggable="false">
-                  <span class="link-label">Instagram</span></a></li>
-              <li><a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank">
-                  <img src="assets/images/SPOTIFYAERO.jpeg" alt="" draggable="false">
-                  <span class="link-label">Spotify</span></a></li>
-              <li><a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank">
-                  <img src="assets/images/ROBLOXAERO.png" alt="" draggable="false">
-                  <span class="link-label">Roblox</span></a></li>
-              <li><a href="https://soundcloud.com/trenchgun1337" target="_blank">
-                  <img src="assets/images/SOUNDCLOUDAERO.png" alt="" draggable="false">
-                  <span class="link-label">SoundCloud</span></a></li>
-              <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank">
-                  <img src="assets/images/GMAILAERO.png" alt="" draggable="false">
-                  <span class="link-label">Email</span>
-                  <span class="link-note">(faster response)</span></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-    </main>
+  <div id="visitor-counter-wrap">
+    <a href="https://www.freecounterstat.com" title="visitor counter">
+      <img src="https://counter12.optistats.ovh/private/freecounterstat.php?c=kpapsmwpbskyh4gfxmmqdqb5y9bq14h8"
+        border="0" title="visitor counter" alt="visitor counter">
+    </a>
   </div>
+
 </div>
 
-<div id="rikaTransformFlash" style="display:none;position:fixed;bottom:0;right:-60px;width:420px;height:560px;background-image:url('https://img1.picmix.com/output/stamp/normal/2/4/1/7/2107142_5ce19.gif');background-size:contain;background-repeat:no-repeat;background-position:bottom right;z-index:10000;pointer-events:none;"></div>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script src="scripts/js/music.js"></script>
-<script src="scripts/js/video.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
-<script src="scripts/js/script.js"></script>
-<script id="watanagashi-fixes">
-(function () {
-  'use strict';
-
-  function _applyFixes() {
-    function _fixText(el) {
-      if (!el) return;
-      var ELLIPSIS_BAD = '\u00e2\u20ac\u00a6';
-      if (el.textContent && el.textContent.indexOf(ELLIPSIS_BAD) !== -1) {
-        el.textContent = el.textContent.split(ELLIPSIS_BAD).join('\u2026');
-      }
-    }
-    var playlist = document.getElementById('playlistLeft');
-    if (playlist) {
-      var textObs = new MutationObserver(function (muts) {
-        muts.forEach(function (m) {
-          m.addedNodes.forEach(function (node) {
-            if (node.nodeType === 3) _fixText(node.parentElement);
-            else if (node.querySelectorAll) {
-              node.querySelectorAll('p, span, div').forEach(_fixText);
-              _fixText(node);
-            }
-          });
-        });
-      });
-      textObs.observe(playlist, { childList: true, subtree: true });
-    }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', _applyFixes);
-  } else {
-    _applyFixes();
-  }
-  setTimeout(_applyFixes, 800);
-
-})();
-/* Hook for gallery.js to call after rendering */
-window._onGalleryRendered = function(count) {
-  if (typeof NavBadges !== 'undefined') NavBadges.checkGallery(count);
-};
-</script>
-<script src="scripts/js/gallery.js"></script>
-<script src="scripts/js/paint.js"></script>
-<script src="scripts/js/themes.js"></script>
-
-<div id="renaChan" style="position:fixed;bottom:0;right:0;width:250px;height:350px;background-image:url('assets/images/renaidle1.png');background-size:contain;background-repeat:no-repeat;background-position:bottom right;z-index:9999;cursor:pointer;"></div>
-
-<script src="scripts/js/codes.js"></script>
+<!-- ── BOTTOM UTIL: Sounds + Preferences ── -->
+<div class="bottom-util">
+  <button class="bottom-util-btn" id="soundToggle" onclick="toggleSound()">Sounds: On</button>
+  <button class="bottom-util-btn" onclick="window.location.href='preferences.html'">Preferences</button>
+</div>
 
 <script>
-var _chatangoLoaded = false;
-
-function _loadChatango() {
-  if (_chatangoLoaded) return;
-  _chatangoLoaded = true;
-  var wrap = document.getElementById('chatangoWrap');
-  if (!wrap) return;
-  wrap.innerHTML = '';
-  wrap.style.cssText = 'width:400px;height:350px;display:block;margin:0 auto;';
-  var scr = document.createElement('script');
-  scr.id = 'cid0020000434097606183';
-  scr.setAttribute('data-cfasync', 'false');
-  scr.async = true;
-  scr.src = '//st.chatango.com/js/gz/emb.js';
-  scr.style.cssText = 'width:400px;height:350px;';
-  scr.text = '{"handle":"thewatanagashiarchiv","arch":"js","styles":{"a":"000000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"000000","l":"000000","m":"000000","n":"FFFFFF","p":"10","q":"000000","r":100,"cnrs":"0.35"}}';
-  wrap.appendChild(scr);
+/* ── Sounds ── */
+const SOUND_BASE = 'assets/audio/';
+const SOUNDS = {
+  start:   SOUND_BASE + 'sitestart.mp3',
+  alert:   SOUND_BASE + 'sitealert.mp3',
+  button:  SOUND_BASE + 'sitebuttonclick.mp3',
+  hover:   SOUND_BASE + 'text.mp3',
+};
+let _soundsOn = localStorage.getItem('_wa_sounds') !== 'off';
+const _audioCache = {};
+function _getAudio(k) {
+  if (!_audioCache[k]) { const a = new Audio(SOUNDS[k]); a.preload='auto'; _audioCache[k]=a; }
+  return _audioCache[k];
 }
-
-function switchCommTab(tab) {
-  document.getElementById('commPanelChat').style.display = tab === 'chat' ? 'block' : 'none';
-  document.getElementById('commPanelBlog').style.display = tab === 'blog' ? 'block' : 'none';
-  document.getElementById('commTabChat').classList.toggle('active', tab === 'chat');
-  document.getElementById('commTabBlog').classList.toggle('active', tab === 'blog');
-if (tab === 'chat') setTimeout(_loadChatango, 100);}
-
-document.addEventListener('DOMContentLoaded', function () {
-  var _origGoto = window.gotoPage;
-  window.gotoPage = function (name) {
-    if (_origGoto) _origGoto(name);
-    if (name === 'videos' && typeof PREFS !== 'undefined' && PREFS.alwaysAutoplay) {
-      setTimeout(function () {
-        var btn = document.getElementById('videoAutoPlayBtn');
-        if (btn) {
-          window.videoAutoPlay = PREFS.alwaysAutoplay;
-          btn.textContent = window.videoAutoPlay
-            ? 'Autoplay Enabled (Click to disable)'
-            : 'Autoplay Disabled (Click to enable)';
-        }
-      }, 100);
-    }
-  };
+function playSound(k) {
+  if (!_soundsOn || !SOUNDS[k]) return;
+  try {
+    const c = _getAudio(k).cloneNode();
+    c.volume = k==='hover' ? 0.30 : 0.52;
+    c.play().catch(()=>{});
+  } catch(e) {}
+}
+function toggleSound() {
+  _soundsOn = !_soundsOn;
+  localStorage.setItem('_wa_sounds', _soundsOn ? 'on' : 'off');
+  const btn = document.getElementById('soundToggle');
+  if (btn) { btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off'; btn.classList.toggle('off', !_soundsOn); }
+  if (_soundsOn) playSound('button');
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('soundToggle');
+  if (btn && !_soundsOn) { btn.textContent = 'Sounds: Off'; btn.classList.add('off'); }
+  if (!sessionStorage.getItem('_siteStartPlayed')) {
+    sessionStorage.setItem('_siteStartPlayed','1');
+    setTimeout(()=>playSound('start'), 700);
+  }
 });
-</script>
+document.addEventListener('pointerdown', ()=>Object.keys(SOUNDS).forEach(k=>_getAudio(k)), {once:true,passive:true});
 
+let _hoverThrottle = 0, _hoverTimer = null;
+function _isInteractive(el) {
+  if (!el||el===document.body) return false;
+  const tag=el.tagName;
+  if (tag==='BUTTON'||tag==='A') return true;
+  if (window.getComputedStyle(el).cursor==='pointer') return true;
+  return false;
+}
+document.addEventListener('mouseover', e=>{
+  if (e.target.id==='soundToggle') return;
+  if (!_isInteractive(e.target)) return;
+  clearTimeout(_hoverTimer);
+  _hoverTimer = setTimeout(()=>{
+    const now=Date.now();
+    if (now-_hoverThrottle<400) return;
+    _hoverThrottle=now; playSound('hover');
+  }, 400);
+},{passive:true});
+document.addEventListener('mouseout', e=>{
+  if (_isInteractive(e.target)) clearTimeout(_hoverTimer);
+},{passive:true});
+document.addEventListener('click', e=>{
+  if (e.target.id==='soundToggle') return;
+  if (_isInteractive(e.target)) playSound('button');
+},true);
+</script>
 
 </body>
 </html>
