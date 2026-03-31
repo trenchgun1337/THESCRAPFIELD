@@ -1769,18 +1769,15 @@ footer {
 }
 
 /* ================================================================
-   NEXT STAGE — Layout redesign
-   
-   Concept: single compact chrome bar at the top — left side holds
-   the site identity (title + motto), right side holds all nav links.
-   Below that: full-width content area. Each page feels like a
-   distinct "screen" loaded into the frame.
-   
-   The original #mainHeader pill is repurposed as the left identity
-   block inside a shared flex row with #navigationMenu.
+   NEXT STAGE — Layout v2
+
+   Single aero chrome bar: site title as ::before on the nav,
+   nav tabs across the bar, preferences + sounds at the far right.
+   Themes button: ALWAYS hidden — code opens the panel directly.
+   Preferences: small uppercase utility text, not a full page tab.
    ================================================================ */
 
-/* ── Body: centered, top-to-bottom ── */
+/* ── Body ── */
 [data-theme="next-stage"] body {
   justify-content: center !important;
   align-items: center !important;
@@ -1788,7 +1785,7 @@ footer {
   padding: 10px 6px 30px !important;
 }
 
-/* ── Container: centered column, 800px ── */
+/* ── Container: 800px centered column ── */
 [data-theme="next-stage"] #websiteContainer {
   display: flex !important;
   flex-direction: column !important;
@@ -1797,21 +1794,16 @@ footer {
   max-width: 100% !important;
 }
 
-/* ════════════════════════════════════════════
-   STEP 1: Suppress the original pill header.
-   We rebuild identity inside the nav chrome.
-   ════════════════════════════════════════════ */
-[data-theme="next-stage"] #mainHeader {
-  display: none !important;
-}
+/* Hide pill header — identity rebuilt inside nav bar */
+[data-theme="next-stage"] #mainHeader { display: none !important; }
 
-/* ── Nav+content container: column ── */
+/* Nav+content: column stack */
 [data-theme="next-stage"] #navAndContentContainer {
   flex-direction: column !important;
   align-items: stretch !important;
 }
 
-/* ── Sidebar aside: full width, is the chrome bar ── */
+/* Sidebar aside: full width */
 [data-theme="next-stage"] #sidebarAside {
   width: 100% !important;
   flex-direction: column !important;
@@ -1819,13 +1811,7 @@ footer {
   flex-shrink: 0 !important;
 }
 
-/* ════════════════════════════════════════════
-   STEP 2: #navigationMenu becomes the full
-   header+nav bar in one aero chrome strip.
-   It uses display:flex with the site title
-   injected via ::before as a left-anchored
-   identity block, nav links fill the rest.
-   ════════════════════════════════════════════ */
+/* ── The chrome bar: aero gradient, flex row ── */
 [data-theme="next-stage"] #navigationMenu {
   width: 100% !important;
   height: auto !important;
@@ -1838,13 +1824,11 @@ footer {
   padding: 0 !important;
   overflow: visible !important;
   border-radius: 0 !important;
-
-  /* The dark aero bar gradient — same as downloader .aero-bar */
   background: var(--th-bar-grad) !important;
-  border-top: 1px solid var(--th-bar-border-t) !important;
+  border-top:    1px solid var(--th-bar-border-t) !important;
   border-bottom: 1px solid var(--th-bar-border-b) !important;
-  border-left: 1px solid var(--th-bar-border-s) !important;
-  border-right: 1px solid var(--th-bar-border-s) !important;
+  border-left:   1px solid var(--th-bar-border-s) !important;
+  border-right:  1px solid var(--th-bar-border-s) !important;
   box-shadow:
     inset 0 1px 0 var(--th-bar-shine),
     inset 0 2px 4px rgba(255,255,255,.10),
@@ -1853,8 +1837,27 @@ footer {
   scrollbar-width: none !important;
 }
 
-/* Gloss half-shine overlay on the bar */
+/* Site title: first flex item via ::before */
 [data-theme="next-stage"] #navigationMenu::before {
+  content: 'Watanagashi Archive' !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  padding: 0 14px 0 10px !important;
+  font-family: Tahoma, 'Segoe UI', sans-serif !important;
+  font-size: 12.5px !important;
+  font-weight: 400 !important;
+  color: var(--th-bar-text) !important;
+  text-shadow: var(--th-bar-tshadow) !important;
+  letter-spacing: .4px !important;
+  white-space: nowrap !important;
+  border-right: 1px solid rgba(160,160,160,.28) !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Gloss shine overlay — ::after so ::before stays as the title */
+[data-theme="next-stage"] #navigationMenu::after {
   content: '' !important;
   position: absolute !important;
   top: 0 !important; left: 0 !important; right: 0 !important;
@@ -1862,36 +1865,9 @@ footer {
   background: var(--th-bar-glow-top) !important;
   pointer-events: none !important;
   z-index: 0 !important;
-  display: block !important;
 }
 
-/* ── Site identity block: title + motto, left side ──
-   Injected via ::after on the aside wrapper so it
-   sits before the nav categories in visual order.    ── */
-[data-theme="next-stage"] #sidebarAside::before {
-  content: 'The Watanagashi Archive' !important;
-  display: flex !important;
-  align-items: center !important;
-  flex-shrink: 0 !important;
-  padding: 0 14px 0 10px !important;
-  font-family: Tahoma, 'Segoe UI', sans-serif !important;
-  font-size: 13px !important;
-  font-weight: 400 !important;
-  color: var(--th-bar-text) !important;
-  text-shadow: var(--th-bar-tshadow) !important;
-  letter-spacing: .3px !important;
-  white-space: nowrap !important;
-  border-right: 1px solid rgba(140,140,140,.28) !important;
-  position: relative !important;
-  z-index: 2 !important;
-  /* same bar background so it blends into #navigationMenu */
-  background: var(--th-bar-grad) !important;
-  /* sits outside nav but same visual layer — overlap trick */
-  margin-right: -1px !important;
-  order: -1 !important;
-}
-
-/* ── Nav categories: inline row, take remaining space ── */
+/* ── Nav categories: inline row ── */
 [data-theme="next-stage"] .nav-categories {
   display: flex !important;
   flex-direction: row !important;
@@ -1907,18 +1883,17 @@ footer {
   flex-shrink: 0 !important;
 }
 
-/* Thin rule between category groups */
+/* Thin divider between category groups */
 [data-theme="next-stage"] .nav-categories + .nav-categories {
   border-left: 1px solid rgba(140,140,140,.22) !important;
   margin-left: 0 !important;
   padding-left: 0 !important;
 }
 
-/* Category titles hidden — links are self-explanatory in this layout */
+/* Hide category titles — self-evident in flat layout */
 [data-theme="next-stage"] .navbar-titles { display: none !important; }
 
-/* ── Nav links: flat tab style ──
-   Each link fills the bar height, underline on active.   ── */
+/* ── Nav links: flat tab style, fill bar height ── */
 [data-theme="next-stage"] .nav-link {
   display: flex !important;
   align-items: center !important;
@@ -1942,14 +1917,14 @@ footer {
   overflow: hidden !important;
 }
 
-/* Active underline — red accent bar at bottom */
+/* Active: red underline accent */
 [data-theme="next-stage"] .nav-link.active {
   background: rgba(255,255,255,.06) !important;
   color: var(--th-accent) !important;
   box-shadow: inset 0 -2px 0 var(--th-accent) !important;
 }
 
-/* Hover: subtle brightening, no size jump */
+/* Hover: no size jump, just a highlight */
 [data-theme="next-stage"] .nav-link:hover {
   margin: 0 !important;
   padding: 0 10px !important;
@@ -1961,78 +1936,134 @@ footer {
   box-shadow: none !important;
 }
 
-/* Nav icon: slightly larger, matches bar height */
 [data-theme="next-stage"] .nav-icons {
   height: 14px !important;
-  margin: 0 4px 0 0 !important;
+  margin: 0 5px 0 0 !important;
 }
 
-/* ── Sounds + Themes: pushed to far right via auto margin ── */
+/* ════════════════════════════════════════════════════════════
+   PREFERENCES — pulled out of the nav bar entirely.
+   Repositioned as fixed bottom-left text (like downloader).
+   The parent .nav-categories shell becomes empty → hidden.
+   ════════════════════════════════════════════════════════════ */
 
-/* First nav-categories gets auto left margin to push utility btns right */
-[data-theme="next-stage"] .nav-categories:last-child {
-  margin-left: auto !important;
-  border-left: 1px solid rgba(140,140,140,.22) !important;
-  border-right: none !important;
+/* Collapse the Settings category shell WITHOUT display:none
+   (display:none on a parent hides fixed-positioned children too) */
+[data-theme="next-stage"] .nav-categories:has(#nbtn-preferences) {
+  width: 0 !important;
+  overflow: hidden !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  flex-shrink: 1 !important;
 }
 
-[data-theme="next-stage"] #_navSoundWrap {
+/* Preferences: fixed bottom-left, minimal text style */
+[data-theme="next-stage"] #nbtn-preferences {
+  position: fixed !important;
+  bottom: 8px !important;
+  left: 10px !important;
+  z-index: 9999 !important;
+  /* Reset all nav-link styles */
   display: flex !important;
-  align-items: stretch !important;
+  align-items: center !important;
+  width: auto !important;
+  flex: none !important;
+  margin: 0 !important;
+  padding: 2px 0 !important;
+  font-size: 10px !important;
+  letter-spacing: .2px !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: none !important;
+  color: rgba(140,140,140,.55) !important;
+  text-shadow: none !important;
+  cursor: pointer !important;
+  overflow: visible !important;
+  font-family: Tahoma, sans-serif !important;
+}
+[data-theme="next-stage"] #nbtn-preferences:hover {
+  color: rgba(200,200,200,.80) !important;
+  text-decoration: underline !important;
+  background: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 2px 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+}
+[data-theme="next-stage"] #nbtn-preferences.active {
+  color: rgba(200,200,200,.80) !important;
+}
+/* Hide the icon */
+[data-theme="next-stage"] #nbtn-preferences .nav-icons { display: none !important; }
+
+/* ════════════════════════════════════════════════════════════
+   SOUNDS TOGGLE — fixed bottom-left, next to Preferences.
+   Same minimal text style as downloader.html #soundToggle.
+   ════════════════════════════════════════════════════════════ */
+[data-theme="next-stage"] #_navSoundWrap {
+  position: fixed !important;
+  bottom: 8px !important;
+  left: 72px !important;     /* sits right after "Preferences" text */
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: center !important;
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
-  position: relative !important;
-  z-index: 1 !important;
 }
 
 [data-theme="next-stage"] #navSoundToggle {
-  display: flex !important;
-  align-items: center !important;
-  padding: 0 10px !important;
-  font-size: 10.5px !important;
+  /* Reset ALL green gradient styling */
   width: auto !important;
+  display: block !important;
+  background: none !important;
+  border: none !important;
+  border-top-color: transparent !important;
+  box-shadow: none !important;
+  color: rgba(140,140,140,.55) !important;
+  cursor: pointer !important;
+  padding: 2px 0 !important;
+  font-size: 10px !important;
+  font-family: Tahoma, sans-serif !important;
+  text-shadow: none !important;
+  letter-spacing: .2px !important;
+  position: static !important;
   min-height: 0 !important;
   border-radius: 0 !important;
-  border: none !important;
-  border-left: 1px solid rgba(140,140,140,.16) !important;
+}
+[data-theme="next-stage"] #navSoundToggle:hover {
+  color: rgba(200,200,200,.80) !important;
+  filter: none !important;
+  background: none !important;
+}
+[data-theme="next-stage"] #navSoundToggle.sounds-off {
+  color: rgba(90,90,90,.50) !important;
+  background: none !important;
+  border-color: transparent !important;
+  border-top-color: transparent !important;
 }
 
-[data-theme="next-stage"] #_themesBtnWrap {
-  display: flex !important;
-  align-items: stretch !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-[data-theme="next-stage"] #_themesBtn {
-  display: flex !important;
-  align-items: center !important;
-  padding: 0 10px !important;
-  font-size: 10.5px !important;
-  width: auto !important;
-  min-height: 0 !important;
-  border-radius: 0 !important;
-  border: none !important;
-  border-left: 1px solid rgba(140,140,140,.16) !important;
-}
+/* ── Themes button: always hidden — panel opens via code directly ── */
+[data-theme="next-stage"] #_themesBtnWrap,
+[data-theme="next-stage"] #_themesBtn { display: none !important; }
 
 /* Sidebar extender: not needed */
 [data-theme="next-stage"] #_sidebarExtender { display: none !important; }
 
-/* ════════════════════════════════════════════
-   STEP 3: Main content — full width, each
-   .page feels like a distinct loaded screen.
-   ════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════
+   MAIN CONTENT — full-width, each .page = a distinct screen
+   ════════════════════════════════════════════════════════════ */
 [data-theme="next-stage"] #mainContent {
   width: 100% !important;
   flex: 1 !important;
-  border-left: 1px solid var(--th-main-border) !important;
-  border-right: 1px solid var(--th-main-border) !important;
-  border-top: none !important;
+  border-left:   1px solid var(--th-main-border) !important;
+  border-right:  1px solid var(--th-main-border) !important;
+  border-top:    none !important;
   border-bottom: 1px solid var(--th-main-border) !important;
   min-height: 500px !important;
   height: auto !important;
@@ -2040,28 +2071,25 @@ footer {
   overflow-x: hidden !important;
 }
 
-/* Each page: subtle inset shadow at top so it "loads" into the frame */
+/* Page: inset shadow at top — "loaded screen" feeling */
 [data-theme="next-stage"] .page.active {
-  box-shadow: inset 0 3px 10px rgba(0,0,0,.55) !important;
+  box-shadow: inset 0 4px 14px rgba(0,0,0,.58) !important;
   min-height: 500px !important;
 }
 
-/* Page h1 acts as a section title bar flush to the top */
+/* h1: uppercase section title bar flush to page top */
 [data-theme="next-stage"] h1 {
-  font-size: 13px !important;
+  font-size: 11.5px !important;
   padding: 6px 10px 8px !important;
-  letter-spacing: .4px !important;
+  letter-spacing: .7px !important;
   text-transform: uppercase !important;
 }
 
 [data-theme="next-stage"] h2 { font-size: 12px !important; }
 
-/* ── Glass boxes: match downloader exactly ── */
+/* Glass boxes: match downloader.html exactly */
 [data-theme="next-stage"] .glass-borders {
-  background-image: linear-gradient(
-    rgba(255,255,255,.12),
-    rgba(0,0,0,1)
-  ) !important;
+  background-image: linear-gradient(rgba(255,255,255,.12), rgba(0,0,0,1)) !important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.07),
     inset 0 0 10px rgba(200,200,200,.04),
@@ -2086,11 +2114,11 @@ footer {
   [data-theme="next-stage"] #websiteContainer { width: 100% !important; }
 }
 
-@media (max-width: 680px) {
-  /* Identity block shrinks */
-  [data-theme="next-stage"] #sidebarAside::before {
+@media (max-width: 700px) {
+  [data-theme="next-stage"] #navigationMenu::before {
     font-size: 11px !important;
-    padding: 0 8px !important;
+    padding: 0 8px 0 8px !important;
+    letter-spacing: .2px !important;
   }
   [data-theme="next-stage"] .nav-link {
     padding: 0 7px !important;
@@ -2099,30 +2127,13 @@ footer {
   [data-theme="next-stage"] .nav-icons { display: none !important; }
 }
 
-@media (max-width: 520px) {
-  /* Stack nav below identity */
-  [data-theme="next-stage"] #sidebarAside {
-    flex-direction: column !important;
-  }
-  [data-theme="next-stage"] #sidebarAside::before {
-    padding: 5px 10px !important;
-    border-right: none !important;
-    border-bottom: 1px solid rgba(140,140,140,.20) !important;
-    font-size: 12px !important;
-    background: linear-gradient(to bottom,rgba(60,60,60,.96) 0%,rgba(20,20,20,.98) 50%,rgba(4,4,4,1) 50%,rgba(14,14,14,.99) 100%) !important;
-  }
-  [data-theme="next-stage"] #navigationMenu {
-    flex-wrap: wrap !important;
-    min-height: 28px !important;
-    border-top: none !important;
-  }
+@media (max-width: 540px) {
+  /* Hide site title — links take priority on small screens */
+  [data-theme="next-stage"] #navigationMenu::before { display: none !important; }
+  [data-theme="next-stage"] #navigationMenu { flex-wrap: wrap !important; min-height: 28px !important; }
   [data-theme="next-stage"] .nav-categories { flex-wrap: wrap !important; }
-  [data-theme="next-stage"] .nav-categories:last-child {
-    margin-left: 0 !important;
-    border-left: none !important;
-  }
   [data-theme="next-stage"] .nav-link {
-    padding: 5px 8px !important;
+    padding: 5px 7px !important;
     font-size: 10.5px !important;
     border-right: none !important;
     border-bottom: 1px solid rgba(140,140,140,.12) !important;
@@ -2130,5 +2141,5 @@ footer {
 }
 
 @media (max-width: 380px) {
-  [data-theme="next-stage"] .nav-link { font-size: 10px !important; padding: 4px 6px !important; }
+  [data-theme="next-stage"] .nav-link { font-size: 10px !important; padding: 4px 5px !important; }
 }

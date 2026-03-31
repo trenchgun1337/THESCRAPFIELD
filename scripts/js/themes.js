@@ -1,110 +1,53 @@
 /* ================================================================
-   themes.js — Theme Switcher  v3
+   themes.js — Theme Switcher  v4
    Themes:
-     "next-stage"  (default)  — horizontal aero nav bar, site layout
+     "next-stage"  (default)  — compact aero chrome bar, site layout
      "rika-menu"              — original sidebar, dark aero
      "legacy"                 — amber/warm palette, sidebar
-   
-   Unlock via Ryuguu Code: themes / theme / skins / skin  (silent)
+
+   ── Themes button NEVER appears as a persistent button ──
+   The Ryuguu code opens the panel directly.
+
+   ── Emergency reset ──
+   window._resetTheme() in the browser console resets to next-stage.
    ================================================================ */
 
 (function () {
   'use strict';
 
   var THEMES = {
-    'next-stage': { name: 'Next Stage', accent: '#ffffff' },
-    'rika-menu':  { name: 'Rika Menu',  accent: '#ffffff' },
-    'legacy':     { name: 'Legacy',     accent: '#ffffff' }
+    'next-stage': { name: 'Next Stage', desc: 'horizontal nav — site layout' },
+    'rika-menu':  { name: 'Rika Menu',  desc: 'sidebar menu — classic'       },
+    'legacy':     { name: 'Legacy',     desc: 'amber palette — warm'          }
   };
 
-  var _current        = 'next-stage';
-  var _themesUnlocked = false;
-
-  window._unlockThemes = function () {
-    _themesUnlocked = true;
-    var wrap = document.getElementById('_themesBtnWrap');
-    if (wrap) wrap.style.display = '';
-    /* silent */
-  };
+  var _current = 'next-stage';
 
   /* ── Apply theme ── */
   function applyTheme(name) {
-    if (!THEMES[name]) return;
+    if (!THEMES[name]) name = 'next-stage';
     _current = name;
 
     document.documentElement.removeAttribute('data-theme');
     document.body.removeAttribute('data-theme');
 
-    /* data-theme mapping:
-       next-stage  → "next-stage"
-       rika-menu   → (none, uses :root defaults)
-       legacy      → "legacy"                      */
     if (name !== 'rika-menu') {
       document.documentElement.setAttribute('data-theme', name);
       document.body.setAttribute('data-theme', name);
     }
 
-    /* Background image override — legacy only */
+    /* Background override — legacy only */
     if (name === 'legacy') {
       document.body.style.backgroundImage = "url('assets/images/SITEBACKGROUND.png')";
     } else {
       document.body.style.backgroundImage = '';
     }
 
-    updateThemesButton(name);
     try { localStorage.setItem('_watTheme', name); } catch(e) {}
-  }
-
-  /* ── Themes button skin ── */
-  function updateThemesButton(name) {
-    var btn = document.getElementById('_themesBtn');
-    if (!btn) return;
-    btn.removeAttribute('style');
-
-    if (name === 'legacy') {
-      /* Amber */
-      btn.style.cssText = [
-        'background:linear-gradient(to bottom,rgba(160,90,5,.94) 0%,rgba(100,55,2,.98) 50%,rgba(60,28,0,1) 50%,rgba(80,40,2,.96) 100%)',
-        'border:1px solid rgba(220,140,20,.70)',
-        'border-top:1px solid rgba(255,210,80,.28)',
-        'box-shadow:inset 0 1px 0 rgba(255,220,80,.18),0 2px 4px rgba(0,0,0,.5)',
-        'color:#ffd060',
-        'font-size:11px',
-        'font-family:Tahoma,sans-serif',
-        'padding:2px 8px 3px',
-        'cursor:pointer',
-        'text-shadow:0 1px 2px rgba(0,0,0,.9)',
-        'letter-spacing:.2px',
-        'position:relative',
-        'display:inline-block',
-        'width:auto'
-      ].join(';');
-    } else {
-      /* Dark Aero — same gradient as the nav bar */
-      btn.style.cssText = [
-        'background:linear-gradient(to bottom,rgba(255,255,255,.22) 0%,rgba(185,185,185,.88) 0%,rgba(120,120,120,.76) 4%,rgba(26,26,26,.98) 52%,rgba(4,4,4,1) 52%,rgba(14,14,14,.99) 100%)',
-        'border:1px solid rgba(140,140,140,.44)',
-        'border-top:1px solid rgba(255,255,255,.18)',
-        'border-bottom:1px solid rgba(0,0,0,.88)',
-        'box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 2px 4px rgba(0,0,0,.5)',
-        'color:#f2f2f2',
-        'font-size:11px',
-        'font-family:Tahoma,sans-serif',
-        'padding:2px 8px 3px',
-        'cursor:pointer',
-        'text-shadow:0 1px 3px rgba(0,0,0,.98)',
-        'letter-spacing:.2px',
-        'position:relative',
-        'display:inline-block',
-        'width:auto'
-      ].join(';');
-    }
   }
 
   /* ── Build picker panel ── */
   function buildPanel() {
-    if (!_themesUnlocked) return;
-
     var existing = document.getElementById('_themePanel');
     if (existing) { existing.remove(); return; }
 
@@ -118,7 +61,7 @@
       'background:linear-gradient(to bottom,rgba(2,2,2,.99),rgba(6,6,6,.99))',
       'border:1px solid rgba(130,130,130,.28)',
       'border-bottom:none',
-      'min-width:160px',
+      'min-width:164px',
       'max-height:78vh',
       'overflow-y:auto',
       'font-family:Tahoma,sans-serif',
@@ -126,7 +69,7 @@
       'scrollbar-color:rgba(110,110,110,.4) rgba(0,0,0,.2)'
     ].join(';');
 
-    /* Header bar */
+    /* Header */
     var hdr = document.createElement('div');
     hdr.style.cssText = [
       'background:linear-gradient(to bottom,rgba(255,255,255,.22) 0%,rgba(185,185,185,.88) 0%,rgba(120,120,120,.76) 4%,rgba(26,26,26,.98) 52%,rgba(4,4,4,1) 52%,rgba(14,14,14,.99) 100%)',
@@ -144,12 +87,6 @@
     ].join(';');
     hdr.textContent = 'Theme Selector';
     panel.appendChild(hdr);
-
-    var descs = {
-      'next-stage': 'horizontal nav — site layout',
-      'rika-menu':  'sidebar menu — classic',
-      'legacy':     'amber palette — warm'
-    };
 
     Object.keys(THEMES).forEach(function (key) {
       var th = THEMES[key];
@@ -174,25 +111,26 @@
         'display:block',
         'font-family:Tahoma,sans-serif',
         'letter-spacing:.3px',
-        'color:' + (isActive ? th.accent : '#888')
+        'color:' + (isActive ? '#f2f2f2' : '#888')
       ].join(';');
       nameEl.textContent = th.name + (isActive ? ' \u2713' : '');
       btn.appendChild(nameEl);
 
       var descEl = document.createElement('span');
       descEl.style.cssText = 'font-size:10px;color:#444;font-family:Tahoma,sans-serif;display:block;margin-top:1px;';
-      descEl.textContent = descs[key] || '';
+      descEl.textContent = th.desc;
       btn.appendChild(descEl);
 
       btn.addEventListener('click', function () {
         applyTheme(key);
         panel.remove();
+        /* Re-open so checkmark updates */
         setTimeout(buildPanel, 40);
       });
       panel.appendChild(btn);
     });
 
-    /* Close button */
+    /* Close */
     var closeBtn = document.createElement('button');
     closeBtn.style.cssText = [
       'display:block',
@@ -213,15 +151,14 @@
     closeBtn.textContent = 'Close';
     closeBtn.addEventListener('click', function () { panel.remove(); });
     panel.appendChild(closeBtn);
-
     document.body.appendChild(panel);
 
+    /* Click outside to close */
     setTimeout(function () {
       document.addEventListener('click', function outsideClose(e) {
-        var p  = document.getElementById('_themePanel');
-        var tb = document.getElementById('_themesBtn');
+        var p = document.getElementById('_themePanel');
         if (!p) { document.removeEventListener('click', outsideClose); return; }
-        if (!p.contains(e.target) && e.target !== tb) {
+        if (!p.contains(e.target)) {
           p.remove();
           document.removeEventListener('click', outsideClose);
         }
@@ -229,6 +166,22 @@
     }, 80);
   }
 
+  /* ── Public API ── */
+
+  /* Called by Ryuguu code — opens the panel directly, no persistent button */
+  window._unlockThemes = function () {
+    buildPanel();
+  };
+
+  /* Emergency reset — type _resetTheme() in the browser console */
+  window._resetTheme = function () {
+    try { localStorage.removeItem('_watTheme'); } catch(e) {}
+    applyTheme('next-stage');
+    console.info('[Watanagashi] Theme reset to Next Stage.');
+  };
+
+  /* Called by HTML onclick on the themes button (still wired in HTML,
+     but the button is always hidden — this is just a safety fallback) */
   window._themesPanelToggle = function (e) {
     if (e) e.stopPropagation();
     buildPanel();
@@ -236,25 +189,24 @@
 
   /* ── Init ── */
   document.addEventListener('DOMContentLoaded', function () {
+    /* Load saved theme — NO migration from old _scrapTheme key.
+       Anyone without a valid _watTheme gets next-stage (the new default).
+       Invalid/unknown saves also fall through to next-stage. */
     var saved = null;
     try { saved = localStorage.getItem('_watTheme'); } catch(e) {}
-    /* Migrate old key */
-    if (!saved) {
-      try { saved = localStorage.getItem('_scrapTheme'); } catch(e) {}
-    }
 
     if (saved && THEMES[saved]) {
-      if (saved !== 'next-stage') {
-        _themesUnlocked = true;
-        var wrap = document.getElementById('_themesBtnWrap');
-        if (wrap) wrap.style.display = '';
-      }
       applyTheme(saved);
     } else {
+      /* No valid save → force next-stage and persist it */
       applyTheme('next-stage');
     }
 
-    /* Rena & Rika hidden on init — revealed by codes.js */
+    /* Always hide _themesBtnWrap — it's never a persistent button */
+    var wrap = document.getElementById('_themesBtnWrap');
+    if (wrap) wrap.style.display = 'none';
+
+    /* Hide Rena & Rika on init — revealed by codes.js */
     var rena = document.getElementById('renaChan');
     var rika = document.getElementById('rikaChan');
     if (rena) rena.style.display = 'none';
