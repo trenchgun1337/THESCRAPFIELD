@@ -4,17 +4,46 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Watanagashi Archive</title>
 <link rel="icon" id="sitefavicon" type="image/x-icon" href="assets/images/favicon.ico">
-<link rel="stylesheet" href="scripts\css\style.css">
+<link rel="stylesheet" href="scripts/css/style.css">
 <style id="watanagashi-patch">
-/* Fix: mainContent never locks to a tall height */
+
+/* ── Fixed site header ── */
+#siteHeader {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9990;
+  background: rgba(0,0,0,.88);
+  border-bottom: 1px solid rgba(140,140,140,.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.70);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+#siteHeader img {
+  max-height: 302px;
+  max-width: 1240px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Push content below fixed header */
+body { padding-top: 90px !important; }
+#websiteContainer { padding-top: 0; }
+
+/* ── mainContent height fix ── */
 #mainContent {
   height: auto !important;
   min-height: 0 !important;
   overflow-y: visible !important;
 }
 
-/* Aero scrollbar — black, rectangular, low opacity */
+/* ── Aero scrollbar ── */
 ::-webkit-scrollbar { width: 7px; height: 7px; background: transparent; }
 ::-webkit-scrollbar-track { background: rgba(0,0,0,.18); border-radius: 0; }
 ::-webkit-scrollbar-thumb { background: rgba(10,10,10,.62); border-radius: 0; border: none; }
@@ -28,7 +57,22 @@ html { scrollbar-width: thin; scrollbar-color: rgba(10,10,10,.62) transparent; }
   align-items: flex-start !important;
   flex-shrink: 0;
 }
+
+/* ── Centered nav ── */
 #navAndContentContainer { align-items: stretch !important; }
+#navigationMenu {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+.nav-categories {
+  width: 100%;
+}
+.nav-link {
+  justify-content: center !important;
+}
+
+/* ── CD / player ── */
 #spinningDisk { display: none !important; }
 #cdDisc {
   width: 155px; height: 136px;
@@ -60,7 +104,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(10,10,10,.62) transparent; }
   width: 163px !important; display: block; cursor: default;
 }
 
-/* Fotos, banners e galeria — nunca recebem filter */
+/* ── Images: no filter ── */
 body #introBanner,
 body .contact-banner,
 body .faa-logo-img,
@@ -83,14 +127,10 @@ body .contact-links li a img {
   -webkit-filter: none !important;
 }
 
-/* Nav icons: no filter */
 body:not(.adaptive-accent-on) .nav-icons {
   filter: none !important;
   -webkit-filter: none !important;
 }
-
-/* Player buttons keep their --th-player-filter (red tint) from style.css.
-   Only the hover brightness override is needed here. */
 body:not(.adaptive-accent-on) .mp-ctrl-btn:hover img,
 body:not(.adaptive-accent-on) .mp-ctrl-btn:hover .player-img,
 body:not(.adaptive-accent-on) .mp-mute-btn:hover img,
@@ -99,6 +139,7 @@ body:not(.adaptive-accent-on) .mp-loop-btn:hover img {
   -webkit-filter: sepia(100%) saturate(6) hue-rotate(300deg) brightness(1.25) !important;
 }
 
+/* ── Prefs ── */
 #pg-preferences button,
 #pg-preferences select,
 #_prefBar button,
@@ -110,11 +151,6 @@ body:not(.adaptive-accent-on) .mp-loop-btn:hover img {
   border: 1px solid rgba(180,20,20,.6) !important;
   background: #000 !important;
   color: #fff !important;
-}
-#pg-preferences select:focus,
-#_prefBar select:focus {
-  border-color: rgba(73,220,73,0.6) !important;
-  outline: none;
 }
 #_prefBar button {
   background: rgba(30,8,8,.9) !important;
@@ -130,13 +166,10 @@ body:not(.adaptive-accent-on) .mp-loop-btn:hover img {
   border-color: rgba(73,220,73,0.6) !important;
   background: rgba(15,44,15,.9) !important;
 }
-.comm-tab-bar {
-  border-bottom: 2px solid rgba(180,20,20,.5) !important;
-}
-.comm-tab {
-  border: 1px solid rgba(120,20,20,.55) !important;
-  border-bottom: none !important;
-}
+
+/* ── Community tabs ── */
+.comm-tab-bar { border-bottom: 2px solid rgba(180,20,20,.5) !important; }
+.comm-tab { border: 1px solid rgba(120,20,20,.55) !important; border-bottom: none !important; }
 .comm-tab.active,
 #commTabChat.active,
 #commTabBlog.active,
@@ -154,8 +187,7 @@ button.comm-tab.active {
   color: #fff !important;
   z-index: 2;
 }
-.comm-ok-btn,
-a.comm-ok-btn {
+.comm-ok-btn, a.comm-ok-btn {
   display: inline-block !important;
   background: linear-gradient(
     to bottom,
@@ -168,8 +200,7 @@ a.comm-ok-btn {
   ) !important;
   border: 1px solid rgba(210,30,30,.70) !important;
   border-top-color: rgba(255,90,90,.30) !important;
-  box-shadow: inset 0 1px 0 rgba(255,110,110,.20),
-              0 2px 6px rgba(0,0,0,.55) !important;
+  box-shadow: inset 0 1px 0 rgba(255,110,110,.20), 0 2px 6px rgba(0,0,0,.55) !important;
   color: #fff !important;
   font-family: Tahoma, sans-serif !important;
   font-size: 12px !important;
@@ -179,35 +210,24 @@ a.comm-ok-btn {
   text-shadow: 0 1px 2px rgba(0,0,0,.8);
   position: relative !important;
 }
-.comm-ok-btn:hover,
-a.comm-ok-btn:hover {
+.comm-ok-btn:hover, a.comm-ok-btn:hover {
   filter: brightness(1.25) !important;
   color: #ffdddd !important;
   text-decoration: underline !important;
 }
 #commPanelBlog .hl,
 #commPanelBlog strong,
-.comm-wip strong {
-  color: #cc1a1a !important;
-}
+.comm-wip strong { color: #cc1a1a !important; }
 .na-span { color: #cc1a1a !important; }
 .gi-avg  { color: #ffffff !important; }
 
-/* Nav icons: no filter in default mode; adaptive mode overrides via JS */
-body:not(.adaptive-accent-on) .nav-icons {
-  filter: none !important;
-  -webkit-filter: none !important;
-}
-/* In adaptive mode: minimal neutral filter for nav icons (green-safe) */
 body.adaptive-accent-on .nav-icons {
   filter: hue-rotate(1deg) saturate(1.05) !important;
   -webkit-filter: hue-rotate(1deg) saturate(1.05) !important;
 }
 
-/* vg-vote-badge: never visible */
+/* ── Pager ── */
 .vg-vote-badge { display: none !important; }
-
-/* pager */
 .vg-pager {
   display: flex; align-items: center; justify-content: center;
   gap: 4px; padding: 5px 0 2px; flex-wrap: wrap;
@@ -226,7 +246,37 @@ body.adaptive-accent-on .nav-icons {
   background: rgba(60,5,5,.5);
 }
 
-/* ── Fix: disable hover dimension-change on touch/mobile devices ── */
+/* ── Bottom sounds button ── */
+#bottomUtil {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9995;
+}
+.bottom-btn {
+  font-family: Tahoma, sans-serif;
+  font-size: 10px;
+  color: rgba(140,140,140,.55);
+  cursor: pointer;
+  user-select: none;
+  padding: 3px 10px;
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(80,80,80,.3);
+  letter-spacing: .3px;
+  transition: color .15s, border-color .15s;
+}
+.bottom-btn:hover { color: rgba(200,200,200,.80); border-color: rgba(140,140,140,.5); }
+.bottom-btn.off   { color: rgba(90,90,90,.50); }
+
+/* ── Gallery pager ── */
+#galleryPager {
+  display: flex; align-items: center; justify-content: center;
+  gap: 4px; padding: 6px 0 2px; flex-wrap: wrap;
+  font-family: Tahoma, sans-serif; font-size: 11px;
+}
+
+/* ── Mobile ── */
 @media (hover: none), (pointer: coarse) {
   .nav-link:hover {
     margin: 0 auto 2px !important;
@@ -238,11 +288,10 @@ body.adaptive-accent-on .nav-icons {
     color: var(--th-accent) !important;
   }
 }
-
-/* ── Better mobile nav at ≤600px — overrides existing block ── */
 @media (max-width: 600px) {
+  body { padding-top: 72px !important; }
+  #siteHeader img { max-height: 54px; }
   #navAndContentContainer { flex-direction: column; }
-
   #navigationMenu {
     width: 100% !important;
     height: auto !important;
@@ -254,95 +303,41 @@ body.adaptive-accent-on .nav-icons {
     gap: 3px !important;
     overflow: visible !important;
   }
-
-  .nav-categories {
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    margin-bottom: 2px;
-  }
-
+  .nav-categories { flex-direction: row !important; flex-wrap: wrap !important; margin-bottom: 2px; }
   .navbar-titles { display: none !important; }
-
   .nav-link {
-    width: auto !important;
-    min-width: 70px !important;
-    max-width: 130px !important;
-    flex: 1 1 70px !important;
-    margin: 1px !important;
-    padding: 5px 4px !important;
-    font-size: 11px !important;
-    justify-content: center !important;
-    text-align: center !important;
-    white-space: nowrap;
+    width: auto !important; min-width: 70px !important; max-width: 130px !important;
+    flex: 1 1 70px !important; margin: 1px !important; padding: 5px 4px !important;
+    font-size: 11px !important; justify-content: center !important;
+    text-align: center !important; white-space: nowrap;
   }
-
-  .nav-link:hover {
-    margin: 1px !important;
-    width: auto !important;
-    padding: 5px 4px !important;
-    min-width: 70px !important;
-  }
-
+  .nav-link:hover { margin: 1px !important; width: auto !important; padding: 5px 4px !important; min-width: 70px !important; }
   .nav-link::before { display: none !important; }
-
-  .nav-icons {
-    height: 13px !important;
-    margin: 0 2px 0 0 !important;
-    flex-shrink: 0;
-  }
-
+  .nav-icons { height: 13px !important; margin: 0 2px 0 0 !important; flex-shrink: 0; }
   #mainContent { height: auto; min-height: 400px; }
   #renaChan, #rikaChan { display: none !important; }
 }
-
-/* ── Smallest screens ── */
 @media (max-width: 400px) {
-  .nav-link {
-    font-size: 10px !important;
-    min-width: 58px !important;
-    padding: 4px 3px !important;
-  }
+  .nav-link { font-size: 10px !important; min-width: 58px !important; padding: 4px 3px !important; }
   .nav-icons { display: none !important; }
-}
-
-/* ── Gallery pagination pager ── */
-#galleryPager {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 6px 0 2px;
-  flex-wrap: wrap;
-  font-family: Tahoma, sans-serif;
-  font-size: 11px;
 }
 </style>
 </head>
 <body>
-<div id="websiteContainer">
 
- <!-- Centered logo above container -->
-<div id="siteLogo" style="
-  text-align: center;
-  padding: 14px 0 8px;
-  line-height: 0;
-">
+<!-- ── Fixed logo header ── -->
+<header id="siteHeader">
   <img src="assets/images/watanagashilogo.jpg" alt="Watanagashi Archive"
-    style="
-      max-height: 72px;
-      max-width: 340px;
-      width: auto;
-      object-fit: contain;
-    "
     onerror="this.style.display='none'">
-</div>
+</header>
 
+<div id="websiteContainer">
   <div id="navAndContentContainer">
 
     <aside id="sidebarAside">
       <div id="navigationMenu">
         <nav class="nav-categories">
-          <span class="navbar-titles">Main Content</span>
+          <span class="navbar-titles">Navigation</span>
           <a class="nav-link" id="nbtn-introduction" href="#introduction" onclick="return navClick(event,'introduction')">
             <img src="https://frutigeraeroarchive.org/images/introduction.png" class="nav-icons" alt="" draggable="false">Introduction</a>
           <a class="nav-link" id="nbtn-contact" href="pages/contact.html">
@@ -350,27 +345,6 @@ body.adaptive-accent-on .nav-icons {
           <a class="nav-link" id="nbtn-resources" href="#resources" onclick="return navClick(event,'resources')">
             <img src="https://frutigeraeroarchive.org/images/resources.png" class="nav-icons" alt="" draggable="false">Resources</a>
         </nav>
-
-        <nav class="nav-categories">
-          <span class="navbar-titles">Entertainment</span>
-          <a class="nav-link" id="nbtn-music" href="pages/music.html">
-            <img src="https://frutigeraeroarchive.org/images/music.png" class="nav-icons" alt="" draggable="false">Music Player</a>
-          <a class="nav-link" id="nbtn-sketchbook" href="pages/not_found.html">
-            <img src="https://frutigeraeroarchive.org/images/videos.png" class="nav-icons" alt="" draggable="false">Video Player</a>
-          <a class="nav-link" id="nbtn-sketchbook" href="pages/not_found.html">
-            <img src="https://frutigeraeroarchive.org/images/sketchbook.png" class="nav-icons" alt="" draggable="false">Sketchbook</a>
-        </nav>
-        <nav class="nav-categories">
-          <span class="navbar-titles">Community</span>
-          <a class="nav-link" id="nbtn-community" href="pages/not_found.html">
-            <img src="https://frutigeraeroarchive.org/images/forum.png" class="nav-icons" alt="" draggable="false">Community</a>
-        </nav>
-       <!-- <nav class="nav-categories">
-          <span class="navbar-titles">Settings</span>
-          <a class="nav-link" id="nbtn-preferences" href="#preferences" onclick="return navClick(event,'preferences')">
-            <img src="https://frutigeraeroarchive.org/images/site_info.png" class="nav-icons" alt="" draggable="false">Preferences</a>
-        </nav> -->
-      
         <div id="_themesBtnWrap" style="display:none;padding:4px 5px 2px;margin-top:4px;">
           <button id="_themesBtn" onclick="window._themesPanelToggle && window._themesPanelToggle(event)">Themes</button>
         </div>
@@ -379,6 +353,7 @@ body.adaptive-accent-on .nav-icons {
 
     <main id="mainContent">
 
+      <!-- ══ INTRODUCTION ══ -->
       <div id="pg-introduction" class="page">
         <h1>Introduction</h1>
         <div class="glass-borders">
@@ -407,57 +382,99 @@ body.adaptive-accent-on .nav-icons {
         </div>
       </div>
 
-      <!-- <div id="pg-preferences" class="page">
-        <h1>Preferences</h1>
-      </div> -->
-
+      <!-- ══ RESOURCES (hub for all sections) ══ -->
       <div id="pg-resources" class="page">
-  <h1>Resources</h1>
-  <div class="glass-borders">
-    <div class="styled-containers-headers aero-borders">
-      <p>A collection of tools, projects &amp; stuff — i'd like to maintain.</p>
-    </div>
+        <h1>Resources</h1>
+        <div class="glass-borders">
+          <div class="styled-containers-headers aero-borders">
+            <p>Tools, media &amp; everything else on this archive.</p>
+          </div>
 
-    <div class="aero-borders" style="background:#000;">
-      <ul class="contact-links" id="resourcesList">
+          <!-- Pages / Sections -->
+          <div class="rights-bar" style="margin-top:5px">Pages</div>
+          <div class="aero-borders" style="background:#000;">
+            <ul class="contact-links">
+              <li>
+                <a href="pages/musicplayer.html">
+                  <img src="https://frutigeraeroarchive.org/images/music.png" alt="" draggable="false">
+                  <span class="link-label"><strong style="color:var(--th-accent)">Music Player</strong></span>
+                  <span class="link-note">listen to handpicked tracks</span>
+                </a>
+              </li>
+              <li>
+                <a href="#videos" onclick="return navClick(event,'videos')">
+                  <img src="https://frutigeraeroarchive.org/images/videos.png" alt="" draggable="false">
+                  <span class="link-label">Video Player</span>
+                  <span class="link-note">anime OPs, nostalgia &amp; more</span>
+                </a>
+              </li>
+              <li>
+                <a href="#sketchbook" onclick="return navClick(event,'sketchbook')">
+                  <img src="https://frutigeraeroarchive.org/images/sketchbook.png" alt="" draggable="false">
+                  <span class="link-label">Sketchbook</span>
+                  <span class="link-note">gallery &amp; JS Paint</span>
+                </a>
+              </li>
+              <li>
+                <a href="#community" onclick="return navClick(event,'community')">
+                  <img src="https://frutigeraeroarchive.org/images/forum.png" alt="" draggable="false">
+                  <span class="link-label">Community</span>
+                  <span class="link-note">chat &amp; blog</span>
+                </a>
+              </li>
+              <li>
+                <a href="#preferences" onclick="return navClick(event,'preferences')">
+                  <img src="https://frutigeraeroarchive.org/images/site_info.png" alt="" draggable="false">
+                  <span class="link-label">Preferences</span>
+                  <span class="link-note">site settings</span>
+                </a>
+              </li>
+            </ul>
+          </div>
 
-        <li>
-          <a href="pages/downloader.html" target="_blank">
-            <img src="https://img1.picmix.com/output/stamp/thumb/2/4/9/3/2663942_6e48f.png" alt="" draggable="false">
-            <span class="link-label"><strong style="color:var(--th-accent)">Ultimate Downloader Converter</strong></span>
-            <span class="link-note">Download Spotify/YouTube/Soundcloud videos/tracks/playlists/albums/ as ZIP — IN DEV</span>
-          </a>
-        </li>
+          <!-- Tools -->
+          <div class="rights-bar" style="margin-top:5px">Tools &amp; Projects</div>
+          <div class="aero-borders" style="background:#000;">
+            <ul class="contact-links" id="resourcesList">
+              <li>
+                <a href="pages/downloader.html" target="_blank">
+                  <img src="https://img1.picmix.com/output/stamp/thumb/2/4/9/3/2663942_6e48f.png" alt="" draggable="false">
+                  <span class="link-label"><strong style="color:var(--th-accent)">Ultimate Downloader Converter</strong></span>
+                  <span class="link-note">Spotify/YouTube/SoundCloud → ZIP — IN DEV</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" style="pointer-events:none;opacity:.45;">
+                  <img src="https://img1.picmix.com/output/stamp/thumb/0/3/8/1/2841830_50b26.png" alt="" draggable="false">
+                  <span class="link-label">File Dumpster</span>
+                  <span class="link-note">coming soon</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" style="pointer-events:none;opacity:.45;">
+                  <img src="https://img1.picmix.com/output/stamp/thumb/5/5/9/3/2663955_e356e.png" alt="" draggable="false">
+                  <span class="link-label">RabbitHoles / WeirdSites / RandomSites</span>
+                  <span class="link-note">coming soon</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" style="pointer-events:none;opacity:.45;">
+                  <img src="https://img1.picmix.com/output/stamp/thumb/7/0/4/3/2653407_2a8c5.png" alt="" draggable="false">
+                  <span class="link-label">Projects</span>
+                  <span class="link-note">coming soon</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-        <li>
-          <a href="#" style="pointer-events:none;opacity:.45;">
-            <img src="https://img1.picmix.com/output/stamp/thumb/0/3/8/1/2841830_50b26.png" alt="" draggable="false">
-            <span class="link-label">File Dumpster</span>
-            <span class="link-note">coming soon</span>
-          </a>
-        </li>
+      <!-- ══ PREFERENCES (hidden from nav, reachable from resources) ══ -->
+      <div id="pg-preferences" class="page">
+        <h1>Preferences</h1>
+      </div>
 
-        <li>
-          <a href="#" style="pointer-events:none;opacity:.45;">
-            <img src="https://img1.picmix.com/output/stamp/thumb/5/5/9/3/2663955_e356e.png" alt="" draggable="false">
-            <span class="link-label">RabbitHoles/WeirdSites/RandomSites</span>
-            <span class="link-note">coming soon</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="#" style="pointer-events:none;opacity:.45;">
-            <img src="https://img1.picmix.com/output/stamp/thumb/7/0/4/3/2653407_2a8c5.png" alt="" draggable="false">
-            <span class="link-label">Projects</span>
-            <span class="link-note">coming soon</span>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-  </div>
-</div>
-
+      <!-- ══ MUSIC (hidden from nav, used by musicplayer.html and script.js) ══ -->
       <div id="pg-music" class="page">
         <h1>Listen to Music</h1>
         <div class="glass-borders">
@@ -512,10 +529,10 @@ body.adaptive-accent-on .nav-icons {
               <div id="mpPlusPopup" style="display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;background:#0a0202;border:1px solid rgba(180,20,20,.5);min-width:200px;font-family:Tahoma,sans-serif;font-size:12px;padding:4px 0;box-shadow:0 -4px 16px rgba(0,0,0,.8);" onclick="event.stopPropagation()">
                 <div id="mpPopRandom"     style="padding:7px 16px;cursor:pointer;color:#ccc;">Random</div>
                 <div id="mpPopShuffle"    style="padding:7px 16px;cursor:pointer;color:#ccc;">Shuffle: OFF</div>
-                <div style="border-top:1px solid rgba(255 255 255);margin:3px 0;"></div>
+                <div style="border-top:1px solid rgba(255,255,255,.06);margin:3px 0;"></div>
                 <div id="mpPopSortToggle" style="padding:7px 16px;cursor:pointer;color:#ccc;display:flex;justify-content:space-between;align-items:center;">Sort <span style="opacity:.5;font-size:10px;">&#9654;</span></div>
-                <div id="mpSortSubmenu"   style="display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(255 255 255);"></div>
-                <div style="border-top:1px solid rgba(255 255 255);margin:3px 0;"></div>
+                <div id="mpSortSubmenu"   style="display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(80,20,20,.3);"></div>
+                <div style="border-top:1px solid rgba(255,255,255,.06);margin:3px 0;"></div>
                 <a id="mpPopUrl" style="display:block;padding:7px 16px;cursor:pointer;color:#ccc;text-decoration:none;" target="_blank" rel="noopener noreferrer">URL</a>
               </div>
             </div>
@@ -542,6 +559,7 @@ body.adaptive-accent-on .nav-icons {
         </div>
       </div>
 
+      <!-- ══ SKETCHBOOK ══ -->
       <div id="pg-sketchbook" class="page">
         <h1>Sketchbook</h1>
         <div class="glass-borders">
@@ -562,7 +580,7 @@ body.adaptive-accent-on .nav-icons {
             <div style="position:relative;">
               <span id="galPlusBtn" title="Sort Options" style="cursor:pointer;font-size:17px;font-weight:bold;color:rgba(200,200,200,.55);padding:2px 6px;user-select:none;line-height:1;display:inline-block;">+</span>
               <div id="galPlusPopup" style="display:none;position:absolute;right:0;top:100%;z-index:300;background:#050505;border:1px solid rgba(180,20,20,.4);min-width:180px;font-family:Tahoma,sans-serif;font-size:12px;padding:4px 0;">
-                <div style="padding:4px 14px 2px;color:rgba(255 254 254);font-size:10px;letter-spacing:1px;text-transform:uppercase;">Sort</div>
+                <div style="padding:4px 14px 2px;color:rgba(255,254,254);font-size:10px;letter-spacing:1px;text-transform:uppercase;">Sort</div>
                 <div id="galSortItems"></div>
               </div>
             </div>
@@ -573,6 +591,7 @@ body.adaptive-accent-on .nav-icons {
         </div>
       </div>
 
+      <!-- ══ VIDEOS ══ -->
       <div id="pg-videos" class="page">
         <h1>Video Player</h1>
         <div class="glass-borders">
@@ -609,19 +628,18 @@ body.adaptive-accent-on .nav-icons {
         <div class="glass-borders">
           <h2>Copyright Notice</h2>
           <div class="copyright-notice aero-borders">
-    
             <p>All content on this website is for archiving, educational, or informational purposes and is not for profit.
             We believe its use qualifies as fair use. If you own any content here and would like it removed or properly credited,
             please contact me at
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank">
             trenchgun1337@gmail.com
             </a>
-            and I will take action as soon as possible to fulfill your request.
-            </p>
+            and I will take action as soon as possible to fulfill your request.</p>
           </div>
         </div>
       </div>
 
+      <!-- ══ COMMUNITY ══ -->
       <div id="pg-community" class="page">
         <h1>Community</h1>
         <div class="comm-tab-bar">
@@ -672,52 +690,13 @@ body.adaptive-accent-on .nav-icons {
         </div>
       </div>
 
+      <!-- ══ CONTACT (stub — real page is pages/contact.html) ══ -->
       <div id="pg-contact" class="page">
-        <h1>Contact Me</h1>
+        <h1>Contact</h1>
         <div class="glass-borders">
-          <div class="aero-borders" style="overflow:hidden">
-            <img src="assets/images/CONTACTBANNER.png"
-                 alt="Contact Banner" class="contact-banner" draggable="false"
-                 style="height:120px;">
-          </div>
-          <div class="styled-containers-headers aero-borders">
-            <p>Feel free to reach out through any of my social links below.</p>
-          </div>
-          <div class="rights-bar" style="margin-top:5px">Social</div>
-          <div class="aero-borders" style="background:#000">
-            <ul class="contact-links">
-              <li><a href="https://www.youtube.com/@trenchgun1337" target="_blank">
-                  <img src="assets/images/YOUTUBEAERO.png" alt="" draggable="false">
-                  <span class="link-label">YouTube</span></a></li>
-              <li><a href="https://br.pinterest.com/fxckmazl/" target="_blank">
-                  <img src="assets/images/PINTERESTAERO.png" alt="" draggable="false">
-                  <span class="link-label">Pinterest</span></a></li>
-              <li><a href="https://steamcommunity.com/id/fxckmazl" target="_blank">
-                  <img src="assets/images/STEAMAERO.png" alt="" draggable="false">
-                  <span class="link-label">Steam</span></a></li>
-              <li><a href="https://www.tiktok.com/@trenchgun1337" target="_blank">
-                  <img src="assets/images/TIKTOKAERO.png" alt="" draggable="false">
-                  <span class="link-label">TikTok</span></a></li>
-              <li><a href="https://x.com/trenchgun1337" target="_blank">
-                  <img src="assets/images/TWITTERAERO.png" alt="" draggable="false">
-                  <span class="link-label">Twitter / X</span></a></li>
-              <li><a href="https://www.instagram.com/trenchgun1337" target="_blank">
-                  <img src="assets/images/INSTAGRAM%20AERO.png" alt="" draggable="false">
-                  <span class="link-label">Instagram</span></a></li>
-              <li><a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank">
-                  <img src="assets/images/SPOTIFYAERO.jpeg" alt="" draggable="false">
-                  <span class="link-label">Spotify</span></a></li>
-              <li><a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank">
-                  <img src="assets/images/ROBLOXAERO.png" alt="" draggable="false">
-                  <span class="link-label">Roblox</span></a></li>
-              <li><a href="https://soundcloud.com/trenchgun1337" target="_blank">
-                  <img src="assets/images/SOUNDCLOUDAERO.png" alt="" draggable="false">
-                  <span class="link-label">SoundCloud</span></a></li>
-              <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank">
-                  <img src="assets/images/GMAILAERO.png" alt="" draggable="false">
-                  <span class="link-label">Email</span>
-                  <span class="link-note">(faster response)</span></a></li>
-            </ul>
+          <div class="aero-borders styled-containers" style="text-align:center;padding:24px 18px;">
+            <p style="margin-bottom:14px;font-size:13px;">You're being redirected to the Contact page&hellip;</p>
+            <a href="pages/contact.html" class="comm-ok-btn">Go to Contact</a>
           </div>
         </div>
       </div>
@@ -726,6 +705,7 @@ body.adaptive-accent-on .nav-icons {
   </div>
 </div>
 
+<!-- Rika flash overlay -->
 <div id="rikaTransformFlash" style="display:none;position:fixed;bottom:0;right:-60px;width:420px;height:560px;background-image:url('https://img1.picmix.com/output/stamp/normal/2/4/1/7/2107142_5ce19.gif');background-size:contain;background-repeat:no-repeat;background-position:bottom right;z-index:10000;pointer-events:none;"></div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
@@ -733,21 +713,20 @@ body.adaptive-accent-on .nav-icons {
 <script src="scripts/js/video.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script src="scripts/js/script.js"></script>
+
 <script id="watanagashi-fixes">
 (function () {
   'use strict';
-
   function _applyFixes() {
     function _fixText(el) {
       if (!el) return;
       var ELLIPSIS_BAD = '\u00e2\u20ac\u00a6';
-      if (el.textContent && el.textContent.indexOf(ELLIPSIS_BAD) !== -1) {
+      if (el.textContent && el.textContent.indexOf(ELLIPSIS_BAD) !== -1)
         el.textContent = el.textContent.split(ELLIPSIS_BAD).join('\u2026');
-      }
     }
     var playlist = document.getElementById('playlistLeft');
     if (playlist) {
-      var textObs = new MutationObserver(function (muts) {
+      new MutationObserver(function (muts) {
         muts.forEach(function (m) {
           m.addedNodes.forEach(function (node) {
             if (node.nodeType === 3) _fixText(node.parentElement);
@@ -757,24 +736,19 @@ body.adaptive-accent-on .nav-icons {
             }
           });
         });
-      });
-      textObs.observe(playlist, { childList: true, subtree: true });
+      }).observe(playlist, { childList: true, subtree: true });
     }
   }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', _applyFixes);
-  } else {
-    _applyFixes();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', _applyFixes);
+  else _applyFixes();
   setTimeout(_applyFixes, 800);
-
 })();
-/* Hook for gallery.js to call after rendering */
+
 window._onGalleryRendered = function(count) {
   if (typeof NavBadges !== 'undefined') NavBadges.checkGallery(count);
 };
 </script>
+
 <script src="scripts/js/gallery.js"></script>
 <script src="scripts/js/paint.js"></script>
 <script src="scripts/js/themes.js"></script>
@@ -808,9 +782,18 @@ function switchCommTab(tab) {
   document.getElementById('commPanelBlog').style.display = tab === 'blog' ? 'block' : 'none';
   document.getElementById('commTabChat').classList.toggle('active', tab === 'chat');
   document.getElementById('commTabBlog').classList.toggle('active', tab === 'blog');
-if (tab === 'chat') setTimeout(_loadChatango, 100);}
+  if (tab === 'chat') setTimeout(_loadChatango, 100);
+}
 
 document.addEventListener('DOMContentLoaded', function () {
+  /* Redirect contact nav clicks to the standalone page */
+  var contactBtn = document.getElementById('nbtn-contact');
+  if (contactBtn) {
+    contactBtn.addEventListener('click', function (e) {
+      /* Let the href handle it naturally — no override needed */
+    });
+  }
+
   var _origGoto = window.gotoPage;
   window.gotoPage = function (name) {
     if (_origGoto) _origGoto(name);
@@ -829,7 +812,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
- 
+<!-- ── Sounds button at bottom (centered) ── -->
+<div id="bottomUtil">
+  <button class="bottom-btn wa-sound-toggle" onclick="toggleSound()">Sounds: On</button>
+</div>
+
+<!-- ── Shared sounds system (localStorage, persists across all pages) ── -->
+<script src="scripts/js/sounds.js"></script>
 
 </body>
 </html>
