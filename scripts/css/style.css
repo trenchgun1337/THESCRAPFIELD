@@ -1837,24 +1837,7 @@ footer {
   scrollbar-width: none !important;
 }
 
-/* Site title: first flex item via ::before */
-[data-theme="next-stage"] #navigationMenu::before {
-  content: 'Watanagashi Archive' !important;
-  display: flex !important;
-  align-items: center !important;
-  flex-shrink: 0 !important;
-  padding: 0 14px 0 10px !important;
-  font-family: Tahoma, 'Segoe UI', sans-serif !important;
-  font-size: 12.5px !important;
-  font-weight: 400 !important;
-  color: var(--th-bar-text) !important;
-  text-shadow: var(--th-bar-tshadow) !important;
-  letter-spacing: .4px !important;
-  white-space: nowrap !important;
-  border-right: 1px solid rgba(160,160,160,.28) !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
+
 
 /* Gloss shine overlay — ::after so ::before stays as the title */
 [data-theme="next-stage"] #navigationMenu::after {
