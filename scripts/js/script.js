@@ -115,10 +115,10 @@ function applyDarkThemeBg() {
   if (old) old.remove();
   const s = document.createElement('style');
   s.id = '_darkThemeBgStyle';
-  s.textContent = `
+  s.textContent = ` 
     body {
       background-image: url('${BG_DARK_URL}') !important;
-      background-size: cover !important;
+      background-size: contain !important;
       background-attachment: fixed !important;
       background-repeat: no-repeat !important;
       background-position: center center !important;
