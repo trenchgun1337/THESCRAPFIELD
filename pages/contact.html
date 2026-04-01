@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — Watanagashi Archive</title>
 <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
-<link rel="stylesheet" href="https://unpkg.com/7.css">
 <style>
 /* ── Reset ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -52,7 +51,7 @@ html {
 body {
   font-family: Tahoma, 'Segoe UI', Geneva, Verdana, sans-serif;
   font-size: 12px;
-  background: #000 url('https://static.myfigurecollection.net/upload/pictures/2022/10/24/3309088.jpeg') center/contain fixed no-repeat;
+  background: #000 url('../assets/images/CONTACTBANNER.png') center top / cover fixed no-repeat;
   color: var(--text);
   min-height: 100vh;
   padding: 12px 6px 30px;
@@ -75,7 +74,7 @@ strong { color: var(--accent); font-weight: 400; }
   flex-direction: column;
 }
 
-/* ── Corner logo (top-right, links to index introduction) ── */
+/* ── Corner logo ── */
 #cornerLogo {
   position: fixed;
   top: 10px;
@@ -217,15 +216,15 @@ h2::before {
   color: var(--accent);
   text-decoration: none;
 }
-.contact-links a .link-icon {
+.contact-links a img.link-icon {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
+  object-fit: contain;
   flex-shrink: 0;
   pointer-events: none;
   filter: none !important;
   -webkit-filter: none !important;
+  border-radius: 4px;
 }
 .contact-links a .link-label {
   flex: 1;
@@ -240,28 +239,17 @@ h2::before {
   color: #888;
 }
 
-/* ── Platform icon fallback (colored SVG badge) ── */
-.icon-badge {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -.5px;
-  text-shadow: 0 1px 2px rgba(0,0,0,.60);
+/* ── Section divider label ── */
+.contact-section-label {
+  font-size: 10px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 6px 14px 3px;
+  background: rgba(10,10,10,.60);
+  border-bottom: 1px solid rgba(40,40,40,.70);
+  font-family: Tahoma, sans-serif;
 }
-.icon-badge.twitter  { background: #1d9bf0; color: #fff; }
-.icon-badge.discord  { background: #5865f2; color: #fff; }
-.icon-badge.lastfm   { background: #d51007; color: #fff; }
-.icon-badge.mfc      { background: #e3a000; color: #fff; }
-.icon-badge.email    { background: #555; color: #ddd; }
-.icon-badge.youtube  { background: #ff0000; color: #fff; }
-.icon-badge.github   { background: #24292e; color: #fff; border: 1px solid rgba(255,255,255,.18); }
-.icon-badge.anilist  { background: #02a9ff; color: #fff; }
 
 /* ── Note / info bar ── */
 .note {
@@ -276,19 +264,7 @@ h2::before {
   text-align: center;
 }
 
-/* ── Divider section label ── */
-.contact-section-label {
-  font-size: 10px;
-  color: #555;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  padding: 6px 14px 3px;
-  background: rgba(10,10,10,.60);
-  border-bottom: 1px solid rgba(40,40,40,.70);
-  font-family: Tahoma, sans-serif;
-}
-
-/* ── Sound toggle — fixed bottom left ── */
+/* ── Sound toggle ── */
 #soundToggle {
   position: fixed;
   bottom: 8px;
@@ -314,9 +290,9 @@ h2::before {
   body {
     padding: 8px 4px 24px;
     font-size: 13px;
-    background-size: contain;
+    background-size: cover;
     background-attachment: scroll;
-    background-position: center center;
+    background-position: center top;
   }
   #pageWrap { width: 100%; }
   .aero-bar { font-size: 13px; }
@@ -325,8 +301,7 @@ h2::before {
   h2 { font-size: 12.5px; }
   .aero-pad { padding: 8px; }
   .contact-links a { padding: 10px 10px; gap: 10px; font-size: 12px; }
-  .contact-links a .link-icon,
-  .icon-badge { width: 32px; height: 32px; }
+  .contact-links a img.link-icon { width: 30px; height: 30px; }
   #cornerLogo img { height: 28px; }
   .glass-box { padding: 4px; }
 }
@@ -351,67 +326,144 @@ h2::before {
       <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#8249;"
         onerror="this.outerHTML='<span style=&quot;color:#bbb;font-size:22px;line-height:1;z-index:1;&quot;>&#8249;</span>'">
     </a>
-   <div id="pg-contact" class="page">
-        <h1>Contact Me</h1>
-        <div class="glass-borders">
-          <div class="aero-borders" style="overflow:hidden">
-            <img src="assets/images/CONTACTBANNER.png"
-                 alt="Contact Banner" class="contact-banner" draggable="false"
-                 style="height:120px;">
-          </div>
-          <div class="styled-containers-headers aero-borders">
-            <p>Feel free to reach out through any of my social links below.</p>
-          </div>
-          <div class="rights-bar" style="margin-top:5px">Social</div>
-          <div class="aero-borders" style="background:#000">
-            <ul class="contact-links">
-              <li><a href="https://www.youtube.com/@trenchgun1337" target="_blank">
-                  <img src="assets/images/YOUTUBEAERO.png" alt="" draggable="false">
-                  <span class="link-label">YouTube</span></a></li>
-              <li><a href="https://br.pinterest.com/fxckmazl/" target="_blank">
-                  <img src="assets/images/PINTERESTAERO.png" alt="" draggable="false">
-                  <span class="link-label">Pinterest</span></a></li>
-              <li><a href="https://steamcommunity.com/id/fxckmazl" target="_blank">
-                  <img src="assets/images/STEAMAERO.png" alt="" draggable="false">
-                  <span class="link-label">Steam</span></a></li>
-              <li><a href="https://www.tiktok.com/@trenchgun1337" target="_blank">
-                  <img src="assets/images/TIKTOKAERO.png" alt="" draggable="false">
-                  <span class="link-label">TikTok</span></a></li>
-              <li><a href="https://x.com/trenchgun1337" target="_blank">
-                  <img src="assets/images/TWITTERAERO.png" alt="" draggable="false">
-                  <span class="link-label">Twitter / X</span></a></li>
-              <li><a href="https://www.instagram.com/trenchgun1337" target="_blank">
-                  <img src="assets/images/INSTAGRAM%20AERO.png" alt="" draggable="false">
-                  <span class="link-label">Instagram</span></a></li>
-              <li><a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank">
-                  <img src="assets/images/SPOTIFYAERO.jpeg" alt="" draggable="false">
-                  <span class="link-label">Spotify</span></a></li>
-              <li><a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank">
-                  <img src="assets/images/ROBLOXAERO.png" alt="" draggable="false">
-                  <span class="link-label">Roblox</span></a></li>
-              <li><a href="https://soundcloud.com/trenchgun1337" target="_blank">
-                  <img src="assets/images/SOUNDCLOUDAERO.png" alt="" draggable="false">
-                  <span class="link-label">SoundCloud</span></a></li>
-              <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank">
-                  <img src="assets/images/GMAILAERO.png" alt="" draggable="false">
-                  <span class="link-label">Email</span>
-                  <span class="link-note">(faster response)</span></a></li>
-            </ul>
-          </div>
+    <span class="bar-title">Contact Me</span>
+  </div>
+
+  <!-- Intro blurb -->
+  <div class="glass-box">
+    <div class="aero-inner">
+      <div class="aero-pad">
+        <p>Feel free to reach out through any of my social links below.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main contact card -->
+  <div class="glass-box">
+    <h2>Get in Touch</h2>
+    <div class="aero-inner">
+
+      <!-- Social -->
+      <div class="contact-section-label">Social &amp; Video</div>
+      <ul class="contact-links">
+
+        <li>
+          <a href="https://www.youtube.com/@trenchgun1337" target="_blank" rel="noopener">
+            <img class="link-icon" src="../assets/images/YOUTUBEAERO.png" alt="YouTube"
+              onerror="this.style.display='none'">
+            <span class="link-label">YouTube</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://www.tiktok.com/@trenchgun1337" target="_blank" rel="noopener">
+            <img class="link-icon" src="../assets/images/TIKTOKAERO.png" alt="TikTok"
+              onerror="this.style.display='none'">
+            <span class="link-label">TikTok</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://x.com/trenchgun1337" target="_blank" rel="noopener">
+            <img class="link-icon" src="../assets/images/TWITTERAERO.png" alt="Twitter / X"
+              onerror="this.style.display='none'">
+            <span class="link-label">Twitter / X</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://www.instagram.com/trenchgun1337" target="_blank" rel="noopener">
+            <img class="link-icon" src="../assets/images/INSTAGRAM%20AERO.png" alt="Instagram"
+              onerror="this.style.display='none'">
+            <span class="link-label">Instagram</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://br.pinterest.com/fxckmazl/" target="_blank" rel="noopener">
+            <img class="link-icon" src="../assets/images/PINTERESTAERO.png" alt="Pinterest"
+              onerror="this.style.display='none'">
+            <span class="link-label">Pinterest</span>
+          </a>
+        </li>
+
+      </ul>
+
+      <!-- Music -->
+      <div class="contact-section-label">Music</div>
+      <ul class="contact-links">
+
+        <li>
+          <a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank" rel="noopener">
+            <img class="link-icon" src="../assets/images/SPOTIFYAERO.jpeg" alt="Spotify"
+              onerror="this.style.display='none'">
+            <span class="link-label">Spotify</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://soundcloud.com/trenchgun1337" target="_blank" rel="noopener">
+            <img class="link-icon" src="../assets/images/SOUNDCLOUDAERO.png" alt="SoundCloud"
+              onerror="this.style.display='none'">
+            <span class="link-label">SoundCloud</span>
+          </a>
+        </li>
+
+      </ul>
+
+      <!-- Gaming -->
+      <div class="contact-section-label">Gaming</div>
+      <ul class="contact-links">
+
+        <li>
+          <a href="https://steamcommunity.com/id/fxckmazl" target="_blank" rel="noopener">
+            <img class="link-icon" src="../assets/images/STEAMAERO.png" alt="Steam"
+              onerror="this.style.display='none'">
+            <span class="link-label">Steam</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank" rel="noopener">
+            <img class="link-icon" src="../assets/images/ROBLOXAERO.png" alt="Roblox"
+              onerror="this.style.display='none'">
+            <span class="link-label">Roblox</span>
+          </a>
+        </li>
+
+      </ul>
+
+      <!-- Other / Email -->
+      <div class="contact-section-label">Other</div>
+      <ul class="contact-links">
+
+        <li>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank" rel="noopener">
+            <img class="link-icon" src="../assets/images/GMAILAERO.png" alt="Email"
+              onerror="this.style.display='none'">
+            <span class="link-label">Email</span>
+            <span class="link-note">(faster response)</span>
+          </a>
+        </li>
+
+      </ul>
+
+      <div class="aero-pad" style="padding-top:6px;">
+        <div class="note">
+          All external links open in a new tab.<br>
+          All content on this website is for archiving, educational, or informational purposes and is not for profit.<br>
+          If you own any content here and would like it removed or credited, please reach out via email.
         </div>
       </div>
 
-    </main>
+    </div>
   </div>
-</div>
 
 </div><!-- /#pageWrap -->
 
-<!-- Sounds toggle — identical to downloader.html -->
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 
 <script>
-/* ── Sounds (identical to downloader.html) ── */
 const SOUND_BASE = '../assets/audio/';
 const SOUNDS = {
   start:   SOUND_BASE + 'sitestart.mp3',
@@ -441,9 +493,9 @@ function toggleSound() {
   const btn = document.getElementById('soundToggle');
   if (btn) { btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off'; btn.classList.toggle('off', !_soundsOn); }
   if (_soundsOn) playSound('button');
+  sessionStorage.setItem('_soundsOn', String(_soundsOn));
 }
 
-/* Sync sound state with sessionStorage (shared across pages) */
 document.addEventListener('DOMContentLoaded', () => {
   const stored = sessionStorage.getItem('_soundsOn');
   if (stored === 'false') {
@@ -457,17 +509,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* Persist toggle state */
-const _origToggle = toggleSound;
-window.toggleSound = function() {
-  _origToggle();
-  sessionStorage.setItem('_soundsOn', String(_soundsOn));
-};
-
-/* Preload on first interaction */
 document.addEventListener('pointerdown', ()=>Object.keys(SOUNDS).forEach(k=>_getAudio(k)), {once:true,passive:true});
 
-/* Hover sound throttle: 400ms */
 let _hoverThrottle = 0, _hoverTimer = null;
 function _isInteractive(el) {
   if (!el||el===document.body||el===document.documentElement) return false;
