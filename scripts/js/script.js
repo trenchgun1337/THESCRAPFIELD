@@ -5,7 +5,7 @@
 const FALLBACK_BG     = 'assets/images/MUSICPLAYERPLAYLISTDEFAULTBACKGROUND.png';
 const INTRO_VIDEO_URL = 'assets/video/USODA!.mp4';
 const NOT_FOUND_URL   = 'not_found.html';
-const BG_DARK_URL     = 'assets/images/whitebg.jpg';
+const BG_DARK_URL     = 'assets/images/whitebg.jpeg';
 const LIKE_ICON_URL   = 'https://img1.picmix.com/output/stamp/normal/1/7/9/0/2890971_aea86.png';
 
 const ICON_LIKE    = 'https://cdn-icons-png.flaticon.com/128/739/739231.png';
