@@ -1792,6 +1792,7 @@ footer {
   align-self: center !important;
   width: 800px !important;
   max-width: 100% !important;
+  padding-top: 325px !important;
 }
 
 /* Hide pill header — identity rebuilt inside nav bar */
