@@ -25,7 +25,7 @@
    LOGO — plain <img>, fixed top, border-radius bottom only
    ══════════════════════════════════════════════════ */
 #siteLogoTop {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
@@ -37,7 +37,9 @@
   border-radius: 0 0 18px 18px;
   z-index: 9990;
   pointer-events: none;
-  filter: drop-shadow(0 2px 12px rgba(0,0,0,.72));
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+
   display: block;
 }
 
