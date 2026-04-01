@@ -19,11 +19,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,.70);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
 }
+  
 #siteHeader img {
   max-height: 302px;
   max-width: 1240px;
@@ -326,8 +323,10 @@ body.adaptive-accent-on .nav-icons {
 <body>
 
 <!-- ── Fixed logo header ── -->
+<header id="siteHeader">
   <img src="assets/images/watanagashilogo.jpg" alt="Watanagashi Archive"
     onerror="this.style.display='none'">
+</header>
 
 <div id="websiteContainer">
   <div id="navAndContentContainer">
