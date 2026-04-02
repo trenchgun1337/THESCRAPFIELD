@@ -561,9 +561,12 @@ p + p { margin-top: 5px; }
 .email-contact-link       { cursor: pointer; color: var(--th-accent); }
 .email-contact-link:hover { text-decoration: underline; }
 
-#introTitle .hl {
+h4 {
+  font-size: 13px; font-weight: 400;
   color:#cc1a1a;
+  font-family: sans-serif;
 }
+
 /* ================================================================
    LAYOUT CONTAINER
    ================================================================ */
