@@ -642,6 +642,69 @@ body.adaptive-accent-on .nav-icons {
   .nav-link { font-size: 10px !important; min-width: 58px !important; padding: 4px 3px !important; }
   .nav-icons { display: none !important; }
 }
+
+/* ─── Bars com fundo preto permanente (sem gradiente Aero) ─── */
+h1, h2, h3, .rights-bar {
+  background: #000 !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #e8e8e8 !important;
+  text-shadow: none !important;
+}
+
+/* ─── Pseudo-elementos de brilho desativados ─── */
+h1::before, h2::before, h3::before,
+.rights-bar::before,
+.mp-header-bar::before,
+.mp-controls-row::before,
+.vi-header::before,
+.vi-bottom::before,
+#mainHeader::before,
+#mainHeader::after {
+  display: none !important;
+}
+
+/* ─── Nav links flat preto ─── */
+.nav-link {
+  background: rgba(0,0,0,.72) !important;
+  border: 1px solid rgba(60,60,60,.60) !important;
+  box-shadow: none !important;
+}
+.nav-link::before { display: none !important; }
+.nav-link:hover   { background: rgba(10,10,10,.95) !important; }
+
+/* ─── Contact / resources: pré-selecionados ─── */
+.contact-links a,
+.contact-links li a {
+  background: rgba(0,0,0,.80) !important;
+  color: #e8e8e8 !important;
+}
+.contact-links a:hover {
+  background: rgba(20,20,20,.95) !important;
+  color: var(--th-accent) !important;
+}
+
+/* ─── Glass-borders flat, sem texture ─── */
+.glass-borders {
+  background: rgba(0,0,0,.55) !important;
+  box-shadow: none !important;
+}
+.aero-glass-overlay::after { display: none !important; }
+
+/* ─── Player / video bars flat ─── */
+.mp-controls-row,
+.mp-header-bar,
+.mp-status-bar,
+.mp-progress-row,
+.mp-bottom-row,
+.vi-header,
+.vi-bottom {
+  background: #0a0a0a !important;
+  box-shadow: none !important;
+  border-color: rgba(50,50,50,.70) !important;
+}
+
+
 </style>
 </head>
 <body>
@@ -675,7 +738,7 @@ body.adaptive-accent-on .nav-icons {
 
       <!-- ══ INTRODUCTION ══ -->
       <div id="pg-introduction" class="page">
-       <h1 id="introTitle">Introduction</h1>
+        <h1>Introduction</h1>
         <div class="glass-borders">
           <div class="aero-borders aero-glass-overlay" style="overflow:hidden">
             <img id="introBanner" src="assets/images/bannerintroduction.jpg" alt="Banner" draggable="false">
