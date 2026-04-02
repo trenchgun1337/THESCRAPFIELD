@@ -782,7 +782,7 @@ p + p { margin-top: 5px; }
     rgba(5,5,5,1)        54%,
     rgba(28,28,28,.95)  100%
   ) !important;
-  color: #aaa !important;
+  color: #1e1e1e !important;
   border-color: rgba(80,80,80,.60) !important;
   border-top-color: rgba(160,160,160,.20) !important;
 }
