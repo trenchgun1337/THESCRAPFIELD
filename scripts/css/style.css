@@ -2073,7 +2073,7 @@ footer {
 
 /* Glass boxes: match downloader.html exactly */
 [data-theme="next-stage"] .glass-borders {
-  background-image: linear-gradient(rgba(255,255,255,.12), rgba(0,0,0,1)) !important;
+  background-image: linear-gradient(rgb(255 255 255 / 68%), rgb(255 255 255)) !important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.07),
     inset 0 0 10px rgba(200,200,200,.04),
@@ -2085,12 +2085,12 @@ footer {
 
 [data-theme="next-stage"] .aero-borders {
   border: 1px solid var(--th-aero-border) !important;
-  background: rgba(6,6,6,.92) !important;
+  background: linear-gradient(rgb(255 255 255 / 68%), rgb(255 255 255)) !important;
 }
 
 [data-theme="next-stage"] .styled-containers,
 [data-theme="next-stage"] .styled-containers-headers {
-  background: rgba(6,6,6,.92) !important;
+  background: linear-gradient(rgb(255 255 255 / 68%), rgb(255 255 255)) !important;
 }
 
 /* ── Responsive: next-stage ── */
