@@ -643,57 +643,246 @@ body.adaptive-accent-on .nav-icons {
   .nav-icons { display: none !important; }
 }
 
-/* ─── Bars com fundo preto permanente (sem gradiente Aero) ─── */
-h1, h2, h3, .rights-bar {
+/* ══════════════════════════════════════════════════
+   WATANAGASHI PATCH — light site, black page bg,
+   pre-selected nav links, dotted separators
+   ══════════════════════════════════════════════════ */
+
+/* ── Logo: fixed top, centralizada, abaixo tudo ── */
+#siteLogoTop {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 302px;
+  max-width: 800px;
+  width: 100%;
+  object-fit: contain;
+  object-position: top center;
+  border-radius: 0 0 18px 18px;
+  z-index: 9990;
+  pointer-events: none;
+  display: block;
+}
+
+/* ── Container relativo pra ::before funcionar ── */
+#websiteContainer {
+  position: relative;
+  margin: 0 auto;
+}
+
+/* Linha dotted embaixo da logo, contida no container */
+#websiteContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 302px;
+  border-bottom: 1px dotted rgba(0,0,0,0.30);
+  border-radius: 0 0 18px 18px;
+  pointer-events: none;
+  z-index: 9989;
+}
+
+/* Padding pra empurrar conteúdo abaixo da logo */
+body { padding-top: 310px !important; }
+
+/* ── Layout: centralizado ── */
+body {
+  justify-content: center !important;
+  align-items: flex-start !important;
+  background-color: #b8b8b8 !important;
+}
+
+/* ── Fundo do mainContent = PRETO ── */
+#mainContent {
   background: #000 !important;
-  border: none !important;
-  box-shadow: none !important;
+  height: auto !important;
+  min-height: 500px !important;
+  overflow-y: visible !important;
   color: #e8e8e8 !important;
+  border: none !important;
+}
+
+/* ── Texto geral dentro do main vira claro ── */
+#mainContent p,
+#mainContent .section-desc,
+#mainContent .empty-msg,
+#mainContent .vi-label,
+#mainContent .vi-val-date,
+#mainContent .vi-description { color: #aaa !important; }
+
+#mainContent .gi-card-title,
+#mainContent .vi-val-title,
+#mainContent .vi-title,
+#mainContent .pl-track-list li,
+#mainContent .pl-track-list li a { color: #ddd !important; }
+
+/* ── Glass borders: transparente com dotted ── */
+.glass-borders {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 1px dotted rgba(255,255,255,0.22) !important;
+  padding: 5px !important;
+  margin: 7px !important;
+}
+
+/* Separadores entre seções */
+.glass-borders + .glass-borders {
+  border-top: 1px dotted rgba(255,255,255,0.18) !important;
+}
+
+.aero-borders {
+  border: 1px dotted rgba(255,255,255,0.15) !important;
+}
+
+/* Textura glass overlay — removida */
+.aero-glass-overlay::after { display: none !important; }
+
+/* ── Containers internos: semi-transparente escuro ── */
+.styled-containers,
+.styled-containers-headers,
+.rights-content {
+  background: rgba(10,10,10,0.70) !important;
+  box-shadow: none !important;
+}
+
+/* ── Headers h1/h2/h3 e .rights-bar: branco c/ dotted bottom ── */
+h1, h2, h3, .rights-bar {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px dotted rgba(255,255,255,0.25) !important;
+  box-shadow: none !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  font-weight: 400 !important;
+}
+h1::before, h2::before, h3::before, .rights-bar::before { display: none !important; }
+
+/* ── NAV: links parecem PRÉ-SELECIONADOS ── */
+#navigationMenu {
+  background: rgba(255,255,255,0.96) !important;
+  border: 1px dotted rgba(0,0,0,0.25) !important;
+  border-bottom-left-radius: 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  padding: 6px 5px 12px !important;
+}
+
+.nav-categories {
+  background: transparent !important;
+  border: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  gap: 3px !important;
+  padding: 2px 0 !important;
+  margin-bottom: 4px !important;
+}
+
+.navbar-titles {
+  background: rgba(0,0,0,0.08) !important;
+  border: none !important;
+  border-bottom: 1px dotted rgba(0,0,0,0.20) !important;
+  color: #555 !important;
+  font-size: 10px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  padding: 3px 6px !important;
+  margin-bottom: 4px !important;
   text-shadow: none !important;
 }
 
-/* ─── Pseudo-elementos de brilho desativados ─── */
-h1::before, h2::before, h3::before,
-.rights-bar::before,
-.mp-header-bar::before,
-.mp-controls-row::before,
-.vi-header::before,
-.vi-bottom::before,
-#mainHeader::before,
-#mainHeader::after {
-  display: none !important;
-}
-
-/* ─── Nav links flat preto ─── */
+/* Nav link: preto permanente = "selecionado" */
 .nav-link {
-  background: rgba(0,0,0,.72) !important;
-  border: 1px solid rgba(60,60,60,.60) !important;
+  background: #111 !important;
+  border: 1px solid #000 !important;
+  border-radius: 3px !important;
+  color: #e8e8e8 !important;
   box-shadow: none !important;
+  padding: 4px 6px !important;
+  margin: 0 0 2px 0 !important;
+  width: 100% !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  font-size: 11px !important;
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
 }
 .nav-link::before { display: none !important; }
-.nav-link:hover   { background: rgba(10,10,10,.95) !important; }
 
-/* ─── Contact / resources: pré-selecionados ─── */
-.contact-links a,
-.contact-links li a {
-  background: rgba(0,0,0,.80) !important;
-  color: #e8e8e8 !important;
-}
-.contact-links a:hover {
-  background: rgba(20,20,20,.95) !important;
-  color: var(--th-accent) !important;
-}
-
-/* ─── Glass-borders flat, sem texture ─── */
-.glass-borders {
-  background: rgba(0,0,0,.55) !important;
+.nav-link:hover {
+  background: #222 !important;
+  color: #fff !important;
+  text-decoration: underline !important;
+  margin: 0 0 2px 0 !important;
+  width: 100% !important;
+  padding: 4px 6px !important;
   box-shadow: none !important;
 }
-.aero-glass-overlay::after { display: none !important; }
 
-/* ─── Player / video bars flat ─── */
-.mp-controls-row,
+.nav-link.active {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #444 !important;
+  box-shadow: none !important;
+}
+
+.nav-icons {
+  filter: brightness(2) !important;
+  height: 14px !important;
+  margin: 0 5px 0 2px !important;
+}
+
+/* ── Header principal: branco limpo ── */
+#mainHeader {
+  background: rgba(255,255,255,0.97) !important;
+  border: 1px solid rgba(0,0,0,0.12) !important;
+  border-bottom: 1px dotted rgba(0,0,0,0.20) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  display: none !important; /* logo substitui */
+}
+
+/* ── Contact/Resource links: preto pré-selecionado ── */
+.contact-links { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.contact-links li {
+  border-bottom: 1px dotted rgba(255,255,255,0.12) !important;
+}
+.contact-links li:last-child { border-bottom: none !important; }
+.contact-links a {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  background: #0a0a0a !important;
+  color: #ddd !important;
+  text-decoration: none !important;
+  font-family: Tahoma, sans-serif !important;
+  font-size: 12.5px !important;
+}
+.contact-links a:hover {
+  background: #1a1a1a !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+.contact-links .link-note { color: #777 !important; font-size: 11px !important; }
+.contact-links a strong { color: #e8e8e8 !important; }
+.contact-links a img {
+  filter: none !important;
+  width: 28px !important; height: 28px !important;
+  border-radius: 4px !important;
+  object-fit: cover !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── Player bars: preto flat ── */
 .mp-header-bar,
+.mp-controls-row,
 .mp-status-bar,
 .mp-progress-row,
 .mp-bottom-row,
@@ -701,9 +890,160 @@ h1::before, h2::before, h3::before,
 .vi-bottom {
   background: #0a0a0a !important;
   box-shadow: none !important;
-  border-color: rgba(50,50,50,.70) !important;
+  border-color: rgba(60,60,60,.70) !important;
+  color: #ddd !important;
+}
+.mp-header-bar::before,
+.mp-controls-row::before,
+.vi-header::before,
+.vi-bottom::before { display: none !important; }
+
+#musicBackground { background: #050505 !important; }
+#musicPlayerPlaylist { background: #050505 !important; }
+
+.mp-progress-track { background: #222 !important; border-color: rgba(80,80,80,.50) !important; }
+.mp-progress-fill  { background: #888 !important; }
+.mp-vol-wrap       { background: #222 !important; border-color: rgba(80,80,80,.50) !important; }
+.mp-vol-fill       { background: #888 !important; }
+
+.pl-group-header {
+  background: #111 !important;
+  border-bottom: 1px dotted rgba(255,255,255,.15) !important;
+  border-top: none !important;
+  color: #aaa !important;
+}
+.pl-separator {
+  background: linear-gradient(to right, transparent, rgba(255,255,255,.15), transparent) !important;
 }
 
+/* ── Comm tabs: preto ── */
+.comm-tab-bar {
+  background: #000 !important;
+  border-bottom: 1px dotted rgba(255,255,255,.25) !important;
+}
+.comm-tab {
+  color: #888 !important;
+  border: 1px dotted rgba(255,255,255,.20) !important;
+  border-bottom: none !important;
+  background: #111 !important;
+}
+.comm-tab:hover { color: #ddd !important; background: #1a1a1a !important; }
+.comm-tab.active,
+#commTabChat.active,
+#commTabBlog.active,
+button.comm-tab.active {
+  background: #000 !important;
+  border-color: rgba(255,255,255,.30) !important;
+  color: #fff !important;
+}
+
+.comm-ok-btn, a.comm-ok-btn {
+  background: #111 !important;
+  border: 1px solid rgba(255,255,255,.25) !important;
+  color: #e8e8e8 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+.comm-ok-btn:hover, a.comm-ok-btn:hover {
+  background: #222 !important;
+  color: #fff !important;
+  filter: none !important;
+}
+
+/* ── Copyright notice ── */
+.copyright-notice {
+  background: #0a0a0a !important;
+  color: #888 !important;
+  border-top: 1px dotted rgba(255,255,255,.12) !important;
+}
+.copyright-notice a { color: #aaa !important; }
+.copyright-notice a:hover { color: #fff !important; }
+
+/* ── Gallery cards ── */
+.gi-card {
+  background: #0d0d0d !important;
+  border: 1px dotted rgba(255,255,255,.15) !important;
+}
+.gi-card:hover { border-color: rgba(255,255,255,.40) !important; }
+.gi-card-title { color: #ddd !important; }
+.gi-card-date, .gi-card-desc, .gi-cnt { color: #777 !important; }
+.gi-card-imgwrap { background: #111 !important; }
+
+.vg-entry {
+  background: #0d0d0d !important;
+  border: 1px dotted rgba(255,255,255,.15) !important;
+}
+.vg-entry:hover { border-color: rgba(255,255,255,.40) !important; background: #1a1a1a !important; }
+.vg-title { color: #ccc !important; }
+
+/* ── Video info box ── */
+.video-info-box { background: #0a0a0a !important; border-color: rgba(255,255,255,.12) !important; }
+.vi-body { background: #0a0a0a !important; }
+.vi-title, .vi-val-title { color: #ddd !important; }
+.vi-desc, .vi-date, .vi-label, .vi-val-date, .vi-description { color: #777 !important; }
+
+/* ── Visitor counter ── */
+#visitor-counter-wrap {
+  border-top: 1px dotted rgba(255,255,255,.15) !important;
+  color: #666 !important;
+}
+
+/* ── Botões fixos ── */
+#soundToggle {
+  position: fixed; bottom: 8px; left: 10px; z-index: 9999;
+  font-family: Tahoma, sans-serif; font-size: 10px;
+  color: rgba(80,80,80,.65); cursor: pointer;
+  user-select: none; letter-spacing: .2px;
+  padding: 2px 0; background: none; border: none; outline: none;
+}
+#soundToggle:hover { color: rgba(0,0,0,.85); }
+#soundToggle.off   { color: rgba(140,140,140,.50); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; background: transparent; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(80,80,80,.50); border-radius: 0; border: none; }
+::-webkit-scrollbar-thumb:hover { background: rgba(80,80,80,.80); }
+html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  body { padding-top: 80px !important; }
+  #siteLogoTop { max-height: 60px; }
+  #websiteContainer::before { height: 60px; }
+  #navAndContentContainer { flex-direction: column; }
+  #navigationMenu {
+    width: 100% !important;
+    border-bottom-left-radius: 0 !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    padding: 4px !important;
+    gap: 3px !important;
+    justify-content: center !important;
+  }
+  .nav-categories {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+  .navbar-titles { display: none !important; }
+  .nav-link {
+    width: auto !important;
+    min-width: 70px !important;
+    flex: 1 1 70px !important;
+    margin: 1px !important;
+    padding: 5px 4px !important;
+    font-size: 11px !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .nav-icons { height: 12px !important; margin: 0 3px 0 0 !important; }
+  #renaChan, #rikaChan { display: none !important; }
+}
+@media (max-width: 400px) {
+  .nav-link { font-size: 10px !important; min-width: 58px !important; }
+  .nav-icons { display: none !important; }
+}
 
 </style>
 </head>
@@ -1037,7 +1377,6 @@ document.addEventListener('DOMContentLoaded',function(){
     };
   });
 })();
-
 /* ══ Theme: Dark / Light ══ */
 (function () {
   /* Anti-flash: aplica antes do DOM carregar */
