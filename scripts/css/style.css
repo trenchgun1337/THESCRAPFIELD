@@ -554,7 +554,7 @@ a             { color: #fff; text-decoration: none; }
 a:hover       { color: var(--th-accent); text-decoration: underline; }
 a.green       { color: #3cda56 !important; }
 a.green:hover { color: #72f080 !important; text-decoration: underline; }
-.hl, strong   { color: var(--th-accent); font-weight: 400; }
+.hl, strong   { color: #cc1a1a; font-weight: 400; }
 p { font-size: 12.5px; line-height: 18px; color: var(--th-text); margin: 0; }
 p + p { margin-top: 5px; }
 .sep { color: #555; }
