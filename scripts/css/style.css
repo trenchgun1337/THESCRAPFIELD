@@ -369,11 +369,11 @@
    ================================================================ */
 :root[data-theme="next-stage"] {
   --th-bg-image:       url('assets/images/BACKGROUND2.jpg');
-  --th-accent:         #cc1a1a;
-  --th-accent2:        #e83030;
+  --th-accent:         #000000;
+  --th-accent2:        #000000;
   --th-accent-dim:     rgba(130,130,130,.42);
   --th-accent-glow:    rgba(200,200,200,.20);
-  --th-text:           #c8c8c8;
+  --th-text:           #ff0505;
   --th-text-dim:       #666;
   --aero-shine-top:    rgba(255,255,255,.22);
   --aero-shine-mid:    rgba(255,255,255,.06);
