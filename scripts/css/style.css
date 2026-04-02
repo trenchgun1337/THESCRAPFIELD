@@ -369,11 +369,11 @@
    ================================================================ */
 :root[data-theme="next-stage"] {
   --th-bg-image:       url('assets/images/BACKGROUND2.jpg');
-  --th-accent:         #000000;
-  --th-accent2:        #000000;
+  --th-accent:         #cc1a1a;
+  --th-accent2:        #e83030;
   --th-accent-dim:     rgba(130,130,130,.42);
   --th-accent-glow:    rgba(200,200,200,.20);
-  --th-text:           #ff0505;
+  --th-text:           #c8c8c8;
   --th-text-dim:       #666;
   --aero-shine-top:    rgba(255,255,255,.22);
   --aero-shine-mid:    rgba(255,255,255,.06);
@@ -554,7 +554,7 @@ a             { color: #fff; text-decoration: none; }
 a:hover       { color: var(--th-accent); text-decoration: underline; }
 a.green       { color: #3cda56 !important; }
 a.green:hover { color: #72f080 !important; text-decoration: underline; }
-.hl, strong   { color:#ff0505; font-weight: 400; }
+.hl, strong   { color: var(--th-accent); font-weight: 400; }
 p { font-size: 12.5px; line-height: 18px; color: var(--th-text); margin: 0; }
 p + p { margin-top: 5px; }
 .sep { color: #555; }
