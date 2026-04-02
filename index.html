@@ -980,12 +980,22 @@ document.addEventListener('DOMContentLoaded',function(){
   /* Anti-flash: aplica antes do DOM carregar */
   (function(){
     var s = sessionStorage.getItem('_colorMode');
-    if (s === 'light') document.documentElement.setAttribute('data-color-mode', 'light');
+    if (s) {
+      if (s === 'light') {
+        document.documentElement.setAttribute('data-color-mode', 'light');
+      } else {
+        document.documentElement.removeAttribute('data-color-mode');
+      }
+    } else {
+      // padrão = LIGHT
+      document.documentElement.setAttribute('data-color-mode', 'light');
+    }
   })();
 
   function _applyTheme(mode) {
     var root = document.documentElement;
     var btn  = document.getElementById('themeToggle');
+
     if (mode === 'light') {
       root.setAttribute('data-color-mode', 'light');
       if (btn) btn.textContent = 'Theme: Light';
@@ -993,23 +1003,28 @@ document.addEventListener('DOMContentLoaded',function(){
       root.removeAttribute('data-color-mode');
       if (btn) btn.textContent = 'Theme: Dark';
     }
+
     sessionStorage.setItem('_colorMode', mode);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    var stored = sessionStorage.getItem('_colorMode') || 'dark';
+    var stored = sessionStorage.getItem('_colorMode') || 'light'; // ← AQUI mudou
     _applyTheme(stored);
   });
 
   window.toggleThemeMode = function () {
     var current = document.documentElement.getAttribute('data-color-mode');
-    _applyTheme(current === 'dark' ? 'light' : 'dark');
+
+    // se não tiver atributo, é DARK
+    var isLight = current === 'light';
+
+    _applyTheme(isLight ? 'dark' : 'light');
   };
 })();
 </script>
 
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
-<button id="themeToggle" onclick="toggleThemeMode()">Theme: Dark</button>
+<!-- <button id="themeToggle" onclick="toggleThemeMode()">Theme: Dark</button> -->
 
 </body>
 </html>
