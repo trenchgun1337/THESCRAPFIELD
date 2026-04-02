@@ -10,10 +10,10 @@
 <style id="watanagashi-patch">
 
 /* ══════════════════════════════════════════════════
-   BASE: accent branco no tema escuro
+   OVERRIDE: white as primary accent colour (dark default)
    ══════════════════════════════════════════════════ */
 :root {
-  --th-accent:      #ff0000;
+  --th-accent:      #e8e8e8;
   --th-accent2:     #ffffff;
   --th-accent-dim:  rgba(200,200,200,.38);
   --th-accent-glow: rgba(255,255,255,.22);
@@ -22,7 +22,7 @@
 }
 
 /* ══════════════════════════════════════════════════
-   LIGHT AERO — branco / cinza / preto puro
+   LIGHT AERO — branco / cinza / preto puro. Sem azul.
    ══════════════════════════════════════════════════ */
 :root[data-color-mode="light"] {
   --th-accent:      #222222;
@@ -31,118 +31,624 @@
   --th-accent-glow: rgba(0,0,0,.12);
   --th-sel-bg:      rgba(80,80,80,.55);
   --th-sel-col:     #ffffff;
+
   --th-text:        #1a1a1a;
   --th-text-dim:    #666666;
+
   --aero-shine-top:    rgba(255,255,255,.90);
   --aero-shine-mid:    rgba(255,255,255,.50);
   --aero-dark1:        rgba(240,240,240,.98);
   --aero-dark2:        rgba(228,228,228,.96);
   --aero-border-light: rgba(255,255,255,.95);
   --aero-border-dark:  rgba(0,0,0,.18);
-  --th-header-grad:    linear-gradient(180deg,rgba(255,255,255,.98) 0%,rgba(240,240,240,.97) 18%,rgba(220,220,220,.99) 42%,rgba(200,200,200,1) 100%);
+
+  --th-header-grad:    linear-gradient(180deg,
+    rgba(255,255,255,.98) 0%,
+    rgba(240,240,240,.97) 18%,
+    rgba(220,220,220,.99) 42%,
+    rgba(200,200,200,1)   100%);
   --th-header-border:  rgba(160,160,160,.60);
   --th-header-shine:   rgba(255,255,255,.80);
   --th-header-line:    rgba(255,255,255,.85);
-  --th-nav-bg:         linear-gradient(108deg,rgba(245,245,245,.96) 50%,rgba(235,235,235,.98) 100%);
+
+  --th-nav-bg:         linear-gradient(108deg,
+    rgba(245,245,245,.96) 50%,
+    rgba(235,235,235,.98) 100%);
   --th-nav-border:     rgba(160,160,160,.42);
   --th-nav-scroll:     rgba(120,120,120,.60);
   --th-nav-scrollbg:   rgba(220,220,220,.70);
-  --th-nav-title-bg:   linear-gradient(to bottom,rgba(255,255,255,.72) 0%,rgba(235,235,235,.62) 3%,rgba(200,200,200,.90) 50%,rgba(185,185,185,.90) 50%,rgba(175,175,175,.90) 100%);
+  --th-nav-title-bg:   linear-gradient(to bottom,
+    rgba(255,255,255,.72) 0%,
+    rgba(235,235,235,.62) 3%,
+    rgba(200,200,200,.90) 50%,
+    rgba(185,185,185,.90) 50%,
+    rgba(175,175,175,.90) 100%);
   --th-nav-title-brd:  rgba(140,140,140,.55);
   --th-nav-title-col:  #111111;
-  --th-nav-link-bg:    linear-gradient(to bottom,rgba(255,255,255,.65) 0%,rgba(245,245,245,.58) 20%,rgba(230,230,230,.50) 60%,rgba(215,215,215,.44) 60%,rgba(208,208,208,.42) 100%);
-  --th-nav-hover-bg:   linear-gradient(to bottom,rgba(255,255,255,.90) 0%,rgba(250,250,250,.85) 20%,rgba(238,238,238,.80) 50%,rgba(222,222,222,.74) 50%,rgba(215,215,215,.70) 100%);
-  --th-nav-active-bg:  linear-gradient(to bottom,rgba(255,255,255,.96) 0%,rgba(252,252,252,.90) 20%,rgba(242,242,242,.86) 50%,rgba(228,228,228,.80) 50%,rgba(220,220,220,.78) 100%);
-  --th-nav-link-shine: linear-gradient(to bottom,rgba(255,255,255,.82) 0%,rgba(240,240,240,.12) 100%);
+  --th-nav-link-bg:    linear-gradient(to bottom,
+    rgba(255,255,255,.65) 0%,
+    rgba(245,245,245,.58) 20%,
+    rgba(230,230,230,.50) 60%,
+    rgba(215,215,215,.44) 60%,
+    rgba(208,208,208,.42) 100%);
+  --th-nav-hover-bg:   linear-gradient(to bottom,
+    rgba(255,255,255,.90) 0%,
+    rgba(250,250,250,.85) 20%,
+    rgba(238,238,238,.80) 50%,
+    rgba(222,222,222,.74) 50%,
+    rgba(215,215,215,.70) 100%);
+  --th-nav-active-bg:  linear-gradient(to bottom,
+    rgba(255,255,255,.96) 0%,
+    rgba(252,252,252,.90) 20%,
+    rgba(242,242,242,.86) 50%,
+    rgba(228,228,228,.80) 50%,
+    rgba(220,220,220,.78) 100%);
+  --th-nav-link-shine: linear-gradient(to bottom,
+    rgba(255,255,255,.82) 0%,
+    rgba(240,240,240,.12) 100%);
+
   --th-main-bg:        rgba(245,245,245,.88);
   --th-main-border:    rgba(160,160,160,.35);
   --th-card-bg:        rgba(255,255,255,.96);
   --th-glass-border:   rgba(180,180,180,.52);
   --th-aero-border:    rgba(170,170,170,.44);
-  --th-bar-grad:       linear-gradient(to bottom,rgba(255,255,255,.96) 0%,rgba(252,252,252,.96) 0%,rgba(238,238,238,.92) 4%,rgba(210,210,210,.97) 52%,rgba(190,190,190,1) 52%,rgba(205,205,205,.98) 100%);
+
+  --th-bar-grad:       linear-gradient(to bottom,
+    rgba(255,255,255,.96) 0%,
+    rgba(252,252,252,.96) 0%,
+    rgba(238,238,238,.92) 4%,
+    rgba(210,210,210,.97) 52%,
+    rgba(190,190,190,1)   52%,
+    rgba(205,205,205,.98) 100%);
   --th-bar-shine:      rgba(255,255,255,.90);
   --th-bar-border-t:   rgba(255,255,255,.95);
   --th-bar-border-b:   rgba(100,100,100,.45);
   --th-bar-border-s:   rgba(150,150,150,.50);
-  --th-bar-glow-top:   linear-gradient(180deg,rgba(255,255,255,.65) 0%,rgba(240,240,240,.06) 100%);
+  --th-bar-glow-top:   linear-gradient(180deg,
+    rgba(255,255,255,.65) 0%,
+    rgba(240,240,240,.06) 100%);
   --th-bar-text:       #111111;
-  --th-bar-tshadow:    0 1px 1px rgba(255,255,255,.95),0 0 4px rgba(0,0,0,.08);
-  --th-ctrl-grad:      linear-gradient(to bottom,rgba(255,255,255,.92) 0%,rgba(248,248,248,.92) 0%,rgba(232,232,232,.88) 4%,rgba(205,205,205,.96) 52%,rgba(185,185,185,1) 52%,rgba(200,200,200,.92) 100%);
+  --th-bar-tshadow:    0 1px 1px rgba(255,255,255,.95),
+                       0 0 4px rgba(0,0,0,.08);
+
+  --th-ctrl-grad:      linear-gradient(to bottom,
+    rgba(255,255,255,.92) 0%,
+    rgba(248,248,248,.92) 0%,
+    rgba(232,232,232,.88) 4%,
+    rgba(205,205,205,.96) 52%,
+    rgba(185,185,185,1)   52%,
+    rgba(200,200,200,.92) 100%);
   --th-ctrl-shine:     rgba(255,255,255,.85);
-  --th-prog-fill:      linear-gradient(to bottom,rgba(80,80,80,.92) 0%,rgba(55,55,55,.96) 45%,rgba(30,30,30,.90) 50%,rgba(50,50,50,.88) 100%);
+
+  --th-prog-fill:      linear-gradient(to bottom,
+    rgba(80,80,80,.92)  0%,
+    rgba(55,55,55,.96)  45%,
+    rgba(30,30,30,.90)  50%,
+    rgba(50,50,50,.88)  100%);
   --th-prog-glow:      rgba(0,0,0,.20);
-  --th-prog-track:     linear-gradient(to bottom,#d8d8d8 0%,#ebebeb 100%);
+  --th-prog-track:     linear-gradient(to bottom,
+    #d8d8d8 0%,#ebebeb 100%);
   --th-prog-border:    rgba(140,140,140,.44);
-  --th-bottom-grad:    linear-gradient(to bottom,rgba(240,240,240,.92) 0%,rgba(220,220,220,.96) 48%,rgba(195,195,195,1) 49%,rgba(210,210,210,.99) 100%);
+
+  --th-bottom-grad:    linear-gradient(to bottom,
+    rgba(240,240,240,.92) 0%,
+    rgba(220,220,220,.96) 48%,
+    rgba(195,195,195,1)   49%,
+    rgba(210,210,210,.99) 100%);
   --th-bottom-border:  rgba(150,150,150,.50);
-  --th-dl-grad:        linear-gradient(to bottom,rgba(255,255,255,.95) 0%,rgba(250,250,250,.96) 0%,rgba(235,235,235,.88) 4%,rgba(208,208,208,.98) 50%,rgba(185,185,185,1) 50%,rgba(200,200,200,.97) 100%);
+
+  --th-dl-grad:        linear-gradient(to bottom,
+    rgba(255,255,255,.95) 0%,
+    rgba(250,250,250,.96) 0%,
+    rgba(235,235,235,.88) 4%,
+    rgba(208,208,208,.98) 50%,
+    rgba(185,185,185,1)   50%,
+    rgba(200,200,200,.97) 100%);
   --th-dl-border:      rgba(140,140,140,.76);
   --th-dl-border-t:    rgba(255,255,255,.92);
   --th-dl-shine:       rgba(255,255,255,.78);
-  --th-submit-grad:    linear-gradient(to bottom,rgba(255,255,255,.90) 0%,rgba(248,248,248,.90) 0%,rgba(232,232,232,.86) 4%,rgba(206,206,206,.98) 52%,rgba(182,182,182,1) 52%,rgba(198,198,198,.95) 100%);
-  --th-scroll-thumb:   linear-gradient(180deg,rgba(160,160,160,.76) 0%,rgba(120,120,120,.86) 100%);
+
+  --th-submit-grad:    linear-gradient(to bottom,
+    rgba(255,255,255,.90) 0%,
+    rgba(248,248,248,.90) 0%,
+    rgba(232,232,232,.86) 4%,
+    rgba(206,206,206,.98) 52%,
+    rgba(182,182,182,1)   52%,
+    rgba(198,198,198,.95) 100%);
+
+  --th-scroll-thumb:   linear-gradient(180deg,
+    rgba(160,160,160,.76) 0%,
+    rgba(120,120,120,.86) 100%);
   --th-scroll-track:   rgba(220,220,220,.72);
-  --th-scroll-hover:   linear-gradient(180deg,#bbbbbb 0%,#888888 100%);
+  --th-scroll-hover:   linear-gradient(180deg,
+    #bbbbbb 0%,#888888 100%);
+
   --th-img-filter:        none;
   --th-img-filter-hov:    brightness(1.08);
   --th-player-filter:     grayscale(100%) brightness(0.5);
   --th-player-filter-hov: grayscale(100%) brightness(0.9);
+
   --th-mp-head-grad:   var(--th-bar-grad);
-  --th-themes-bg:      linear-gradient(to bottom,rgba(245,245,245,.96) 0%,rgba(225,225,225,.99) 50%,rgba(200,200,200,1) 50%,rgba(215,215,215,.96) 100%);
+
+  --th-themes-bg:      linear-gradient(to bottom,
+    rgba(245,245,245,.96) 0%,
+    rgba(225,225,225,.99) 50%,
+    rgba(200,200,200,1)   50%,
+    rgba(215,215,215,.96) 100%);
   --th-themes-border:  rgba(160,160,160,.60);
   --th-themes-bord-t:  rgba(255,255,255,.80);
   --th-themes-col:     #111111;
+
   --th-vi-bot-grad:    var(--th-bar-grad);
   --th-vi-bot-border:  rgba(150,150,150,.55);
   --th-vi-bot-shine:   rgba(255,255,255,.75);
-  --th-status-grad:    linear-gradient(to bottom,rgba(240,240,240,.82) 0%,rgba(218,218,218,.94) 30%,rgba(192,192,192,1) 50%,rgba(205,205,205,1) 100%);
+
+  --th-status-grad:    linear-gradient(to bottom,
+    rgba(240,240,240,.82) 0%,
+    rgba(218,218,218,.94) 30%,
+    rgba(192,192,192,1)   50%,
+    rgba(205,205,205,1)   100%);
   --th-status-brd:     rgba(130,130,130,.76);
-  --th-pl-bg:          repeating-linear-gradient(0deg,rgba(0,0,0,.04) 0px,rgba(0,0,0,.04) 1px,transparent 1px,transparent 3px),linear-gradient(90deg,rgba(240,240,240,.92) 0%,rgba(252,252,252,.12) 70%);
-  --th-pl-hdr-bg:      linear-gradient(to bottom,rgba(220,220,220,.58) 0%,rgba(200,200,200,.42) 100%);
+
+  --th-pl-bg:          repeating-linear-gradient(0deg,
+    rgba(0,0,0,.04) 0px,rgba(0,0,0,.04) 1px,
+    transparent 1px,transparent 3px),
+    linear-gradient(90deg,
+    rgba(240,240,240,.92) 0%,rgba(252,252,252,.12) 70%);
+  --th-pl-hdr-bg:      linear-gradient(to bottom,
+    rgba(220,220,220,.58) 0%,rgba(200,200,200,.42) 100%);
   --th-pl-hdr-brd:     rgba(160,160,160,.40);
   --th-pl-hdr-shin:    rgba(255,255,255,.55);
   --th-pl-sep:         rgba(140,140,140,.46);
+
   --th-review-good:    #111111;
-  --th-vi-btn-bg:      linear-gradient(to bottom,rgba(255,255,255,.62) 0%,rgba(242,242,242,.65) 20%,rgba(215,215,215,.86) 60%,rgba(192,192,192,.94) 60%,rgba(208,208,208,.78) 100%);
+
+  --th-vi-btn-bg:      linear-gradient(to bottom,
+    rgba(255,255,255,.62) 0%,
+    rgba(242,242,242,.65) 20%,
+    rgba(215,215,215,.86) 60%,
+    rgba(192,192,192,.94) 60%,
+    rgba(208,208,208,.78) 100%);
   --th-vi-btn-brd:     rgba(130,130,130,.66);
   --th-vi-btn-col:     #111111;
-  --th-lb-bg:          linear-gradient(180deg,rgba(252,252,252,.99) 0%,rgba(242,242,242,.99) 20%,rgba(228,228,228,1) 100%);
+
+  --th-lb-bg:          linear-gradient(180deg,
+    rgba(252,252,252,.99) 0%,
+    rgba(242,242,242,.99) 20%,
+    rgba(228,228,228,1)   100%);
   --th-lb-border:      rgba(150,150,150,.72);
   --th-lb-shine:       rgba(255,255,255,.80);
   --th-lb-inner:       rgba(180,180,180,.20);
   --th-lb-titlebar:    rgba(235,235,235,.98);
   --th-lb-title-brd:   rgba(160,160,160,.52);
-  --th-lb-imgarea:     linear-gradient(180deg,rgba(240,240,240,1) 0%,rgba(228,228,228,1) 100%);
-  --th-lb-arrow-bg:    linear-gradient(to bottom,rgba(255,255,255,.62) 0%,rgba(242,242,242,.60) 20%,rgba(215,215,215,.92) 55%,rgba(192,192,192,.98) 55%,rgba(208,208,208,.84) 100%);
+  --th-lb-imgarea:     linear-gradient(180deg,
+    rgba(240,240,240,1) 0%,rgba(228,228,228,1) 100%);
+  --th-lb-arrow-bg:    linear-gradient(to bottom,
+    rgba(255,255,255,.62) 0%,
+    rgba(242,242,242,.60) 20%,
+    rgba(215,215,215,.92) 55%,
+    rgba(192,192,192,.98) 55%,
+    rgba(208,208,208,.84) 100%);
   --th-lb-arrow-brd:   rgba(140,140,140,.46);
-  --th-lb-bot-grad:    linear-gradient(to bottom,rgba(242,242,242,.82) 0%,rgba(222,222,222,.96) 48%,rgba(195,195,195,1) 49%,rgba(210,210,210,.99) 100%);
+  --th-lb-bot-grad:    linear-gradient(to bottom,
+    rgba(242,242,242,.82) 0%,
+    rgba(222,222,222,.96) 48%,
+    rgba(195,195,195,1)   49%,
+    rgba(210,210,210,.99) 100%);
   --th-lb-bot-brd:     rgba(140,140,140,.46);
   --th-lb-bot-shine:   rgba(255,255,255,.30);
-  --th-contact-hover:  linear-gradient(to bottom,rgba(255,255,255,.78) 0%,rgba(248,248,248,.72) 20%,rgba(235,235,235,.66) 50%,rgba(220,220,220,.60) 50%,rgba(212,212,212,.56) 100%);
-  --th-gi-card-bg:     linear-gradient(to bottom,rgba(252,252,252,.84) 0%,rgba(240,240,240,.97) 100%);
+
+  --th-contact-hover:  linear-gradient(to bottom,
+    rgba(255,255,255,.78) 0%,
+    rgba(248,248,248,.72) 20%,
+    rgba(235,235,235,.66) 50%,
+    rgba(220,220,220,.60) 50%,
+    rgba(212,212,212,.56) 100%);
+
+  --th-gi-card-bg:     linear-gradient(to bottom,
+    rgba(252,252,252,.84) 0%,rgba(240,240,240,.97) 100%);
   --th-gi-card-brd:    rgba(180,180,180,.36);
   --th-gi-card-hover:  rgba(80,80,80,.72);
   --th-gi-award-brd:   rgba(60,60,60,.84);
+
   --th-dark-btn-bg:    var(--th-bar-grad);
   --th-dark-btn-brd:   rgba(120,120,120,.72);
-  --th-mp-prog-row:    linear-gradient(to bottom,#e8e8e8 0%,#d8d8d8 49%,#c8c8c8 50%,#d4d4d4 100%);
+
+  --th-mp-prog-row:    linear-gradient(to bottom,
+    #e8e8e8 0%,#d8d8d8 49%,#c8c8c8 50%,#d4d4d4 100%);
   --th-mp-prog-brd:    rgba(140,140,140,.50);
   --th-mp-bot2-grad:   var(--th-status-grad);
+
   --th-vi-head-grad:   var(--th-bar-grad);
   --th-vi-head-brd-t:  rgba(255,255,255,.90);
   --th-vi-head-brd-b:  rgba(100,100,100,.48);
 }
 
-/* ══════════════════════════════════════════════════
-   FONTE GLOBAL: SERIF
-   ══════════════════════════════════════════════════ */
-* {
-  font-family: 'Georgia', 'Times New Roman', Times, serif !important;
+/* ── Texto light mode — preto/cinza puro ── */
+:root[data-color-mode="light"] body              { color: #1a1a1a; }
+:root[data-color-mode="light"] p                 { color: #1a1a1a; }
+:root[data-color-mode="light"] a                 { color: #111111; }
+:root[data-color-mode="light"] a:hover           { color: #444444; }
+:root[data-color-mode="light"] .hl,
+:root[data-color-mode="light"] strong            { color: #111111; }
+:root[data-color-mode="light"] .sep              { color: #aaaaaa; }
+:root[data-color-mode="light"] .vi-label,
+:root[data-color-mode="light"] .vi-val-date,
+:root[data-color-mode="light"] .vi-description,
+:root[data-color-mode="light"] .gi-card-date,
+:root[data-color-mode="light"] .gi-card-desc,
+:root[data-color-mode="light"] .gi-cnt,
+:root[data-color-mode="light"] .empty-msg,
+:root[data-color-mode="light"] .section-desc     { color: #666666; }
+:root[data-color-mode="light"] .gi-card-title,
+:root[data-color-mode="light"] .vi-val-title,
+:root[data-color-mode="light"] .vi-title          { color: #111111; }
+:root[data-color-mode="light"] .pl-track-list li,
+:root[data-color-mode="light"] .pl-track-list li a { color: #222222; }
+:root[data-color-mode="light"] .pl-track-list li a:hover { color: #000000; }
+:root[data-color-mode="light"] .pl-group-header  { color: #222222; }
+:root[data-color-mode="light"] .gi-avg           { color: #111111 !important; }
+:root[data-color-mode="light"] .gi-review.good   { color: #111111; }
+:root[data-color-mode="light"] .mp-time-val,
+:root[data-color-mode="light"] #audioName,
+:root[data-color-mode="light"] #volumeIndicator,
+:root[data-color-mode="light"] #videoAutoPlayBtn { color: #222222; }
+:root[data-color-mode="light"] .mp-time-label,
+:root[data-color-mode="light"] .mp-status-bar,
+:root[data-color-mode="light"] #volumeLabel      { color: #333333; }
+:root[data-color-mode="light"] .contact-links a  { color: #1a1a1a; }
+:root[data-color-mode="light"] .contact-links a:hover { color: #000000; }
+:root[data-color-mode="light"] .contact-links .link-note { color: #666666; }
+:root[data-color-mode="light"] .copyright-notice { color: #333333; background: rgba(245,245,245,.96); }
+:root[data-color-mode="light"] .copyright-notice a { color: #222222; }
+:root[data-color-mode="light"] .na-span          { color: #222222 !important; }
+:root[data-color-mode="light"] ._nav-badge        { background: #333333 !important; }
+:root[data-color-mode="light"] .vg-title          { color: #1a1a1a; }
+:root[data-color-mode="light"] .vg-pager-btn      { color: #555555; background: rgba(220,220,220,.65); border-color: rgba(160,160,160,.40); }
+:root[data-color-mode="light"] .vg-pager-btn.active { color: #111111; border-color: rgba(80,80,80,.60); background: rgba(195,195,195,.55); }
+:root[data-color-mode="light"] .comm-tab          { color: #444444; border-color: rgba(160,160,160,.38) !important; }
+:root[data-color-mode="light"] .comm-tab:hover    { color: #111111; }
+:root[data-color-mode="light"] #commPanelBlog .hl,
+:root[data-color-mode="light"] #commPanelBlog strong,
+:root[data-color-mode="light"] .comm-wip strong   { color: #222222 !important; }
+:root[data-color-mode="light"] .footer-content1   { color: rgba(30,30,30,.55); }
+:root[data-color-mode="light"] .h-title           { color: #111111; }
+:root[data-color-mode="light"] .h-motto           { color: rgba(20,20,20,.78); }
+:root[data-color-mode="light"] #visitor-counter-wrap { border-top-color: rgba(160,160,160,.35); color: #666666; }
+:root[data-color-mode="light"] .comm-tab-bar      { border-bottom-color: rgba(100,100,100,.45) !important; }
+:root[data-color-mode="light"] button.comm-tab.active,
+:root[data-color-mode="light"] #commTabChat.active,
+:root[data-color-mode="light"] #commTabBlog.active {
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,.88) 0%,
+    rgba(230,230,230,.78) 18%,
+    rgba(190,190,190,.92) 60%,
+    rgba(155,155,155,.98) 60%,
+    rgba(170,170,170,.88) 100%) !important;
+  border-color: rgba(100,100,100,.65) !important;
+  color: #111111 !important;
 }
+:root[data-color-mode="light"] .comm-ok-btn,
+:root[data-color-mode="light"] a.comm-ok-btn {
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,.92) 0%,
+    rgba(248,248,248,.92) 0%,
+    rgba(230,230,230,.86) 4%,
+    rgba(200,200,200,.97) 52%,
+    rgba(175,175,175,1)   52%,
+    rgba(192,192,192,.94) 100%) !important;
+  border: 1px solid rgba(140,140,140,.60) !important;
+  border-top-color: rgba(255,255,255,.90) !important;
+  color: #111111 !important;
+}
+:root[data-color-mode="light"] #_prefBar button {
+  color: rgba(20,20,20,.86) !important;
+  border-color: rgba(160,160,160,.44) !important;
+  background: rgba(235,235,235,.92) !important;
+}
+:root[data-color-mode="light"] #_prefBar button:hover {
+  color: #000000 !important;
+  background: rgba(220,220,220,.98) !important;
+  border-color: rgba(100,100,100,.76) !important;
+}
+:root[data-color-mode="light"] #pg-preferences select,
+:root[data-color-mode="light"] #_prefBar select {
+  background: rgba(245,245,245,.98) !important;
+  color: #111111 !important;
+  border-color: rgba(150,150,150,.54) !important;
+}
+:root[data-color-mode="light"] .nav-link:hover { color: #000000 !important; }
+:root[data-color-mode="light"] .nav-link.active {
+  color: #000000 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.50),
+              0 0 6px rgba(0,0,0,.12),
+              inset 0 -2px 0 rgba(0,0,0,.30) !important;
+}
+/* Botões fixos no light mode ficam escuros pra contrastar */
+:root[data-color-mode="light"] #themeToggle { color: rgba(80,80,80,.65); }
+:root[data-color-mode="light"] #themeToggle:hover { color: rgba(0,0,0,.85); }
+:root[data-color-mode="light"] #soundToggle { color: rgba(80,80,80,.65); }
+:root[data-color-mode="light"] #soundToggle:hover { color: rgba(0,0,0,.85); }
+:root[data-color-mode="light"] #soundToggle.off { color: rgba(140,140,140,.50); }
 
 /* ══════════════════════════════════════════════════
    LOGO — fixed top, border-radius só embaixo
+   O border dotted é no #websiteContainer (::before),
+   não no logo. Assim fica contido e não passa pro fundo preto.
    ══════════════════════════════════════════════════ */
+#siteLogoTop {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 302px;
+  max-width: 800px;
+  width: 100%;
+  object-fit: contain;
+  object-position: top center;
+  border-radius: 0 0 18px 18px;
+  z-index: 9990;
+  pointer-events: none;
+  display: block;
+  /* sem border aqui — o dotted vai no ::before do container */
+}
+
+/* Linha pontilhada contida dentro do container de 800px */
+#websiteContainer {
+  position: relative;
+}
+#websiteContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 302px;
+  border-bottom: 1px dotted rgba(32,32,32,0.35);
+  border-radius: 0 0 18px 18px;
+  pointer-events: none;
+  z-index: 9989;
+  overflow: hidden;
+}
+
+body { padding-top: 96px !important; }
+
+#mainContent {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow-y: visible !important;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 7px; height: 7px; background: transparent; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,.18); border-radius: 0; }
+::-webkit-scrollbar-thumb { background: rgba(10,10,10,.62); border-radius: 0; border: none; }
+::-webkit-scrollbar-thumb:hover { background: rgba(30,30,30,.80); }
+::-webkit-scrollbar-corner { background: transparent; }
+html { scrollbar-width: thin; scrollbar-color: rgba(10,10,10,.62) transparent; }
+
+/* ══════════════════════════════════════════════════
+   SIDEBAR / NAV
+   ══════════════════════════════════════════════════ */
+#sidebarAside {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  flex-shrink: 0;
+}
+#navigationMenu {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+.nav-categories {
+  width: 100%;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+.nav-link { justify-content: center !important; text-align: center !important; }
+.nav-link:hover { color: #ffffff !important; }
+.nav-link.active {
+  color: #ffffff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14),
+              0 0 8px rgba(0,0,0,.50),
+              inset 0 -2px 0 rgba(255,255,255,.55) !important;
+}
+
+/* ── CD ── */
+#spinningDisk { display: none !important; }
+#cdDisc {
+  width: 155px; height: 136px;
+  display: block; flex-shrink: 0;
+  cursor: pointer; border-radius: 50%;
+  object-fit: contain; margin-top: 2px;
+  filter: drop-shadow(0 0 6px rgba(200,200,200,.35));
+  animation-name: _cdSpin;
+  animation-duration: 5000ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+#cdDisc.cd-playing { animation-play-state: running; }
+@keyframes _cdSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+#playlistRight {
+  display: flex !important; flex-direction: column !important;
+  align-items: center !important; justify-content: flex-start !important;
+  padding: 8px 6px !important; gap: 6px !important;
+  width: 183px !important; flex-shrink: 0 !important;
+  overflow: visible !important;
+}
+#visualizerCanvas {
+  background: rgba(4,4,4,.97) !important;
+  border: 1px solid rgba(100,100,100,.35);
+  width: 163px !important; display: block; cursor: default;
+}
+
+/* ── Images sem filtro ── */
+body #introBanner, body .contact-banner, body .faa-logo-img,
+body .rights-content img, body #visitor-counter-wrap img,
+body .gi-awarded-img, body .gi-card-img, body .gi-card-imgwrap img,
+body .vg-thumb, body #renaChan, body #rikaChan, body #rikaTransformFlash,
+body #mpLikeBtn img, body #mpDislikeBtn img, body .vi-icon-vote-btn img,
+body .contact-links img, body .contact-links a img, body .contact-links li a img {
+  filter: none !important; -webkit-filter: none !important;
+}
+body:not(.adaptive-accent-on) .nav-icons { filter: none !important; -webkit-filter: none !important; }
+body:not(.adaptive-accent-on) .mp-ctrl-btn:hover img,
+body:not(.adaptive-accent-on) .mp-ctrl-btn:hover .player-img,
+body:not(.adaptive-accent-on) .mp-mute-btn:hover img,
+body:not(.adaptive-accent-on) .mp-loop-btn:hover img {
+  filter: brightness(1.40) !important; -webkit-filter: brightness(1.40) !important;
+}
+
+/* ── Prefs ── */
+#pg-preferences button, #pg-preferences select,
+#_prefBar button, #_prefBar select { border-color: rgba(200,200,200,.4) !important; }
+#pg-preferences select, #_prefBar select {
+  border: 1px solid rgba(200,200,200,.5) !important;
+  background: #000 !important; color: #fff !important;
+}
+#_prefBar button {
+  background: rgba(20,20,20,.9) !important;
+  border: 1px solid rgba(180,180,180,.4) !important;
+  color: rgba(200,200,200,0.85);
+  font-size: 11px; font-family: Tahoma, sans-serif;
+  cursor: pointer; padding: 2px 8px;
+}
+#_prefBar button:hover {
+  color: #fff !important;
+  border-color: rgba(255,255,255,.7) !important;
+  background: rgba(40,40,40,.9) !important;
+}
+
+/* ── Community tabs (dark default) ── */
+.comm-tab-bar { border-bottom: 2px solid rgba(200,200,200,.45) !important; }
+.comm-tab { border: 1px solid rgba(160,160,160,.40) !important; border-bottom: none !important; }
+.comm-tab.active, #commTabChat.active, #commTabBlog.active, button.comm-tab.active {
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,.18) 0%, rgba(180,180,180,.45) 18%,
+    rgba(100,100,100,.85) 60%, rgba(40,40,40,.96) 60%,
+    rgba(60,60,60,.82) 100%) !important;
+  border-color: rgba(220,220,220,.6) !important;
+  border-bottom: none !important; color: #fff !important; z-index: 2;
+}
+.comm-ok-btn, a.comm-ok-btn {
+  display: inline-block !important;
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,.20) 0%, rgba(210,210,210,.92) 0%,
+    rgba(150,150,150,.82) 4%, rgba(90,90,90,.97) 52%,
+    rgba(45,45,45,1) 52%, rgba(75,75,75,.90) 100%) !important;
+  border: 1px solid rgba(200,200,200,.60) !important;
+  border-top-color: rgba(255,255,255,.30) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.20), 0 2px 6px rgba(0,0,0,.55) !important;
+  color: #fff !important; font-family: Tahoma, sans-serif !important;
+  font-size: 12px !important; padding: 6px 24px 8px !important;
+  text-decoration: none !important; cursor: pointer !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.8); position: relative !important;
+}
+.comm-ok-btn:hover, a.comm-ok-btn:hover {
+  filter: brightness(1.25) !important; color: #ffffff !important;
+  text-decoration: underline !important;
+}
+#commPanelBlog .hl, #commPanelBlog strong, .comm-wip strong { color: #e8e8e8 !important; }
+.na-span { color: #e8e8e8 !important; }
+.gi-avg  { color: #ffffff !important; }
+body.adaptive-accent-on .nav-icons {
+  filter: hue-rotate(1deg) saturate(1.05) !important;
+  -webkit-filter: hue-rotate(1deg) saturate(1.05) !important;
+}
+
+/* ── Pager ── */
+.vg-vote-badge { display: none !important; }
+.vg-pager {
+  display: flex; align-items: center; justify-content: center;
+  gap: 4px; padding: 5px 0 2px; flex-wrap: wrap;
+  font-family: Tahoma, sans-serif; font-size: 11px;
+}
+.vg-pager-btn {
+  cursor: pointer; padding: 2px 7px;
+  font-family: Tahoma, sans-serif; font-size: 11px;
+  user-select: none; border: 1px solid rgba(80,80,80,.4);
+  color: #888; background: rgba(10,10,10,.6);
+}
+.vg-pager-btn.active {
+  border-color: rgba(220,220,220,.6); color: #e8e8e8;
+  background: rgba(40,40,40,.5);
+}
+
+/* ══════════════════════════════════════════════════
+   BOTÕES FIXOS — Sounds e Theme
+   ══════════════════════════════════════════════════ */
+#soundToggle {
+  position: fixed; bottom: 8px; left: 10px; z-index: 9999;
+  font-family: Tahoma, sans-serif; font-size: 10px;
+  color: rgba(140,140,140,.55); cursor: pointer;
+  user-select: none; letter-spacing: .2px;
+  padding: 2px 0; background: none; border: none; outline: none;
+}
+#soundToggle:hover { color: rgba(200,200,200,.80); }
+#soundToggle.off   { color: rgba(90,90,90,.50); }
+
+#themeToggle {
+  position: fixed; bottom: 8px; left: 82px; z-index: 9999;
+  font-family: Tahoma, sans-serif; font-size: 10px;
+  color: rgba(140,140,140,.55); cursor: pointer;
+  user-select: none; letter-spacing: .2px;
+  padding: 2px 0; background: none; border: none; outline: none;
+}
+#themeToggle:hover { color: rgba(200,200,200,.80); }
+
+/* Gallery pager */
+#galleryPager {
+  display: flex; align-items: center; justify-content: center;
+  gap: 4px; padding: 6px 0 2px; flex-wrap: wrap;
+  font-family: Tahoma, sans-serif; font-size: 11px;
+}
+
+/* ══════════════════════════════════════════════════
+   MOBILE
+   ══════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  body { padding-top: 72px !important; }
+  #siteLogoTop { max-height: 56px; }
+  #websiteContainer::before { height: 56px; }
+  #navAndContentContainer { flex-direction: column; }
+  #navigationMenu {
+    width: 100% !important; height: auto !important;
+    border-bottom-left-radius: 0 !important;
+    flex-direction: row !important; flex-wrap: wrap !important;
+    padding: 4px !important; gap: 3px !important;
+    overflow: visible !important; justify-content: center !important;
+  }
+  .nav-categories {
+    flex-direction: row !important; flex-wrap: wrap !important;
+    justify-content: center !important; margin-bottom: 2px;
+  }
+  .navbar-titles { display: none !important; }
+  .nav-link {
+    width: auto !important; min-width: 70px !important; max-width: 130px !important;
+    flex: 1 1 70px !important; margin: 1px !important; padding: 5px 4px !important;
+    font-size: 11px !important; justify-content: center !important;
+    text-align: center !important; white-space: nowrap;
+  }
+  .nav-link:hover { margin: 1px !important; width: auto !important; padding: 5px 4px !important; min-width: 70px !important; }
+  .nav-link::before { display: none !important; }
+  .nav-icons { height: 13px !important; margin: 0 2px 0 0 !important; flex-shrink: 0; }
+  #mainContent { height: auto; min-height: 400px; }
+  #renaChan, #rikaChan { display: none !important; }
+}
+@media (max-width: 400px) {
+  .nav-link { font-size: 10px !important; min-width: 58px !important; padding: 4px 3px !important; }
+  .nav-icons { display: none !important; }
+}
+
+/* ══════════════════════════════════════════════════
+   WATANAGASHI PATCH — light site, black page bg,
+   pre-selected nav links, dotted separators
+   ══════════════════════════════════════════════════ */
+
+/* ── Logo: fixed top, centralizada, abaixo tudo ── */
 #siteLogoTop {
   position: absolute;
   top: 0;
@@ -159,11 +665,13 @@
   display: block;
 }
 
+/* ── Container relativo pra ::before funcionar ── */
 #websiteContainer {
   position: relative;
   margin: 0 auto;
 }
 
+/* Linha dotted embaixo da logo, contida no container */
 #websiteContainer::before {
   content: '';
   position: absolute;
@@ -177,25 +685,17 @@
   z-index: 9989;
 }
 
-/* ══════════════════════════════════════════════════
-   LAYOUT GERAL: preto puro, sem redimensionamento
-   ══════════════════════════════════════════════════ */
+/* Padding pra empurrar conteúdo abaixo da logo */
+body { padding-top: 310px !important; }
+
+/* ── Layout: centralizado ── */
 body {
-  padding-top: 310px !important;
   justify-content: center !important;
   align-items: flex-start !important;
-  background-color: #000 !important;
-  background-image: none !important;
-  min-height: 100vh;
+  background-color: #b8b8b8 !important;
 }
 
-/* Container fixo — sem salto */
-#websiteContainer {
-  width: 800px !important;
-  max-width: 100% !important;
-  min-height: 100vh;
-}
-
+/* ── Fundo do mainContent = PRETO ── */
 #mainContent {
   background: #000 !important;
   height: auto !important;
@@ -203,16 +703,64 @@ body {
   overflow-y: visible !important;
   color: #e8e8e8 !important;
   border: none !important;
-  /* Garante que não muda de tamanho */
-  width: 100% !important;
-  box-sizing: border-box !important;
 }
 
-/* ══════════════════════════════════════════════════
-   NAV — links soltos, sem ícones, "pré-selecionados"
-   (aparência de texto clicado/selecionado com mouse,
-   NÃO fundo preto — apenas highlight de seleção)
-   ══════════════════════════════════════════════════ */
+/* ── Texto geral dentro do main vira claro ── */
+#mainContent p,
+#mainContent .section-desc,
+#mainContent .empty-msg,
+#mainContent .vi-label,
+#mainContent .vi-val-date,
+#mainContent .vi-description { color: #aaa !important; }
+
+#mainContent .gi-card-title,
+#mainContent .vi-val-title,
+#mainContent .vi-title,
+#mainContent .pl-track-list li,
+#mainContent .pl-track-list li a { color: #ddd !important; }
+
+/* ── Glass borders: transparente com dotted ── */
+.glass-borders {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 1px dotted rgba(255,255,255,0.22) !important;
+  padding: 5px !important;
+  margin: 7px !important;
+}
+
+/* Separadores entre seções */
+.glass-borders + .glass-borders {
+  border-top: 1px dotted rgba(255,255,255,0.18) !important;
+}
+
+.aero-borders {
+  border: 1px dotted rgba(255,255,255,0.15) !important;
+}
+
+/* Textura glass overlay — removida */
+.aero-glass-overlay::after { display: none !important; }
+
+/* ── Containers internos: semi-transparente escuro ── */
+.styled-containers,
+.styled-containers-headers,
+.rights-content {
+  background: rgba(10,10,10,0.70) !important;
+  box-shadow: none !important;
+}
+
+/* ── Headers h1/h2/h3 e .rights-bar: branco c/ dotted bottom ── */
+h1, h2, h3, .rights-bar {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px dotted rgba(255,255,255,0.25) !important;
+  box-shadow: none !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  font-weight: 400 !important;
+}
+h1::before, h2::before, h3::before, .rights-bar::before { display: none !important; }
+
+/* ── NAV: links parecem PRÉ-SELECIONADOS ── */
 #navigationMenu {
   background: rgba(255,255,255,0.96) !important;
   border: 1px dotted rgba(0,0,0,0.25) !important;
@@ -221,7 +769,6 @@ body {
   flex-direction: column !important;
   align-items: stretch !important;
   padding: 6px 5px 12px !important;
-  width: 162px;
 }
 
 .nav-categories {
@@ -231,172 +778,80 @@ body {
   flex-direction: column !important;
   align-items: stretch !important;
   width: 100% !important;
-  gap: 1px !important;
+  gap: 3px !important;
   padding: 2px 0 !important;
   margin-bottom: 4px !important;
 }
 
 .navbar-titles {
-  background: transparent !important;
+  background: rgba(0,0,0,0.08) !important;
   border: none !important;
-  border-bottom: 1px dotted rgba(0,0,0,0.18) !important;
-  color: #777 !important;
+  border-bottom: 1px dotted rgba(0,0,0,0.20) !important;
+  color: #555 !important;
   font-size: 10px !important;
   letter-spacing: 1px !important;
   text-transform: uppercase !important;
-  padding: 2px 4px !important;
-  margin-bottom: 3px !important;
+  padding: 3px 6px !important;
+  margin-bottom: 4px !important;
   text-shadow: none !important;
-  box-shadow: none !important;
-  font-family: Georgia, serif !important;
 }
 
-/* Links: aparência de texto "selecionado com mouse" —
-   fundo azul de seleção do sistema, sem borda preta */
+/* Nav link: preto permanente = "selecionado" */
 .nav-link {
-  background: rgba(0, 100, 210, 0.18) !important;
-  border: 1px solid transparent !important;
-  border-radius: 2px !important;
-  color: #000 !important;
+  background: #111 !important;
+  border: 1px solid #000 !important;
+  border-radius: 3px !important;
+  color: #e8e8e8 !important;
   box-shadow: none !important;
-  padding: 3px 6px !important;
-  margin: 1px 0 !important;
+  padding: 4px 6px !important;
+  margin: 0 0 2px 0 !important;
   width: 100% !important;
   justify-content: flex-start !important;
   text-align: left !important;
-  font-size: 11.5px !important;
+  font-size: 11px !important;
   display: flex !important;
   align-items: center !important;
   text-decoration: none !important;
-  cursor: pointer !important;
-  transition: none !important;
-  position: relative !important;
 }
 .nav-link::before { display: none !important; }
 
-/* Ícones ocultos */
-.nav-link .nav-icons { display: none !important; }
-
-/* Hover: aumenta a intensidade da seleção + borda dotted */
 .nav-link:hover {
-  background: rgba(0, 100, 210, 0.28) !important;
-  color: #000 !important;
-  text-decoration: none !important;
-  margin: 1px 0 !important;
-  width: 100% !important;
-  padding: 3px 6px !important;
-  box-shadow: none !important;
-  outline: 1px dotted rgba(0,0,0,0.50) !important;
-}
-
-/* Active: seleção mais forte */
-.nav-link.active {
-  background: rgba(0, 100, 210, 0.32) !important;
-  color: #000 !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-  outline: 1px dotted rgba(0, 80, 180, 0.60) !important;
-}
-
-/* ══════════════════════════════════════════════════
-   HOVER DOTTED em qualquer elemento clicável
-   ══════════════════════════════════════════════════ */
-a:hover,
-button:hover,
-[onclick]:hover,
-.vg-entry:hover,
-.gi-card:hover,
-.gi-card-imgwrap:hover,
-.gi-lb-arrow:hover,
-.comm-tab:hover,
-.mp-ctrl-btn:hover,
-.mp-download-btn:hover,
-.mp-dark-btn:hover,
-.vi-btn:hover,
-.sort-toggle-btn:hover,
-.vg-pager-btn:hover,
-.comm-ok-btn:hover,
-.contact-links a:hover,
-#galPlusBtn:hover,
-#mpPlusBtn:hover,
-#soundToggle:hover,
-#themeToggle:hover {
-  outline: 1px dotted rgba(255,255,255,0.55) !important;
-}
-
-/* Exceção: nav links já têm outline próprio */
-.nav-link:hover {
-  outline: 1px dotted rgba(0,0,0,0.50) !important;
-}
-
-/* ══════════════════════════════════════════════════
-   HEADERS: texto branco "pre-selected" em fundo preto
-   ══════════════════════════════════════════════════ */
-h1, h2, h3, .rights-bar {
-  background: #000 !important;
-  border: none !important;
-  border-bottom: 1px dotted rgba(255,255,255,0.25) !important;
-  box-shadow: none !important;
+  background: #222 !important;
   color: #fff !important;
-  text-shadow: none !important;
-  font-weight: 400 !important;
-  font-family: Georgia, 'Times New Roman', serif !important;
-}
-h1::before, h2::before, h3::before, .rights-bar::before { display: none !important; }
-
-/* ══════════════════════════════════════════════════
-   GLASS BORDERS — transparente com dotted
-   ══════════════════════════════════════════════════ */
-.glass-borders {
-  background: transparent !important;
+  text-decoration: underline !important;
+  margin: 0 0 2px 0 !important;
+  width: 100% !important;
+  padding: 4px 6px !important;
   box-shadow: none !important;
-  border: 1px dotted rgba(255,255,255,0.22) !important;
-  padding: 5px !important;
-  margin: 7px !important;
 }
-.aero-borders {
-  border: 1px dotted rgba(255,255,255,0.15) !important;
-  background: transparent !important;
-}
-.aero-glass-overlay::after { display: none !important; }
 
-/* Containers internos */
-.styled-containers,
-.styled-containers-headers,
-.rights-content {
-  background: rgba(10,10,10,0.80) !important;
+.nav-link.active {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #444 !important;
   box-shadow: none !important;
-  color: #ddd !important;
 }
 
-/* ══════════════════════════════════════════════════
-   TEXTO GERAL — sempre legível: fundo preto, texto claro
-   Títulos / "pre-selected": fundo preto, texto branco
-   ══════════════════════════════════════════════════ */
-#mainContent p,
-#mainContent .section-desc,
-#mainContent .empty-msg,
-#mainContent .vi-label,
-#mainContent .vi-val-date,
-#mainContent .vi-description { color: #aaa !important; font-family: Georgia, serif !important; }
+.nav-icons {
+  filter: brightness(2) !important;
+  height: 14px !important;
+  margin: 0 5px 0 2px !important;
+}
 
-#mainContent .gi-card-title,
-#mainContent .vi-val-title,
-#mainContent .vi-title,
-#mainContent .pl-track-list li,
-#mainContent .pl-track-list li a { color: #ddd !important; }
+/* ── Header principal: branco limpo ── */
+#mainHeader {
+  background: rgba(255,255,255,0.97) !important;
+  border: 1px solid rgba(0,0,0,0.12) !important;
+  border-bottom: 1px dotted rgba(0,0,0,0.20) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  display: none !important; /* logo substitui */
+}
 
-p { color: #ccc !important; }
-a { color: #ddd !important; }
-a:hover { color: #fff !important; }
-.hl, strong { color: #e8e8e8 !important; }
-
-/* ══════════════════════════════════════════════════
-   CONTACT / RESOURCE LINKS
-   ══════════════════════════════════════════════════ */
+/* ── Contact/Resource links: preto pré-selecionado ── */
 .contact-links { list-style: none !important; margin: 0 !important; padding: 0 !important; }
 .contact-links li {
-  border-bottom: 1px dotted rgba(255,255,255,0.10) !important;
+  border-bottom: 1px dotted rgba(255,255,255,0.12) !important;
 }
 .contact-links li:last-child { border-bottom: none !important; }
 .contact-links a {
@@ -405,15 +860,17 @@ a:hover { color: #fff !important; }
   gap: 10px !important;
   padding: 8px 12px !important;
   background: #0a0a0a !important;
-  color: #ccc !important;
+  color: #ddd !important;
   text-decoration: none !important;
+  font-family: Tahoma, sans-serif !important;
   font-size: 12.5px !important;
 }
 .contact-links a:hover {
   background: #1a1a1a !important;
   color: #fff !important;
+  text-decoration: none !important;
 }
-.contact-links .link-note { color: #666 !important; font-size: 11px !important; }
+.contact-links .link-note { color: #777 !important; font-size: 11px !important; }
 .contact-links a strong { color: #e8e8e8 !important; }
 .contact-links a img {
   filter: none !important;
@@ -423,9 +880,7 @@ a:hover { color: #fff !important; }
   flex-shrink: 0 !important;
 }
 
-/* ══════════════════════════════════════════════════
-   PLAYER — bars em preto flat
-   ══════════════════════════════════════════════════ */
+/* ── Player bars: preto flat ── */
 .mp-header-bar,
 .mp-controls-row,
 .mp-status-bar,
@@ -445,6 +900,7 @@ a:hover { color: #fff !important; }
 
 #musicBackground { background: #050505 !important; }
 #musicPlayerPlaylist { background: #050505 !important; }
+
 .mp-progress-track { background: #222 !important; border-color: rgba(80,80,80,.50) !important; }
 .mp-progress-fill  { background: #888 !important; }
 .mp-vol-wrap       { background: #222 !important; border-color: rgba(80,80,80,.50) !important; }
@@ -460,40 +916,7 @@ a:hover { color: #fff !important; }
   background: linear-gradient(to right, transparent, rgba(255,255,255,.15), transparent) !important;
 }
 
-/* ══════════════════════════════════════════════════
-   CD
-   ══════════════════════════════════════════════════ */
-#spinningDisk { display: none !important; }
-#cdDisc {
-  width: 155px; height: 136px;
-  display: block; flex-shrink: 0;
-  cursor: pointer; border-radius: 50%;
-  object-fit: contain; margin-top: 2px;
-  filter: drop-shadow(0 0 6px rgba(200,200,200,.35));
-  animation-name: _cdSpin;
-  animation-duration: 5000ms;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-play-state: paused;
-}
-#cdDisc.cd-playing { animation-play-state: running; }
-
-#playlistRight {
-  display: flex !important; flex-direction: column !important;
-  align-items: center !important; justify-content: flex-start !important;
-  padding: 8px 6px !important; gap: 6px !important;
-  width: 183px !important; flex-shrink: 0 !important;
-  overflow: visible !important;
-}
-#visualizerCanvas {
-  background: rgba(4,4,4,.97) !important;
-  border: 1px solid rgba(100,100,100,.35);
-  width: 163px !important; display: block; cursor: default;
-}
-
-/* ══════════════════════════════════════════════════
-   COMM TABS
-   ══════════════════════════════════════════════════ */
+/* ── Comm tabs: preto ── */
 .comm-tab-bar {
   background: #000 !important;
   border-bottom: 1px dotted rgba(255,255,255,.25) !important;
@@ -503,7 +926,6 @@ a:hover { color: #fff !important; }
   border: 1px dotted rgba(255,255,255,.20) !important;
   border-bottom: none !important;
   background: #111 !important;
-  font-family: Georgia, serif !important;
 }
 .comm-tab:hover { color: #ddd !important; background: #1a1a1a !important; }
 .comm-tab.active,
@@ -521,7 +943,6 @@ button.comm-tab.active {
   color: #e8e8e8 !important;
   box-shadow: none !important;
   text-shadow: none !important;
-  font-family: Georgia, serif !important;
 }
 .comm-ok-btn:hover, a.comm-ok-btn:hover {
   background: #222 !important;
@@ -529,34 +950,7 @@ button.comm-tab.active {
   filter: none !important;
 }
 
-/* ══════════════════════════════════════════════════
-   GALLERY CARDS
-   ══════════════════════════════════════════════════ */
-.gi-card {
-  background: #0d0d0d !important;
-  border: 1px dotted rgba(255,255,255,.15) !important;
-}
-.gi-card-title { color: #ddd !important; }
-.gi-card-date, .gi-card-desc, .gi-cnt { color: #777 !important; }
-.gi-card-imgwrap { background: #111 !important; }
-
-.vg-entry {
-  background: #0d0d0d !important;
-  border: 1px dotted rgba(255,255,255,.15) !important;
-}
-.vg-title { color: #ccc !important; }
-
-/* ══════════════════════════════════════════════════
-   VIDEO INFO BOX
-   ══════════════════════════════════════════════════ */
-.video-info-box { background: #0a0a0a !important; border-color: rgba(255,255,255,.12) !important; }
-.vi-body { background: #0a0a0a !important; }
-.vi-title, .vi-val-title { color: #ddd !important; }
-.vi-desc, .vi-date, .vi-label, .vi-val-date, .vi-description { color: #777 !important; }
-
-/* ══════════════════════════════════════════════════
-   COPYRIGHT
-   ══════════════════════════════════════════════════ */
+/* ── Copyright notice ── */
 .copyright-notice {
   background: #0a0a0a !important;
   color: #888 !important;
@@ -565,146 +959,90 @@ button.comm-tab.active {
 .copyright-notice a { color: #aaa !important; }
 .copyright-notice a:hover { color: #fff !important; }
 
-/* ══════════════════════════════════════════════════
-   VISITOR COUNTER
-   ══════════════════════════════════════════════════ */
+/* ── Gallery cards ── */
+.gi-card {
+  background: #0d0d0d !important;
+  border: 1px dotted rgba(255,255,255,.15) !important;
+}
+.gi-card:hover { border-color: rgba(255,255,255,.40) !important; }
+.gi-card-title { color: #ddd !important; }
+.gi-card-date, .gi-card-desc, .gi-cnt { color: #777 !important; }
+.gi-card-imgwrap { background: #111 !important; }
+
+.vg-entry {
+  background: #0d0d0d !important;
+  border: 1px dotted rgba(255,255,255,.15) !important;
+}
+.vg-entry:hover { border-color: rgba(255,255,255,.40) !important; background: #1a1a1a !important; }
+.vg-title { color: #ccc !important; }
+
+/* ── Video info box ── */
+.video-info-box { background: #0a0a0a !important; border-color: rgba(255,255,255,.12) !important; }
+.vi-body { background: #0a0a0a !important; }
+.vi-title, .vi-val-title { color: #ddd !important; }
+.vi-desc, .vi-date, .vi-label, .vi-val-date, .vi-description { color: #777 !important; }
+
+/* ── Visitor counter ── */
 #visitor-counter-wrap {
   border-top: 1px dotted rgba(255,255,255,.15) !important;
-  color: #555 !important;
+  color: #666 !important;
 }
 
-/* ══════════════════════════════════════════════════
-   PREFS — apenas Rika perms e Sort
-   ══════════════════════════════════════════════════ */
-#pg-preferences { background: #000; }
-#pg-preferences button,
-#pg-preferences select,
-#_prefBar button,
-#_prefBar select {
-  border-color: rgba(255,255,255,.30) !important;
-  font-family: Georgia, serif !important;
+/* ── Botões fixos ── */
+#soundToggle {
+  position: fixed; bottom: 8px; left: 10px; z-index: 9999;
+  font-family: Tahoma, sans-serif; font-size: 10px;
+  color: rgba(80,80,80,.65); cursor: pointer;
+  user-select: none; letter-spacing: .2px;
+  padding: 2px 0; background: none; border: none; outline: none;
 }
-#pg-preferences select, #_prefBar select {
-  border: 1px solid rgba(255,255,255,.35) !important;
-  background: #111 !important;
-  color: #e8e8e8 !important;
-}
-#_prefBar button {
-  background: #111 !important;
-  border: 1px solid rgba(200,200,200,.30) !important;
-  color: rgba(220,220,220,0.85) !important;
-  font-size: 11px !important;
-  cursor: pointer !important;
-  padding: 2px 8px !important;
-}
-#_prefBar button:hover {
-  color: #fff !important;
-  border-color: rgba(255,255,255,.65) !important;
-  background: #222 !important;
-}
+#soundToggle:hover { color: rgba(0,0,0,.85); }
+#soundToggle.off   { color: rgba(140,140,140,.50); }
 
-/* ══════════════════════════════════════════════════
-   PAGER BUTTONS
-   ══════════════════════════════════════════════════ */
-.vg-vote-badge { display: none !important; }
-.vg-pager-btn {
-  cursor: pointer; padding: 2px 7px;
-  font-size: 11px; user-select: none;
-  border: 1px dotted rgba(255,255,255,.25);
-  color: #888; background: rgba(10,10,10,.6);
-}
-.vg-pager-btn.active {
-  border-color: rgba(220,220,220,.6); color: #e8e8e8;
-  background: rgba(40,40,40,.5);
-}
-
-/* ══════════════════════════════════════════════════
-   IMAGES sem filtro
-   ══════════════════════════════════════════════════ */
-body #introBanner, body .contact-banner, body .faa-logo-img,
-body .rights-content img, body #visitor-counter-wrap img,
-body .gi-awarded-img, body .gi-card-img, body .gi-card-imgwrap img,
-body .vg-thumb, body #renaChan, body #rikaChan, body #rikaTransformFlash,
-body #mpLikeBtn img, body #mpDislikeBtn img, body .vi-icon-vote-btn img,
-body .contact-links img, body .contact-links a img, body .contact-links li a img {
-  filter: none !important; -webkit-filter: none !important;
-}
-
-/* ══════════════════════════════════════════════════
-   HEADER PRINCIPAL: oculto (logo substitui)
-   ══════════════════════════════════════════════════ */
-#mainHeader { display: none !important; }
-
-/* ══════════════════════════════════════════════════
-   SCROLLBAR
-   ══════════════════════════════════════════════════ */
+/* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; height: 6px; background: transparent; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(80,80,80,.50); border-radius: 0; border: none; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(80,80,80,.80); }
 html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
 
-/* ══════════════════════════════════════════════════
-   BOTÕES FIXOS — Sounds
-   ══════════════════════════════════════════════════ */
-#soundToggle {
-  position: fixed; bottom: 8px; left: 10px; z-index: 9999;
-  font-size: 10px; font-family: Georgia, serif !important;
-  color: rgba(140,140,140,.55); cursor: pointer;
-  user-select: none; letter-spacing: .2px;
-  padding: 2px 0; background: none; border: none; outline: none;
-}
-#soundToggle:hover { color: rgba(200,200,200,.80); }
-#soundToggle.off   { color: rgba(90,90,90,.50); }
-
-#themeToggle {
-  position: fixed; bottom: 8px; left: 82px; z-index: 9999;
-  font-size: 10px; font-family: Georgia, serif !important;
-  color: rgba(140,140,140,.55); cursor: pointer;
-  user-select: none; letter-spacing: .2px;
-  padding: 2px 0; background: none; border: none; outline: none;
-}
-#themeToggle:hover { color: rgba(200,200,200,.80); }
-
-/* ══════════════════════════════════════════════════
-   MOBILE
-   ══════════════════════════════════════════════════ */
-@media (max-width: 800px) {
-  body { padding-top: 220px !important; }
-  #siteLogoTop { max-height: 210px; }
-  #websiteContainer::before { height: 210px; }
-  #websiteContainer { width: 100% !important; }
-}
-
+/* ── Mobile ── */
 @media (max-width: 600px) {
-  body { padding-top: 90px !important; }
-  #siteLogoTop { max-height: 75px; }
-  #websiteContainer::before { height: 75px; }
+  body { padding-top: 80px !important; }
+  #siteLogoTop { max-height: 60px; }
+  #websiteContainer::before { height: 60px; }
   #navAndContentContainer { flex-direction: column; }
   #navigationMenu {
-    width: 100% !important; height: auto !important;
+    width: 100% !important;
     border-bottom-left-radius: 0 !important;
-    flex-direction: row !important; flex-wrap: wrap !important;
-    padding: 4px !important; gap: 2px !important;
-    overflow: visible !important; justify-content: center !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    padding: 4px !important;
+    gap: 3px !important;
+    justify-content: center !important;
   }
   .nav-categories {
-    flex-direction: row !important; flex-wrap: wrap !important;
-    justify-content: center !important; margin-bottom: 2px;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
   }
   .navbar-titles { display: none !important; }
   .nav-link {
-    width: auto !important; min-width: 70px !important; max-width: 130px !important;
-    flex: 1 1 70px !important; margin: 1px !important; padding: 5px 4px !important;
-    font-size: 11px !important; justify-content: center !important;
-    text-align: center !important; white-space: nowrap;
+    width: auto !important;
+    min-width: 70px !important;
+    flex: 1 1 70px !important;
+    margin: 1px !important;
+    padding: 5px 4px !important;
+    font-size: 11px !important;
+    justify-content: center !important;
+    text-align: center !important;
   }
-  #mainContent { height: auto; min-height: 400px; }
+  .nav-icons { height: 12px !important; margin: 0 3px 0 0 !important; }
   #renaChan, #rikaChan { display: none !important; }
 }
-
 @media (max-width: 400px) {
-  .nav-link { font-size: 10px !important; min-width: 58px !important; padding: 4px 3px !important; }
+  .nav-link { font-size: 10px !important; min-width: 58px !important; }
+  .nav-icons { display: none !important; }
 }
 
 </style>
@@ -723,9 +1061,12 @@ html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
       <div id="navigationMenu">
         <nav class="nav-categories">
           <span class="navbar-titles">Navigation</span>
-          <a class="nav-link" id="nbtn-introduction" href="#introduction" onclick="return navClick(event,'introduction')">Introduction</a>
-          <a class="nav-link" id="nbtn-contact" href="pages/contact.html">Contact</a>
-          <a class="nav-link" id="nbtn-resources" href="#resources" onclick="return navClick(event,'resources')">Resources</a>
+          <a class="nav-link" id="nbtn-introduction" href="#introduction" onclick="return navClick(event,'introduction')">
+            <img src="https://frutigeraeroarchive.org/images/introduction.png" class="nav-icons" alt="" draggable="false">Introduction</a>
+          <a class="nav-link" id="nbtn-contact" href="pages/contact.html">
+            <img src="https://frutigeraeroarchive.org/images/contact.png" class="nav-icons" alt="" draggable="false">Contact</a>
+          <a class="nav-link" id="nbtn-resources" href="#resources" onclick="return navClick(event,'resources')">
+            <img src="https://frutigeraeroarchive.org/images/resources.png" class="nav-icons" alt="" draggable="false">Resources</a>
         </nav>
         <div id="_themesBtnWrap" style="display:none;padding:4px 5px 2px;margin-top:4px;">
           <button id="_themesBtn" onclick="window._themesPanelToggle && window._themesPanelToggle(event)">Themes</button>
@@ -743,15 +1084,18 @@ html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
             <img id="introBanner" src="assets/images/bannerintroduction.jpg" alt="Banner" draggable="false">
           </div>
           <article class="styled-containers-headers aero-borders">
-            <p>Welcome to <span class="hl">The Watanagashi Archive</span> &mdash; a personal fan site &amp; archive.</p>
-            <p style="margin-top:7px">This site is a personal space for self-expression, music, media &amp; projects. I'll try to keep updating it.</p>
+            <p>Welcome to <span class="hl">The Watanagashi Archive</span> &mdash; a personal fan spin-off inspired by the
+              <a href="https://frutigeraeroarchive.org/" target="_blank" class="green">Frutiger Aero Archive</a>.</p>
+            <p style="margin-top:7px">This site is a personal space for self-expression, music, media &amp; projects! i'll try to keep updating it up.</p>
           </article>
           <div class="styled-containers aero-borders" style="text-align:center;padding:14px 10px;">
-            <p style="font-size:14px;color:#888;">i regret nothing</p>
+            <p style="font-size:14px;"><a href="https://en.wikipedia.org/wiki/Anti-Fascist_Action"><strong>161</strong></a> <span style="color:#888">// i regret nothing</span></p>
           </div>
           <div class="rights-bar">Credits</div>
           <div class="rights-content aero-borders">
-            <p>Kaomoji resource: <a href="https://kaomoji.you/" target="_blank" style="color:#aaa;">kaomoji.you</a></p>
+            <img src="https://frutigeraeroarchive.org/images/themes/default/logo.png" alt="FAA logo" class="faa-logo-img" draggable="false">
+            <p><a href="https://frutigeraeroarchive.org/" target="_blank" class="green">Frutiger Aero Archive Website</a>
+              &mdash; a digital museum and tribute to old 2000s aesthetics, notably Frutiger Aero. Originally by: <a href="https://daniele63.com/" target="_blank" class="green">Daniele</a></p>
           </div>
         </div>
         <div id="visitor-counter-wrap">
@@ -771,7 +1115,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
           <div class="rights-bar" style="margin-top:5px">Pages</div>
           <div class="aero-borders" style="background:#000;">
             <ul class="contact-links">
-              <li><a href="pages/musicplayer.html"><img src="https://frutigeraeroarchive.org/images/music.png" alt="" draggable="false"><span class="link-label"><strong style="color:#e8e8e8">Music Player</strong></span><span class="link-note">listen to handpicked tracks</span></a></li>
+              <li><a href="pages/musicplayer.html"><img src="https://frutigeraeroarchive.org/images/music.png" alt="" draggable="false"><span class="link-label"><strong style="color:var(--th-accent)">Music Player</strong></span><span class="link-note">listen to handpicked tracks</span></a></li>
               <li><a href="#videos" onclick="return navClick(event,'videos')"><img src="https://frutigeraeroarchive.org/images/videos.png" alt="" draggable="false"><span class="link-label">Video Player</span><span class="link-note">anime OPs, nostalgia &amp; more</span></a></li>
               <li><a href="#sketchbook" onclick="return navClick(event,'sketchbook')"><img src="https://frutigeraeroarchive.org/images/sketchbook.png" alt="" draggable="false"><span class="link-label">Sketchbook</span><span class="link-note">gallery &amp; JS Paint</span></a></li>
               <li><a href="#community" onclick="return navClick(event,'community')"><img src="https://frutigeraeroarchive.org/images/forum.png" alt="" draggable="false"><span class="link-label">Community</span><span class="link-note">chat &amp; blog</span></a></li>
@@ -781,7 +1125,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
           <div class="rights-bar" style="margin-top:5px">Tools &amp; Projects</div>
           <div class="aero-borders" style="background:#000;">
             <ul class="contact-links" id="resourcesList">
-              <li><a href="pages/downloader.html" target="_blank"><img src="https://img1.picmix.com/output/stamp/thumb/2/4/9/3/2663942_6e48f.png" alt="" draggable="false"><span class="link-label"><strong style="color:#e8e8e8">Ultimate Downloader Converter</strong></span><span class="link-note">Spotify/YouTube/SoundCloud &rarr; ZIP &mdash; IN DEV</span></a></li>
+              <li><a href="pages/downloader.html" target="_blank"><img src="https://img1.picmix.com/output/stamp/thumb/2/4/9/3/2663942_6e48f.png" alt="" draggable="false"><span class="link-label"><strong style="color:var(--th-accent)">Ultimate Downloader Converter</strong></span><span class="link-note">Spotify/YouTube/SoundCloud &rarr; ZIP &mdash; IN DEV</span></a></li>
               <li><a href="#" style="pointer-events:none;opacity:.45;"><img src="https://img1.picmix.com/output/stamp/thumb/0/3/8/1/2841830_50b26.png" alt="" draggable="false"><span class="link-label">File Dumpster</span><span class="link-note">coming soon</span></a></li>
               <li><a href="#" style="pointer-events:none;opacity:.45;"><img src="https://img1.picmix.com/output/stamp/thumb/5/5/9/3/2663955_e356e.png" alt="" draggable="false"><span class="link-label">RabbitHoles / WeirdSites / RandomSites</span><span class="link-note">coming soon</span></a></li>
               <li><a href="#" style="pointer-events:none;opacity:.45;"><img src="https://img1.picmix.com/output/stamp/thumb/7/0/4/3/2653407_2a8c5.png" alt="" draggable="false"><span class="link-label">Projects</span><span class="link-note">coming soon</span></a></li>
@@ -791,15 +1135,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
       </div>
 
       <!-- ══ PREFERENCES ══ -->
-      <div id="pg-preferences" class="page">
-        <h1>Preferences</h1>
-        <div class="glass-borders">
-          <div class="styled-containers aero-borders" style="padding:12px 14px;">
-            <!-- Apenas perms de Rika e Sort são exibidas aqui -->
-            <div id="_prefBar"></div>
-          </div>
-        </div>
-      </div>
+      <div id="pg-preferences" class="page"><h1>Preferences</h1></div>
 
       <!-- ══ MUSIC ══ -->
       <div id="pg-music" class="page">
@@ -837,7 +1173,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
               </div>
               <span style="flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;">Currently playing: <span id="audioName">&mdash;</span></span>
               <span id="mpPlusBtn" title="Options" style="cursor:pointer;font-size:15px;font-weight:bold;color:rgba(200,200,200,.55);padding:0 3px;user-select:none;flex-shrink:0;line-height:1;">+</span>
-              <div id="mpPlusPopup" style="display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;background:#0a0202;border:1px solid rgba(180,20,20,.5);min-width:200px;font-size:12px;padding:4px 0;box-shadow:0 -4px 16px rgba(0,0,0,.8);" onclick="event.stopPropagation()">
+              <div id="mpPlusPopup" style="display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;background:#0a0202;border:1px solid rgba(180,20,20,.5);min-width:200px;font-family:Tahoma,sans-serif;font-size:12px;padding:4px 0;box-shadow:0 -4px 16px rgba(0,0,0,.8);" onclick="event.stopPropagation()">
                 <div id="mpPopRandom" style="padding:7px 16px;cursor:pointer;color:#ccc;">Random</div>
                 <div id="mpPopShuffle" style="padding:7px 16px;cursor:pointer;color:#ccc;">Shuffle: OFF</div>
                 <div style="border-top:1px solid rgba(255,255,255,.06);margin:3px 0;"></div>
@@ -882,7 +1218,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
             <h2>Gallery</h2>
             <div style="position:relative;">
               <span id="galPlusBtn" title="Sort Options" style="cursor:pointer;font-size:17px;font-weight:bold;color:rgba(200,200,200,.55);padding:2px 6px;user-select:none;line-height:1;display:inline-block;">+</span>
-              <div id="galPlusPopup" style="display:none;position:absolute;right:0;top:100%;z-index:300;background:#050505;border:1px solid rgba(180,20,20,.4);min-width:180px;font-size:12px;padding:4px 0;">
+              <div id="galPlusPopup" style="display:none;position:absolute;right:0;top:100%;z-index:300;background:#050505;border:1px solid rgba(180,20,20,.4);min-width:180px;font-family:Tahoma,sans-serif;font-size:12px;padding:4px 0;">
                 <div style="padding:4px 14px 2px;color:rgba(255,254,254);font-size:10px;letter-spacing:1px;text-transform:uppercase;">Sort</div>
                 <div id="galSortItems"></div>
               </div>
@@ -920,7 +1256,7 @@ html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
         <div id="commPanelChat" class="comm-panel">
           <div class="glass-borders"><div class="aero-borders styled-containers-headers"><p style="margin-bottom:6px;">Welcome to the <span class="hl">Watanagashi Archive Community Chat</span>!</p><p>Feel free to talk about anime, music, nostalgia, or anything on your mind. Please be respectful and keep it civil.</p></div></div>
           <div class="glass-borders"><div class="rights-bar" style="margin:0">Chat Rules</div><div class="aero-borders styled-containers" style="padding:10px 14px;"><p style="margin-bottom:5px;color:#aaa;font-size:11.5px;">By participating you agree to the following:</p><ul style="margin:0 0 0 18px;padding:0;color:#bbb;font-size:11.5px;line-height:1.8;"><li>Be respectful.</li><li>No hate speech or targeted harassment.</li><li>Keep links SFW &mdash; share or click at your own responsibility.</li><li>No impersonation of the site owner or other users.</li><li>The site owner reserves the right to moderate without notice.</li></ul></div></div>
-          <div class="glass-borders"><div class="rights-bar" style="margin:0">Live Chat</div><div class="aero-borders" style="background:#000;padding:8px;display:flex;justify-content:center;align-items:center;min-height:392px;"><div id="chatangoWrap" style="width:400px;height:350px;display:flex;align-items:center;justify-content:center;margin:0 auto;"><span style="color:#555;font-size:12px;">Chat will load when you open this tab&hellip;</span></div></div></div>
+          <div class="glass-borders"><div class="rights-bar" style="margin:0">Live Chat</div><div class="aero-borders" style="background:#000;padding:8px;display:flex;justify-content:center;align-items:center;min-height:392px;"><div id="chatangoWrap" style="width:400px;height:350px;display:flex;align-items:center;justify-content:center;margin:0 auto;"><span style="color:#555;font-size:12px;font-family:Tahoma,sans-serif;">Chat will load when you open this tab&hellip;</span></div></div></div>
         </div>
         <div id="commPanelBlog" class="comm-panel" style="display:none;">
           <div class="glass-borders"><div class="aero-borders styled-containers" style="text-align:center;padding:30px 20px;">
@@ -1018,66 +1354,50 @@ document.addEventListener('DOMContentLoaded',function(){
 <script src="scripts/js/sounds.js"></script>
 
 <script>
-/* ══ Sounds — corrigido ══ */
+/* ══ Sounds ══ */
 (function () {
-  /* Estado interno, independente de qualquer variável externa */
-  var _on = true;
-
-  function _syncBtn() {
+  function _syncSoundBtn(on) {
     var btn = document.getElementById('soundToggle');
     if (!btn) return;
-    btn.textContent = _on ? 'Sounds: On' : 'Sounds: Off';
-    btn.classList.toggle('off', !_on);
+    btn.textContent = on ? 'Sounds: On' : 'Sounds: Off';
+    btn.classList.toggle('off', !on);
   }
-
-  /* Restaura preferência salva na sessão */
-  (function(){
-    var stored = sessionStorage.getItem('_soundsOn');
-    if (stored === 'false') _on = false;
-  })();
-
   document.addEventListener('DOMContentLoaded', function () {
-    _syncBtn();
-
-    var btn = document.getElementById('soundToggle');
-    if (btn) {
-      btn.onclick = function () {
-        _on = !_on;
-        sessionStorage.setItem('_soundsOn', String(_on));
-        _syncBtn();
-        /* Tenta acionar o toggle nativo do site, se existir */
-        if (typeof window.toggleSound === 'function') {
-          /* Verifica se o estado do site bate com o nosso e corrige */
-          var siteOn = (typeof window._soundsOn !== 'undefined') ? window._soundsOn : true;
-          if (siteOn !== _on) window.toggleSound();
-        }
-      };
+    var stored = sessionStorage.getItem('_soundsOn');
+    if (stored === 'false') {
+      if (typeof window._soundsOn !== 'undefined') window._soundsOn = false;
+      _syncSoundBtn(false);
     }
-
-    /* Sobrescreve toggleSound para manter sincronizado */
     var _orig = window.toggleSound;
     window.toggleSound = function () {
       if (_orig) _orig();
-      var siteOn = (typeof window._soundsOn !== 'undefined') ? window._soundsOn : _on;
-      _on = siteOn;
-      sessionStorage.setItem('_soundsOn', String(_on));
-      _syncBtn();
+      var nowOn = typeof window._soundsOn !== 'undefined' ? window._soundsOn : true;
+      sessionStorage.setItem('_soundsOn', String(nowOn));
+      _syncSoundBtn(nowOn);
     };
   });
 })();
-
 /* ══ Theme: Dark / Light ══ */
 (function () {
-  /* Anti-flash — aplica antes do DOM carregar */
+  /* Anti-flash: aplica antes do DOM carregar */
   (function(){
-    var s = sessionStorage.getItem('_colorMode') || 'dark';
-    if (s === 'light') document.documentElement.setAttribute('data-color-mode', 'light');
-    else document.documentElement.removeAttribute('data-color-mode');
+    var s = sessionStorage.getItem('_colorMode');
+    if (s) {
+      if (s === 'light') {
+        document.documentElement.setAttribute('data-color-mode', 'light');
+      } else {
+        document.documentElement.removeAttribute('data-color-mode');
+      }
+    } else {
+      // padrão = LIGHT
+      document.documentElement.setAttribute('data-color-mode', 'light');
+    }
   })();
 
   function _applyTheme(mode) {
     var root = document.documentElement;
     var btn  = document.getElementById('themeToggle');
+
     if (mode === 'light') {
       root.setAttribute('data-color-mode', 'light');
       if (btn) btn.textContent = 'Theme: Light';
@@ -1085,22 +1405,27 @@ document.addEventListener('DOMContentLoaded',function(){
       root.removeAttribute('data-color-mode');
       if (btn) btn.textContent = 'Theme: Dark';
     }
+
     sessionStorage.setItem('_colorMode', mode);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    var stored = sessionStorage.getItem('_colorMode') || 'dark';
+    var stored = sessionStorage.getItem('_colorMode') || 'light'; // ← AQUI mudou
     _applyTheme(stored);
   });
 
   window.toggleThemeMode = function () {
     var current = document.documentElement.getAttribute('data-color-mode');
-    _applyTheme(current === 'light' ? 'dark' : 'light');
+
+    // se não tiver atributo, é DARK
+    var isLight = current === 'light';
+
+    _applyTheme(isLight ? 'dark' : 'light');
   };
 })();
 </script>
 
-<button id="soundToggle" onclick="">Sounds: On</button>
+<button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 <!-- <button id="themeToggle" onclick="toggleThemeMode()">Theme: Dark</button> -->
 
 </body>
