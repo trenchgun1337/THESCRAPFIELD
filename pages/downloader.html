@@ -5,291 +5,215 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ultimate Downloader Converter — Watanagashi Archive</title>
 <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-<link rel="stylesheet" href="https://unpkg.com/7.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
 <style>
 /* ── Reset ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
-/* ── Override 7.css global blue interactions ── */
 * { -webkit-tap-highlight-color: transparent; }
-::selection { background: rgba(60,218,86,.35) !important; color:#fff !important; }
-::-moz-selection { background: rgba(60,218,86,.35) !important; color:#fff !important; }
+::selection { background:rgba(80,80,80,.45); color:#fff; }
+::-moz-selection { background:rgba(80,80,80,.45); color:#fff; }
 *:focus { outline: none !important; }
 button:active, button:focus, button:focus-visible { outline:none !important; box-shadow:none !important; }
 
 :root {
   --accent:       #cc1a1a;
-  --text:         #c8c8c8;
-  --green:        #3cda56;
-  --glass-border: rgba(150,150,150,.40);
-  --aero-border:  rgba(140,140,140,.40);
-  --bar-grad: linear-gradient(to bottom,
-    rgba(255,255,255,.22) 0%, rgba(185,185,185,.88) 0%,
-    rgba(120,120,120,.76) 4%, rgba(26,26,26,.98) 52%,
-    rgba(4,4,4,1) 52%, rgba(14,14,14,.99) 100%);
-  --bar-shine:    rgba(255,255,255,.24);
-  --bar-border-t: rgba(255,255,255,.18);
-  --bar-border-b: rgba(0,0,0,.88);
-  --bar-border-s: rgba(140,140,140,.44);
-  --bar-glow-top: linear-gradient(180deg,rgba(255,255,255,.14) 0%,rgba(200,200,200,.02) 100%);
-  --bar-text:     #f2f2f2;
-  --bar-tshadow:  0 1px 3px rgba(0,0,0,.98), 0 0 10px rgba(200,200,200,.20);
+  --text:         #111;
+  --text-dim:     #2c2c2c;
+  --green:        #1a9c2a;
+
+  --grad-bar:     linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
+  --grad-dl:      linear-gradient(to bottom,#e8e8e8 0%,#d2d2d2 50%,#bfbfbf 50%,#cbcbcb 100%);
+  --grad-status:  linear-gradient(to bottom,#e2e2e2 0%,#cecece 50%,#c0c0c0 100%);
+  --grad-prog:    linear-gradient(to bottom,#555 0%,#333 45%,#1a1a1a 50%,#444 100%);
+  --shadow-bar:   0 2px 5px rgba(0,0,0,.15);
 }
 
+/* ── Base ── */
 body {
-  font-family: Tahoma, 'Segoe UI', Geneva, Verdana, sans-serif;
-  font-size: 12px;
-  background: #000 url('https://static.myfigurecollection.net/upload/pictures/2022/10/24/3309088.jpeg') center/contain fixed no-repeat;
+  font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
+  font-size:12px;
+  /* keep original background */
+  background:#000 url('https://static.myfigurecollection.net/upload/pictures/2022/10/24/3309088.jpeg') center/contain fixed no-repeat;
   color: var(--text);
-  min-height: 100vh;
-  padding: 12px 6px 30px;
-  display: flex; flex-direction: column; align-items: center;
+  min-height:100vh;
+  padding:12px 6px 30px;
+  display:flex; flex-direction:column; align-items:center;
 }
 
-a { color: var(--text); text-decoration: none; }
-a:hover { color: var(--green); text-decoration: underline; }
-p { font-size: 12.5px; line-height: 18px; color: var(--text); margin:0; }
-p + p { margin-top: 5px; }
-strong { color: var(--accent); font-weight: 400; }
-
-html { scrollbar-width: thin; scrollbar-color: rgba(140,140,140,.50) transparent; }
+html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.50) transparent; }
 ::-webkit-scrollbar { width:6px; }
 ::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:rgba(140,140,140,.50); border-radius:3px; }
-::-webkit-scrollbar-thumb:hover { background:rgba(200,200,200,.72); }
+::-webkit-scrollbar-thumb { background:rgba(120,120,120,.50); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(54,54,54,.8); }
 
-#pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; }
+img { -webkit-user-drag:none; user-select:none; }
 
-/* ── Aero Bar ── */
+a             { color:#000; text-decoration:none; }
+a:hover       { color:var(--accent); text-decoration:underline; }
+p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
+p + p         { margin-top:5px; }
+strong        { color:var(--accent); font-weight:400; }
+
+/* ── Page wrapper ── */
+#pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; gap:0; }
+
+/* ── Aero topbar (back link + title) — same grad-bar as index ── */
 .aero-bar {
-  background: var(--bar-grad);
-  border: 1px solid var(--bar-border-s);
-  border-top-color: var(--bar-border-t); border-bottom-color: var(--bar-border-b);
-  box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
-  color: var(--bar-text); font-size: 14.6px; font-weight: 400;
-  padding: 2px 4px; text-shadow: var(--bar-tshadow);
-  position:relative; overflow:hidden; display:flex; align-items:center; gap:4px; margin-bottom:7px;
-}
-.aero-bar::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background: var(--bar-glow-top); pointer-events:none;
+  background: var(--grad-bar);
+  border:2px ridge #727272;
+  box-shadow: var(--shadow-bar);
+  color: var(--text);
+  font-size:13px; font-weight:400;
+  padding:4px 8px;
+  display:flex; align-items:center; gap:6px;
+  margin-bottom:7px;
 }
 .aero-bar .back-link {
   z-index:1; flex-shrink:0; padding:2px 3px;
-  display:flex; align-items:center; line-height:0;
-  text-decoration:none;
+  display:flex; align-items:center; line-height:0; text-decoration:none;
 }
 .aero-bar .back-link img {
-  height:30px; width:auto; object-fit:contain; display:block;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,.80));
+  height:28px; width:auto; object-fit:contain; display:block;
+  pointer-events:auto !important;
 }
-.aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:36px; }
+.aero-bar .back-link:hover img { filter:brightness(.85); }
+.aero-bar .bar-title { flex:1; text-align:center; z-index:1; font-size:12px; letter-spacing:.5px; }
 
 /* ── Server Banner ── */
 #serverBanner {
-  display:none; position:relative; overflow:hidden;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.30) 0%, rgba(235,235,235,.97) 0%,
-    rgba(210,210,210,.92) 4%, rgba(225,225,225,.98) 52%,
-    rgba(200,200,200,1) 52%, rgba(215,215,215,.97) 100%);
-  border:1px solid rgba(160,160,160,.70);
-  border-top-color:rgba(255,255,255,.90); border-bottom-color:rgba(100,100,100,.50);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.80), 0 3px 8px rgba(0,0,0,.35);
+  display:none;
+  background: var(--grad-bar);
+  border:1px solid rgba(140,140,140,.50);
+  box-shadow: var(--shadow-bar);
   padding:5px 10px; margin-bottom:7px;
   align-items:center; gap:8px;
-  color:#1a1a1a; font-size:11.5px;
-  text-shadow:0 1px 0 rgba(255,255,255,.60);
-}
-#serverBanner::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background:linear-gradient(180deg,rgba(255,255,255,.50) 0%,rgba(255,255,255,.05) 100%);
-  pointer-events:none;
+  color:var(--text); font-size:11.5px;
 }
 #serverBanner.visible { display:flex; }
-#serverBanner img { height:18px; width:18px; flex-shrink:0; z-index:1; }
-#serverBanner span { z-index:1; }
+#serverBanner img { height:18px; width:18px; flex-shrink:0; }
 
-/* ── Glass Box ── */
+/* ── Glass / aero boxes — same as index ── */
 .glass-box {
-  background-image: linear-gradient(rgb(255 255 255 / 12%), rgb(0 0 0 / 100%));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 10px rgba(200,200,200,.04), 0 5px 6px rgba(0,0,0,.55);
-  border:1px solid var(--glass-border); padding:5px; margin-bottom:7px;
+  background:#ebebeb;
+  box-shadow: 0 2px 5px rgba(0,0,0,.15);
+  border:2px ridge #727272;
+  padding:5px; margin-bottom:7px;
 }
-.aero-inner { border:1px solid var(--aero-border); background:rgba(6,6,6,.92); }
+.aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
 .aero-pad   { padding:10px 12px; }
 
-h2 {
-  background: var(--bar-grad);
-  box-shadow:inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
-  border:1px solid var(--bar-border-s);
-  border-top-color:var(--bar-border-t); border-bottom-color:var(--bar-border-b);
-  padding:5px 8px 7px; margin:0;
-  font-weight:400; font-size:13px; color:var(--bar-text); text-shadow:var(--bar-tshadow);
-  position:relative; overflow:hidden;
-}
-h2::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background:var(--bar-glow-top); pointer-events:none;
+/* ── Section headers — same black strip as index h1/h2 ── */
+.section-bar {
+  display:block; background:#000;
+  padding:5px 8px; margin:0; line-height:1.6;
+  font-size:11px; font-weight:400; letter-spacing:1.5px;
+  text-transform:uppercase; color:#fff;
 }
 
-/* ── URL Row — icon OUTSIDE input, after the input wrap ── */
+/* ── Description box — styled-containers-headers ── */
+.desc-box {
+  background:#fff;
+  padding:8px 10px; margin-bottom:0;
+  border:1px solid rgba(0,0,0,.30);
+}
+
+/* ── URL Row ── */
 .url-row {
   display:flex; align-items:stretch;
-  border:1px solid rgba(100,100,100,.50);
-  border-top-color:rgba(255,255,255,.08);
+  border:1px solid rgba(140,140,140,.50);
   margin-bottom:6px;
 }
 .url-input-wrap { flex:1; position:relative; min-width:0; }
 .url-input {
-  width:100%; background:rgba(255,255,255,0.9);
+  width:100%; background:rgba(255,255,255,0.97);
   border:none; outline:none; color:#000;
-  font-family:Tahoma,sans-serif; font-size:12px;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:12px;
   padding:7px 10px;
   display:block; height:100%;
 }
-.url-input::placeholder { color:#696969; }
-.url-input:focus { background:rgba(216,216,216,0.96); }
-.url-input:disabled { background:rgba(220,220,220,0.5); cursor:not-allowed; color:#888; }
+.url-input::placeholder { color:#888; }
+.url-input:focus { background:#fff; }
+.url-input:disabled { background:rgba(220,220,220,.6); cursor:not-allowed; color:#888; }
 
 #urlIconWrap {
   display:none; align-items:center; justify-content:center;
   width:30px; flex-shrink:0;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.07) 0%, rgba(30,30,30,.80) 50%,
-    rgba(8,8,8,.95) 100%);
-  border-left:1px solid rgba(80,80,80,.50);
+  background:var(--grad-dl);
+  border-left:1px solid rgba(140,140,140,.44);
 }
 #urlIconWrap.visible { display:flex; }
-#urlIcon {
-  width:18px; height:18px; object-fit:contain; pointer-events:none; display:block;
-}
+#urlIcon { width:18px; height:18px; object-fit:contain; pointer-events:none; display:block; }
 
-/* ── Back link — glow on hover ── */
-.aero-bar .back-link:hover img {
-  filter: drop-shadow(0 0 6px rgba(255,255,255,.70)) drop-shadow(0 0 12px rgba(200,200,200,.45)) brightness(1.2);
-}
-
-/* ── Format Select — aero black/white ── */
+/* ── Format Select — same light aero style ── */
 .fmt-select {
-  appearance: none; -webkit-appearance: none;
-  background-color: #0a0a0a;
+  appearance:none; -webkit-appearance:none;
+  background-color:#f0f0f0;
   background-image:
-    linear-gradient(to bottom,
-      rgba(255,255,255,.18) 0%, rgba(190,190,190,.92) 0%,
-      rgba(120,120,120,.78) 4%, rgba(26,26,26,.98) 52%,
-      rgba(4,4,4,1) 52%, rgba(14,14,14,.99) 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5'%3E%3Cpath d='M0 0l5 5 5-5z' fill='%23cccccc'/%3E%3C/svg%3E");
-  background-repeat: no-repeat, no-repeat;
-  background-position: 0 0, calc(100% - 7px) 55%;
-  border: none;
-  border-left: 1px solid rgba(100,100,100,.40);
-  border-top: 1px solid rgba(255,255,255,.10);
-  border-bottom: 1px solid rgba(0,0,0,.80);
-  color: #d0d0d0;
-  font-family: Tahoma, sans-serif; font-size: 11.5px;
-  padding: 0 22px 0 8px;
-  cursor: pointer; outline: none; flex-shrink: 0;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 0 8px rgba(0,0,0,.70);
-  min-width: 80px;
-  text-shadow: 0 1px 2px rgba(0,0,0,.80);
-  transition: opacity .2s;
+    linear-gradient(to bottom,#fff 0%,#f5f5f5 4%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5'%3E%3Cpath d='M0 0l5 5 5-5z' fill='%23333333'/%3E%3C/svg%3E");
+  background-repeat:no-repeat, no-repeat;
+  background-position:0 0, calc(100% - 7px) 55%;
+  border:none;
+  border-left:1px solid rgba(140,140,140,.44);
+  border-bottom:1px solid rgba(0,0,0,.15);
+  color:#111;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:11.5px;
+  padding:0 22px 0 8px;
+  cursor:pointer; outline:none; flex-shrink:0;
+  min-width:80px;
+  transition:opacity .2s;
 }
-.fmt-select:disabled {
-  opacity: .40; cursor: not-allowed;
-}
-.fmt-select option {
-  background: #111; color: #ccc;
-  font-family: Tahoma, sans-serif;
-}
+.fmt-select:disabled { opacity:.45; cursor:not-allowed; }
+.fmt-select option { background:#fff; color:#111; font-family:Tahoma,sans-serif; }
 
-/* ── Download Button — full override of 7.css ── */
+/* ── Download Button ── */
 .main-dl-btn {
   all: unset;
-  box-sizing: border-box;
-  width: 100%;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.20) 0%, rgba(190,190,190,.90) 0%,
-    rgb(157 251 156 / 80%) 4%, rgb(25 180 20 / 98%) 52%,
-    rgb(4 100 11) 52%, rgb(24 140 8 / 96%) 100%);
-  border: 1px solid rgba(20,180,23,.80);
-  border-top-color: rgba(100,255,100,.28);
-  border-bottom-color: rgba(0,0,0,.88);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 2px 4px rgba(255,255,255,.06), 0 3px 8px rgba(0,0,0,.52);
-  color: #fff;
-  font-family: Tahoma, sans-serif; font-size: 13px; font-weight: 400;
-  letter-spacing: .3px;
-  text-shadow: 0 1px 3px rgba(0,0,0,.96);
-  padding: 8px 12px 10px;
-  cursor: pointer;
-  position: relative;
-  display: flex; align-items: center; justify-content: center;
-  min-height: 44px;
-  transition: filter .15s;
+  box-sizing:border-box;
+  width:100%;
+  background:linear-gradient(to bottom,#5cb85c 0%,#3d8b3d 50%,#2e6b2e 50%,#3a7a3a 100%);
+  border:1px solid rgba(30,90,30,.70);
+  color:#e8ffe6;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:13px; font-weight:400;
+  letter-spacing:.3px;
+  text-shadow:0 1px 2px rgba(0,0,0,.60);
+  padding:8px 12px 10px;
+  cursor:pointer;
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+  min-height:44px;
+  transition:filter .15s;
 }
-.main-dl-btn::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background:linear-gradient(to bottom,rgba(255,255,255,.16) 0%,rgba(255,255,255,.04) 100%);
-  pointer-events:none;
-}
-.main-dl-btn:hover:not(:disabled) { filter:brightness(1.30); }
-.main-dl-btn:active:not(:disabled) { filter:brightness(0.90); }
+.main-dl-btn:hover:not(:disabled) { filter:brightness(1.12); }
+.main-dl-btn:active:not(:disabled) { filter:brightness(.88); }
 .main-dl-btn:disabled {
-  opacity: .36; cursor: not-allowed;
-  background: var(--bar-grad);
-  border-color: rgba(80,80,80,.50);
-  box-shadow: none;
+  opacity:.38; cursor:not-allowed;
+  background:var(--grad-bar); border-color:rgba(140,140,140,.50);
+  color:#555; box-shadow:none;
 }
-#dlBtnLabel {
-  position:relative; z-index:1;
-  flex:1; text-align:center;
-  padding-left: 26px; /* compensate icon width so text stays centered */
-}
+#dlBtnLabel { position:relative; z-index:1; flex:1; text-align:center; padding-left:26px; }
 #dlBtnIcon {
   height:26px; width:26px; object-fit:contain; flex-shrink:0;
-  position:relative; z-index:1;
-  opacity:0; transition:opacity .3s;
-  margin-left: auto; /* push to right */
-  filter: grayscale(1) brightness(0.55);
+  position:relative; z-index:1; pointer-events:none;
+  opacity:0; transition:opacity .3s; margin-left:auto;
+  filter:grayscale(1) brightness(.55);
 }
 #dlBtnIcon.loaded { opacity:1; }
-/* Remove gray filter once init done (set via JS class on button) */
-.main-dl-btn.init-done #dlBtnIcon { filter: none; }
-
-/* ── Sound toggle — fixed bottom left ── */
-#soundToggle {
-  position: fixed;
-  bottom: 8px;
-  left: 10px;
-  z-index: 9999;
-  font-family: Tahoma, sans-serif;
-  font-size: 10px;
-  color: rgba(140,140,140,.55);
-  cursor: pointer;
-  user-select: none;
-  letter-spacing: .2px;
-  padding: 2px 0;
-  background: none;
-  border: none;
-  outline: none;
-  transition: color .15s;
-}
-#soundToggle:hover { color: rgba(200,200,200,.80); }
-#soundToggle.off   { color: rgba(90,90,90,.50); }
+.main-dl-btn.init-done #dlBtnIcon { filter:none; }
 
 /* ── Status Box ── */
 #statusBox {
   display:none;
-  background: linear-gradient(to bottom,
-    rgba(55,55,55,.64) 0%, rgba(26,26,26,.92) 30%,
-    rgba(5,5,5,1) 50%, rgba(9,9,9,1) 100%);
-  border:1px solid rgba(65,65,65,.95); border-top:1px solid rgba(80,80,80,.50);
+  background:var(--grad-status);
+  border:1px solid rgba(140,140,140,.45);
   padding:6px 10px 8px; margin-top:5px;
 }
 #statusBox.visible { display:block; }
 
 .status-row { display:flex; align-items:center; gap:10px; margin-bottom:5px; }
 #statusText {
-  font-size:11.5px; color:#aaa;
+  font-size:11.5px; color:var(--text-dim);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   flex:1; text-align:center;
 }
@@ -297,97 +221,84 @@ h2::before {
 #statusText .err { color:var(--accent); }
 
 #wakeTimer {
-  display:none; font-size:11px; color:#888;
-  background:rgba(0,0,0,.60); border:1px solid rgba(70,70,70,.50);
+  display:none; font-size:11px; color:var(--text-dim);
+  background:rgba(240,240,240,.80); border:1px solid rgba(140,140,140,.44);
   padding:1px 8px; white-space:nowrap; flex-shrink:0;
   font-variant-numeric:tabular-nums;
 }
 #wakeTimer.visible { display:block; }
-#wakeTimer .timer-sec { color:#bbb; }
+#wakeTimer .timer-sec { color:var(--accent); }
 
-#dlInfo { display:none; font-size:11px; color:#666; text-align:center; margin-bottom:5px; }
+#dlInfo { display:none; font-size:11px; color:var(--text-dim); text-align:center; margin-bottom:5px; }
 #dlInfo.visible { display:block; }
-#dlInfo .info-val { color:#999; }
+#dlInfo .info-val { color:var(--accent); }
 
-/* ── 7.css progress bar — dark skin ── */
+/* ── Progress bar — light aero ── */
 #statusBox [role=progressbar] {
   width:100%; margin:0;
-  border: 1px solid rgba(80,80,80,.80) !important;
-  background: #070707 !important;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,.85) !important;
+  border:1px solid rgba(140,140,140,.55) !important;
+  background:linear-gradient(to bottom,#d0d0d0 0%,#e8e8e8 100%) !important;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.15) !important;
+  height:12px !important;
+  overflow:hidden;
+  border-radius:1px;
 }
 #statusBox [role=progressbar] > div {
-  background: linear-gradient(to bottom,
-    rgba(220,220,220,.90) 0%, rgba(165,165,165,.94) 45%,
-    rgba(105,105,105,.88) 50%, rgba(155,155,155,.86) 100%) !important;
-  transition: width .4s ease;
+  background:var(--grad-prog) !important;
+  transition:width .4s ease;
+  height:100%;
 }
 #statusBox [role=progressbar].error > div {
-  background: linear-gradient(to bottom,
-    rgba(220,60,60,.90) 0%, rgba(160,30,30,.94) 50%,
-    rgba(100,10,10,.88) 50%, rgba(140,20,20,.86) 100%) !important;
+  background:linear-gradient(to bottom,#e84040 0%,#a01515 50%,#700808 50%,#901818 100%) !important;
 }
 
-/* ── Source Row — aero tiles ── */
+/* ── Marquee fallback ── */
+#statusBox [role=progressbar].marquee {
+  background:repeating-linear-gradient(
+    -45deg, #d0d0d0 0px, #d0d0d0 10px, #e8e8e8 10px, #e8e8e8 20px
+  ) !important;
+  animation:marcheAero .8s linear infinite !important;
+  background-size:28px 100% !important;
+}
+#statusBox [role=progressbar].marquee > div { display:none; }
+@keyframes marcheAero { from{background-position:0 0} to{background-position:28px 0} }
+
+/* ── Source Row tags — light aero tiles ── */
 .src-row {
   display:flex; gap:5px; flex-wrap:wrap;
   margin-top:8px; padding-top:7px;
-  border-top:1px solid rgba(50,50,50,.80); align-items:stretch;
+  border-top:1px solid rgba(160,160,160,.40); align-items:stretch;
 }
 .src-tag {
   font-size:10.5px; padding:5px 10px 5px 7px;
   display:flex; align-items:center; gap:6px;
   flex:1; min-width:145px;
   cursor:default;
-  position:relative; overflow:hidden;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,.07) 0%, rgba(50,50,50,.14) 49%,
-    rgba(15,15,15,.65) 50%, rgba(8,8,8,.88) 100%);
-  border:1px solid rgba(70,70,70,.55);
-  border-top-color:rgba(130,130,130,.25);
-  border-bottom-color:rgba(0,0,0,.75);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 2px 4px rgba(0,0,0,.45);
-  color:#333;
-  transition: color .18s, border-color .18s, background .18s, box-shadow .18s, text-shadow .18s;
+  background:var(--grad-bar);
+  border:1px solid rgba(150,150,150,.50);
+  color:#aaa;
 }
-.src-tag::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:49%;
-  background:linear-gradient(to bottom,rgba(255,255,255,.055) 0%,transparent 100%);
-  pointer-events:none;
-}
-.src-tag img {
-  height:16px; width:16px; object-fit:contain; flex-shrink:0;
-  filter:grayscale(1) brightness(0.22); transition:filter .22s;
-  position:relative; z-index:1;
-}
-.src-tag span { position:relative; z-index:1; }
+.src-tag img { height:16px; width:16px; object-fit:contain; flex-shrink:0; filter:grayscale(1) brightness(.5); transition:filter .22s; }
+.src-tag span { }
 .src-tag.initializing { animation:tagPulse 1.8s infinite ease-in-out; }
-@keyframes tagPulse { 0%,100%{opacity:.28} 50%{opacity:.68} }
+@keyframes tagPulse { 0%,100%{opacity:.35} 50%{opacity:.75} }
 
 .src-tag.available {
-  color:#888;
-  border-color:rgba(110,110,110,.50); border-top-color:rgba(190,190,190,.18);
-  background:linear-gradient(to bottom,
-    rgba(255,255,255,.12) 0%, rgba(70,70,70,.16) 49%,
-    rgba(20,20,20,.80) 50%, rgba(10,10,10,.94) 100%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.09), 0 2px 6px rgba(0,0,0,.52);
+  color:var(--text-dim);
+  border-color:rgba(130,130,130,.55);
 }
 .src-tag.available img { filter:none; }
-.src-tag.sp.available { color:#1db954; border-color:rgba(29,185,84,.32); border-top-color:rgba(29,185,84,.16);
-  box-shadow:inset 0 1px 0 rgba(29,185,84,.09),0 2px 6px rgba(0,0,0,.52),0 0 10px rgba(29,185,84,.05);
-  text-shadow:0 0 10px rgba(29,185,84,.25); }
-.src-tag.yt.available { color:#d03030; border-color:rgba(200,48,48,.32); border-top-color:rgba(200,48,48,.16);
-  box-shadow:inset 0 1px 0 rgba(200,48,48,.09),0 2px 6px rgba(0,0,0,.52),0 0 10px rgba(200,48,48,.05);
-  text-shadow:0 0 10px rgba(200,48,48,.25); }
-.src-tag.sc.available { color:#c85010; border-color:rgba(200,80,16,.32); border-top-color:rgba(200,80,16,.16);
-  box-shadow:inset 0 1px 0 rgba(200,80,16,.09),0 2px 6px rgba(0,0,0,.52),0 0 10px rgba(200,80,16,.05);
-  text-shadow:0 0 10px rgba(200,80,16,.25); }
+.src-tag.sp.available  { color:#1a7a38; border-left:2px solid #1a7a38; }
+.src-tag.yt.available  { color:#a01515; border-left:2px solid #a01515; }
+.src-tag.sc.available  { color:#a04010; border-left:2px solid #a04010; }
 
 /* ── Note ── */
 .note {
-  background:rgba(6,6,6,.88); border:1px solid rgba(70,70,70,.40);
-  border-left:2px solid rgba(100,100,100,.55);
-  padding:7px 10px; margin-top:6px; font-size:11px; color:#777; line-height:1.65;
+  background:#f5f5f5;
+  border:1px solid rgba(0,0,0,.25);
+  border-left:3px solid rgba(120,120,120,.50);
+  padding:7px 10px; margin-top:6px;
+  font-size:11px; color:var(--text-dim); line-height:1.65;
   text-align:center;
 }
 
@@ -395,51 +306,62 @@ h2::before {
 #previewPanel { display:none; margin-bottom:7px; }
 #previewPanel.visible { display:block; }
 .preview-header {
-  background:var(--bar-grad);
-  box-shadow:inset 0 1px 0 var(--bar-shine),inset 0 2px 4px rgba(255,255,255,.10),0 3px 10px rgba(0,0,0,.48);
-  border:1px solid var(--bar-border-s);
-  border-top-color:var(--bar-border-t); border-bottom-color:var(--bar-border-b);
-  padding:5px 8px 7px; font-weight:400; font-size:12px; color:var(--bar-text);
-  text-shadow:var(--bar-tshadow); position:relative; overflow:hidden;
+  background:var(--grad-bar);
+  box-shadow: var(--shadow-bar);
+  border:1px solid rgba(140,140,140,.50);
+  padding:5px 8px 7px; font-weight:400; font-size:12px;
+  color:var(--text);
   display:flex; align-items:center; gap:6px;
 }
-.preview-header::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background:var(--bar-glow-top); pointer-events:none;
-}
-.preview-header img  { height:14px; width:14px; object-fit:contain; z-index:1; flex-shrink:0; }
-.preview-header span { z-index:1; }
-.preview-body { border:1px solid var(--aero-border); border-top:none; background:rgba(4,4,4,.96); }
-.sp-embed-wrap { width:100%; overflow:hidden; background:#000; }
+.preview-header img  { height:14px; width:14px; object-fit:contain; flex-shrink:0; }
+.preview-header span { }
+.preview-body { border:1px solid rgba(0,0,0,.44); border-top:none; background:#fff; }
+.sp-embed-wrap  { width:100%; overflow:hidden; background:#fff; }
 .sp-embed-wrap iframe { width:100%; border:none; display:block; }
-.yt-embed-wrap { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; background:#000; }
+.yt-embed-wrap  { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; background:#000; }
 .yt-embed-wrap iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
-.sc-embed-wrap { width:100%; overflow:hidden; background:#000; }
+.sc-embed-wrap  { width:100%; overflow:hidden; background:#f8f8f8; }
 .sc-embed-wrap iframe { width:100%; border:none; display:block; }
 .preview-meta {
   display:flex; align-items:center; gap:10px; padding:7px 10px;
-  border-top:1px solid rgba(40,40,40,.80); background:rgba(5,5,5,.94); flex-wrap:wrap;
+  border-top:1px solid rgba(160,160,160,.30); background:#f5f5f5; flex-wrap:wrap;
 }
-.preview-meta-icon { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
-.preview-meta-info { flex:1; min-width:0; }
-.preview-meta-title { font-size:12px; color:#ccc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
-.preview-meta-sub   { font-size:10.5px; color:#555; }
+.preview-meta-icon   { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
+.preview-meta-info   { flex:1; min-width:0; }
+.preview-meta-title  { font-size:12px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
+.preview-meta-sub    { font-size:10.5px; color:var(--text-dim); }
 .preview-checking, .preview-invalid { padding:12px; font-size:11.5px; text-align:center; }
-.preview-checking { color:#555; }
+.preview-checking { color:var(--text-dim); }
 .preview-invalid  { color:var(--accent); }
+
+/* ── Sound toggle ── */
+#soundToggle {
+  position:fixed; bottom:8px; left:10px; z-index:9999;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+  font-size:10px; color:rgba(0,0,0,.40); cursor:pointer;
+  user-select:none; letter-spacing:.2px; padding:2px 0;
+  background:none; border:none; outline:none;
+}
+#soundToggle:hover { color:rgba(0,0,0,.70); }
+#soundToggle.off   { color:rgba(0,0,0,.22); }
+
+/* ── Aero glass overlay texture ── */
+.aero-glass-overlay { position:relative; overflow:hidden; }
+.aero-glass-overlay::after {
+  content:''; position:absolute; inset:0;
+  background-image:url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/187f5a85-67cd-4efe-a6cd-961434a82910/d1sd0t3-af1fc87a-6fbf-431b-9f33-6e3044ad93ae.jpg/v1/fill/w_1131,h_707,q_70,strp/aero_glass_texture_by_optimusprimm_d1sd0t3-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTIwMCIsInBhdGgiOiIvZi8xODdmNWE4NS02N2NkLTRlZmUtYTZjZC05NjE0MzRhODI5MTAvZDFzZDB0My1hZjFmYzg3YS02ZmJmLTQzMWItOWYzMy02ZTMwNDRhZDkzYWUuanBnIiwid2lkdGgiOiI8PTE5MjAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.X3lWfRlCucWwaIUiClPHTfKLlXxCzWbZNN2n0TlQP54');
+  background-size:contain; background-position:center;
+  opacity:.05; pointer-events:none; mix-blend-mode:multiply; z-index:0;
+}
+.aero-glass-overlay > * { position:relative; z-index:1; }
 
 /* ── Mobile ── */
 @media (max-width:600px) {
-  body { padding:8px 4px 24px; font-size:13px;
-    background-size:cover; background-attachment:scroll; background-position:center center; }
+  body { padding:8px 4px 24px; background-size:cover; background-attachment:scroll; }
   #pageWrap { width:100%; }
-  .aero-bar { font-size:13px; }
-  .aero-bar .back-link img { height:26px; }
-  .aero-bar .bar-title { padding-right:0; font-size:12px; }
-  h2 { font-size:12.5px; }
-  .aero-pad { padding:10px; }
-  p { font-size:12px; line-height:17px; }
-  .url-input { font-size:16px; padding:9px 38px 9px 8px; }
+  .aero-bar { font-size:12px; }
+  .aero-bar .back-link img { height:24px; }
+  .url-input { font-size:16px; padding:9px 8px; }
   .fmt-select { font-size:13px; min-width:80px; }
   .main-dl-btn { font-size:14px; min-height:50px; padding:10px 0 12px; }
   #statusText { white-space:normal; font-size:11px; }
@@ -447,9 +369,6 @@ h2::before {
   .src-tag { font-size:11px; padding:7px 10px 7px 8px; width:100%; min-width:0; }
   .src-tag img { height:17px; width:17px; }
   .note { font-size:10.5px; }
-  .preview-meta { gap:8px; }
-  .preview-meta-info { min-width:120px; }
-  #serverBanner { font-size:11px; }
   .glass-box { padding:4px; }
   #dlInfo { white-space:normal; line-height:1.7; }
 }
@@ -462,30 +381,35 @@ h2::before {
 <body>
 <div id="pageWrap">
 
+  <!-- ── Top bar ── -->
   <div class="aero-bar">
     <a class="back-link" href="../index.html" title="Back to Archive">
       <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&lsaquo;"
-        onerror="this.outerHTML='<span style=\'color:#bbb;font-size:22px;line-height:1;z-index:1;\'>&#8249;</span>'">
+        onerror="this.outerHTML='<span style=\'color:#333;font-size:22px;line-height:1;z-index:1;\'>&#8249;</span>'">
     </a>
-    <span class="bar-title">Ultimate Downloader Converter</span>
+    <span class="bar-title">ULTIMATE DOWNLOADER CONVERTER</span>
   </div>
 
+  <!-- ── Server initializing banner ── -->
   <div id="serverBanner">
     <img src="https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif" alt="">
     <span>Server is initializing, please wait&hellip;</span>
   </div>
 
+  <!-- ── Main card ── -->
   <div class="glass-box">
-    <h2>Download</h2>
+    <div class="section-bar">Download</div>
     <div class="aero-inner">
       <div class="aero-pad">
 
-        <p style="margin-bottom:9px;">
-          Supports <strong>Spotify</strong> tracks, albums &amp; playlists &mdash;
-          <strong>YouTube</strong> videos &amp; playlists &mdash;
-          <strong>SoundCloud</strong> tracks &amp; sets.
-          Files are delivered as ZIP directly to your browser.
-        </p>
+        <div class="desc-box" style="margin-bottom:9px;">
+          <p>
+            Supports <strong>Spotify</strong> tracks, albums &amp; playlists &mdash;
+            <strong>YouTube</strong> videos &amp; playlists &mdash;
+            <strong>SoundCloud</strong> tracks &amp; sets.
+            Files are delivered as ZIP directly to your browser.
+          </p>
+        </div>
 
         <div class="url-row">
           <div class="url-input-wrap">
@@ -550,17 +474,18 @@ h2::before {
     </div>
   </div>
 
+  <!-- ── Preview panel ── -->
   <div id="previewPanel" class="glass-box" style="padding:0;">
     <div class="preview-header">
       <img id="previewHeaderIcon" src="" alt="" style="display:none;">
-      <span id="previewHeaderTitle">Link Preview</span>
+      <span id="previewHeaderTitle">LINK PREVIEW</span>
     </div>
     <div class="preview-body" id="previewBody">
       <div class="preview-checking">Paste a link above to see a preview.</div>
     </div>
   </div>
 
-</div>
+</div><!-- /#pageWrap -->
 
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 
@@ -598,17 +523,14 @@ function toggleSound() {
   if (btn) { btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off'; btn.classList.toggle('off', !_soundsOn); }
   if (_soundsOn) playSound('button');
 }
-/* Start sound once per session */
 document.addEventListener('DOMContentLoaded', () => {
   if (!sessionStorage.getItem('_siteStartPlayed')) {
     sessionStorage.setItem('_siteStartPlayed','1');
     setTimeout(()=>playSound('start'),700);
   }
 });
-/* Preload on first interaction */
 document.addEventListener('pointerdown', ()=>Object.keys(SOUNDS).forEach(k=>_getAudio(k)), {once:true,passive:true});
 
-/* ── Hover sound throttle: 400ms delay ── */
 let _hoverThrottle = 0;
 let _hoverTimer = null;
 function _isInteractive(el) {
@@ -640,43 +562,40 @@ document.addEventListener('click', e=>{
 },true);
 
 /* ── Icons ── */
-const ICON_VALID   = 'https://img1.picmix.com/output/stamp/thumb/6/4/0/6/2466046_12382.png';
+const ICON_VALID = 'https://img1.picmix.com/output/stamp/thumb/6/4/0/6/2466046_12382.png';
 const SRC_ICONS = {
   spotify:'assets/images/SPOTIFYAERO.jpeg',
   youtube:'assets/images/YOUTUBEAERO.png',
   soundcloud:'assets/images/SOUNDCLOUDAERO.png',
 };
 
-/* ── Size estimate: MB per average item ── */
 const EST_MB = { mp3:5, flac:30, ogg:4, opus:3.5, aac:6, mp4:80, webm:55, mkv:70 };
 const VIDEO_FMTS = new Set(['mp4','webm','mkv']);
 
-/* ── DOM ── */
 const $  = id => document.getElementById(id);
-const urlInput   = $('urlInput');
+const urlInput    = $('urlInput');
 const urlIconWrap = $('urlIconWrap');
-const fmtSelect  = $('fmtSelect');
-const dlBtn      = $('dlBtn');
-const dlBtnLabel = $('dlBtnLabel');
-const statusBox  = $('statusBox');
-const statusTxt  = $('statusText');
-const wakeTimerEl= $('wakeTimer');
-const timerVal   = $('timerVal');
-const dlInfo     = $('dlInfo');
-const dlSize     = $('dlSize');
-const dlEta      = $('dlEta');
-const progBar    = $('progressBar');
-const tagSp      = $('tagSp');
-const tagYt      = $('tagYt');
-const tagSc      = $('tagSc');
-const prevPanel  = $('previewPanel');
-const prevHIcon  = $('previewHeaderIcon');
-const prevHTitle = $('previewHeaderTitle');
-const prevBody   = $('previewBody');
-const srvBanner  = $('serverBanner');
-const urlIcon    = $('urlIcon');
+const fmtSelect   = $('fmtSelect');
+const dlBtn       = $('dlBtn');
+const dlBtnLabel  = $('dlBtnLabel');
+const statusBox   = $('statusBox');
+const statusTxt   = $('statusText');
+const wakeTimerEl = $('wakeTimer');
+const timerVal    = $('timerVal');
+const dlInfo      = $('dlInfo');
+const dlSize      = $('dlSize');
+const dlEta       = $('dlEta');
+const progBar     = $('progressBar');
+const tagSp       = $('tagSp');
+const tagYt       = $('tagYt');
+const tagSc       = $('tagSc');
+const prevPanel   = $('previewPanel');
+const prevHIcon   = $('previewHeaderIcon');
+const prevHTitle  = $('previewHeaderTitle');
+const prevBody    = $('previewBody');
+const srvBanner   = $('serverBanner');
+const urlIcon     = $('urlIcon');
 
-/* ── State ── */
 let ytEnabled    = false;
 let initDone     = false;
 let dlIconLoaded = false;
@@ -685,17 +604,12 @@ let wakeInterval = null;
 let wakeSeconds  = 0;
 let iconTimer    = null;
 
-/* Track currently-playing preview audio (SC iframes mute via src removal) */
-let _previewSrc = null; /* last source type shown */
-
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-/* ── Wire button icon load/error in JS (avoids inline onload timing issues) ── */
 const dlBtnIcon = $('dlBtnIcon');
 if (dlBtnIcon) {
   dlBtnIcon.addEventListener('load',  () => { dlBtnIcon.classList.add('loaded'); dlIconLoaded = true; tryEnableButton(); });
   dlBtnIcon.addEventListener('error', () => { dlBtnIcon.style.display='none';   dlIconLoaded = true; tryEnableButton(); });
-  /* If image was already cached and loaded before this script ran */
   if (dlBtnIcon.complete && dlBtnIcon.naturalWidth > 0) {
     dlBtnIcon.classList.add('loaded'); dlIconLoaded = true;
   } else if (dlBtnIcon.complete) {
@@ -703,10 +617,8 @@ if (dlBtnIcon) {
   }
 }
 
-/* ── Enable button: requires init + icon + valid url ── */
 function tryEnableButton() {
   if (!initDone || !dlIconLoaded) { dlBtn.disabled = true; return; }
-  /* Mark init done on button so icon loses gray filter */
   dlBtn.classList.add('init-done');
   const url = urlInput.value.trim();
   const src = detectSource(url);
@@ -716,7 +628,6 @@ function tryEnableButton() {
   dlBtn.disabled = false;
 }
 
-/* ── Source / URL logic ── */
 function detectSource(url) {
   if (/spotify\.com/i.test(url))           return 'spotify';
   if (/youtube\.com|youtu\.be/i.test(url)) return 'youtube';
@@ -725,7 +636,6 @@ function detectSource(url) {
 }
 function isValidUrl(url, src) {
   if (src === 'spotify')
-    /* strip optional /intl-xx/ locale segment before matching */
     return /spotify\.com\/(?:intl-[a-z-]+\/)?(album|track|playlist|artist|episode)\/[A-Za-z0-9]+/.test(url);
   if (src === 'youtube')
     return /[?&]v=[^&]+/.test(url) || /youtu\.be\/[^?&#]+/.test(url) || /[?&]list=[^&]+/.test(url);
@@ -741,8 +651,8 @@ function isSingle(url, src) {
 }
 function estCount(url, src) {
   if (src === 'spotify') {
-    if (/spotify\.com\/(?:intl-[a-z-]+\/)?track\//.test(url))    return 1;
-    if (/spotify\.com\/(?:intl-[a-z-]+\/)?album\//.test(url))    return 12;
+    if (/spotify\.com\/(?:intl-[a-z-]+\/)?track\//.test(url))  return 1;
+    if (/spotify\.com\/(?:intl-[a-z-]+\/)?album\//.test(url))  return 12;
     return 25;
   }
   if (src === 'youtube')    return /[?&]list=/.test(url) ? 20 : 1;
@@ -750,15 +660,12 @@ function estCount(url, src) {
   return 1;
 }
 
-/* ── Helpers ── */
 function fmtBytes(b) {
   if (b < 1048576)    return (b/1024).toFixed(0) + ' KB';
   if (b < 1073741824) return (b/1048576).toFixed(1) + ' MB';
   return (b/1073741824).toFixed(2) + ' GB';
 }
-function fmtMBdisp(mb) {
-  return mb < 1000 ? mb.toFixed(0) + ' MB' : (mb/1024).toFixed(1) + ' GB';
-}
+function fmtMBdisp(mb) { return mb < 1000 ? mb.toFixed(0) + ' MB' : (mb/1024).toFixed(1) + ' GB'; }
 function fmtEtaMB(mb) {
   const secs = mb / 1.5;
   if (secs < 5)  return 'a few seconds';
@@ -766,7 +673,6 @@ function fmtEtaMB(mb) {
   return '~' + Math.floor(secs/60) + 'm ' + Math.ceil(secs%60) + 's';
 }
 
-/* ── Status / progress ── */
 function setStatus(msg, type) {
   statusTxt.innerHTML = type ? `<span class="${type}">${msg}</span>` : msg;
 }
@@ -785,23 +691,11 @@ function stopWakeTimer() {
   wakeTimerEl.classList.remove('visible');
 }
 
-/* ── URL Icon — slot outside input, shows when valid ── */
 function setUrlIcon(state) {
-  if (state === 'none') {
-    urlIconWrap.classList.remove('visible');
-    urlIcon.src = '';
-    return;
-  }
-  if (state === 'valid') {
-    urlIcon.src = ICON_VALID;
-    urlIconWrap.classList.add('visible');
-  } else {
-    urlIconWrap.classList.remove('visible');
-    urlIcon.src = '';
-  }
+  if (state==='valid') { urlIcon.src=ICON_VALID; urlIconWrap.classList.add('visible'); }
+  else { urlIconWrap.classList.remove('visible'); urlIcon.src=''; }
 }
 
-/* ── Show instant estimate ── */
 function showEstimate(url, src) {
   const fmt  = fmtSelect.value;
   const n    = estCount(url, src);
@@ -811,59 +705,44 @@ function showEstimate(url, src) {
   dlInfo.classList.add('visible');
 }
 
-/* ── Show/hide video format options based on URL source ── */
 function updateVideoOpts(src) {
   const isYt = src === 'youtube';
   ['optMp4','optWebm','optMkv'].forEach(id => {
-    const el = $(id);
-    if (!el) return;
+    const el = $(id); if (!el) return;
     el.style.display = isYt ? '' : 'none';
   });
-  /* If current selection is video but source is not YT, revert to mp3 */
   if (!isYt && VIDEO_FMTS.has(fmtSelect.value)) fmtSelect.value = 'mp3';
 }
 
-/* ── Stop embed audio when URL is cleared ── */
 function stopEmbedAudio() {
-  /* Clear all iframes inside previewBody to stop playback */
-  const iframes = prevBody.querySelectorAll('iframe');
-  iframes.forEach(f => {
-    try { f.src = 'about:blank'; } catch(e) {}
-  });
+  prevBody.querySelectorAll('iframe').forEach(f => { try { f.src='about:blank'; } catch(e){} });
 }
 
-/* ── Input change handler ── */
 function onUrlChange() {
   const raw = urlInput.value;
   if (!raw.trim()) {
-    setUrlIcon('none');
-    dlBtnLabel.textContent = 'DOWNLOAD';
-    dlInfo.classList.remove('visible');
-    statusBox.classList.remove('visible');
+    setUrlIcon('none'); dlBtnLabel.textContent='DOWNLOAD';
+    dlInfo.classList.remove('visible'); statusBox.classList.remove('visible');
     updateVideoOpts(null);
-    /* Hide preview and stop embed audio */
-    prevPanel.classList.remove('visible');
-    stopEmbedAudio();
-    prevBody.innerHTML = '<div class="preview-checking">Paste a link above to see a preview.</div>';
-    prevHIcon.style.display='none'; prevHTitle.textContent='Link Preview';
-    tryEnableButton();
-    return;
+    prevPanel.classList.remove('visible'); stopEmbedAudio();
+    prevBody.innerHTML='<div class="preview-checking">Paste a link above to see a preview.</div>';
+    prevHIcon.style.display='none'; prevHTitle.textContent='LINK PREVIEW';
+    tryEnableButton(); return;
   }
   clearTimeout(iconTimer);
   iconTimer = setTimeout(() => {
     const url = raw.trim(), src = detectSource(url);
     updateVideoOpts(src);
     if (!src) {
-      setUrlIcon('none'); dlBtnLabel.textContent = 'DOWNLOAD';
+      setUrlIcon('none'); dlBtnLabel.textContent='DOWNLOAD';
     } else if (isValidUrl(url, src)) {
       setUrlIcon('valid');
-      dlBtnLabel.textContent = isSingle(url, src) ? 'DOWNLOAD' : 'DOWNLOAD AS ZIP';
+      dlBtnLabel.textContent = isSingle(url,src) ? 'DOWNLOAD' : 'DOWNLOAD AS ZIP';
       showEstimate(url, src);
       statusBox.classList.add('visible');
-      setStatus('Ready to download');
-      resetProg();
+      setStatus('Ready to download'); resetProg();
     } else {
-      setUrlIcon('none'); dlBtnLabel.textContent = 'DOWNLOAD';
+      setUrlIcon('none'); dlBtnLabel.textContent='DOWNLOAD';
     }
     tryEnableButton();
   }, 350);
@@ -873,264 +752,159 @@ urlInput.addEventListener('input', onUrlChange);
 urlInput.addEventListener('paste', () => setTimeout(onUrlChange, 80));
 fmtSelect.addEventListener('change', () => {
   const url = urlInput.value.trim(), src = detectSource(url);
-  if (src && isValidUrl(url, src)) showEstimate(url, src);
+  if (src && isValidUrl(url,src)) showEstimate(url,src);
   tryEnableButton();
 });
 
-/* ── Init check ── */
 async function initCheck() {
-  /* Lock inputs during init */
-  urlInput.disabled = true;
-  fmtSelect.disabled = true;
+  urlInput.disabled = true; fmtSelect.disabled = true;
   srvBanner.classList.add('visible');
-
-  const MAX_MS   = 90_000; /* give up after 90s total */
-  const INTERVAL = 3_000;
-  const deadline = Date.now() + MAX_MS;
-  let   got      = false;
-
-  while (Date.now() < deadline) {
+  const MAX_MS=90_000, INTERVAL=3_000, deadline=Date.now()+MAX_MS;
+  let got=false;
+  while (Date.now()<deadline) {
     try {
-      const ctrl = new AbortController();
-      const tid  = setTimeout(()=>ctrl.abort(), 5000); /* 5s per attempt */
-      const r    = await fetch(`${API_URL}/yt-status`, { signal: ctrl.signal });
+      const ctrl=new AbortController(), tid=setTimeout(()=>ctrl.abort(),5000);
+      const r=await fetch(`${API_URL}/yt-status`,{signal:ctrl.signal});
       clearTimeout(tid);
-      if (r.ok) {
-        const d  = await r.json();
-        ytEnabled = d.youtube_enabled;
-        got       = true;
-        break;
-      }
-    } catch(_) { /* timeout or network error — keep trying */ }
-    if (Date.now() < deadline) await sleep(INTERVAL);
+      if (r.ok) { const d=await r.json(); ytEnabled=d.youtube_enabled; got=true; break; }
+    } catch(_) {}
+    if (Date.now()<deadline) await sleep(INTERVAL);
   }
-
-  [tagSp, tagYt, tagSc].forEach(t => t.classList.remove('initializing'));
-  tagSp.classList.add('available');
-  tagSc.classList.add('available');
+  [tagSp,tagYt,tagSc].forEach(t=>t.classList.remove('initializing'));
+  tagSp.classList.add('available'); tagSc.classList.add('available');
   if (ytEnabled) tagYt.classList.add('available');
-
-  initDone = true;
-  srvBanner.classList.remove('visible');
-
-  /* Unlock inputs */
-  urlInput.disabled  = false;
-  fmtSelect.disabled = false;
-
+  initDone=true; srvBanner.classList.remove('visible');
+  urlInput.disabled=false; fmtSelect.disabled=false;
   tryEnableButton();
 }
 initCheck();
 
-/* ── Download click ── */
 dlBtn.addEventListener('click', startDownload);
-urlInput.addEventListener('keydown', e => { if (e.key==='Enter' && !dlBtn.disabled) startDownload(); });
+urlInput.addEventListener('keydown', e=>{ if(e.key==='Enter'&&!dlBtn.disabled) startDownload(); });
 
 async function startDownload() {
   const url = urlInput.value.trim();
-  if (!url || dlBtn.disabled) return;
-
+  if (!url||dlBtn.disabled) return;
   playSound('button');
-  dlBtn.disabled = true;
-  statusBox.classList.add('visible');
-  dlInfo.classList.remove('visible');
-  setProgMarquee();
-  startWakeTimer();
-
-  const msgs = [
-    'Connecting to server…',
-    'Server waking up — may take up to 60s…',
-    'Still starting, please wait…',
-    'Almost ready…',
-    'Nearly there…',
-  ];
-
-  let progInterval = null;
-
+  dlBtn.disabled=true; statusBox.classList.add('visible');
+  dlInfo.classList.remove('visible'); setProgMarquee(); startWakeTimer();
+  const msgs=['Connecting to server…','Server waking up — may take up to 60s…','Still starting, please wait…','Almost ready…','Nearly there…'];
+  let progInterval=null;
   try {
-    /* ── Wake: keep pinging until alive ── */
-    let alive = false;
-    for (let i = 0; i < 20; i++) {
-      setStatus(msgs[Math.min(Math.floor(i/4), msgs.length-1)]);
+    let alive=false;
+    for (let i=0;i<20;i++) {
+      setStatus(msgs[Math.min(Math.floor(i/4),msgs.length-1)]);
       try {
-        const ctrl = new AbortController();
-        const tid  = setTimeout(()=>ctrl.abort(), 5000);
-        const r    = await fetch(`${API_URL}/`, {method:'GET', signal:ctrl.signal});
+        const ctrl=new AbortController(), tid=setTimeout(()=>ctrl.abort(),5000);
+        const r=await fetch(`${API_URL}/`,{method:'GET',signal:ctrl.signal});
         clearTimeout(tid);
-        if (r.ok) { alive = true; break; }
+        if (r.ok) { alive=true; break; }
       } catch(_) {}
       await sleep(3000);
     }
     if (!alive) throw new Error('Server did not respond after 60s. Try again in a moment.');
-
     stopWakeTimer();
-    setStatus('Processing — this may take several minutes…');
-    setProgValue(10);
-
-    /* ── Simulate progress while waiting ── */
-    let progVal = 10;
-    progInterval = setInterval(() => {
-      if (progVal < 75) { progVal += Math.random() * 2; setProgValue(Math.min(progVal, 75)); }
-    }, 1500);
-
-    /* ── POST with automatic retry on transient server restart ── */
-    let resp = null;
-    for (let attempt = 0; attempt < 3; attempt++) {
+    setStatus('Processing — this may take several minutes…'); setProgValue(10);
+    let progVal=10;
+    progInterval=setInterval(()=>{ if(progVal<75){progVal+=Math.random()*2;setProgValue(Math.min(progVal,75));} },1500);
+    let resp=null;
+    for (let attempt=0;attempt<3;attempt++) {
       try {
-        const ctrl = new AbortController();
-        /* No timeout on download itself — can take minutes */
-        resp = await fetch(`${API_URL}/download`, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ url, format: fmtSelect.value }),
-          signal: ctrl.signal,
-        });
-        /* If server restarted mid-request we get a network error on attempt>0 */
-        if (resp.ok || (resp.status !== 503 && resp.status !== 502)) break;
-        /* 502/503 = server restarting; wait and retry */
-        setStatus('Server restarting, retrying…');
-        await sleep(5000);
+        const ctrl=new AbortController();
+        resp=await fetch(`${API_URL}/download`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,format:fmtSelect.value}),signal:ctrl.signal});
+        if (resp.ok||(resp.status!==503&&resp.status!==502)) break;
+        setStatus('Server restarting, retrying…'); await sleep(5000);
       } catch(netErr) {
-        if (attempt === 2) throw netErr;
-        setStatus('Connection lost, retrying…');
-        await sleep(5000);
-        /* Re-wake before retry */
-        for (let i = 0; i < 10; i++) {
-          try {
-            const r = await fetch(`${API_URL}/`, {method:'GET'});
-            if (r.ok) break;
-          } catch(_) {}
-          await sleep(3000);
-        }
+        if (attempt===2) throw netErr;
+        setStatus('Connection lost, retrying…'); await sleep(5000);
+        for (let i=0;i<10;i++) { try { const r=await fetch(`${API_URL}/`,{method:'GET'}); if(r.ok) break; } catch(_){} await sleep(3000); }
       }
     }
-
-    clearInterval(progInterval);
-    progInterval = null;
-
-    if (!resp || !resp.ok) {
-      const err = await resp.json().catch(() => ({detail:`HTTP ${resp?.status || 'error'}`}));
-      throw new Error(err.detail || `HTTP ${resp?.status}`);
+    clearInterval(progInterval); progInterval=null;
+    if (!resp||!resp.ok) {
+      const err=await resp.json().catch(()=>({detail:`HTTP ${resp?.status||'error'}`}));
+      throw new Error(err.detail||`HTTP ${resp?.status}`);
     }
-
-    const dlStart = Date.now();
-    const cl = parseInt(resp.headers.get('Content-Length') || '0', 10);
-    if (cl > 0) {
-      dlSize.textContent = fmtBytes(cl);
-      dlEta.textContent = 'downloading…';
+    const dlStart=Date.now();
+    const cl=parseInt(resp.headers.get('Content-Length')||'0',10);
+    if (cl>0) { dlSize.textContent=fmtBytes(cl); dlEta.textContent='downloading…'; dlInfo.classList.add('visible'); }
+    setStatus('Packaging…'); setProgValue(80);
+    const blob=await resp.blob();
+    const blobUrl=URL.createObjectURL(blob);
+    const disp=resp.headers.get('Content-Disposition')||'';
+    const nm=disp.match(/filename="?([^"]+)"?/);
+    const filename=nm?nm[1]:'download.zip';
+    if (cl===0&&blob.size>0) {
+      dlSize.textContent=fmtBytes(blob.size);
+      const elapsed=(Date.now()-dlStart)/1000;
+      dlEta.textContent='done in '+(elapsed<60?Math.ceil(elapsed)+'s':Math.floor(elapsed/60)+'m '+Math.ceil(elapsed%60)+'s');
       dlInfo.classList.add('visible');
     }
-
-    setStatus('Packaging…');
-    setProgValue(80);
-
-    const blob = await resp.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    const disp = resp.headers.get('Content-Disposition') || '';
-    const nm = disp.match(/filename="?([^"]+)"?/);
-    const filename = nm ? nm[1] : 'download.zip';
-
-    if (cl === 0 && blob.size > 0) {
-      dlSize.textContent = fmtBytes(blob.size);
-      const elapsed = (Date.now()-dlStart)/1000;
-      dlEta.textContent = 'done in ' + (elapsed < 60
-        ? Math.ceil(elapsed)+'s'
-        : Math.floor(elapsed/60)+'m '+Math.ceil(elapsed%60)+'s');
-      dlInfo.classList.add('visible');
-    }
-
-    const a = document.createElement('a');
-    a.href = blobUrl; a.download = filename;
-    document.body.appendChild(a); a.click(); a.remove();
-    URL.revokeObjectURL(blobUrl);
-
-    setProgValue(100);
-    setStatus('Download started — check your downloads folder.', 'ok');
+    const a=document.createElement('a'); a.href=blobUrl; a.download=filename;
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(blobUrl);
+    setProgValue(100); setStatus('Download started — check your downloads folder.','ok');
     playSound('like');
-
   } catch(err) {
     stopWakeTimer();
-    if (progInterval) { clearInterval(progInterval); progInterval = null; }
+    if (progInterval) { clearInterval(progInterval); progInterval=null; }
     setProgError();
-    const raw = err.message || '';
-    const msg = (raw==='Failed to fetch'||err.name==='TypeError')
-      ? 'Could not reach server. Wait a moment and try again.'
-      : raw;
-    setStatus('Error: ' + msg, 'err');
+    const raw=err.message||'';
+    const msg=(raw==='Failed to fetch'||err.name==='TypeError')
+      ? 'Could not reach server. Wait a moment and try again.' : raw;
+    setStatus('Error: '+msg,'err');
     playSound('alert');
-  } finally {
-    tryEnableButton();
-  }
+  } finally { tryEnableButton(); }
 }
 
 /* ── Preview ── */
 function buildSpotifyEmbed(url) {
-  /* Normalize: remove /intl-xx/ locale prefix so regex matches */
-  const clean = url.replace(/spotify\.com\/intl-[a-z-]+\//i, 'spotify.com/');
-  const m = clean.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
+  const clean=url.replace(/spotify\.com\/intl-[a-z-]+\//i,'spotify.com/');
+  const m=clean.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
   if (!m) return null;
-  const [,type,id] = m;
-  const h = (type==='track'||type==='episode') ? 152 : 352;
-  const lbl = type.charAt(0).toUpperCase()+type.slice(1);
+  const [,type,id]=m, h=(type==='track'||type==='episode')?152:352;
+  const lbl=type.charAt(0).toUpperCase()+type.slice(1);
   prevHIcon.src=SRC_ICONS.spotify; prevHIcon.style.display='';
-  prevHTitle.textContent=`Spotify — ${lbl} Preview`;
+  prevHTitle.textContent=`SPOTIFY — ${lbl.toUpperCase()} PREVIEW`;
   return `<div class="sp-embed-wrap"><iframe src="https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0" height="${h}" frameborder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe></div>
 <div class="preview-meta"><img class="preview-meta-icon" src="${SRC_ICONS.spotify}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">Spotify ${lbl}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div></div>`;
 }
 function buildYouTubeEmbed(url) {
-  const pl = url.match(/[?&]list=([^&]+)/);
-  const v  = url.match(/[?&]v=([^&]+)/)||url.match(/youtu\.be\/([^?&#]+)/);
-  if (!pl && !v) return null;
-  const type = pl ? 'Playlist' : 'Video';
-  const src  = pl ? `https://www.youtube.com/embed/videoseries?list=${pl[1]}`
-                  : `https://www.youtube.com/embed/${v[1]}`;
+  const pl=url.match(/[?&]list=([^&]+)/), v=url.match(/[?&]v=([^&]+)/)||url.match(/youtu\.be\/([^?&#]+)/);
+  if (!pl&&!v) return null;
+  const type=pl?'Playlist':'Video';
+  const src=pl?`https://www.youtube.com/embed/videoseries?list=${pl[1]}`:`https://www.youtube.com/embed/${v[1]}`;
   prevHIcon.src=SRC_ICONS.youtube; prevHIcon.style.display='';
-  prevHTitle.textContent=`YouTube — ${type} Preview`;
+  prevHTitle.textContent=`YOUTUBE — ${type.toUpperCase()} PREVIEW`;
   return `<div class="yt-embed-wrap"><iframe src="${src}" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
 <div class="preview-meta"><img class="preview-meta-icon" src="${SRC_ICONS.youtube}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">YouTube ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div></div>`;
 }
 function buildSoundCloudEmbed(url) {
-  const isSet = /\/sets\//i.test(url);
-  const type  = isSet ? 'Set' : 'Track';
-  const h     = isSet ? 450 : 166;
-  const emb   = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
+  const isSet=/\/sets\//i.test(url), type=isSet?'Set':'Track', h=isSet?450:166;
+  const emb=`https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
   prevHIcon.src=SRC_ICONS.soundcloud; prevHIcon.style.display='';
-  prevHTitle.textContent=`SoundCloud — ${type} Preview`;
+  prevHTitle.textContent=`SOUNDCLOUD — ${type.toUpperCase()} PREVIEW`;
   return `<div class="sc-embed-wrap"><iframe scrolling="no" frameborder="no" allow="autoplay" src="${emb}" height="${h}" loading="lazy"></iframe></div>
 <div class="preview-meta"><img class="preview-meta-icon" src="${SRC_ICONS.soundcloud}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">SoundCloud ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div></div>`;
 }
 function renderPreview(raw) {
-  const url = raw.trim();
-  if (!url) {
-    prevPanel.classList.remove('visible');
-    stopEmbedAudio();
-    prevBody.innerHTML='<div class="preview-checking">Paste a link above to see a preview.</div>';
-    prevHIcon.style.display='none'; prevHTitle.textContent='Link Preview';
-    return;
-  }
-  const src = detectSource(url);
-  prevPanel.classList.add('visible');
-  prevHIcon.style.display='none'; prevHTitle.textContent='Link Preview';
+  const url=raw.trim();
+  if (!url) { prevPanel.classList.remove('visible'); stopEmbedAudio(); prevBody.innerHTML='<div class="preview-checking">Paste a link above to see a preview.</div>'; prevHIcon.style.display='none'; prevHTitle.textContent='LINK PREVIEW'; return; }
+  const src=detectSource(url);
+  prevPanel.classList.add('visible'); prevHIcon.style.display='none'; prevHTitle.textContent='LINK PREVIEW';
   if (!src) { prevBody.innerHTML='<div class="preview-invalid">Unrecognized URL — paste a valid Spotify, YouTube or SoundCloud link.</div>'; return; }
   prevBody.innerHTML='<div class="preview-checking">Loading preview…</div>';
-  let html = null;
-  if (src==='spotify')    html = buildSpotifyEmbed(url);
-  if (src==='youtube')    html = buildYouTubeEmbed(url);
-  if (src==='soundcloud') html = buildSoundCloudEmbed(url);
-  prevBody.innerHTML = html || '<div class="preview-invalid">Could not generate preview. Check the URL.</div>';
+  let html=null;
+  if (src==='spotify')    html=buildSpotifyEmbed(url);
+  if (src==='youtube')    html=buildYouTubeEmbed(url);
+  if (src==='soundcloud') html=buildSoundCloudEmbed(url);
+  prevBody.innerHTML=html||'<div class="preview-invalid">Could not generate preview. Check the URL.</div>';
 }
 urlInput.addEventListener('input', () => {
   clearTimeout(previewTimer);
-  if (!urlInput.value.trim()) {
-    /* Immediately clear preview and stop audio on full clear */
-    prevPanel.classList.remove('visible');
-    stopEmbedAudio();
-    prevBody.innerHTML='<div class="preview-checking">Paste a link above to see a preview.</div>';
-    prevHIcon.style.display='none'; prevHTitle.textContent='Link Preview';
-    return;
-  }
-  previewTimer = setTimeout(()=>renderPreview(urlInput.value),500);
+  if (!urlInput.value.trim()) { prevPanel.classList.remove('visible'); stopEmbedAudio(); prevBody.innerHTML='<div class="preview-checking">Paste a link above to see a preview.</div>'; prevHIcon.style.display='none'; prevHTitle.textContent='LINK PREVIEW'; return; }
+  previewTimer=setTimeout(()=>renderPreview(urlInput.value),500);
 });
-urlInput.addEventListener('paste', () => { clearTimeout(previewTimer); previewTimer = setTimeout(()=>renderPreview(urlInput.value),250); });
+urlInput.addEventListener('paste', ()=>{ clearTimeout(previewTimer); previewTimer=setTimeout(()=>renderPreview(urlInput.value),250); });
 </script>
 </body>
 </html>
