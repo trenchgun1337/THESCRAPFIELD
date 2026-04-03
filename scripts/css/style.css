@@ -127,7 +127,7 @@ h1 { font-size:12px; }
 /* ── Sidebar nav ── */
 #navigationMenu {
   background:var(--grad-nav);
-  border:1px solid rgba(160,160,160,.42);
+  border:2px ridge #727272 !important;
   
   width:162px; flex-shrink:0;
   padding:10px 8px 14px;
@@ -210,10 +210,10 @@ h1 { font-size:12px; }
   box-shadow:inset 0 1px 0 var(--shine),0 5px 6px rgba(0,0,0,.18);
   border:1px solid rgba(180,180,180,.52); padding:5px; margin:7px;
 }
-.aero-borders { border:1px solid rgba(170,170,170,.44); }
+.aero-borders { border:1px solid rgba(0, 0, 0, 0.44); }
 
 /* ── Content containers ── */
-.styled-containers        { background:#fff; box-shadow:0 3px 10px rgba(0,0,0,.12); padding:10px; }
+.styled-containers        { background:#000000; box-shadow:0 3px 10px rgba(0,0,0,.12); padding:10px; }
 .styled-containers-headers{ background:#fff; box-shadow:0 3px 10px rgba(0,0,0,.12); padding:8px 10px; }
 
 /* ── Rights bar ── */
@@ -494,12 +494,12 @@ h1 { font-size:12px; }
 .aero-glass-overlay > * { position:relative; z-index:1; }
 
 /* ── Community ── */
-.comm-tab-bar { display:flex; background:linear-gradient(to bottom,#e8e8e8 0%,#d8d8d8 49%,#c8c8c8 50%,#d4d4d4 100%); border-bottom:2px solid var(--accent); padding:0 6px; gap:3px; }
+.comm-tab-bar { display:flex; background:rgb(255, 254, 254);border: 1px ridge #c9c9c9; padding:0 6px; gap:3px; }
 .comm-tab { background:none; border:1px solid rgba(160,160,160,.38); border-bottom:none; color:var(--text-dim); cursor:pointer; font-size:11.5px; padding:6px 16px 7px; white-space:nowrap; display:inline-flex; align-items:center; gap:4px; min-width:80px; justify-content:center; margin-bottom:-2px; }
-.comm-tab:hover { color:var(--text); }
+.comm-tab:hover { color: #000; }
 .comm-tab.active,#commTabChat.active,#commTabBlog.active,button.comm-tab.active {
-  background:linear-gradient(to bottom,rgba(255,255,255,.80) 0%,rgba(230,180,180,.44) 18%,rgba(200,100,100,.40) 60%,rgba(240,240,240,.96) 60%,#f0f0f0 100%) !important;
-  border-color:var(--accent) !important; border-bottom:2px solid rgba(245,245,245,.88) !important; color:#000 !important; z-index:2;
+  background:rgba(255,255,255,.80) !important;
+  border-color:black !important; border-bottom:2px solid rgba(245,245,245,.88) !important; color:#000 !important; z-index:2;
 }
 #commTabBlog img { height:14px !important; width:auto !important; }
 .comm-panel { display:none; }
@@ -517,8 +517,8 @@ h1 { font-size:12px; }
 #pg-preferences button,#pg-preferences select,#_prefBar button,#_prefBar select { border-color:rgba(140,140,140,.50) !important; }
 #pg-preferences select,#_prefBar select { border:1px solid rgba(140,140,140,.56) !important; background:#fff !important; color:#000 !important; }
 #pg-preferences select:focus,#_prefBar select:focus { border-color:rgba(100,100,100,.80) !important; outline:none; }
-#_prefBar button { background:rgba(240,240,240,.92) !important; border:1px solid rgba(120,120,120,.44) !important; color:var(--text); font-size:11px; cursor:pointer; padding:2px 8px; }
-#_prefBar button:hover { color:#000 !important; border-color:rgba(100,100,100,.76) !important; background:rgba(220,220,220,.92) !important; }
+#_prefBar button {background: rgb(0 0 0) !important;border:1px solid rgba(120,120,120,.44) !important;color:var(--text);font-size:11px;cursor:pointer;padding:2px 8px;}
+#_prefBar button:hover {color:#000 !important;border-color:rgba(100,100,100,.76) !important;background: rgb(255 255 255 / 92%) !important;}
 
 /* ── No filter on key images ── */
 body #introBanner,body .contact-banner,body .faa-logo-img,

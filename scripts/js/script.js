@@ -118,7 +118,7 @@ function applyDarkThemeBg() {
   s.textContent = ` 
     body {
       background-image: url('${BG_DARK_URL}') !important;
-      background-size: contain !important;
+      background-size: 49% !important;
       background-attachment: fixed !important;
       background-repeat: no-repeat !important;
       background-position: center center !important;
@@ -293,7 +293,6 @@ function applyAdaptiveAccent(enable) {
     const hue  = _getHue(ar, ag, ab);
     window._vizAccentColor = { r:ar, g:ag, b:ab, hex, hex2, hue };
     const rgba = (a) => `rgba(${ar},${ag},${ab},${a})`;
-    const btnBg = `rgba(${Math.round(ar/5)},${Math.round(ag/5)},${Math.round(ab/5)},.9)`;
 
     const imgFilter = `
 body .mp-ctrl-btn img,
@@ -378,12 +377,22 @@ button.comm-tab.active {
 ::-webkit-scrollbar-thumb { background: rgba(${Math.round(ar/3.5)},${Math.round(ag/3.5)},${Math.round(ab/3.5)},.60) !important; border-radius:0 !important; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(${Math.round(ar/2.5)},${Math.round(ag/2.5)},${Math.round(ab/2.5)},.78) !important; }
 html { scrollbar-color: rgba(${Math.round(ar/3.5)},${Math.round(ag/3.5)},${Math.round(ab/3.5)},.60) transparent !important; }
-#pg-preferences button, #_prefBar button {
+/* pref-btn: accent only affects border, NOT background — background controlled by data-active */
+#pg-preferences button.pref-btn, #_prefBar button.pref-btn {
   border-color: ${rgba(0.60)} !important;
-  background: ${btnBg} !important;
 }
-#pg-preferences button:hover, #_prefBar button:hover {
-  border-color: ${rgba(0.85)} !important; color: #fff !important;
+#pg-preferences button.pref-btn[data-active="1"], #_prefBar button.pref-btn[data-active="1"] {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: ${rgba(0.75)} !important;
+}
+#pg-preferences button.pref-btn[data-active="0"], #_prefBar button.pref-btn[data-active="0"] {
+  background: #1a1a1a !important;
+  color: rgba(200,200,200,0.8) !important;
+}
+#pg-preferences button.pref-btn:hover, #_prefBar button.pref-btn:hover {
+  border-color: ${rgba(0.85)} !important;
+  color: #fff !important;
 }
 #pg-preferences select, #_prefBar select { border-color: ${rgba(0.60)} !important; }
 body.adaptive-accent-on .nav-icons {
@@ -1209,6 +1218,21 @@ function _initCDPlayer() {
    ================================================================ */
 let _sideHidden = false;
 
+/* Helper: apply pref-btn active/inactive visual state */
+function _setPrefBtnState(btn, active) {
+  if (active) {
+    btn.style.background = '#000000';
+    btn.style.color      = '#ffffff';
+    btn.style.borderColor = 'rgba(180,20,20,.7)';
+    btn.setAttribute('data-active', '1');
+  } else {
+    btn.style.background = '#1a1a1a';
+    btn.style.color      = 'rgba(200,200,200,0.8)';
+    btn.style.borderColor = 'rgba(120,20,20,.5)';
+    btn.setAttribute('data-active', '0');
+  }
+}
+
 function buildPreferencesUI() {
   const prefPage=$('pg-preferences');if(!prefPage) return;
   const ex=$('_prefBar');if(ex) ex.remove();
@@ -1218,14 +1242,24 @@ function buildPreferencesUI() {
   const mkSectionBody=()=>{ const d=document.createElement('div');d.className='styled-containers aero-borders';d.style.cssText='padding:6px 10px;margin-bottom:2px;';return d; };
   const SEL_CSS='font-size:11px;background:#000;color:#fff;border:1px solid rgba(180,20,20,.6);cursor:pointer;padding:2px 6px;font-family:Tahoma,sans-serif;outline:none;';
 
-  function mkToggle(on,off,state,cb){
-    const row=document.createElement('div');row.style.cssText='margin:3px 0;';
-    const btn=document.createElement('button');btn.className='pref-btn';btn.textContent=state?on:off;
-    btn.style.cssText='font-size:11px;font-family:Tahoma,sans-serif;cursor:pointer;padding:2px 8px;background:rgba(30,8,8,.9);border:1px solid rgba(120,20,20,.5);color:rgba(200,200,200,0.8);';
-    if(state) btn.style.color='#fff';
-    btn.addEventListener('click',()=>{const next=btn.textContent===off;btn.textContent=next?on:off;btn.style.color=next?'#fff':'rgba(200,200,200,0.8)';cb(next);});
-    row.appendChild(btn);return row;
+  function mkToggle(on, off, state, cb) {
+    const row = document.createElement('div');
+    row.style.cssText = 'margin:3px 0;';
+    const btn = document.createElement('button');
+    btn.className = 'pref-btn';
+    btn.textContent = state ? on : off;
+    btn.style.cssText = 'font-size:11px;font-family:Tahoma,sans-serif;cursor:pointer;padding:2px 8px;border:1px solid rgba(120,20,20,.5);transition:background .15s,border-color .15s;';
+    _setPrefBtnState(btn, state);
+    btn.addEventListener('click', () => {
+      const next = btn.textContent === off;
+      btn.textContent = next ? on : off;
+      _setPrefBtnState(btn, next);
+      cb(next);
+    });
+    row.appendChild(btn);
+    return row;
   }
+
   function mkSelect(label,options,current,cb){
     const row=document.createElement('div');row.style.cssText='margin:3px 0;display:flex;align-items:center;gap:6px;';
     const sp=document.createElement('span');sp.style.cssText='color:#ccc;font-size:11px;font-family:Tahoma,sans-serif;';sp.textContent=label+':';
@@ -1256,7 +1290,8 @@ function buildPreferencesUI() {
   if(PREFS.hideRenaUnlocked){
     const hideRow=document.createElement('div');hideRow.style.cssText='margin:3px 0;';
     const hideBtn=document.createElement('button');hideBtn.id='_hideRenaBtn';hideBtn.className='pref-btn';
-    hideBtn.style.cssText='font-size:11px;font-family:Tahoma,sans-serif;cursor:pointer;padding:2px 8px;background:rgba(30,8,8,.9);border:1px solid rgba(120,20,20,.5);color:rgba(200,200,200,0.8);';
+    hideBtn.style.cssText='font-size:11px;font-family:Tahoma,sans-serif;cursor:pointer;padding:2px 8px;border:1px solid rgba(120,20,20,.5);';
+    _setPrefBtnState(hideBtn, false);
     const _getHL=()=>{const renaEl=$('renaChan'),rikaEl=$('rikaChan');const active=window._rikaMode?rikaEl:renaEl;const hidden=active?active.style.display==='none':true;return hidden?`Unhide ${window._rikaMode?'Rika':'Rena'}`:`Hide ${window._rikaMode?'Rika':'Rena'}`;};
     hideBtn.textContent=_getHL();
     hideBtn.addEventListener('click',()=>{
@@ -1268,7 +1303,8 @@ function buildPreferencesUI() {
 
     const toggleRow=document.createElement('div');toggleRow.style.cssText='margin:3px 0;';toggleRow.id='_rikaToggleRow';
     const toggleBtn=document.createElement('button');toggleBtn.className='pref-btn';toggleBtn.id='_rikaToggleBtn';
-    toggleBtn.style.cssText='font-size:11px;font-family:Tahoma,sans-serif;cursor:pointer;padding:2px 8px;background:rgba(30,8,8,.9);border:1px solid rgba(120,20,20,.5);color:rgba(200,200,200,0.8);';
+    toggleBtn.style.cssText='font-size:11px;font-family:Tahoma,sans-serif;cursor:pointer;padding:2px 8px;border:1px solid rgba(120,20,20,.5);';
+    _setPrefBtnState(toggleBtn, false);
     toggleBtn.textContent=window._rikaMode?'Use Rena instead of Rika':'Use Rika instead of Rena';
     toggleBtn.addEventListener('click',()=>{
       window._rikaMode=!window._rikaMode;
@@ -1288,14 +1324,16 @@ function buildPreferencesUI() {
 
   const artRow=document.createElement('div');artRow.style.cssText='margin:3px 0;';
   const artBtn=document.createElement('button');artBtn.className='pref-btn';
-  artBtn.style.cssText='font-size:11px;font-family:Tahoma,sans-serif;cursor:pointer;padding:2px 8px;background:rgba(30,8,8,.9);border:1px solid rgba(120,20,20,.5);color:rgba(200,200,200,0.8);';
+  artBtn.style.cssText='font-size:11px;font-family:Tahoma,sans-serif;cursor:pointer;padding:2px 8px;border:1px solid rgba(120,20,20,.5);';
+  _setPrefBtnState(artBtn, false);
   artBtn.textContent=artHidden?'Show Artwork':'Hide Artwork';
   artBtn.addEventListener('click',()=>{artHidden=!artHidden;if(artHidden){if(MUSIC_BG){MUSIC_BG.style.backgroundImage='none';MUSIC_BG.style.background='#000';}}else{const t=curIdx>=0?TRACKS[curIdx]:null;_applyAlbumArt(t);}artBtn.textContent=artHidden?'Show Artwork':'Hide Artwork';});
   artRow.appendChild(artBtn);mpBody.appendChild(artRow);
 
   const sideRow=document.createElement('div');sideRow.style.cssText='margin:3px 0;';
   const sideBtn=document.createElement('button');sideBtn.className='pref-btn';sideBtn.id='_sideBtn';
-  sideBtn.style.cssText='font-size:11px;font-family:Tahoma,sans-serif;cursor:pointer;padding:2px 8px;background:rgba(30,8,8,.9);border:1px solid rgba(120,20,20,.5);color:rgba(200,200,200,0.8);';
+  sideBtn.style.cssText='font-size:11px;font-family:Tahoma,sans-serif;cursor:pointer;padding:2px 8px;border:1px solid rgba(120,20,20,.5);';
+  _setPrefBtnState(sideBtn, false);
   sideBtn.textContent=_sideHidden?'Show Sidebar':'Hide Sidebar';
   sideBtn.addEventListener('click',()=>{_sideHidden=!_sideHidden;const rp=$('playlistRight');if(rp)rp.style.display=_sideHidden?'none':'';sideBtn.textContent=_sideHidden?'Show Sidebar':'Hide Sidebar';});
   sideRow.appendChild(sideBtn);mpBody.appendChild(sideRow);
