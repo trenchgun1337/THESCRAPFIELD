@@ -5,314 +5,170 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — Watanagashi Archive</title>
 <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
 <style>
-/* ── Reset ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-* { -webkit-tap-highlight-color: transparent; }
-::selection { background: rgba(204,26,26,.35) !important; color:#fff !important; }
-::-moz-selection { background: rgba(204,26,26,.35) !important; color:#fff !important; }
-*:focus { outline: none !important; }
-button:active, button:focus, button:focus-visible { outline:none !important; box-shadow:none !important; }
+* { -webkit-tap-highlight-color:transparent; }
+::selection { background:rgba(80,80,80,.45); color:#fff; }
+::-moz-selection { background:rgba(80,80,80,.45); color:#fff; }
+*:focus { outline:none !important; }
 
 :root {
-  --accent:       #cc1a1a;
-  --text:         #c8c8c8;
-  --green:        #3cda56;
-  --glass-border: rgba(150,150,150,.40);
-  --aero-border:  rgba(140,140,140,.40);
-  --bar-grad: linear-gradient(to bottom,
-    rgba(255,255,255,.22) 0%, rgba(185,185,185,.88) 0%,
-    rgba(120,120,120,.76) 4%, rgba(26,26,26,.98) 52%,
-    rgba(4,4,4,1) 52%, rgba(14,14,14,.99) 100%);
-  --bar-shine:    rgba(255,255,255,.24);
-  --bar-border-t: rgba(255,255,255,.18);
-  --bar-border-b: rgba(0,0,0,.88);
-  --bar-border-s: rgba(140,140,140,.44);
-  --bar-glow-top: linear-gradient(180deg,rgba(255,255,255,.14) 0%,rgba(200,200,200,.02) 100%);
-  --bar-text:     #f2f2f2;
-  --bar-tshadow:  0 1px 3px rgba(0,0,0,.98), 0 0 10px rgba(200,200,200,.20);
-  --contact-hover: linear-gradient(to bottom,
-    rgba(255,255,255,.12) 0%,
-    rgba(170,170,170,.18) 20%,
-    rgba(130,130,130,.16) 50%,
-    rgba(22,22,22,.32)    50%,
-    rgba(150,150,150,.46) 100%);
+  --accent:    #cc1a1a;
+  --text:      #111;
+  --text-dim:  #2c2c2c;
+  --grad-bar:  linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
+  --shadow-bar: 0 2px 5px rgba(0,0,0,.15);
 }
 
-html {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(140,140,140,.50) transparent;
-}
+html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.50) transparent; }
 ::-webkit-scrollbar { width:6px; }
 ::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:rgba(140,140,140,.50); border-radius:3px; }
-::-webkit-scrollbar-thumb:hover { background:rgba(200,200,200,.72); }
+::-webkit-scrollbar-thumb { background:rgba(120,120,120,.50); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(54,54,54,.8); }
 
 body {
-  font-family: Tahoma, 'Segoe UI', Geneva, Verdana, sans-serif;
-  font-size: 12px;
-  background: #000 url('../assets/images/CONTACTBANNER.png') center top / contain fixed no-repeat;
-  color: var(--text);
-  min-height: 100vh;
-  padding: 12px 6px 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
+  font-size:12px;
+  background:#000 url('../assets/images/CONTACTBANNER.png') center top / contain fixed no-repeat;
+  color:var(--text);
+  min-height:100vh;
+  padding:12px 6px 30px;
+  display:flex; flex-direction:column; align-items:center;
 }
 
-a { color: var(--text); text-decoration: none; }
-a:hover { color: var(--green); text-decoration: underline; }
-p { font-size: 12.5px; line-height: 18px; color: var(--text); margin:0; }
-p + p { margin-top: 5px; }
-strong { color: var(--accent); font-weight: 400; }
+img { -webkit-user-drag:none; user-select:none; }
+a             { color:#000; text-decoration:none; }
+a:hover       { color:var(--accent); text-decoration:underline; }
+p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
+p + p         { margin-top:5px; }
+strong        { color:var(--accent); font-weight:400; }
 
-/* ── Page wrap ── */
-#pageWrap {
-  width: 800px;
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-}
+#pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; }
 
 /* ── Corner logo ── */
 #cornerLogo {
-  position: fixed;
-  top: 10px;
-  right: 14px;
-  z-index: 9998;
-  line-height: 0;
-  text-decoration: none;
+  position:fixed; top:10px; right:14px; z-index:9998; line-height:0; text-decoration:none;
 }
 #cornerLogo img {
-  height: 36px;
-  width: auto;
-  object-fit: contain;
-  display: block;
-  filter: drop-shadow(0 1px 4px rgba(0,0,0,.90));
-  opacity: .82;
-  transition: opacity .18s, filter .18s;
-  pointer-events: auto;
+  height:36px; width:auto; object-fit:contain; display:block;
+  opacity:.82; pointer-events:auto;
 }
-#cornerLogo:hover img {
-  opacity: 1;
-  filter: drop-shadow(0 0 8px rgba(255,255,255,.55)) drop-shadow(0 1px 4px rgba(0,0,0,.90));
-}
+#cornerLogo:hover img { opacity:1; }
 
-/* ── Aero Bar ── */
+/* ── Topbar ── */
 .aero-bar {
-  background: var(--bar-grad);
-  border: 1px solid var(--bar-border-s);
-  border-top-color: var(--bar-border-t);
-  border-bottom-color: var(--bar-border-b);
-  box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
-  color: var(--bar-text);
-  font-size: 14.6px;
-  font-weight: 400;
-  padding: 2px 4px;
-  text-shadow: var(--bar-tshadow);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 7px;
-}
-.aero-bar::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 50%;
-  background: var(--bar-glow-top);
-  pointer-events: none;
+  background:var(--grad-bar);
+  border:2px ridge #727272;
+  box-shadow:var(--shadow-bar);
+  color:var(--text);
+  font-size:13px; font-weight:400;
+  padding:4px 8px;
+  display:flex; align-items:center; gap:6px;
+  margin-bottom:7px;
 }
 .aero-bar .back-link {
-  z-index: 1;
-  flex-shrink: 0;
-  padding: 2px 3px;
-  display: flex;
-  align-items: center;
-  line-height: 0;
-  text-decoration: none;
+  flex-shrink:0; padding:2px 3px;
+  display:flex; align-items:center; line-height:0; text-decoration:none;
 }
 .aero-bar .back-link img {
-  height: 30px;
-  width: auto;
-  object-fit: contain;
-  display: block;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,.80));
+  height:28px; width:auto; object-fit:contain; display:block; pointer-events:auto !important;
 }
-.aero-bar .back-link:hover img {
-  filter: drop-shadow(0 0 6px rgba(255,255,255,.70)) drop-shadow(0 0 12px rgba(200,200,200,.45)) brightness(1.2);
-}
-.aero-bar .bar-title {
-  flex: 1;
-  text-align: center;
-  z-index: 1;
-  padding-right: 36px;
-}
+.aero-bar .back-link:hover img { filter:brightness(.85); }
+.aero-bar .bar-title { flex:1; text-align:center; font-size:12px; letter-spacing:.5px; }
 
-/* ── Glass Box ── */
+/* ── Glass / aero boxes ── */
 .glass-box {
-  background-image: linear-gradient(rgb(255 255 255 / 12%), rgb(0 0 0 / 100%));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 10px rgba(200,200,200,.04), 0 5px 6px rgba(0,0,0,.55);
-  border: 1px solid var(--glass-border);
-  padding: 5px;
-  margin-bottom: 7px;
+  background:#ebebeb;
+  box-shadow:var(--shadow-bar);
+  border:2px ridge #727272;
+  padding:5px; margin-bottom:7px;
 }
-.aero-inner {
-  border: 1px solid var(--aero-border);
-  background: rgba(6,6,6,.92);
-}
-.aero-pad { padding: 10px 12px; }
+.aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
+.aero-pad   { padding:10px 12px; }
 
-/* ── h2 bar ── */
-h2 {
-  background: var(--bar-grad);
-  box-shadow: inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
-  border: 1px solid var(--bar-border-s);
-  border-top-color: var(--bar-border-t);
-  border-bottom-color: var(--bar-border-b);
-  padding: 5px 8px 7px;
-  margin: 0;
-  font-weight: 400;
-  font-size: 13px;
-  color: var(--bar-text);
-  text-shadow: var(--bar-tshadow);
-  position: relative;
-  overflow: hidden;
-}
-h2::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 50%;
-  background: var(--bar-glow-top);
-  pointer-events: none;
-}
-
-/* ── Contact Links ── */
-.contact-links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.contact-links li {
-  border-bottom: 1px solid rgba(30,30,30,.82);
-}
-.contact-links li:last-child {
-  border-bottom: none;
-}
-.contact-links a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 9px 14px;
-  color: var(--text);
-  font-size: 12.5px;
-  text-decoration: none;
-  font-family: Tahoma, sans-serif;
-  position: relative;
-  overflow: hidden;
-  transition: color .15s;
-}
-.contact-links a:hover {
-  background: var(--contact-hover);
-  color: var(--accent);
-  text-decoration: none;
-}
-.contact-links a img.link-icon {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-  flex-shrink: 0;
-  pointer-events: none;
-  filter: none !important;
-  -webkit-filter: none !important;
-  border-radius: 4px;
-}
-.contact-links a .link-label {
-  flex: 1;
-  font-size: 12.5px;
-}
-.contact-links a .link-note {
-  color: #666;
-  font-size: 11px;
-  white-space: nowrap;
-}
-.contact-links a:hover .link-note {
-  color: #888;
+/* ── Section header strip ── */
+.section-bar {
+  display:block; background:#000;
+  padding:5px 8px; line-height:1.6;
+  font-size:11px; font-weight:400; letter-spacing:1.5px;
+  text-transform:uppercase; color:#fff;
 }
 
 /* ── Section divider label ── */
 .contact-section-label {
-  font-size: 10px;
-  color: #555;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  padding: 6px 14px 3px;
-  background: rgba(10,10,10,.60);
-  border-bottom: 1px solid rgba(40,40,40,.70);
-  font-family: Tahoma, sans-serif;
+  font-size:10px; color:#888;
+  text-transform:uppercase; letter-spacing:1.2px;
+  padding:5px 12px 3px;
+  background:#e0e0e0;
+  border-bottom:1px solid rgba(0,0,0,.12);
+  border-top:1px solid rgba(255,255,255,.60);
 }
 
-/* ── Note / info bar ── */
+/* ── Contact Links ── */
+.contact-links { list-style:none; margin:0; padding:0; }
+.contact-links li { border-bottom:1px solid rgba(0,0,0,.10); }
+.contact-links li:last-child { border-bottom:none; }
+
+.contact-links a {
+  display:flex; align-items:center; gap:12px;
+  padding:8px 12px;
+  color:var(--text); font-size:12.5px; text-decoration:none;
+}
+.contact-links a:hover {
+  background:var(--grad-bar);
+  color:var(--accent); text-decoration:none;
+}
+.contact-links a:hover .link-note { color:var(--text-dim); }
+
+.contact-links a img.link-icon {
+  width:26px; height:26px; object-fit:contain; flex-shrink:0;
+  pointer-events:none; filter:none !important; -webkit-filter:none !important;
+  border-radius:3px;
+}
+.contact-links a .link-label { flex:1; font-size:12.5px; }
+.contact-links a .link-note  { color:#888; font-size:11px; white-space:nowrap; }
+
+/* ── Note ── */
 .note {
-  background: rgba(6,6,6,.88);
-  border: 1px solid rgba(70,70,70,.40);
-  border-left: 2px solid rgba(100,100,100,.55);
-  padding: 7px 10px;
-  margin-top: 6px;
-  font-size: 11px;
-  color: #777;
-  line-height: 1.65;
-  text-align: center;
+  background:#f5f5f5;
+  border:1px solid rgba(0,0,0,.25);
+  border-left:3px solid rgba(120,120,120,.50);
+  padding:7px 10px; margin-top:6px;
+  font-size:11px; color:var(--text-dim); line-height:1.65;
+  text-align:center;
 }
 
 /* ── Sound toggle ── */
 #soundToggle {
-  position: fixed;
-  bottom: 8px;
-  left: 10px;
-  z-index: 9999;
-  font-family: Tahoma, sans-serif;
-  font-size: 10px;
-  color: rgba(140,140,140,.55);
-  cursor: pointer;
-  user-select: none;
-  letter-spacing: .2px;
-  padding: 2px 0;
-  background: none;
-  border: none;
-  outline: none;
-  transition: color .15s;
+  position:fixed; bottom:8px; left:10px; z-index:9999;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+  font-size:10px; color:rgba(0,0,0,.40); cursor:pointer;
+  user-select:none; letter-spacing:.2px; padding:2px 0;
+  background:none; border:none; outline:none;
 }
-#soundToggle:hover { color: rgba(200,200,200,.80); }
-#soundToggle.off   { color: rgba(90,90,90,.50); }
+#soundToggle:hover { color:rgba(0,0,0,.70); }
+#soundToggle.off   { color:rgba(0,0,0,.22); }
 
 /* ── Mobile ── */
-@media (max-width: 600px) {
-  body {
-    padding: 8px 4px 24px;
-    font-size: 13px;
-    background-size: cover;
-    background-attachment: scroll;
-    background-position: center top;
-  }
-  #pageWrap { width: 100%; }
-  .aero-bar { font-size: 13px; }
-  .aero-bar .back-link img { height: 26px; }
-  .aero-bar .bar-title { padding-right: 0; font-size: 12px; }
-  h2 { font-size: 12.5px; }
-  .aero-pad { padding: 8px; }
-  .contact-links a { padding: 10px 10px; gap: 10px; font-size: 12px; }
-  .contact-links a img.link-icon { width: 30px; height: 30px; }
-  #cornerLogo img { height: 28px; }
-  .glass-box { padding: 4px; }
+@media (max-width:600px) {
+  body { padding:8px 4px 24px; background-size:cover; background-attachment:scroll; }
+  #pageWrap { width:100%; }
+  .aero-bar { font-size:12px; }
+  .aero-bar .back-link img { height:24px; }
+  .contact-links a { padding:10px 10px; gap:10px; font-size:12px; }
+  .contact-links a img.link-icon { width:28px; height:28px; }
+  #cornerLogo img { height:28px; }
+  .glass-box { padding:4px; }
 }
-@media (max-width: 380px) {
-  .aero-bar .bar-title { font-size: 11px; }
+@media (max-width:380px) {
+  .aero-bar .bar-title { font-size:11px; }
 }
 </style>
 </head>
 <body>
 
-<!-- Corner logo → links to index introduction -->
 <a id="cornerLogo" href="../index.html#introduction" title="Watanagashi Archive — Home">
   <img src="../assets/images/watanagashilogo.png" alt="Watanagashi Archive"
     onerror="this.style.display='none'">
@@ -320,16 +176,14 @@ h2::before {
 
 <div id="pageWrap">
 
-  <!-- Top aero navigation bar with back arrow -->
   <div class="aero-bar">
     <a class="back-link" href="../index.html" title="Back to Archive">
       <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#8249;"
-        onerror="this.outerHTML='<span style=&quot;color:#bbb;font-size:22px;line-height:1;z-index:1;&quot;>&#8249;</span>'">
+        onerror="this.outerHTML='<span style=&quot;color:#333;font-size:22px;line-height:1;&quot;>&#8249;</span>'">
     </a>
-    <span class="bar-title">Contact Me</span>
+    <span class="bar-title">CONTACT ME</span>
   </div>
 
-  <!-- Intro blurb -->
   <div class="glass-box">
     <div class="aero-inner">
       <div class="aero-pad">
@@ -338,114 +192,85 @@ h2::before {
     </div>
   </div>
 
-  <!-- Main contact card -->
   <div class="glass-box">
-    <h2>Get in Touch</h2>
+    <div class="section-bar">Get in Touch</div>
     <div class="aero-inner">
 
-      <!-- Social -->
       <div class="contact-section-label">Social &amp; Video</div>
       <ul class="contact-links">
-
         <li>
           <a href="https://www.youtube.com/@trenchgun1337" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/YOUTUBEAERO.png" alt="YouTube"
-              onerror="this.style.display='none'">
+            <img class="link-icon" src="../assets/images/YOUTUBEAERO.png" alt="YouTube" onerror="this.style.display='none'">
             <span class="link-label">YouTube</span>
           </a>
         </li>
-
         <li>
           <a href="https://www.tiktok.com/@trenchgun1337" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/TIKTOKAERO.png" alt="TikTok"
-              onerror="this.style.display='none'">
+            <img class="link-icon" src="../assets/images/TIKTOKAERO.png" alt="TikTok" onerror="this.style.display='none'">
             <span class="link-label">TikTok</span>
           </a>
         </li>
-
         <li>
           <a href="https://x.com/trenchgun1337" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/TWITTERAERO.png" alt="Twitter / X"
-              onerror="this.style.display='none'">
+            <img class="link-icon" src="../assets/images/TWITTERAERO.png" alt="Twitter / X" onerror="this.style.display='none'">
             <span class="link-label">Twitter / X</span>
           </a>
         </li>
-
         <li>
           <a href="https://www.instagram.com/trenchgun1337" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/INSTAGRAM%20AERO.png" alt="Instagram"
-              onerror="this.style.display='none'">
+            <img class="link-icon" src="../assets/images/INSTAGRAM%20AERO.png" alt="Instagram" onerror="this.style.display='none'">
             <span class="link-label">Instagram</span>
           </a>
         </li>
-
         <li>
           <a href="https://br.pinterest.com/fxckmazl/" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/PINTERESTAERO.png" alt="Pinterest"
-              onerror="this.style.display='none'">
+            <img class="link-icon" src="../assets/images/PINTERESTAERO.png" alt="Pinterest" onerror="this.style.display='none'">
             <span class="link-label">Pinterest</span>
           </a>
         </li>
-
       </ul>
 
-      <!-- Music -->
       <div class="contact-section-label">Music</div>
       <ul class="contact-links">
-
         <li>
           <a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/SPOTIFYAERO.jpeg" alt="Spotify"
-              onerror="this.style.display='none'">
+            <img class="link-icon" src="../assets/images/SPOTIFYAERO.jpeg" alt="Spotify" onerror="this.style.display='none'">
             <span class="link-label">Spotify</span>
           </a>
         </li>
-
         <li>
           <a href="https://soundcloud.com/trenchgun1337" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/SOUNDCLOUDAERO.png" alt="SoundCloud"
-              onerror="this.style.display='none'">
+            <img class="link-icon" src="../assets/images/SOUNDCLOUDAERO.png" alt="SoundCloud" onerror="this.style.display='none'">
             <span class="link-label">SoundCloud</span>
           </a>
         </li>
-
       </ul>
 
-      <!-- Gaming -->
       <div class="contact-section-label">Gaming</div>
       <ul class="contact-links">
-
         <li>
           <a href="https://steamcommunity.com/id/fxckmazl" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/STEAMAERO.png" alt="Steam"
-              onerror="this.style.display='none'">
+            <img class="link-icon" src="../assets/images/STEAMAERO.png" alt="Steam" onerror="this.style.display='none'">
             <span class="link-label">Steam</span>
           </a>
         </li>
-
         <li>
           <a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/ROBLOXAERO.png" alt="Roblox"
-              onerror="this.style.display='none'">
+            <img class="link-icon" src="../assets/images/ROBLOXAERO.png" alt="Roblox" onerror="this.style.display='none'">
             <span class="link-label">Roblox</span>
           </a>
         </li>
-
       </ul>
 
-      <!-- Other / Email -->
       <div class="contact-section-label">Other</div>
       <ul class="contact-links">
-
         <li>
           <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/GMAILAERO.png" alt="Email"
-              onerror="this.style.display='none'">
+            <img class="link-icon" src="../assets/images/GMAILAERO.png" alt="Email" onerror="this.style.display='none'">
             <span class="link-label">Email</span>
             <span class="link-note">(faster response)</span>
           </a>
         </li>
-
       </ul>
 
       <div class="aero-pad" style="padding-top:6px;">
@@ -459,7 +284,7 @@ h2::before {
     </div>
   </div>
 
-</div><!-- /#pageWrap -->
+</div>
 
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 
@@ -482,11 +307,7 @@ function _getAudio(key) {
 }
 function playSound(key) {
   if (!_soundsOn) return;
-  try {
-    const clone = _getAudio(key).cloneNode();
-    clone.volume = key==='hover' ? 0.30 : 0.52;
-    clone.play().catch(()=>{});
-  } catch(e) {}
+  try { const c = _getAudio(key).cloneNode(); c.volume = key==='hover'?.30:.52; c.play().catch(()=>{}); } catch(e) {}
 }
 function toggleSound() {
   _soundsOn = !_soundsOn;
@@ -528,17 +349,11 @@ document.addEventListener('mouseover', e=>{
   _hoverTimer = setTimeout(()=>{
     const now = Date.now();
     if (now-_hoverThrottle<400) return;
-    _hoverThrottle = now;
-    playSound('hover');
+    _hoverThrottle = now; playSound('hover');
   }, 400);
 },{passive:true});
-document.addEventListener('mouseout', e=>{
-  if (_isInteractive(e.target)) clearTimeout(_hoverTimer);
-},{passive:true});
-document.addEventListener('click', e=>{
-  if (e.target.id==='soundToggle') return;
-  if (_isInteractive(e.target)) playSound('button');
-},true);
+document.addEventListener('mouseout', e=>{ if (_isInteractive(e.target)) clearTimeout(_hoverTimer); },{passive:true});
+document.addEventListener('click', e=>{ if (e.target.id==='soundToggle') return; if (_isInteractive(e.target)) playSound('button'); },true);
 </script>
 </body>
 </html>
