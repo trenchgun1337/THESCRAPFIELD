@@ -9,7 +9,7 @@
 :root {
   --accent:      #cc1a1a;
   --text:        #111;
-  --text-dim:    #555;
+  --text-dim:    #2c2c2c;
 
   --grad-bar:      linear-gradient(to bottom,#fff 0%,#f5f5f5 4%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
   --grad-nav:      linear-gradient(108deg,#f5f5f5 50%,#ececec 100%);
@@ -63,13 +63,13 @@ body,button,input,select,textarea {
 html { overflow-y:auto !important; scrollbar-width:thin !important; scrollbar-color:rgba(120,120,120,.50) transparent !important; }
 ::-webkit-scrollbar              { width:6px !important; height:6px !important; }
 ::-webkit-scrollbar-track        { background:transparent !important; }
-::-webkit-scrollbar-thumb        { background:rgba(120,120,120,.50) !important; border-radius:3px !important; }
-::-webkit-scrollbar-thumb:hover  { background:rgba(80,80,80,.80) !important; }
+::-webkit-scrollbar-thumb        { background:rgba(120,120,120,.50) !important;  }
+::-webkit-scrollbar-thumb:hover  { background:rgba(54, 54, 54, 0.8) !important; }
 
 /* ── Body ── */
 body {
   font-size:12px;
-  background-color:#d4d0c8;
+  background-color:#000000;
   background-image:url('assets/images/BACKGROUND2.jpg');
   background-size:contain;
   background-repeat:no-repeat;
@@ -480,7 +480,7 @@ h1 { font-size:12px; }
 .contact-links li:last-child { border-bottom:none; }
 .contact-links a { display:flex; align-items:center; gap:10px; padding:7px 12px; color:var(--text); font-size:12.5px; text-decoration:none; }
 .contact-links a:hover { background:var(--grad-nav-hov); color:var(--accent); }
-.contact-links a img { width:28px; height:28px; border-radius:50%; object-fit:cover; flex-shrink:0; pointer-events:none; }
+.contact-links a img { width:28px; height:28px; object-fit:cover; flex-shrink:0; pointer-events:none; }
 .contact-links a .link-label { flex:1; }
 .contact-links a .link-note  { color:var(--text-dim); font-size:11px; }
 #introBanner,.contact-banner { width:100%; display:block; object-fit:fill; }
