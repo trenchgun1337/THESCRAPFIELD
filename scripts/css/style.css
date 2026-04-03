@@ -127,10 +127,8 @@ h1 { font-size:12px; }
 /* ── Sidebar nav ── */
 #navigationMenu {
   background:var(--grad-nav);
-  border-left:1px solid rgba(160,160,160,.42);
-  border-right:1px solid rgba(160,160,160,.42);
-  border-bottom:1px solid rgba(160,160,160,.42);
-  border-bottom-left-radius:40px;
+  border:1px solid rgba(160,160,160,.42);
+  
   width:162px; flex-shrink:0;
   padding:10px 8px 14px;
   overflow-y:auto; height:auto !important;

@@ -16,12 +16,23 @@
 
 /* ── Logo fixed at top ── */
 #siteLogoTop {
-  position:absolute; top:0; left:50%; transform:translateX(-50%);
-  max-height:302px; max-width:800px; width:100%;
-  object-fit:contain; object-position:top center;
-  border-radius:0 0 18px 18px;
-  z-index:9990; pointer-events:none; display:block;
+ position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 302px;
+    max-width: 800px;
+    width: 100%;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: 0 0 18px 18px;
+    z-index: 9990;
+    pointer-events: none;
+    display: block;
+    border: solid 1px rgb(135 133 133);
+    box-shadow: #595959 1px 1px 12px 1px;
 }
+
 #websiteContainer { position:relative; margin:0 auto; }
 #websiteContainer::before {
   content:''; position:absolute; top:0; left:0; right:0; height:302px;
@@ -44,6 +55,7 @@ body {
   background:#f2f2f2 !important; border:none !important;
   height:auto !important; min-height:500px !important;
   overflow-y:visible !important; width:100% !important; box-sizing:border-box !important;
+  box-shadow: #595959 1px 1px 12px 1px;
 }
 
 /* ── h1/h2/h3 as inline black label inside a full-width black strip ── */
