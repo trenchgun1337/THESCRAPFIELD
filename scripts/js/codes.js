@@ -71,7 +71,6 @@
   var CODE_MAP = [
     { keys: ['mitski'],                                    special: 'mitski' },
     { keys: ['rika'],                                      special: 'rika'   },
-    { keys: ['themes','theme','skins','skin'],             special: 'themes' },
 
     { keys: ['awesome'],                                   embed: 'Tbu_7WtAjU8' },
     { keys: ['peanut butter jelly time','peanut butter','jelly time'], embed: 'eRBOgtp0Hac' },

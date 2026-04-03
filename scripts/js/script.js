@@ -1654,7 +1654,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   (function(){
     const galBtn=$('galPlusBtn'),galPopup=$('galPlusPopup'),galItems=$('galSortItems');
     if(!galBtn||!galPopup) return;
-    const galSorts=[['newest','Newest First'],['oldest','Oldest First'],['highest','Highest Rated'],['lowest','Lowest Rated'],['awarded','Awarded Only'],['unrated','Unrated Only']];
+    const galSorts=[['newest','Newest First'],['oldest','Oldest First'],['highest','Highest Rated'],['lowest','Lowest Rated'],['awarded','Awarded Only']];
     let _galOpen=false;
     function _buildGalItems(){
       if(!galItems) return; galItems.innerHTML='';
