@@ -12,6 +12,12 @@
    window._resetTheme() in the browser console resets to next-stage.
    ================================================================ */
 
+   (function() {
+  try { localStorage.removeItem('_watTheme'); } catch(e) {}
+  document.documentElement.removeAttribute('data-theme');
+  document.body && document.body.removeAttribute('data-theme');
+})();
+
 (function () {
   'use strict';
 

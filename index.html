@@ -707,7 +707,41 @@ html { scrollbar-width: thin; scrollbar-color: rgba(80,80,80,.50) transparent; }
   .nav-link { font-size: 10px !important; min-width: 58px !important; padding: 4px 3px !important; }
 }
 
+/* ══ Fix next-stage: remove pretos que o patch sobrescreve ══ */
+[data-theme="next-stage"] #mainContent {
+  background: transparent !important;
+}
+
+[data-theme="next-stage"] .styled-containers,
+[data-theme="next-stage"] .styled-containers-headers,
+[data-theme="next-stage"] .rights-content {
+  background: linear-gradient(rgba(255,255,255,.68), rgba(255,255,255,1)) !important;
+  color: #111 !important;
+}
+
+[data-theme="next-stage"] p,
+[data-theme="next-stage"] #mainContent p { color: #333 !important; }
+
+[data-theme="next-stage"] a { color: #111 !important; }
+[data-theme="next-stage"] a:hover { color: #000 !important; }
+
+[data-theme="next-stage"] h1,
+[data-theme="next-stage"] h2,
+[data-theme="next-stage"] h3,
+[data-theme="next-stage"] .rights-bar {
+  color: #111 !important;
+}
+
 </style>
+
+<script>
+(function() {
+  try { localStorage.setItem('_watTheme', 'rika-menu'); } catch(e) {}
+  document.documentElement.removeAttribute('data-theme');
+  document.body && document.body.removeAttribute('data-theme');
+})();
+</script>
+
 </head>
 <body>
 
