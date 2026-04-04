@@ -39,7 +39,7 @@ html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.50) transparent; 
 body {
   font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
   font-size:12px;
-  background:#000 center/contain fixed no-repeat;
+  background:#000 center/49% fixed no-repeat;
   color:var(--text);
   min-height:100vh;
   padding:12px 6px 40px;
@@ -111,50 +111,21 @@ strong        { color:var(--accent); font-weight:400; }
   box-shadow:none !important;
 }
 
-/*
-  ARTWORK FIX:
-  O script.js faz MUSIC_BG.style.background='#000' no init,
-  depois _applyAlbumArt() define backgroundImage.
-  Usamos uma <div> interna #mbArtLayer para exibir a artwork
-  sem depender do background do #musicBackground (que o script
-  precisa controlar). Veja o JS abaixo.
-*/
+/* No artwork in background — completely hidden */
 #musicBackground {
   position:relative !important;
   overflow:hidden !important;
-  background-color:transparent !important;
+  background-color:#f5f5f5 !important;
   background-image:none !important;
+  transition: none !important;
 }
 
-/* Camada de artwork que fica atrás de tudo */
+/* Art layer hidden — not used */
 #mbArtLayer {
-  position:absolute !important;
-  inset:0 !important;
-  background-size:cover !important;
-  background-position:center !important;
-  background-repeat:no-repeat !important;
-  z-index:0 !important;
-  transition:background-image 0.4s ease !important;
+  display: none !important;
 }
 
-/* Overlay de textura sobre a artwork */
-#mbArtLayer::after {
-  content:'' !important;
-  position:absolute !important;
-  inset:0 !important;
-  background-image:url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/187f5a85-67cd-4efe-a6cd-961434a82910/d1sd0t3-af1fc87a-6fbf-431b-9f33-6e3044ad93ae.jpg/v1/fill/w_1131,h_707,q_70,strp/aero_glass_texture_by_optimusprimm_d1sd0t3-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTIwMCIsInBhdGgiOiIvZi8xODdmNWE4NS02N2NkLTRlZmUtYTZjZC05NjE0MzRhODI5MTAvZDFzZDB0My1hZjFmYzg3YS02ZmJmLTQzMWItOWYzMy02ZTMwNDRhZDkzYWUuanBnIiwid2lkdGgiOiI8PTE5MjAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.X3lWfRlCucWwaIUiClPHTfKLlXxCzWbZNN2n0TlQP54') !important;
-  background-size:cover !important;
-  opacity:0.07 !important;
-  mix-blend-mode:overlay !important;
-  pointer-events:none !important;
-}
-
-/* Fundo neutro quando não há artwork */
-#mbArtLayer.no-art {
-  background-image:none !important;
-  background-color:rgba(205,205,205,0.80) !important;
-}
-
+/* Playlist area — clean, no artwork */
 #musicPlayerPlaylist {
   background:repeating-linear-gradient(
     0deg,rgba(0,0,0,.04) 0px,rgba(0,0,0,.04) 1px,
@@ -166,12 +137,9 @@ strong        { color:var(--accent); font-weight:400; }
 
 #playlistLeft { scrollbar-color:rgba(120,120,120,.50) transparent !important; }
 
+/* Hide right panel (visualizer area) — replaced by our CD below */
 #playlistRight {
-  background:transparent !important;
-  padding:6px !important;
-  gap:7px !important;
-  position:relative !important;
-  z-index:1 !important;
+  display: none !important;
 }
 
 .pl-group-header {
@@ -185,32 +153,18 @@ strong        { color:var(--accent); font-weight:400; }
 .pl-track-list li a:hover { color:var(--accent) !important; }
 .pl-track-list li a.activeSong { color:var(--accent) !important; }
 
-/* Visualizer fundo escuro */
-#visualizerCanvas {
-  background:rgba(18,18,18,.92) !important;
-  border:1px solid rgba(0,0,0,.35) !important;
-  border-radius:2px !important;
-}
+/* Hide visualizer */
+#visualizerCanvas { display: none !important; }
 
-/* cdDisc — artwork display, não círculo */
-#cdDisc {
-  border-radius:4px !important;
-  object-fit:cover !important;
-  cursor:pointer !important;
-  animation:none !important;
-  filter:drop-shadow(0 3px 10px rgba(0,0,0,.55)) !important;
-}
-#cdDisc.cd-playing {
-  animation:_artPulse 4s ease-in-out infinite !important;
-  animation-play-state:running !important;
-}
-@keyframes _artPulse {
-  0%,100% { filter:drop-shadow(0 3px 10px rgba(0,0,0,.55)) brightness(1.04); }
-  50%      { filter:drop-shadow(0 6px 18px rgba(0,0,0,.80)) brightness(1.12); }
-}
-
+/* cdDisc — hide original */
+#cdDisc { display: none !important; }
 #spinningDisk { display:none !important; }
 #renaChan, #rikaChan { display:none !important; }
+
+/* No transitions anywhere */
+* { transition: none !important; }
+/* Re-allow only CD spin animation */
+#_cdSpinWrapper { transition: none !important; }
 
 #musicPlayerContainer .mp-status-bar {
   background:var(--grad-bar) !important;
@@ -253,6 +207,135 @@ strong        { color:var(--accent); font-weight:400; }
 }
 #soundToggle:hover { color:rgba(0,0,0,.70); }
 #soundToggle.off   { color:rgba(0,0,0,.22); }
+
+/* ══════════════════════════════════════════════
+   SPINNING CD WIDGET
+   ══════════════════════════════════════════════ */
+#_cdWidget {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 0 8px;
+  background: var(--grad-bar);
+  border-top: 1px solid rgba(255,255,255,.70);
+  border-bottom: 1px solid rgba(0,0,0,.15);
+}
+
+#_cdSpinWrapper {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  /* The CD disc itself */
+  flex-shrink: 0;
+}
+
+/* Outer CD ring — the shiny edge */
+#_cdOuter {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #b8b8b8 0deg, #e8e8e8 15deg,
+    #c0c0c0 30deg, #f0f0f0 50deg,
+    #aaaaaa 70deg, #d8d8d8 90deg,
+    #e0e0e0 110deg, #b0b0b0 130deg,
+    #f5f5f5 150deg, #c8c8c8 170deg,
+    #a8a8a8 190deg, #e4e4e4 210deg,
+    #d0d0d0 230deg, #b8b8b8 250deg,
+    #f0f0f0 270deg, #c0c0c0 290deg,
+    #aaaaaa 310deg, #e8e8e8 330deg,
+    #b8b8b8 360deg
+  );
+  box-shadow:
+    0 0 0 1.5px rgba(0,0,0,.25),
+    0 4px 18px rgba(0,0,0,.55),
+    inset 0 0 0 1px rgba(255,255,255,.15);
+  animation: none;
+}
+
+/* Artwork ring — shows the track artwork clipped in a circle */
+#_cdArt {
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: #c8c8c8 center/cover no-repeat;
+  box-shadow: inset 0 0 8px rgba(0,0,0,.4);
+  overflow: hidden;
+}
+
+/* Rainbow iridescent sheen on the CD */
+#_cdSheen {
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(255,100,100,.08) 0deg,
+    rgba(255,200,50,.10) 45deg,
+    rgba(100,255,100,.08) 90deg,
+    rgba(50,200,255,.10) 135deg,
+    rgba(150,50,255,.08) 180deg,
+    rgba(255,100,150,.10) 225deg,
+    rgba(255,255,100,.08) 270deg,
+    rgba(100,200,255,.10) 315deg,
+    rgba(255,100,100,.08) 360deg
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Inner ring border around hole */
+#_cdRingBorder {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d0d0d0, #a0a0a0, #e0e0e0, #b0b0b0);
+  box-shadow:
+    0 0 0 2px rgba(0,0,0,.30),
+    0 0 0 3.5px rgba(255,255,255,.45),
+    inset 0 0 4px rgba(0,0,0,.35);
+  z-index: 4;
+}
+
+/* The actual center hole */
+#_cdHole {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  box-shadow:
+    inset 0 1px 3px rgba(0,0,0,.9),
+    0 0 0 1px rgba(0,0,0,.5);
+  z-index: 5;
+}
+
+/* Spin animation */
+@keyframes cdSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+#_cdSpinWrapper.spinning #_cdOuter,
+#_cdSpinWrapper.spinning #_cdArt,
+#_cdSpinWrapper.spinning #_cdSheen,
+#_cdSpinWrapper.spinning #_cdRingBorder {
+  animation: cdSpin 3.2s linear infinite !important;
+}
+
+/* When NOT spinning — grey out the art */
+#_cdArt.no-art {
+  background-image: none !important;
+  background-color: #b0b0b0 !important;
+}
 
 /* ══════════════════════════════════════════════
    HOST UPLOAD PANEL
@@ -366,15 +449,23 @@ strong        { color:var(--accent); font-weight:400; }
 .host-track-item .htl-del:hover { background:var(--accent); color:#fff; }
 .host-track-item.htl-deleted { opacity:.35; pointer-events:none; text-decoration:line-through; }
 
-/* ── file tab extra field ── */
-.file-extra { padding:6px 8px; border-top:1px solid rgba(140,140,140,.25); }
-.file-extra input {
-  width:100%; border:1px solid rgba(140,140,140,.45); outline:none; color:#000;
-  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:11px;
-  padding:5px 8px; background:#fafafa;
+/* ── album field ── */
+.album-field-row {
+  margin-bottom:6px;
 }
-.file-extra input::placeholder { color:#aaa; }
-.file-extra label { display:block; font-size:10px; color:#888; margin-bottom:3px; text-transform:uppercase; letter-spacing:.4px; }
+.album-field-row label {
+  display:block; font-size:10px; color:#888; text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px;
+}
+.album-field-row input {
+  width:100%;
+  border:1px solid rgba(140,140,140,.45); outline:none; color:#000;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:12px;
+  padding:7px 10px; background:rgba(255,255,255,.97);
+}
+.album-field-row input::placeholder { color:#aaa; }
+.album-hint {
+  font-size:10px; color:#999; margin-top:2px;
+}
 
 @media (max-width:600px) {
   body { padding:8px 4px 24px; background-attachment:scroll; }
@@ -387,6 +478,7 @@ strong        { color:var(--accent); font-weight:400; }
   .cover-section { width:100%; }
   .cover-thumb-wrap { width:100%; }
   .url-input { font-size:16px; }
+  #_cdSpinWrapper { width:88px; height:88px; }
 }
 </style>
 </head>
@@ -419,7 +511,7 @@ strong        { color:var(--accent); font-weight:400; }
       <div id="videoListAnimes"></div><div id="videoListNostalg"></div><div id="videoListAwesome"></div>
     </div>
     <div id="pg-sketchbook" class="page">
-      <div id="galleryGrid"></div><div id="galleryAwarded"></div><div id="paintEmbedWrap"></div>
+      <div id="galleryGrid"></div><div id="galleryAwesome"></div><div id="paintEmbedWrap"></div>
     </div>
     <div id="pg-community" class="page">
       <div id="commPanelChat"></div>
@@ -482,7 +574,7 @@ strong        { color:var(--accent); font-weight:400; }
         </div>
 
         <div id="musicBackground">
-          <!-- Camada de artwork separada — não depende do style inline que o script.js controla -->
+          <!-- Art layer hidden -->
           <div id="mbArtLayer" class="no-art"></div>
           <div id="musicPlayerPlaylist">
             <nav id="playlistLeft"></nav>
@@ -493,6 +585,22 @@ strong        { color:var(--accent); font-weight:400; }
               <img src="https://frutigeraeroarchive.org/images/music_player/cd.png"
                 id="spinningDisk" alt="" draggable="false">
             </div>
+          </div>
+        </div>
+
+        <!-- SPINNING CD WIDGET — below the playlist -->
+        <div id="_cdWidget">
+          <div id="_cdSpinWrapper">
+            <!-- Outer shiny disc -->
+            <div id="_cdOuter"></div>
+            <!-- Artwork ring -->
+            <div id="_cdArt" class="no-art"></div>
+            <!-- Iridescent sheen -->
+            <div id="_cdSheen"></div>
+            <!-- Inner chrome ring around hole -->
+            <div id="_cdRingBorder"></div>
+            <!-- Center hole -->
+            <div id="_cdHole"></div>
           </div>
         </div>
 
@@ -566,7 +674,7 @@ strong        { color:var(--accent); font-weight:400; }
       <div class="aero-pad">
 
         <div class="desc-box">
-          <p>Add via <strong>YouTube link</strong> (auto-fetches name &amp; artwork) or via <strong>file link</strong> (URL direto para o áudio).</p>
+          <p>Add via <strong>YouTube link</strong> (auto-fetches name &amp; artwork) or via <strong>file link</strong> (direct audio URL). Set an <strong>Album</strong> to group tracks — leave blank for "Uncategorized".</p>
         </div>
 
         <!-- Tab switcher: YouTube vs File -->
@@ -589,6 +697,14 @@ strong        { color:var(--accent); font-weight:400; }
             <input type="text" id="hostYtName" class="url-input"
               style="border:1px solid rgba(140,140,140,.45);"
               placeholder="e.g. Higurashi OST — Vol. 1"
+              autocomplete="off">
+          </div>
+          <!-- ALBUM FIELD -->
+          <div class="album-field-row">
+            <label>Album / Category <span style="color:#aaa;font-size:9px;">(leave blank → Uncategorized)</span></label>
+            <input type="text" id="hostYtAlbum" class="url-input"
+              style="border:1px solid rgba(140,140,140,.45);"
+              placeholder="e.g. Higurashi no Naku Koro ni OST"
               autocomplete="off">
           </div>
           <div style="margin-bottom:6px;">
@@ -624,6 +740,14 @@ strong        { color:var(--accent); font-weight:400; }
               placeholder="e.g. Artist — Track Title"
               autocomplete="off">
           </div>
+          <!-- ALBUM FIELD -->
+          <div class="album-field-row">
+            <label>Album / Category <span style="color:#aaa;font-size:9px;">(leave blank → Uncategorized)</span></label>
+            <input type="text" id="hostFileAlbum" class="url-input"
+              style="border:1px solid rgba(140,140,140,.45);"
+              placeholder="e.g. Higurashi no Naku Koro ni OST"
+              autocomplete="off">
+          </div>
           <div style="margin-bottom:6px;">
             <label style="display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Artwork URL (optional)</label>
             <input type="text" id="hostFileArt" class="url-input"
@@ -641,7 +765,7 @@ strong        { color:var(--accent); font-weight:400; }
         <div id="hostTrackList" style="max-height:220px;overflow-y:auto;background:#fff;border:1px solid rgba(140,140,140,.40);"></div>
 
         <div class="note" style="margin-top:6px;">
-          Deletions are saved permanently in this browser. Tracks added via YouTube use the YT iframe; file tracks use the HTML5 audio element.
+          Tracks without an album will appear in <strong>Uncategorized</strong>. Deletions are saved permanently in this browser.
         </div>
 
       </div>
@@ -661,8 +785,8 @@ strong        { color:var(--accent); font-weight:400; }
 /* ════════════════════════════════════════════════════════════════
    STORAGE KEYS
    ════════════════════════════════════════════════════════════════ */
-var HS_ADDED   = 'host_added_tracks';    /* tracks adicionadas pelo host */
-var HS_DELETED = 'host_deleted_vids';    /* videoIds deletados pelo host */
+var HS_ADDED   = 'host_added_tracks';
+var HS_DELETED = 'host_deleted_vids';
 var HS_TOP3    = 'mp_top3_stamp';
 
 /* ════════════════════════════════════════════════════════════════
@@ -680,13 +804,13 @@ var HS_TOP3    = 'mp_top3_stamp';
 })();
 
 /* ════════════════════════════════════════════════════════════════
-   BACKGROUND
+   BACKGROUND — 49% size
    ════════════════════════════════════════════════════════════════ */
 var _BG_URL = 'https://preview.redd.it/is-there-any-kind-of-higurashi-audio-only-thing-that-i-can-v0-rlmimbxfqz0e1.jpeg?width=1080&crop=smart&auto=webp&s=a4b337ee1258844d21720824a2a0b17b640c122a';
 (function applyBg(){
   var s = document.getElementById('_musicPageBg');
   if (!s) { s=document.createElement('style'); s.id='_musicPageBg'; document.head.appendChild(s); }
-  s.textContent='body{background-image:url("'+_BG_URL+'")!important;background-size:cover!important;background-attachment:fixed!important;background-repeat:no-repeat!important;background-position:center!important;background-color:#000!important;}';
+  s.textContent='body{background-image:url("'+_BG_URL+'")!important;background-size:49%!important;background-attachment:fixed!important;background-repeat:no-repeat!important;background-position:center!important;background-color:#000!important;}';
 })();
 new MutationObserver(function(ms){
   ms.forEach(function(m){
@@ -699,38 +823,95 @@ new MutationObserver(function(ms){
 }).observe(document.head,{childList:true});
 
 /* ════════════════════════════════════════════════════════════════
-   ARTWORK LAYER — intercepts _applyAlbumArt do script.js
-   Em vez de usar o background do #musicBackground (que o script.js
-   reseta para #000 a cada init), espelhamos a artwork em #mbArtLayer.
+   BLOCK script.js from setting background on #musicBackground
    ════════════════════════════════════════════════════════════════ */
-var _artLayer = document.getElementById('mbArtLayer');
-
-/* Observa mudanças de style no #musicBackground e reflete no layer */
 var _mbEl = document.getElementById('musicBackground');
-if (_mbEl && _artLayer) {
+if (_mbEl) {
+  /* Override inline style setter to prevent any background from showing */
+  var _origMbDesc = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'style');
+  /* Instead: just use MutationObserver to clear the backgroundImage when set */
   new MutationObserver(function(){
-    var bgImg = _mbEl.style.backgroundImage;
-    if (bgImg && bgImg !== 'none' && bgImg !== '') {
-      _artLayer.style.backgroundImage = bgImg;
-      _artLayer.style.backgroundColor = 'transparent';
-      _artLayer.classList.remove('no-art');
-      /* Atualiza também o cdDisc se for URL simples */
+    if (_mbEl.style.backgroundImage && _mbEl.style.backgroundImage !== 'none') {
+      /* Capture for CD before clearing */
+      var bgImg = _mbEl.style.backgroundImage;
+      _mbEl.style.backgroundImage = 'none';
+      _mbEl.style.background = '';
+      /* Update CD artwork */
       var m = bgImg.match(/url\(["']?([^"')]+)["']?\)/);
-      if (m) {
-        var cd = document.getElementById('cdDisc');
-        if (cd && cd.src !== m[1] && m[1].indexOf('cd.png') === -1) {
-          cd.src = m[1];
-        }
-      }
-    } else if (_mbEl.style.background === '#000' ||
-               _mbEl.style.background === 'rgb(0, 0, 0)') {
-      /* Script está resetando — mantém artwork se já havia uma */
-      if (_artLayer.classList.contains('no-art')) {
-        /* sem artwork ainda — fica cinza */
+      if (m && m[1] && m[1].indexOf('cd.png') === -1) {
+        _updateCdArt(m[1]);
       }
     }
   }).observe(_mbEl, {attributes:true, attributeFilter:['style']});
 }
+
+/* ════════════════════════════════════════════════════════════════
+   SPINNING CD — artwork & spin control
+   ════════════════════════════════════════════════════════════════ */
+var _cdArtEl     = document.getElementById('_cdArt');
+var _cdWrapper   = document.getElementById('_cdSpinWrapper');
+var _currentArt  = '';
+
+function _updateCdArt(url) {
+  if (!url || url === _currentArt) return;
+  _currentArt = url;
+  if (_cdArtEl) {
+    _cdArtEl.style.backgroundImage = 'url("' + url + '")';
+    _cdArtEl.classList.remove('no-art');
+  }
+}
+
+function _setCdPlaying(playing) {
+  if (!_cdWrapper) return;
+  if (playing) {
+    _cdWrapper.classList.add('spinning');
+  } else {
+    _cdWrapper.classList.remove('spinning');
+    /* If not playing and no art — go grey */
+    if (!_currentArt && _cdArtEl) {
+      _cdArtEl.classList.add('no-art');
+    }
+  }
+}
+
+/* Watch play/pause button image src to detect play state */
+(function(){
+  var ppImg = document.getElementById('audioPlayPauseImage');
+  if (!ppImg) return;
+
+  function syncCd() {
+    var src = ppImg.getAttribute('src') || ppImg.src || '';
+    var playing = src.indexOf('pause') !== -1;
+    _setCdPlaying(playing);
+  }
+
+  new MutationObserver(syncCd).observe(ppImg, {attributes:true, attributeFilter:['src']});
+
+  var ppBtn = document.getElementById('audioPlayPause');
+  if (ppBtn) ppBtn.addEventListener('click', function(){ setTimeout(syncCd, 150); });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var audio = document.getElementById('audioPlayer') || document.querySelector('audio');
+    if (audio) {
+      audio.addEventListener('play',  function(){ _setCdPlaying(true); });
+      audio.addEventListener('pause', function(){ _setCdPlaying(false); });
+      audio.addEventListener('ended', function(){ _setCdPlaying(false); });
+    }
+    syncCd();
+  });
+})();
+
+/* Also watch cdDisc src changes from script.js for artwork updates */
+(function(){
+  var cdEl = document.getElementById('cdDisc');
+  if (!cdEl) return;
+  new MutationObserver(function(){
+    var src = cdEl.src || cdEl.getAttribute('src') || '';
+    if (src && src.indexOf('cd.png') === -1 && src !== _currentArt) {
+      _updateCdArt(src);
+    }
+  }).observe(cdEl, {attributes:true, attributeFilter:['src']});
+})();
 
 /* ════════════════════════════════════════════════════════════════
    TRACK LOADING BANNER
@@ -747,32 +928,7 @@ if (_mbEl && _artLayer) {
 })();
 
 /* ════════════════════════════════════════════════════════════════
-   CD ARTWORK SYNC (play/pause → cd-playing class)
-   ════════════════════════════════════════════════════════════════ */
-(function(){
-  var ppImg=document.getElementById('audioPlayPauseImage');
-  if(!ppImg) return;
-  function sync(){
-    var playing=(ppImg.getAttribute('src')||ppImg.src||'').indexOf('pause')!==-1;
-    var cd=document.getElementById('cdDisc');
-    if(cd) cd.classList.toggle('cd-playing',playing);
-  }
-  new MutationObserver(sync).observe(ppImg,{attributes:true,attributeFilter:['src']});
-  var ppBtn=document.getElementById('audioPlayPause');
-  if(ppBtn) ppBtn.addEventListener('click',function(){setTimeout(sync,150);});
-  document.addEventListener('DOMContentLoaded',function(){
-    var audio=document.getElementById('audioPlayer')||document.querySelector('audio');
-    if(audio){
-      audio.addEventListener('play',function(){var cd=document.getElementById('cdDisc');if(cd)cd.classList.add('cd-playing');});
-      audio.addEventListener('pause',function(){var cd=document.getElementById('cdDisc');if(cd)cd.classList.remove('cd-playing');});
-      audio.addEventListener('ended',function(){var cd=document.getElementById('cdDisc');if(cd)cd.classList.remove('cd-playing');});
-    }
-    sync();
-  });
-})();
-
-/* ════════════════════════════════════════════════════════════════
-   HOST PANEL — visibilidade
+   HOST PANEL — visibility
    ════════════════════════════════════════════════════════════════ */
 (function(){
   var params=new URLSearchParams(window.location.search);
@@ -783,9 +939,8 @@ if (_mbEl && _artLayer) {
 })();
 
 /* ════════════════════════════════════════════════════════════════
-   HOST: funções utilitárias
+   HOST: utility functions
    ════════════════════════════════════════════════════════════════ */
-
 function getHostAdded(){
   try{return JSON.parse(localStorage.getItem(HS_ADDED)||'[]');}catch(e){return[];}
 }
@@ -799,7 +954,6 @@ function saveHostDeleted(arr){
   try{localStorage.setItem(HS_DELETED,JSON.stringify(arr));}catch(e){}
 }
 
-/* Extrai videoId de uma URL do YouTube */
 function ytExtractId(url){
   var m;
   m=url.match(/[?&]v=([^&]+)/); if(m) return m[1];
@@ -807,18 +961,12 @@ function ytExtractId(url){
   m=url.match(/embed\/([^?&]+)/); if(m) return m[1];
   return null;
 }
-
-/* Extrai playlistId de uma URL do YouTube */
 function ytExtractPlaylist(url){
   var m=url.match(/[?&]list=([^&]+)/); return m?m[1]:null;
 }
-
-/* Thumbnail do YouTube */
 function ytThumb(videoId){
   return 'https://img.youtube.com/vi/'+videoId+'/mqdefault.jpg';
 }
-
-/* Busca título do vídeo via oEmbed (sem API key) */
 function ytFetchTitle(videoId, cb){
   var url='https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='+videoId+'&format=json';
   var xhr=new XMLHttpRequest();
@@ -831,15 +979,11 @@ function ytFetchTitle(videoId, cb){
   xhr.onerror=function(){cb(new Error('network'),null);};
   xhr.send();
 }
-
-/* Status helper */
 function setHostStatus(msg,type){
   var el=document.getElementById('hostStatus');
   el.innerHTML=type?'<span class="'+type+'">'+msg+'</span>':msg;
   el.classList.add('visible');
 }
-
-/* Tab switcher */
 function switchHostTab(tab){
   document.getElementById('hostPaneYt').style.display   = tab==='yt'   ? '' : 'none';
   document.getElementById('hostPaneFile').style.display = tab==='file' ? '' : 'none';
@@ -848,11 +992,12 @@ function switchHostTab(tab){
 }
 
 /* ════════════════════════════════════════════════════════════════
-   HOST: Adicionar YouTube track
+   HOST: Add YouTube track (with album)
    ════════════════════════════════════════════════════════════════ */
 function hostAddYt(){
   var url   = (document.getElementById('hostYtUrl').value||'').trim();
   var name  = (document.getElementById('hostYtName').value||'').trim();
+  var album = (document.getElementById('hostYtAlbum').value||'').trim() || 'Uncategorized';
   var art   = (document.getElementById('hostYtArt').value||'').trim();
 
   if(!url){setHostStatus('Please enter a YouTube URL.','err');return;}
@@ -863,11 +1008,11 @@ function hostAddYt(){
 
   if(!videoId && !listId){setHostStatus('Could not parse YouTube ID from URL.','err');return;}
 
-  /* Playlist: registra como entrada especial com type:'yt-playlist' */
   if(listId && !videoId){
     var track = {
       type:'yt-playlist', listId:listId,
       name: name||('YouTube Playlist — '+listId),
+      album: album,
       artwork: art||'https://img.youtube.com/vi/default/mqdefault.jpg',
       addedAt: Date.now()
     };
@@ -879,18 +1024,17 @@ function hostAddYt(){
     return;
   }
 
-  var finalArt  = art  || ytThumb(videoId);
+  var finalArt  = art || ytThumb(videoId);
   var preview   = document.getElementById('hostYtPreview');
 
-  /* Tenta buscar título se não foi informado */
   function finish(title){
     var finalName = name || title || ('YouTube — '+videoId);
     var track = {
       type:'yt', videoId:videoId,
-      name:finalName, artwork:finalArt, addedAt:Date.now()
+      name:finalName, album:album, artwork:finalArt, addedAt:Date.now()
     };
     var added=getHostAdded(); added.unshift(track); saveHostAdded(added);
-    setHostStatus('Added: '+finalName,'ok');
+    setHostStatus('Added: '+finalName+' → '+album,'ok');
     _hostInjectTracks();
     _hostRenderTrackList();
     _clearYtFields();
@@ -908,10 +1052,10 @@ function hostAddYt(){
 function _clearYtFields(){
   document.getElementById('hostYtUrl').value='';
   document.getElementById('hostYtName').value='';
+  document.getElementById('hostYtAlbum').value='';
   document.getElementById('hostYtArt').value='';
 }
 
-/* Preview ao digitar URL no YT field */
 document.getElementById('hostYtUrl').addEventListener('input',function(){
   var url=(this.value||'').trim();
   var vid=ytExtractId(url);
@@ -930,33 +1074,35 @@ document.getElementById('hostYtUrl').addEventListener('input',function(){
 });
 
 /* ════════════════════════════════════════════════════════════════
-   HOST: Adicionar File track
+   HOST: Add File track (with album)
    ════════════════════════════════════════════════════════════════ */
 function hostAddFile(){
-  var url  = (document.getElementById('hostFileUrl').value||'').trim();
-  var name = (document.getElementById('hostFileName').value||'').trim();
-  var art  = (document.getElementById('hostFileArt').value||'').trim();
+  var url   = (document.getElementById('hostFileUrl').value||'').trim();
+  var name  = (document.getElementById('hostFileName').value||'').trim();
+  var album = (document.getElementById('hostFileAlbum').value||'').trim() || 'Uncategorized';
+  var art   = (document.getElementById('hostFileArt').value||'').trim();
 
   if(!url){setHostStatus('Please enter the audio file URL.','err');return;}
   if(!name){setHostStatus('Please enter the track name.','err');return;}
 
   var track={
     type:'file', url:url,
-    name:name, artwork:art||'',
+    name:name, album:album, artwork:art||'',
     addedAt:Date.now()
   };
   var added=getHostAdded(); added.unshift(track); saveHostAdded(added);
-  setHostStatus('Added: '+name,'ok');
+  setHostStatus('Added: '+name+' → '+album,'ok');
   _hostInjectTracks();
   _hostRenderTrackList();
   document.getElementById('hostFileUrl').value='';
   document.getElementById('hostFileName').value='';
+  document.getElementById('hostFileAlbum').value='';
   document.getElementById('hostFileArt').value='';
 }
 
 /* ════════════════════════════════════════════════════════════════
-   HOST: Injetar tracks adicionadas + aplicar deleções
-   Chamado após script.js terminar de popular TRACKS.
+   HOST: Inject tracks + apply deletions
+   Uses album field for _plLabel; falls back to 'Uncategorized'
    ════════════════════════════════════════════════════════════════ */
 function _hostInjectTracks(){
   if(typeof TRACKS === 'undefined') return;
@@ -964,22 +1110,23 @@ function _hostInjectTracks(){
   var deleted = getHostDeleted();
   var added   = getHostAdded();
 
-  /* 1. Remove tracks deletadas do array global */
+  /* 1. Remove deleted tracks */
   for(var i=TRACKS.length-1;i>=0;i--){
     var vid=TRACKS[i].videoId||TRACKS[i]._hostId;
     if(vid && deleted.indexOf(vid)!==-1) TRACKS.splice(i,1);
   }
 
-  /* 2. Injeta tracks do host (evita duplicatas) */
+  /* 2. Inject host tracks */
   var existingIds=TRACKS.map(function(t){return t.videoId||t._hostId||'';});
 
   added.forEach(function(t){
+    var albumLabel = t.album || 'Uncategorized';
     if(t.type==='yt'){
-      if(existingIds.indexOf(t.videoId)!==-1) return; /* já existe */
+      if(existingIds.indexOf(t.videoId)!==-1) return;
       TRACKS.unshift({
         title:t.name, videoId:t.videoId,
         albumArt:t.artwork, type:'youtube',
-        _plIdx:0, _plLabel:'Host Added',
+        _plIdx:0, _plLabel:albumLabel,
         _hostId:t.videoId
       });
       existingIds.unshift(t.videoId);
@@ -990,20 +1137,18 @@ function _hostInjectTracks(){
         title:t.name, videoId:null,
         _fileUrl:t.url,
         albumArt:t.artwork, type:'file',
-        _plIdx:0, _plLabel:'Host Added',
+        _plIdx:0, _plLabel:albumLabel,
         _hostId:hid
       });
       existingIds.unshift(hid);
     }
-    /* yt-playlist: fica para o buildPlaylist normal via MUSIC_CONFIG inject — skip */
   });
 
-  /* 3. Rebuildamos a playlist se buildPlaylist existe */
   if(typeof buildPlaylist==='function') buildPlaylist();
 }
 
 /* ════════════════════════════════════════════════════════════════
-   HOST: Render track list (manager)
+   HOST: Render track manager list
    ════════════════════════════════════════════════════════════════ */
 function _hostRenderTrackList(){
   var el=document.getElementById('hostTrackList');
@@ -1031,8 +1176,13 @@ function _hostRenderTrackList(){
 
     var nameEl=document.createElement('span');
     nameEl.className='htl-name';
-    nameEl.title=t.title;
+    nameEl.title=t.title+(t._plLabel?' ['+t._plLabel+']':'');
     nameEl.textContent=t.title;
+
+    /* Show album label */
+    var albumEl=document.createElement('span');
+    albumEl.style.cssText='font-size:9.5px;color:#888;flex-shrink:0;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+    albumEl.textContent=t._plLabel||'Uncategorized';
 
     var src=document.createElement('span');
     src.className='htl-source';
@@ -1041,13 +1191,12 @@ function _hostRenderTrackList(){
     var del=document.createElement('button');
     del.className='htl-del';
     del.textContent='×';
-    del.title='Delete this track (permanent in this browser)';
-    del.addEventListener('click',(function(trackVid,itemEl){
+    del.title='Delete this track';
+    del.addEventListener('click',(function(trackVid){
       return function(){
-        if(!confirm('Delete "'+t.title+'" from the player?\n\nThis is saved in your browser — the track won\'t appear again even after reload.')) return;
+        if(!confirm('Delete "'+t.title+'" from the player?')) return;
         var d=getHostDeleted();
         if(d.indexOf(trackVid)===-1){d.push(trackVid);saveHostDeleted(d);}
-        /* Also remove from added if it was host-added */
         var aa=getHostAdded();
         aa=aa.filter(function(x){return (x.videoId||'file_'+x.url)!==trackVid;});
         saveHostAdded(aa);
@@ -1055,10 +1204,11 @@ function _hostRenderTrackList(){
         _hostRenderTrackList();
         setHostStatus('Track deleted.','ok');
       };
-    })(vid,item));
+    })(vid));
 
     item.appendChild(art);
     item.appendChild(nameEl);
+    item.appendChild(albumEl);
     item.appendChild(src);
     item.appendChild(del);
     el.appendChild(item);
@@ -1066,11 +1216,9 @@ function _hostRenderTrackList(){
 }
 
 /* ════════════════════════════════════════════════════════════════
-   Aguarda TRACKS estar populado (script.js carrega async)
-   e então aplica deleções + adiciona host tracks
+   Wait for TRACKS to be populated
    ════════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded',function(){
-  /* Tenta a cada 500ms até TRACKS ter conteúdo */
   var attempts=0;
   var interval=setInterval(function(){
     attempts++;
@@ -1078,13 +1226,12 @@ document.addEventListener('DOMContentLoaded',function(){
       clearInterval(interval);
       _hostInjectTracks();
       _hostRenderTrackList();
-    } else if(attempts>30){ /* 15s timeout */
+    } else if(attempts>30){
       clearInterval(interval);
-      _hostRenderTrackList(); /* renderiza mesmo vazio */
+      _hostRenderTrackList();
     }
   },500);
 
-  /* Também dispara quando o host panel é aberto */
   var hp=document.getElementById('hostPanel');
   if(hp){
     new MutationObserver(function(){
