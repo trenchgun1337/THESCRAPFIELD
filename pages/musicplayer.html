@@ -41,9 +41,10 @@ body {
   font-size:12px;
   background:#000 center/49% fixed no-repeat;
   color:var(--text);
-  min-height:100vh;
   padding:12px 6px 40px;
   display:flex; flex-direction:column; align-items:center;
+
+  
 }
 
 img { -webkit-user-drag:none; user-select:none; }
@@ -114,8 +115,10 @@ strong        { color:var(--accent); font-weight:400; }
   overflow:hidden;
   display:none;
 }
-#_loadProgressWrap.visible { display:block; }
+#_loadProgressWrap.visible { display:block; visibility: hidden;
+ }
 #_loadProgressBar {
+  visibility: hidden;
   height:100%;
   width:0%;
   background:linear-gradient(to right, #444, #222);
@@ -268,11 +271,12 @@ strong        { color:var(--accent); font-weight:400; }
   justify-content:center;
   align-items:center;
   padding:14px 10px;
-  background:var(--grad-bar);
+  background: black;
   border-left:1px solid rgba(0,0,0,.15);
   border-top:none;
   width:150px;
   flex-shrink:0;
+  border: 3px white ridge;
 }
 
 #_cdSpinWrapper {
@@ -343,13 +347,12 @@ strong        { color:var(--accent); font-weight:400; }
 /* Inner ring border around hole */
 #_cdRingBorder {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  left: 37%;
+  top: 38%;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #d0d0d0, #a0a0a0, #e0e0e0, #b0b0b0);
+  background: linear-gradient(178deg, #d0d0d0, #a0a0a0, #e0e0e0, #b0b0b0);
   box-shadow:
     0 0 0 2px rgba(0,0,0,.30),
     0 0 0 3.5px rgba(255,255,255,.45),
@@ -394,15 +397,15 @@ strong        { color:var(--accent); font-weight:400; }
 /* CD label under disc */
 #_cdNowPlayingLabel {
   margin-top:8px;
-  font-size:9px;
-  color:#666;
+  font-size:11px;
+  color:#ffffff;
   text-align:center;
   letter-spacing:.8px;
   text-transform:uppercase;
   max-width:130px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  white-space:normal;
+  background: black;
+  border: 3px ridge;
 }
 
 /* ══════════════════════════════════════════════
@@ -634,22 +637,26 @@ strong        { color:var(--accent); font-weight:400; }
    FOOTER PROMO STRIP
    ══════════════════════════════════════════════ */
 #_footerPromo {
-  margin-top:10px;
-  border:1px solid rgba(0,0,0,.20);
-  background:var(--grad-bar);
-  box-shadow:var(--shadow-bar);
-  padding:10px 14px;
-  display:flex; align-items:center; justify-content:center; gap:8px;
-  font-size:12px; color:var(--text-dim);
-  text-align:center;
-  flex-wrap:wrap;
+ margin-top: 10px;
+    /* border: 1px solid rgba(0, 0, 0, .20); */
+    /* background: var(--grad-bar); */
+    /* box-shadow: var(--shadow-bar); */
+    /* padding: 10px 14px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #e9e9e9;
+    text-align: center;
+    flex-wrap: wrap;
 }
 #_footerPromo a {
-  color:var(--accent); font-weight:400;
-  border-bottom:1px dotted var(--accent);
-  letter-spacing:.3px;
+  color: #00ff0a;
+    /* font-weight: 400; */
+    letter-spacing: .3px;
 }
-#_footerPromo a:hover { color:#900; text-decoration:none; border-bottom-style:solid; }
+#_footerPromo a:hover { color:#00ff0a; text-decoration:underline; }
 
 @media (max-width:600px) {
   body { padding:8px 4px 24px; background-attachment:scroll; }
@@ -717,7 +724,7 @@ strong        { color:var(--accent); font-weight:400; }
       <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#8249;"
         onerror="this.outerHTML='<span style=&quot;color:#333;font-size:22px;line-height:1;&quot;>&#8249;</span>'">
     </a>
-    <span class="bar-title">MUSIC PLAYER ♪</span>
+    <span class="bar-title">MUSIC PLAYER </span>
   </div>
 
   <!-- INITIALIZING / LOADING BANNER -->
@@ -978,7 +985,7 @@ strong        { color:var(--accent); font-weight:400; }
   <!-- FOOTER PROMO -->
   <div id="_footerPromo">
     <span>So you like music? Why don't you try the</span>
-    <a href="pages/downloader.html">🎵 Music Convertor</a>
+    <a href="../pages/downloader.html">Music Convertor</a>
     <span>and get some of those tracks?</span>
   </div>
 
@@ -1020,7 +1027,7 @@ var _BG_URL = 'https://preview.redd.it/is-there-any-kind-of-higurashi-audio-only
 (function applyBg(){
   var s = document.getElementById('_musicPageBg');
   if (!s) { s=document.createElement('style'); s.id='_musicPageBg'; document.head.appendChild(s); }
-  s.textContent='body{background-image:url("'+_BG_URL+'")!important;background-size:49%!important;background-attachment:fixed!important;background-repeat:no-repeat!important;background-position:center!important;background-color:#000!important;}';
+  s.textContent='body{background-image:url("'+_BG_URL+'")!important;background-size:64%!important;background-attachment:fixed!important;background-repeat:no-repeat!important;background-position:center!important;background-color:#000!important;}';
 })();
 new MutationObserver(function(ms){
   ms.forEach(function(m){
