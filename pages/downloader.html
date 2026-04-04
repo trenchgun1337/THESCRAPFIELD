@@ -65,7 +65,7 @@ strong        { color:var(--accent); font-weight:400; }
 /* ── Page wrapper ── */
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; gap:0; }
 
-/* ── Aero topbar (back link + title) — same grad-bar as index ── */
+/* ── Aero topbar ── */
 .aero-bar {
   background: var(--grad-bar);
   border:2px ridge #727272;
@@ -100,7 +100,7 @@ strong        { color:var(--accent); font-weight:400; }
 #serverBanner.visible { display:flex; }
 #serverBanner img { height:18px; width:18px; flex-shrink:0; }
 
-/* ── Glass / aero boxes — same as index ── */
+/* ── Glass / aero boxes ── */
 .glass-box {
   background:#ebebeb;
   box-shadow: 0 2px 5px rgba(0,0,0,.15);
@@ -110,7 +110,7 @@ strong        { color:var(--accent); font-weight:400; }
 .aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
 .aero-pad   { padding:10px 12px; }
 
-/* ── Section headers — same black strip as index h1/h2 ── */
+/* ── Section headers ── */
 .section-bar {
   display:block; background:#000;
   padding:5px 8px; margin:0; line-height:1.6;
@@ -118,7 +118,7 @@ strong        { color:var(--accent); font-weight:400; }
   text-transform:uppercase; color:#fff;
 }
 
-/* ── Description box — styled-containers-headers ── */
+/* ── Description box ── */
 .desc-box {
   background:#fff;
   padding:8px 10px; margin-bottom:0;
@@ -152,7 +152,7 @@ strong        { color:var(--accent); font-weight:400; }
 #urlIconWrap.visible { display:flex; }
 #urlIcon { width:18px; height:18px; object-fit:contain; pointer-events:none; display:block; }
 
-/* ── Format Select — same light aero style ── */
+/* ── Format Select ── */
 .fmt-select {
   appearance:none; -webkit-appearance:none;
   background-color:#f0f0f0;
@@ -240,7 +240,7 @@ strong        { color:var(--accent); font-weight:400; }
 #dlInfo.visible { display:block; }
 #dlInfo .info-val { color:var(--accent); }
 
-/* ── Progress bar — light aero ── */
+/* ── Progress bar ── */
 #statusBox [role=progressbar] {
   width:100%; margin:0;
   border:1px solid rgba(140,140,140,.55) !important;
@@ -270,7 +270,7 @@ strong        { color:var(--accent); font-weight:400; }
 #statusBox [role=progressbar].marquee > div { display:none; }
 @keyframes marcheAero { from{background-position:0 0} to{background-position:28px 0} }
 
-/* ── Source Row tags — light aero tiles ── */
+/* ── Source Row tags ── */
 .src-row {
   display:flex; gap:5px; flex-wrap:wrap;
   margin-top:8px; padding-top:7px;
@@ -502,31 +502,118 @@ strong        { color:var(--accent); font-weight:400; }
 <script>
 const API_URL = "https://watanagashi-api.onrender.com";
 
-/* ── Sounds ── */
-const SOUND_BASE = 'assets/audio/';
-const SOUNDS = {
-  start:   SOUND_BASE + 'sitestart.mp3',
-  alert:   SOUND_BASE + 'sitealert.mp3',
-  dislike: SOUND_BASE + 'sitedislikeclick.mp3',
-  like:    SOUND_BASE + 'sitelikeclick.mp3',
-  sort:    SOUND_BASE + 'sitesortclick.mp3',
-  button:  SOUND_BASE + 'sitebuttonclick.mp3',
-  hover:   SOUND_BASE + 'text.mp3',
-};
-let _soundsOn = true;
-const _audioCache = {};
-function _getAudio(key) {
-  if (!_audioCache[key]) { const a = new Audio(SOUNDS[key]); a.preload='auto'; _audioCache[key]=a; }
-  return _audioCache[key];
+/* ══════════════════════════════════════════════════
+   WEB AUDIO API — Procedural sound engine
+   Replaces all local asset/audio/* files
+   ══════════════════════════════════════════════════ */
+let _audioCtx = null;
+function _getCtx() {
+  if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return _audioCtx;
 }
-function playSound(key) {
-  if (!_soundsOn) return;
+
+/* Master volume helper */
+function _masterGain(ctx, vol) {
+  const g = ctx.createGain();
+  g.gain.value = vol;
+  g.connect(ctx.destination);
+  return g;
+}
+
+/* Generic oscillator burst */
+function _osc(type, freq, startTime, dur, gainVal, ctx, dest) {
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = type;
+  o.frequency.setValueAtTime(freq, startTime);
+  g.gain.setValueAtTime(gainVal, startTime);
+  g.gain.exponentialRampToValueAtTime(0.0001, startTime + dur);
+  o.connect(g); g.connect(dest);
+  o.start(startTime); o.stop(startTime + dur + 0.01);
+}
+
+/* ── Sound definitions ── */
+const SOUND_FNS = {
+
+  /* start — cheerful rising arpeggio (C5 E5 G5 C6) */
+  start(vol = 0.38) {
+    const ctx = _getCtx(), now = ctx.currentTime;
+    const dest = _masterGain(ctx, vol);
+    const notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((f, i) => _osc('sine', f, now + i * 0.09, 0.18, 0.7, ctx, dest));
+  },
+
+  /* alert — two-tone descending warning */
+  alert(vol = 0.52) {
+    const ctx = _getCtx(), now = ctx.currentTime;
+    const dest = _masterGain(ctx, vol);
+    _osc('square', 880, now,        0.12, 0.4, ctx, dest);
+    _osc('square', 440, now + 0.14, 0.18, 0.4, ctx, dest);
+  },
+
+  /* dislike — low thud / negative click */
+  dislike(vol = 0.45) {
+    const ctx = _getCtx(), now = ctx.currentTime;
+    const dest = _masterGain(ctx, vol);
+    _osc('sawtooth', 120, now,       0.08, 0.6, ctx, dest);
+    _osc('sine',      60, now + 0.04, 0.12, 0.5, ctx, dest);
+  },
+
+  /* like — bright positive ping (E5 → G5) */
+  like(vol = 0.45) {
+    const ctx = _getCtx(), now = ctx.currentTime;
+    const dest = _masterGain(ctx, vol);
+    _osc('sine', 659.25, now,        0.15, 0.7, ctx, dest);
+    _osc('sine', 783.99, now + 0.10, 0.20, 0.6, ctx, dest);
+  },
+
+  /* sort — soft neutral click (high tick) */
+  sort(vol = 0.35) {
+    const ctx = _getCtx(), now = ctx.currentTime;
+    const dest = _masterGain(ctx, vol);
+    _osc('sine', 1200, now, 0.06, 0.5, ctx, dest);
+  },
+
+  /* button — clean UI click (mid tick) */
+  button(vol = 0.40) {
+    const ctx = _getCtx(), now = ctx.currentTime;
+    const dest = _masterGain(ctx, vol);
+    _osc('sine', 880, now,        0.05, 0.6, ctx, dest);
+    _osc('sine', 660, now + 0.03, 0.07, 0.3, ctx, dest);
+  },
+
+  /* hover — very soft high tick */
+  hover(vol = 0.18) {
+    const ctx = _getCtx(), now = ctx.currentTime;
+    const dest = _masterGain(ctx, vol);
+    _osc('sine', 1400, now, 0.04, 0.5, ctx, dest);
+  },
+};
+
+let _soundsOn = true;
+let _ctxUnlocked = false;
+
+/* Unlock AudioContext on first user gesture */
+function _unlockCtx() {
+  if (_ctxUnlocked) return;
   try {
-    const clone = _getAudio(key).cloneNode();
-    clone.volume = key==='hover' ? 0.30 : 0.52;
-    clone.play().catch(()=>{});
+    const ctx = _getCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+    _ctxUnlocked = true;
   } catch(e) {}
 }
+document.addEventListener('pointerdown', _unlockCtx, { once: true, passive: true });
+document.addEventListener('keydown',     _unlockCtx, { once: true, passive: true });
+
+function playSound(key) {
+  if (!_soundsOn) return;
+  _unlockCtx();
+  try {
+    const fn = SOUND_FNS[key];
+    if (fn) fn();
+  } catch(e) {}
+}
+
 function toggleSound() {
   _soundsOn = !_soundsOn;
   const btn = document.getElementById('soundToggle');
@@ -534,6 +621,7 @@ function toggleSound() {
   if (_soundsOn) playSound('button');
   sessionStorage.setItem('_soundsOn', String(_soundsOn));
 }
+
 document.addEventListener('DOMContentLoaded', () => {
   if (sessionStorage.getItem('_soundsOn') === 'false') {
     _soundsOn = false;
@@ -542,36 +630,39 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (!sessionStorage.getItem('_siteStartPlayed')) {
     sessionStorage.setItem('_siteStartPlayed','1');
-    setTimeout(()=>playSound('start'),700);
+    /* start sound needs a gesture on some browsers — attempt after short delay */
+    setTimeout(() => playSound('start'), 700);
   }
 });
-document.addEventListener('pointerdown', ()=>Object.keys(SOUNDS).forEach(k=>_getAudio(k)), {once:true,passive:true});
 
-/* ── Hover sound — sem delay, throttle mínimo ── */
+/* ── Hover sound — throttled ── */
 let _hoverThrottle = 0;
 function _isInteractive(el) {
   if (!el||el===document.body||el===document.documentElement) return false;
-  const tag=el.tagName;
+  const tag = el.tagName;
   if (tag==='BUTTON'||tag==='A'||tag==='SELECT') return true;
   if (tag==='INPUT'&&el.type!=='range') return true;
-  const cs=window.getComputedStyle(el);
-  if (cs&&cs.cursor==='pointer') return true;
+  const cs = window.getComputedStyle(el);
+  if (cs && cs.cursor==='pointer') return true;
   return false;
 }
-document.addEventListener('mouseover', e=>{
-  if (e.target.id==='soundToggle') return;
+document.addEventListener('mouseover', e => {
+  if (e.target.id === 'soundToggle') return;
   if (!_isInteractive(e.target)) return;
   const now = Date.now();
   if (now - _hoverThrottle < 120) return;
   _hoverThrottle = now;
   playSound('hover');
-},{passive:true});
-document.addEventListener('click', e=>{
-  if (e.target.id==='soundToggle') return;
+}, { passive: true });
+document.addEventListener('click', e => {
+  if (e.target.id === 'soundToggle') return;
   if (_isInteractive(e.target)) playSound('button');
-},true);
+}, true);
 
-/* ── Icons ── */
+/* ══════════════════════════════════════════════════
+   REST OF APP (unchanged)
+   ══════════════════════════════════════════════════ */
+
 const ICON_VALID = 'https://img1.picmix.com/output/stamp/thumb/6/4/0/6/2466046_12382.png';
 const SRC_ICONS = {
   spotify:'assets/images/SPOTIFYAERO.jpeg',
