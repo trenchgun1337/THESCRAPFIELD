@@ -493,7 +493,6 @@ strong        { color:var(--accent); font-weight:400; }
 
 </div><!-- /#pageWrap -->
 
-<button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 <a id="cornerLogo" href="../index.html#introduction" title="Watanagashi Archive — Home">
   <img src="../assets/images/watanagashilogo2.png" alt="Watanagashi Archive"
     onerror="this.style.display='none'">
@@ -849,8 +848,48 @@ urlInput.addEventListener('input', () => {
 urlInput.addEventListener('paste', ()=>{ clearTimeout(previewTimer); previewTimer=setTimeout(()=>renderPreview(urlInput.value),250); });
 </script>
 
-<script src="assets/js/sounds.js"></script>
-<button class="wa-sound-toggle" onclick="toggleSound()">Sounds: On</button>
+<script>
 
+/* ════════════════════════════════════════════════════════════════
+   SOUNDS — sem delay no hover, sincronizado entre páginas
+   ════════════════════════════════════════════════════════════════ */
+var _SB='../assets/audio/';
+var _SND={start:_SB+'sitestart.mp3',alert:_SB+'sitealert.mp3',dislike:_SB+'sitedislikeclick.mp3',like:_SB+'sitelikeclick.mp3',sort:_SB+'sitesortclick.mp3',button:_SB+'sitebuttonclick.mp3',hover:_SB+'text.mp3'};
+var _soundsOn=true,_aC={},_ht=0;
+function _gA(k){if(!_aC[k]){var a=new Audio(_SND[k]);a.preload='auto';_aC[k]=a;}return _aC[k];}
+function playSound(k){if(!_soundsOn)return;try{var c=_gA(k).cloneNode();c.volume=(k==='hover'?.30:.52);c.play().catch(function(){});}catch(e){}}
+function toggleSound(){
+  _soundsOn=!_soundsOn;
+  var b=document.getElementById('soundToggle');
+  if(b){b.textContent=_soundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_soundsOn);}
+  if(_soundsOn) playSound('button');
+  sessionStorage.setItem('_soundsOn',String(_soundsOn));
+}
+document.addEventListener('DOMContentLoaded',function(){
+  if(sessionStorage.getItem('_soundsOn')==='false'){
+    _soundsOn=false;
+    var b=document.getElementById('soundToggle');
+    if(b){b.textContent='Sounds: Off';b.classList.add('off');}
+  }
+  if(!sessionStorage.getItem('_siteStartPlayed')){
+    sessionStorage.setItem('_siteStartPlayed','1');
+    setTimeout(function(){playSound('start');},700);
+  }
+});
+document.addEventListener('pointerdown',function(){Object.keys(_SND).forEach(function(k){_gA(k);});},{once:true,passive:true});
+function _iI(el){if(!el||el===document.body||el===document.documentElement)return false;var t=el.tagName;if(t==='BUTTON'||t==='A'||t==='SELECT'||t==='TEXTAREA')return true;if(t==='INPUT'&&el.type!=='range')return true;var cs=window.getComputedStyle(el);return cs&&cs.cursor==='pointer';}
+/* hover sem delay — throttle mínimo de 120ms */
+document.addEventListener('mouseover',function(e){if(e.target.id==='soundToggle')return;if(!_iI(e.target))return;var n=Date.now();if(n-_ht<120)return;_ht=n;playSound('hover');},{passive:true});
+document.addEventListener('click',function(e){if(e.target.id==='soundToggle')return;if(_iI(e.target))playSound('button');},true);
+
+(function(){
+  var BAD='\u00e2\u20ac\u00a6';
+  function fix(el){if(!el)return;if(el.textContent&&el.textContent.indexOf(BAD)!==-1)el.textContent=el.textContent.split(BAD).join('\u2026');}
+  var pl=document.getElementById('playlistLeft');
+  if(pl)new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===3)fix(n.parentElement);else if(n.querySelectorAll){n.querySelectorAll('p,span,div').forEach(fix);fix(n);}});});}).observe(pl,{childList:true,subtree:true});
+})();
+
+
+</script>
 </body>
 </html>

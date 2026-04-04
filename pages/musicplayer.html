@@ -1750,6 +1750,7 @@ document.addEventListener('click',function(e){if(e.target.id==='soundToggle')ret
   var pl=document.getElementById('playlistLeft');
   if(pl)new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===3)fix(n.parentElement);else if(n.querySelectorAll){n.querySelectorAll('p,span,div').forEach(fix);fix(n);}});});}).observe(pl,{childList:true,subtree:true});
 })();
+
 </script>
 </body>
 </html>
