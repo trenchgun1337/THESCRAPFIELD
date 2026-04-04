@@ -94,7 +94,7 @@ strong        { color:var(--accent); font-weight:400; }
 .aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
 .aero-pad   { padding:10px 12px; }
 
-/* ── Section headers — same as downloader ── */
+/* ── Section headers ── */
 .section-bar {
   display:block; background:#000;
   padding:5px 8px; margin:0; line-height:1.6;
@@ -102,17 +102,35 @@ strong        { color:var(--accent); font-weight:400; }
   text-transform:uppercase; color:#fff;
 }
 
-/* ── Override style.css player elements to use light theme ── */
+/* ══════════════════════════════════════════
+   TRACK LOADING BANNER (mirrors downloader's
+   "server initializing" style exactly)
+   ══════════════════════════════════════════ */
+#trackLoadBanner {
+  display:none;
+  background:var(--grad-bar);
+  border:1px solid rgba(140,140,140,.50);
+  box-shadow:var(--shadow-bar);
+  padding:5px 10px; margin-bottom:7px;
+  align-items:center; gap:8px;
+  color:var(--text); font-size:11.5px;
+}
+#trackLoadBanner.visible { display:flex; }
+#trackLoadBanner img { height:18px; width:18px; flex-shrink:0; }
 
+/* ══════════════════════════════════════════
+   PLAYER OVERRIDES
+   Do NOT override popup/sort colors — style.css
+   already defines them (black bg, white text).
+   Only touch layout, backgrounds, controls.
+   ══════════════════════════════════════════ */
+
+/* Hide duplicate "Music Player" header — title is already in the topbar */
 #musicPlayerContainer .mp-header-bar {
-  background:var(--grad-bar) !important;
-  border-bottom:1px solid rgba(0,0,0,.18) !important;
-  border-top:1px solid rgba(255,255,255,.70) !important;
-  box-shadow:none !important;
-  color:var(--text) !important;
-  font-size:14px !important;
+  display:none !important;
 }
 
+/* Controls row */
 #musicPlayerContainer .mp-controls-row {
   background:var(--grad-bar) !important;
   border-top:1px solid rgba(255,255,255,.70) !important;
@@ -120,9 +138,22 @@ strong        { color:var(--accent); font-weight:400; }
   box-shadow:none !important;
 }
 
+/* Player area background — neutral grey, no white strip */
 #musicBackground {
-  background:#f0f0f0 !important;
-  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0px,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px) !important;
+  background-color:#d8d8d8 !important;
+  background-image:repeating-linear-gradient(
+    0deg,rgba(0,0,0,.03) 0px,rgba(0,0,0,.03) 1px,
+    transparent 1px,transparent 3px
+  ) !important;
+}
+
+/* Playlist container — remove the left-to-almost-white gradient
+   that was washing out the right side (above artwork) */
+#musicPlayerPlaylist {
+  background:repeating-linear-gradient(
+    0deg,rgba(0,0,0,.04) 0px,rgba(0,0,0,.04) 1px,
+    transparent 1px,transparent 3px
+  ) !important;
 }
 
 #playlistLeft {
@@ -142,10 +173,11 @@ strong        { color:var(--accent); font-weight:400; }
 .pl-track-list li a.activeSong { color:var(--accent) !important; }
 
 #visualizerCanvas {
-  background:#e8e8e8 !important;
+  background:#d0d0d0 !important;
   border:1px solid rgba(0,0,0,.20) !important;
 }
 
+/* Status bar */
 #musicPlayerContainer .mp-status-bar {
   background:var(--grad-bar) !important;
   border-top:1px solid rgba(255,255,255,.60) !important;
@@ -156,19 +188,7 @@ strong        { color:var(--accent); font-weight:400; }
 #mpLikeVal, #mpDislikeVal { color:#444 !important; }
 #mpPlusBtn { color:rgba(0,0,0,.45) !important; }
 
-#mpPlusPopup {
-  background:#fff !important;
-  border:1px solid rgba(140,140,140,.50) !important;
-  box-shadow:0 4px 12px rgba(0,0,0,.15) !important;
-}
-#mpPopRandom, #mpPopShuffle, #mpPopSortToggle,
-#mpSortSubmenu div, #mpPopUrl { color:var(--text) !important; }
-#mpPopRandom:hover, #mpPopShuffle:hover, #mpPopSortToggle:hover,
-#mpSortSubmenu div:hover, #mpPopUrl:hover {
-  background:#ebebeb !important; color:var(--accent) !important;
-}
-#mpSortSubmenu { background:#f5f5f5 !important; border-top:1px solid rgba(0,0,0,.10) !important; }
-
+/* Progress row */
 #musicPlayerContainer .mp-progress-row {
   background:var(--grad-bar) !important;
   border-bottom:1px solid rgba(0,0,0,.15) !important;
@@ -188,47 +208,33 @@ strong        { color:var(--accent); font-weight:400; }
   background:linear-gradient(to bottom,#555 0%,#333 45%,#1a1a1a 50%,#444 100%) !important;
 }
 
+/* Control button icons */
 .mp-ctrl-btn img, .mp-ctrl-btn .player-img,
-.mp-mute-btn img, .mp-loop-btn img {
-  filter:none !important; -webkit-filter:none !important;
-}
+.mp-mute-btn img, .mp-loop-btn img { filter:none !important; }
 .mp-ctrl-btn:hover img, .mp-ctrl-btn:hover .player-img,
-.mp-mute-btn:hover img, .mp-loop-btn:hover img {
-  filter:brightness(.75) !important; -webkit-filter:brightness(.75) !important;
-}
-#mpLikeBtn img, #mpDislikeBtn img {
-  filter:none !important; -webkit-filter:none !important;
-}
+.mp-mute-btn:hover img, .mp-loop-btn:hover img { filter:brightness(.75) !important; }
+#mpLikeBtn img, #mpDislikeBtn img { filter:none !important; }
 
-/* ── Playlist right panel ── */
+/* Right panel — transparent, background comes from #musicBackground */
 #playlistRight {
-  display:flex !important; flex-direction:column !important;
-  align-items:center !important; justify-content:flex-start !important;
-  padding:8px 6px !important; gap:8px !important;
-  width:183px !important; flex-shrink:0 !important; overflow:visible !important;
+  background:transparent !important;
+  padding:6px !important;
+  gap:7px !important;
 }
 
-/* ── CD / Album Art — FIXED: object-fit:contain ── */
-#spinningDisk { display:none !important; }
-
+/* Album artwork — contain so nothing gets cropped.
+   style.css handles the spin animation via .cd-playing class and _cdSpin keyframes.
+   We just ensure the image fits properly. */
 #cdDisc {
-  width:155px;
-  height:155px;
-  display:block;
-  flex-shrink:0;
-  cursor:pointer;
-  border-radius:4px;          /* slight rounding, not full circle */
-  object-fit:contain;         /* KEY FIX: was missing/wrong */
-  object-position:center;
-  margin-top:2px;
-  background:#e0e0e0;         /* neutral bg behind transparent art */
-  border:1px solid rgba(0,0,0,.15);
-  box-shadow:0 2px 8px rgba(0,0,0,.20), inset 0 0 0 1px rgba(255,255,255,.60);
-  /* no spinning animation — it's artwork, not a CD */
-  animation:none !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.28)) !important;
 }
 
-/* Rena/Rika still hidden */
+#spinningDisk { display:none !important; }
 #renaChan, #rikaChan { display:none !important; }
 
 /* ── Sound toggle ── */
@@ -244,17 +250,14 @@ strong        { color:var(--accent); font-weight:400; }
 /* ══════════════════════════════════════════════
    HOST UPLOAD PANEL
    ══════════════════════════════════════════════ */
-#hostPanel { display:none; }   /* hidden by default; JS toggles */
+#hostPanel { display:none; }
 #hostPanel.visible { display:block; }
 
-/* Desc box — mirrors downloader */
 .desc-box {
   background:#fff;
   padding:8px 10px; margin-bottom:9px;
   border:1px solid rgba(0,0,0,.30);
 }
-
-/* Row: URL input + icon badge */
 .url-row {
   display:flex; align-items:stretch;
   border:1px solid rgba(140,140,140,.50);
@@ -270,87 +273,54 @@ strong        { color:var(--accent); font-weight:400; }
 .url-input::placeholder { color:#888; }
 .url-input:focus { background:#fff; }
 
-/* Row: cover + name side by side */
-.cover-name-row {
-  display:flex; gap:6px; align-items:stretch; margin-bottom:6px;
-}
+.cover-name-row { display:flex; gap:6px; align-items:stretch; margin-bottom:6px; }
 
-/* Cover section */
-.cover-section {
-  display:flex; flex-direction:column; gap:4px;
-  flex:0 0 auto; width:180px;
-}
-.cover-label {
-  font-size:10.5px; color:var(--text-dim); letter-spacing:.5px;
-  text-transform:uppercase; margin-bottom:1px;
-}
+.cover-section { display:flex; flex-direction:column; gap:4px; flex:0 0 auto; width:180px; }
+.cover-label { font-size:10.5px; color:var(--text-dim); letter-spacing:.5px; text-transform:uppercase; margin-bottom:1px; }
 
-/* Cover source tabs */
-.cover-tabs {
-  display:flex; border:1px solid rgba(140,140,140,.50);
-  border-bottom:none; overflow:hidden;
-}
+.cover-tabs { display:flex; border:1px solid rgba(140,140,140,.50); border-bottom:none; overflow:hidden; }
 .cover-tab {
   flex:1; background:var(--grad-bar);
   border:none; border-right:1px solid rgba(140,140,140,.50);
   font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:10.5px;
   color:var(--text-dim); cursor:pointer; padding:5px 4px;
-  transition:background .15s, color .15s;
 }
 .cover-tab:last-child { border-right:none; }
-.cover-tab.active { background:#fff; color:var(--accent); font-weight:400; }
+.cover-tab.active { background:#fff; color:var(--accent); }
 .cover-tab:hover:not(.active) { background:#e0e0e0; }
 
-/* Cover input area */
-.cover-input-area {
-  border:1px solid rgba(140,140,140,.50);
-  background:#fff; overflow:hidden;
-}
+.cover-input-area { border:1px solid rgba(140,140,140,.50); background:#fff; overflow:hidden; }
 .cover-pane { display:none; }
 .cover-pane.active { display:block; }
 
-/* File upload zone */
 .cover-drop {
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:4px; padding:12px 8px; cursor:pointer;
   background:#fafafa; border:2px dashed rgba(140,140,140,.45);
-  border-radius:0; margin:4px; font-size:10.5px; color:#888;
-  transition:border-color .2s, background .2s; text-align:center; min-height:68px;
+  margin:4px; font-size:10.5px; color:#888; text-align:center; min-height:68px;
 }
 .cover-drop:hover { border-color:var(--accent); background:#fff5f5; color:var(--accent); }
 .cover-drop input[type=file] { display:none; }
 .cover-drop img.drop-icon { height:22px; opacity:.4; pointer-events:none; }
 
-/* Cover URL input */
 .cover-url-input {
   width:100%; border:none; outline:none; background:#fff;
   font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:11.5px;
-  color:#000; padding:10px 10px; display:block;
+  color:#000; padding:10px; display:block;
 }
 .cover-url-input::placeholder { color:#aaa; }
 
-/* Cover preview thumbnail */
 .cover-thumb-wrap {
   width:180px; height:60px; flex-shrink:0;
   border:1px solid rgba(140,140,140,.50);
-  background:#e8e8e8; overflow:hidden; display:flex;
-  align-items:center; justify-content:center;
+  background:#e8e8e8; overflow:hidden; display:flex; align-items:center; justify-content:center;
 }
-.cover-thumb-wrap img {
-  width:100%; height:100%; object-fit:contain; object-position:center;
-  display:none;
-}
+.cover-thumb-wrap img { width:100%; height:100%; object-fit:contain; display:none; }
 .cover-thumb-wrap img.loaded { display:block; }
 .cover-thumb-placeholder { font-size:10px; color:#aaa; }
 
-/* Name section */
-.name-section {
-  flex:1; display:flex; flex-direction:column; gap:4px;
-}
-.name-label {
-  font-size:10.5px; color:var(--text-dim); letter-spacing:.5px;
-  text-transform:uppercase; margin-bottom:1px;
-}
+.name-section { flex:1; display:flex; flex-direction:column; gap:4px; }
+.name-label { font-size:10.5px; color:var(--text-dim); letter-spacing:.5px; text-transform:uppercase; margin-bottom:1px; }
 .name-input {
   width:100%; flex:1; background:rgba(255,255,255,.97);
   border:1px solid rgba(140,140,140,.50); outline:none; color:#000;
@@ -360,28 +330,19 @@ strong        { color:var(--accent); font-weight:400; }
 .name-input::placeholder { color:#888; }
 .name-input:focus { background:#fff; }
 
-/* Add button — green like downloader's dl btn */
 .host-add-btn {
   all:unset; box-sizing:border-box; width:100%;
   background:linear-gradient(to bottom,#5cb85c 0%,#3d8b3d 50%,#2e6b2e 50%,#3a7a3a 100%);
-  border:1px solid rgba(30,90,30,.70);
-  color:#e8ffe6;
+  border:1px solid rgba(30,90,30,.70); color:#e8ffe6;
   font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:13px;
   text-shadow:0 1px 2px rgba(0,0,0,.60);
-  padding:8px 12px 10px;
-  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  padding:8px 12px 10px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
   min-height:40px; letter-spacing:.3px;
-  transition:filter .15s;
 }
 .host-add-btn:hover { filter:brightness(1.12); }
 .host-add-btn:active { filter:brightness(.88); }
-.host-add-btn:disabled {
-  opacity:.38; cursor:not-allowed;
-  background:var(--grad-bar); border-color:rgba(140,140,140,.50);
-  color:#555; box-shadow:none;
-}
 
-/* Status feedback */
 .host-status {
   display:none; font-size:11px; padding:5px 10px; margin-top:4px;
   border:1px solid rgba(140,140,140,.45);
@@ -392,17 +353,14 @@ strong        { color:var(--accent); font-weight:400; }
 .host-status .ok  { color:var(--green); }
 .host-status .err { color:var(--accent); }
 
-/* Note — mirrors downloader */
 .note {
   background:#f5f5f5;
   border:1px solid rgba(0,0,0,.25);
   border-left:3px solid rgba(120,120,120,.50);
   padding:7px 10px; margin-top:6px;
-  font-size:11px; color:var(--text-dim); line-height:1.65;
-  text-align:center;
+  font-size:11px; color:var(--text-dim); line-height:1.65; text-align:center;
 }
 
-/* ── Mobile ── */
 @media (max-width:600px) {
   body { padding:8px 4px 24px; background-attachment:scroll; }
   #_pageShell { width:100%; }
@@ -443,14 +401,10 @@ strong        { color:var(--accent); font-weight:400; }
     <div id="pg-contact"      class="page"></div>
     <div id="pg-resources"    class="page"></div>
     <div id="pg-videos" class="page">
-      <div id="videoListAnimes"></div>
-      <div id="videoListNostalg"></div>
-      <div id="videoListAwesome"></div>
+      <div id="videoListAnimes"></div><div id="videoListNostalg"></div><div id="videoListAwesome"></div>
     </div>
     <div id="pg-sketchbook" class="page">
-      <div id="galleryGrid"></div>
-      <div id="galleryAwarded"></div>
-      <div id="paintEmbedWrap"></div>
+      <div id="galleryGrid"></div><div id="galleryAwarded"></div><div id="paintEmbedWrap"></div>
     </div>
     <div id="pg-community" class="page">
       <div id="commPanelChat"></div>
@@ -464,7 +418,6 @@ strong        { color:var(--accent); font-weight:400; }
 
 <div id="_pageShell">
 
-  <!-- ── Topbar ── -->
   <div class="aero-bar">
     <a class="back-link" href="../index.html" title="Back to Archive">
       <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#8249;"
@@ -473,23 +426,29 @@ strong        { color:var(--accent); font-weight:400; }
     <span class="bar-title">MUSIC PLAYER ♪</span>
   </div>
 
-  <!-- ── Intro box ── -->
+  <!-- Loading banner — mirrors downloader's "server initializing" -->
+  <div id="trackLoadBanner">
+    <img src="https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif" alt=""
+      onerror="this.style.display='none'">
+    <span id="trackLoadMsg">Loading tracks, please wait&hellip;</span>
+  </div>
+
   <div class="glass-box">
     <div class="aero-inner">
       <div class="aero-pad" style="display:flex;align-items:flex-start;gap:10px;">
-        <img src="../assets/images/MUSICPLAYERNOTESYMBOL.png" alt="Music"
-          style="height:36px;width:auto;object-fit:contain;flex-shrink:0;filter:none;"
+        <img src="../assets/images/MUSICPLAYERNOTESYMBOL.png" alt=""
+          style="height:36px;width:auto;object-fit:contain;flex-shrink:0;"
           onerror="this.style.display='none'">
         <p>Enjoy listening to some bangers below &mdash; based on personal picks :-)</p>
       </div>
     </div>
   </div>
 
-  <!-- ── Music Player ── -->
   <div id="pg-music" class="page active" style="display:block !important;">
     <div class="glass-box" id="playerGlassBox">
       <div id="musicPlayerContainer" class="aero-glass-overlay">
 
+        <!-- Hidden via CSS — title is already in the topbar above -->
         <div class="mp-header-bar">Music Player &#9834;</div>
 
         <div class="mp-controls-row">
@@ -514,11 +473,11 @@ strong        { color:var(--accent); font-weight:400; }
             <nav id="playlistLeft"></nav>
             <div class="playlist-right" id="playlistRight">
               <canvas id="visualizerCanvas" width="175" height="96"></canvas>
-              <!-- CD img repurposed as album artwork — object-fit:contain via CSS above -->
+              <!-- Album artwork. style.css animates this with class "cd-playing" -->
               <img src="https://frutigeraeroarchive.org/images/music_player/cd.png"
                 id="cdDisc" alt="Album Art" draggable="false">
               <img src="https://frutigeraeroarchive.org/images/music_player/cd.png"
-                id="spinningDisk" alt="CD" draggable="false">
+                id="spinningDisk" alt="" draggable="false">
             </div>
           </div>
         </div>
@@ -544,17 +503,18 @@ strong        { color:var(--accent); font-weight:400; }
           </span>
           <span id="mpPlusBtn" title="Options"
             style="cursor:pointer;font-size:15px;font-weight:bold;padding:0 3px;user-select:none;flex-shrink:0;line-height:1;">+</span>
+          <!-- Popup: style.css handles colors (black bg, white text) — no override needed -->
           <div id="mpPlusPopup"
             style="display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;min-width:200px;font-size:12px;padding:4px 0;"
             onclick="event.stopPropagation()">
             <div id="mpPopRandom"     style="padding:7px 16px;cursor:pointer;">Random</div>
             <div id="mpPopShuffle"    style="padding:7px 16px;cursor:pointer;">Shuffle: OFF</div>
-            <div style="border-top:1px solid rgba(0,0,0,.10);margin:3px 0;"></div>
+            <div style="border-top:1px solid rgba(255,255,255,.12);margin:3px 0;"></div>
             <div id="mpPopSortToggle" style="padding:7px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
               Sort <span style="opacity:.5;font-size:10px;">&#9654;</span>
             </div>
             <div id="mpSortSubmenu" style="display:none;padding:3px 0;"></div>
-            <div style="border-top:1px solid rgba(0,0,0,.10);margin:3px 0;"></div>
+            <div style="border-top:1px solid rgba(255,255,255,.12);margin:3px 0;"></div>
             <a id="mpPopUrl" style="display:block;padding:7px 16px;cursor:pointer;text-decoration:none;"
               target="_blank" rel="noopener noreferrer">URL</a>
           </div>
@@ -586,20 +546,16 @@ strong        { color:var(--accent); font-weight:400; }
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════════
-       HOST UPLOAD PANEL
-       Toggle: add ?host=1 to URL or set localStorage.hostMode = '1'
-       ════════════════════════════════════════════ -->
+  <!-- HOST PANEL — activate with ?host=1 in URL -->
   <div id="hostPanel" class="glass-box">
     <div class="section-bar">Add Track / Playlist — Host Only</div>
     <div class="aero-inner">
       <div class="aero-pad">
 
         <div class="desc-box">
-          <p>Add a <strong>YouTube</strong> video or playlist link. Fill in the cover and name, then click Add.</p>
+          <p>Add a <strong>YouTube</strong> video or playlist link. Fill in the cover art and name, then click Add.</p>
         </div>
 
-        <!-- YouTube URL row -->
         <div class="url-row">
           <div class="url-input-wrap">
             <input type="text" id="hostUrlInput" class="url-input"
@@ -608,10 +564,7 @@ strong        { color:var(--accent); font-weight:400; }
           </div>
         </div>
 
-        <!-- Cover + Name row -->
         <div class="cover-name-row">
-
-          <!-- Cover -->
           <div class="cover-section">
             <span class="cover-label">Cover Art</span>
             <div class="cover-tabs">
@@ -619,40 +572,32 @@ strong        { color:var(--accent); font-weight:400; }
               <button class="cover-tab"        data-pane="url"  onclick="switchCoverTab(this,'url')">URL</button>
             </div>
             <div class="cover-input-area">
-              <!-- File pane -->
               <div class="cover-pane active" id="coverPaneFile">
                 <label class="cover-drop" for="coverFileInput" id="coverDropZone">
-                  <img class="drop-icon"
-                    src="https://cdn-icons-png.flaticon.com/128/685/685655.png"
+                  <img class="drop-icon" src="https://cdn-icons-png.flaticon.com/128/685/685655.png"
                     alt="" onerror="this.style.display='none'">
                   <span id="coverDropLabel">Click or drag image here</span>
                   <input type="file" id="coverFileInput" accept="image/*">
                 </label>
               </div>
-              <!-- URL pane -->
               <div class="cover-pane" id="coverPaneUrl">
                 <input type="text" id="coverUrlInput" class="cover-url-input"
-                  placeholder="https://…/cover.jpg"
-                  autocomplete="off" spellcheck="false">
+                  placeholder="https://…/cover.jpg" autocomplete="off" spellcheck="false">
               </div>
             </div>
-            <!-- Thumbnail preview -->
             <div class="cover-thumb-wrap" id="coverThumbWrap">
               <img id="coverThumbImg" src="" alt="preview">
               <span class="cover-thumb-placeholder" id="coverThumbPlaceholder">Preview</span>
             </div>
           </div>
 
-          <!-- Name -->
           <div class="name-section">
             <span class="name-label">Track / Playlist Name</span>
             <textarea class="name-input" id="hostNameInput"
               placeholder="e.g. Higurashi OST — Vol. 1&#10;or leave blank to auto-detect"></textarea>
           </div>
-
         </div>
 
-        <!-- Add button -->
         <button class="host-add-btn" id="hostAddBtn" onclick="handleHostAdd()">
           ＋ ADD TO PLAYLIST
         </button>
@@ -681,85 +626,144 @@ strong        { color:var(--accent); font-weight:400; }
 var _BG_URL = 'https://preview.redd.it/is-there-any-kind-of-higurashi-audio-only-thing-that-i-can-v0-rlmimbxfqz0e1.jpeg?width=1080&crop=smart&auto=webp&s=a4b337ee1258844d21720824a2a0b17b640c122a';
 function _applyMusicBg() {
   var s = document.getElementById('_musicPageBg');
-  if (!s) { s = document.createElement('style'); s.id = '_musicPageBg'; document.head.appendChild(s); }
+  if (!s) { s = document.createElement('style'); s.id='_musicPageBg'; document.head.appendChild(s); }
   s.textContent = 'body{background-image:url("'+_BG_URL+'")!important;background-size:contain!important;background-attachment:fixed!important;background-repeat:no-repeat!important;background-position:center center!important;background-color:#000!important;}';
-  document.head.appendChild(s);
 }
 _applyMusicBg();
-new MutationObserver(function(muts) {
-  muts.forEach(function(m) {
-    m.addedNodes.forEach(function(node) {
-      if (node.id === '_darkThemeBgStyle' || node.id === '_themeStyle') setTimeout(_applyMusicBg, 30);
+new MutationObserver(function(muts){
+  muts.forEach(function(m){
+    m.addedNodes.forEach(function(n){
+      if(n.id==='_darkThemeBgStyle'||n.id==='_themeStyle') setTimeout(_applyMusicBg,30);
     });
   });
-}).observe(document.head, { childList:true });
+}).observe(document.head,{childList:true});
 
 var _origGoto = window.gotoPage;
 window.gotoPage = function(name) {
   if (_origGoto) _origGoto(name);
   var pg = document.getElementById('pg-music');
-  if (pg) { pg.style.display = 'block'; pg.classList.add('active'); }
+  if (pg) { pg.style.display='block'; pg.classList.add('active'); }
 };
 
-/* ── Host panel visibility ── */
-(function() {
+/* ════════════════════════════════════════════════
+   TRACK LOADING BANNER
+   First page-load: 3.5 s. Repeats every 12 min.
+   ════════════════════════════════════════════════ */
+(function(){
+  var banner = document.getElementById('trackLoadBanner');
+  var msgEl  = document.getElementById('trackLoadMsg');
+  var msgs   = [
+    'Loading tracks, please wait\u2026',
+    'Fetching playlist data\u2026',
+    'Syncing track list\u2026',
+    'Buffering audio streams\u2026'
+  ];
+  function show(msg, ms) {
+    msgEl.textContent = msg;
+    banner.classList.add('visible');
+    setTimeout(function(){ banner.classList.remove('visible'); }, ms);
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    if (!sessionStorage.getItem('_tracksLoaded')) {
+      sessionStorage.setItem('_tracksLoaded','1');
+      show(msgs[0], 3500);
+    }
+  });
+  setInterval(function(){
+    show(msgs[Math.floor(Math.random()*msgs.length)], 2000);
+  }, 12*60*1000);
+})();
+
+/* ════════════════════════════════════════════════
+   CD SPIN
+   style.css defines:
+     #cdDisc.cd-playing { animation-play-state:running !important; }
+   We watch the play/pause button image src:
+   when it contains "pause" the track is playing.
+   ════════════════════════════════════════════════ */
+(function(){
+  var cd    = document.getElementById('cdDisc');
+  var ppImg = document.getElementById('audioPlayPauseImage');
+  if (!cd || !ppImg) return;
+
+  function sync() {
+    var playing = (ppImg.getAttribute('src') || ppImg.src || '').indexOf('pause') !== -1;
+    cd.classList.toggle('cd-playing', playing);
+  }
+
+  /* Watch src attribute changes */
+  new MutationObserver(sync).observe(ppImg, { attributes:true, attributeFilter:['src'] });
+
+  /* Fallback click handler */
+  var ppBtn = document.getElementById('audioPlayPause');
+  if (ppBtn) ppBtn.addEventListener('click', function(){ setTimeout(sync, 150); });
+
+  /* Audio element events if available */
+  document.addEventListener('DOMContentLoaded', function(){
+    var audio = document.getElementById('audioPlayer') || document.querySelector('audio');
+    if (audio) {
+      audio.addEventListener('play',  function(){ cd.classList.add('cd-playing'); });
+      audio.addEventListener('pause', function(){ cd.classList.remove('cd-playing'); });
+      audio.addEventListener('ended', function(){ cd.classList.remove('cd-playing'); });
+    }
+    sync();
+  });
+})();
+
+/* ════════════════════════════════════════════════
+   HOST PANEL
+   ════════════════════════════════════════════════ */
+(function(){
   var params = new URLSearchParams(window.location.search);
-  var isHost = params.get('host') === '1' || localStorage.getItem('hostMode') === '1';
-  if (isHost) {
+  if (params.get('host')==='1' || localStorage.getItem('hostMode')==='1') {
     document.getElementById('hostPanel').classList.add('visible');
-    localStorage.setItem('hostMode', '1');
+    localStorage.setItem('hostMode','1');
   }
 })();
 
-/* ── Cover tab switcher ── */
 function switchCoverTab(btn, pane) {
   document.querySelectorAll('.cover-tab').forEach(function(t){ t.classList.remove('active'); });
   document.querySelectorAll('.cover-pane').forEach(function(p){ p.classList.remove('active'); });
   btn.classList.add('active');
-  document.getElementById('coverPane' + pane.charAt(0).toUpperCase() + pane.slice(1)).classList.add('active');
+  document.getElementById('coverPane'+pane.charAt(0).toUpperCase()+pane.slice(1)).classList.add('active');
 }
 
-/* ── Cover file input ── */
 var coverFile = null;
-document.getElementById('coverFileInput').addEventListener('change', function(e) {
-  var f = e.target.files[0];
-  if (!f) return;
+document.getElementById('coverFileInput').addEventListener('change', function(e){
+  var f = e.target.files[0]; if (!f) return;
   coverFile = f;
   document.getElementById('coverDropLabel').textContent = f.name;
-  var reader = new FileReader();
-  reader.onload = function(ev) { showThumb(ev.target.result); };
-  reader.readAsDataURL(f);
+  var r = new FileReader();
+  r.onload = function(ev){ showThumb(ev.target.result); };
+  r.readAsDataURL(f);
 });
 
-/* Drag-and-drop on the drop zone */
-var dropZone = document.getElementById('coverDropZone');
-dropZone.addEventListener('dragover', function(e){ e.preventDefault(); dropZone.style.borderColor='#cc1a1a'; });
-dropZone.addEventListener('dragleave', function(){ dropZone.style.borderColor=''; });
-dropZone.addEventListener('drop', function(e){
-  e.preventDefault(); dropZone.style.borderColor='';
+var dz = document.getElementById('coverDropZone');
+dz.addEventListener('dragover',  function(e){ e.preventDefault(); dz.style.borderColor='#cc1a1a'; });
+dz.addEventListener('dragleave', function(){   dz.style.borderColor=''; });
+dz.addEventListener('drop', function(e){
+  e.preventDefault(); dz.style.borderColor='';
   var f = e.dataTransfer.files[0];
   if (!f || !f.type.startsWith('image/')) return;
   coverFile = f;
   document.getElementById('coverDropLabel').textContent = f.name;
-  var reader = new FileReader();
-  reader.onload = function(ev){ showThumb(ev.target.result); };
-  reader.readAsDataURL(f);
+  var r = new FileReader();
+  r.onload = function(ev){ showThumb(ev.target.result); };
+  r.readAsDataURL(f);
 });
 
-/* ── Cover URL input preview ── */
-var _urlThumbTimer = null;
-document.getElementById('coverUrlInput').addEventListener('input', function() {
-  clearTimeout(_urlThumbTimer);
-  var val = this.value.trim();
-  if (!val) { clearThumb(); return; }
-  _urlThumbTimer = setTimeout(function(){ showThumb(val); }, 500);
+var _cuTimer = null;
+document.getElementById('coverUrlInput').addEventListener('input', function(){
+  clearTimeout(_cuTimer);
+  var v = this.value.trim();
+  if (!v) { clearThumb(); return; }
+  _cuTimer = setTimeout(function(){ showThumb(v); }, 500);
 });
 
 function showThumb(src) {
   var img = document.getElementById('coverThumbImg');
   var ph  = document.getElementById('coverThumbPlaceholder');
-  img.classList.remove('loaded');
-  img.src = src;
+  img.classList.remove('loaded'); img.src = src;
   img.onload  = function(){ img.classList.add('loaded'); ph.style.display='none'; };
   img.onerror = function(){ img.classList.remove('loaded'); ph.style.display=''; };
 }
@@ -770,28 +774,16 @@ function clearThumb() {
   coverFile = null;
 }
 
-/* ── Add button handler ── */
 function handleHostAdd() {
-  var url  = (document.getElementById('hostUrlInput').value || '').trim();
-  var name = (document.getElementById('hostNameInput').value || '').trim();
-  var coverUrl = (document.getElementById('coverUrlInput').value || '').trim();
-
-  if (!url) { setHostStatus('Please enter a YouTube URL.', 'err'); return; }
-  if (!/youtube\.com|youtu\.be/i.test(url)) { setHostStatus('Only YouTube links are supported.', 'err'); return; }
-
-  /* Resolve cover: file takes priority over URL */
-  var coverSrc = coverFile ? URL.createObjectURL(coverFile) : (coverUrl || '');
-
-  /* -------------------------------------------------
-     Plug into your existing music.js API here.
-     Replace the block below with actual calls to
-     whatever function your music.js exposes to add tracks,
-     e.g.:  addTrackToPlaylist({ url, name, cover: coverSrc });
-     ------------------------------------------------- */
-  console.log('[HOST ADD]', { url, name, cover: coverSrc });
-  setHostStatus('Track queued: ' + (name || url), 'ok');
-
-  /* Reset fields after adding */
+  var url  = (document.getElementById('hostUrlInput').value||'').trim();
+  var name = (document.getElementById('hostNameInput').value||'').trim();
+  var cUrl = (document.getElementById('coverUrlInput').value||'').trim();
+  if (!url) { setHostStatus('Please enter a YouTube URL.','err'); return; }
+  if (!/youtube\.com|youtu\.be/i.test(url)) { setHostStatus('Only YouTube links are supported.','err'); return; }
+  var cover = coverFile ? URL.createObjectURL(coverFile) : (cUrl||'');
+  /* TODO: wire to music.js — e.g. addTrackToPlaylist({url,name,cover}) */
+  console.log('[HOST ADD]', {url:url, name:name, cover:cover});
+  setHostStatus('Track queued: '+(name||url),'ok');
   document.getElementById('hostUrlInput').value  = '';
   document.getElementById('hostNameInput').value = '';
   document.getElementById('coverUrlInput').value = '';
@@ -799,7 +791,6 @@ function handleHostAdd() {
   document.getElementById('coverFileInput').value = '';
   document.getElementById('coverDropLabel').textContent = 'Click or drag image here';
 }
-
 function setHostStatus(msg, type) {
   var el = document.getElementById('hostStatus');
   el.innerHTML = type ? '<span class="'+type+'">'+msg+'</span>' : msg;
@@ -807,50 +798,40 @@ function setHostStatus(msg, type) {
 }
 
 /* ── Sounds ── */
-var _SB = '../assets/audio/';
-var _SND = { start:_SB+'sitestart.mp3', alert:_SB+'sitealert.mp3', dislike:_SB+'sitedislikeclick.mp3', like:_SB+'sitelikeclick.mp3', sort:_SB+'sitesortclick.mp3', button:_SB+'sitebuttonclick.mp3', hover:_SB+'text.mp3' };
-var _soundsOn = true, _aCache = {}, _hoverThrottle = 0, _hoverTimer = null;
-
-function _getAudio(k) { if (!_aCache[k]) { var a=new Audio(_SND[k]); a.preload='auto'; _aCache[k]=a; } return _aCache[k]; }
-function playSound(k) { if (!_soundsOn) return; try { var c=_getAudio(k).cloneNode(); c.volume=(k==='hover'?.30:.52); c.play().catch(function(){}); } catch(e){} }
-function toggleSound() {
-  _soundsOn = !_soundsOn;
-  var btn = document.getElementById('soundToggle');
-  if (btn) { btn.textContent=_soundsOn?'Sounds: On':'Sounds: Off'; btn.classList.toggle('off',!_soundsOn); }
-  if (_soundsOn) playSound('button');
-  sessionStorage.setItem('_soundsOn', String(_soundsOn));
+var _SB='../assets/audio/';
+var _SND={start:_SB+'sitestart.mp3',alert:_SB+'sitealert.mp3',dislike:_SB+'sitedislikeclick.mp3',like:_SB+'sitelikeclick.mp3',sort:_SB+'sitesortclick.mp3',button:_SB+'sitebuttonclick.mp3',hover:_SB+'text.mp3'};
+var _soundsOn=true,_aC={},_ht=0,_hT=null;
+function _gA(k){if(!_aC[k]){var a=new Audio(_SND[k]);a.preload='auto';_aC[k]=a;}return _aC[k];}
+function playSound(k){if(!_soundsOn)return;try{var c=_gA(k).cloneNode();c.volume=(k==='hover'?.30:.52);c.play().catch(function(){});}catch(e){}}
+function toggleSound(){
+  _soundsOn=!_soundsOn;
+  var b=document.getElementById('soundToggle');
+  if(b){b.textContent=_soundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_soundsOn);}
+  if(_soundsOn) playSound('button');
+  sessionStorage.setItem('_soundsOn',String(_soundsOn));
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-  if (sessionStorage.getItem('_soundsOn') === 'false') {
-    _soundsOn = false;
-    var btn = document.getElementById('soundToggle');
-    if (btn) { btn.textContent='Sounds: Off'; btn.classList.add('off'); }
+document.addEventListener('DOMContentLoaded',function(){
+  if(sessionStorage.getItem('_soundsOn')==='false'){
+    _soundsOn=false;
+    var b=document.getElementById('soundToggle');
+    if(b){b.textContent='Sounds: Off';b.classList.add('off');}
   }
-  if (!sessionStorage.getItem('_siteStartPlayed')) {
+  if(!sessionStorage.getItem('_siteStartPlayed')){
     sessionStorage.setItem('_siteStartPlayed','1');
-    setTimeout(function(){ playSound('start'); }, 700);
+    setTimeout(function(){playSound('start');},700);
   }
 });
-
-document.addEventListener('pointerdown', function(){ Object.keys(_SND).forEach(function(k){ _getAudio(k); }); },{once:true,passive:true});
-
-function _isInteractive(el) {
-  if (!el||el===document.body||el===document.documentElement) return false;
-  var t=el.tagName;
-  if(t==='BUTTON'||t==='A'||t==='SELECT'||t==='TEXTAREA') return true;
-  if(t==='INPUT'&&el.type!=='range') return true;
-  var cs=window.getComputedStyle(el); return cs&&cs.cursor==='pointer';
-}
-document.addEventListener('mouseover',function(e){ if(e.target.id==='soundToggle') return; if(!_isInteractive(e.target)) return; clearTimeout(_hoverTimer); _hoverTimer=setTimeout(function(){ var n=Date.now(); if(n-_hoverThrottle<400) return; _hoverThrottle=n; playSound('hover'); },400); },{passive:true});
-document.addEventListener('mouseout',function(e){ if(_isInteractive(e.target)) clearTimeout(_hoverTimer); },{passive:true});
-document.addEventListener('click',function(e){ if(e.target.id==='soundToggle') return; if(_isInteractive(e.target)) playSound('button'); },true);
+document.addEventListener('pointerdown',function(){Object.keys(_SND).forEach(function(k){_gA(k);});},{once:true,passive:true});
+function _iI(el){if(!el||el===document.body||el===document.documentElement)return false;var t=el.tagName;if(t==='BUTTON'||t==='A'||t==='SELECT'||t==='TEXTAREA')return true;if(t==='INPUT'&&el.type!=='range')return true;var cs=window.getComputedStyle(el);return cs&&cs.cursor==='pointer';}
+document.addEventListener('mouseover',function(e){if(e.target.id==='soundToggle')return;if(!_iI(e.target))return;clearTimeout(_hT);_hT=setTimeout(function(){var n=Date.now();if(n-_ht<400)return;_ht=n;playSound('hover');},400);},{passive:true});
+document.addEventListener('mouseout',function(e){if(_iI(e.target))clearTimeout(_hT);},{passive:true});
+document.addEventListener('click',function(e){if(e.target.id==='soundToggle')return;if(_iI(e.target))playSound('button');},true);
 
 (function(){
   var BAD='\u00e2\u20ac\u00a6';
   function fix(el){if(!el)return;if(el.textContent&&el.textContent.indexOf(BAD)!==-1)el.textContent=el.textContent.split(BAD).join('\u2026');}
   var pl=document.getElementById('playlistLeft');
-  if(pl) new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){ if(n.nodeType===3)fix(n.parentElement); else if(n.querySelectorAll){n.querySelectorAll('p,span,div').forEach(fix);fix(n);} });});}).observe(pl,{childList:true,subtree:true});
+  if(pl)new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===3)fix(n.parentElement);else if(n.querySelectorAll){n.querySelectorAll('p,span,div').forEach(fix);fix(n);}});});}).observe(pl,{childList:true,subtree:true});
 })();
 </script>
 </body>
