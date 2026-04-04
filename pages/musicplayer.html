@@ -24,7 +24,9 @@ button:active, button:focus, button:focus-visible { outline:none !important; box
   --accent:    #cc1a1a;
   --text:      #111;
   --text-dim:  #2c2c2c;
+  --green:     #1a9c2a;
   --grad-bar:  linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
+  --grad-dl:   linear-gradient(to bottom,#e8e8e8 0%,#d2d2d2 50%,#bfbfbf 50%,#cbcbcb 100%);
   --shadow-bar: 0 2px 5px rgba(0,0,0,.15);
 }
 
@@ -48,6 +50,8 @@ img { -webkit-user-drag:none; user-select:none; }
 a             { color:#000; text-decoration:none; }
 a:hover       { color:var(--accent); text-decoration:underline; }
 p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
+p + p         { margin-top:5px; }
+strong        { color:var(--accent); font-weight:400; }
 
 .page        { display:none; }
 .page.active { display:block; }
@@ -90,9 +94,16 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
 .aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
 .aero-pad   { padding:10px 12px; }
 
+/* ── Section headers — same as downloader ── */
+.section-bar {
+  display:block; background:#000;
+  padding:5px 8px; margin:0; line-height:1.6;
+  font-size:11px; font-weight:400; letter-spacing:1.5px;
+  text-transform:uppercase; color:#fff;
+}
+
 /* ── Override style.css player elements to use light theme ── */
 
-/* Header bar */
 #musicPlayerContainer .mp-header-bar {
   background:var(--grad-bar) !important;
   border-bottom:1px solid rgba(0,0,0,.18) !important;
@@ -102,7 +113,6 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
   font-size:14px !important;
 }
 
-/* Controls row */
 #musicPlayerContainer .mp-controls-row {
   background:var(--grad-bar) !important;
   border-top:1px solid rgba(255,255,255,.70) !important;
@@ -110,18 +120,15 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
   box-shadow:none !important;
 }
 
-/* Playlist background */
 #musicBackground {
   background:#f0f0f0 !important;
   background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0px,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px) !important;
 }
 
-/* Playlist left scrollbar */
 #playlistLeft {
   scrollbar-color:rgba(120,120,120,.50) transparent !important;
 }
 
-/* Group headers */
 .pl-group-header {
   background:linear-gradient(to bottom,#e0e0e0,#d0d0d0) !important;
   color:var(--accent) !important;
@@ -129,19 +136,16 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
   border-top:1px solid rgba(255,255,255,.60) !important;
 }
 
-/* Track list */
 .pl-track-list li { color:var(--text) !important; }
 .pl-track-list li a { color:var(--text) !important; }
 .pl-track-list li a:hover { color:var(--accent) !important; }
 .pl-track-list li a.activeSong { color:var(--accent) !important; }
 
-/* Visualizer */
 #visualizerCanvas {
   background:#e8e8e8 !important;
   border:1px solid rgba(0,0,0,.20) !important;
 }
 
-/* Status bar */
 #musicPlayerContainer .mp-status-bar {
   background:var(--grad-bar) !important;
   border-top:1px solid rgba(255,255,255,.60) !important;
@@ -152,7 +156,6 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
 #mpLikeVal, #mpDislikeVal { color:#444 !important; }
 #mpPlusBtn { color:rgba(0,0,0,.45) !important; }
 
-/* Plus popup */
 #mpPlusPopup {
   background:#fff !important;
   border:1px solid rgba(140,140,140,.50) !important;
@@ -166,7 +169,6 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
 }
 #mpSortSubmenu { background:#f5f5f5 !important; border-top:1px solid rgba(0,0,0,.10) !important; }
 
-/* Progress row */
 #musicPlayerContainer .mp-progress-row {
   background:var(--grad-bar) !important;
   border-bottom:1px solid rgba(0,0,0,.15) !important;
@@ -177,7 +179,6 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
 #timeLeft { color:var(--accent) !important; }
 #volumeIndicator { color:var(--accent) !important; }
 
-/* Progress track */
 .mp-progress-track, .mp-vol-wrap {
   background:linear-gradient(to bottom,#ccc,#e0e0e0) !important;
   border:1px solid rgba(0,0,0,.20) !important;
@@ -187,7 +188,6 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
   background:linear-gradient(to bottom,#555 0%,#333 45%,#1a1a1a 50%,#444 100%) !important;
 }
 
-/* Player images — keep default colors, no red tint */
 .mp-ctrl-btn img, .mp-ctrl-btn .player-img,
 .mp-mute-btn img, .mp-loop-btn img {
   filter:none !important; -webkit-filter:none !important;
@@ -200,28 +200,35 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
   filter:none !important; -webkit-filter:none !important;
 }
 
-/* Playlist right panel */
+/* ── Playlist right panel ── */
 #playlistRight {
   display:flex !important; flex-direction:column !important;
   align-items:center !important; justify-content:flex-start !important;
-  padding:8px 6px !important; gap:6px !important;
+  padding:8px 6px !important; gap:8px !important;
   width:183px !important; flex-shrink:0 !important; overflow:visible !important;
 }
 
-/* CD */
+/* ── CD / Album Art — FIXED: object-fit:contain ── */
 #spinningDisk { display:none !important; }
-#cdDisc {
-  width:155px; height:136px; display:block; flex-shrink:0;
-  cursor:pointer; border-radius:50%; object-fit:contain; margin-top:2px;
-  filter:drop-shadow(0 2px 6px rgba(0,0,0,.25));
-  animation-name:_cdSpin; animation-duration:5000ms;
-  animation-timing-function:linear; animation-iteration-count:infinite;
-  animation-play-state:paused;
-}
-#cdDisc.cd-playing { animation-play-state:running; }
-@keyframes _cdSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 
-/* Hide Rena/Rika */
+#cdDisc {
+  width:155px;
+  height:155px;
+  display:block;
+  flex-shrink:0;
+  cursor:pointer;
+  border-radius:4px;          /* slight rounding, not full circle */
+  object-fit:contain;         /* KEY FIX: was missing/wrong */
+  object-position:center;
+  margin-top:2px;
+  background:#e0e0e0;         /* neutral bg behind transparent art */
+  border:1px solid rgba(0,0,0,.15);
+  box-shadow:0 2px 8px rgba(0,0,0,.20), inset 0 0 0 1px rgba(255,255,255,.60);
+  /* no spinning animation — it's artwork, not a CD */
+  animation:none !important;
+}
+
+/* Rena/Rika still hidden */
 #renaChan, #rikaChan { display:none !important; }
 
 /* ── Sound toggle ── */
@@ -234,6 +241,167 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
 #soundToggle:hover { color:rgba(0,0,0,.70); }
 #soundToggle.off   { color:rgba(0,0,0,.22); }
 
+/* ══════════════════════════════════════════════
+   HOST UPLOAD PANEL
+   ══════════════════════════════════════════════ */
+#hostPanel { display:none; }   /* hidden by default; JS toggles */
+#hostPanel.visible { display:block; }
+
+/* Desc box — mirrors downloader */
+.desc-box {
+  background:#fff;
+  padding:8px 10px; margin-bottom:9px;
+  border:1px solid rgba(0,0,0,.30);
+}
+
+/* Row: URL input + icon badge */
+.url-row {
+  display:flex; align-items:stretch;
+  border:1px solid rgba(140,140,140,.50);
+  margin-bottom:6px;
+}
+.url-input-wrap { flex:1; position:relative; min-width:0; }
+.url-input {
+  width:100%; background:rgba(255,255,255,.97);
+  border:none; outline:none; color:#000;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:12px;
+  padding:7px 10px; display:block; height:100%;
+}
+.url-input::placeholder { color:#888; }
+.url-input:focus { background:#fff; }
+
+/* Row: cover + name side by side */
+.cover-name-row {
+  display:flex; gap:6px; align-items:stretch; margin-bottom:6px;
+}
+
+/* Cover section */
+.cover-section {
+  display:flex; flex-direction:column; gap:4px;
+  flex:0 0 auto; width:180px;
+}
+.cover-label {
+  font-size:10.5px; color:var(--text-dim); letter-spacing:.5px;
+  text-transform:uppercase; margin-bottom:1px;
+}
+
+/* Cover source tabs */
+.cover-tabs {
+  display:flex; border:1px solid rgba(140,140,140,.50);
+  border-bottom:none; overflow:hidden;
+}
+.cover-tab {
+  flex:1; background:var(--grad-bar);
+  border:none; border-right:1px solid rgba(140,140,140,.50);
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:10.5px;
+  color:var(--text-dim); cursor:pointer; padding:5px 4px;
+  transition:background .15s, color .15s;
+}
+.cover-tab:last-child { border-right:none; }
+.cover-tab.active { background:#fff; color:var(--accent); font-weight:400; }
+.cover-tab:hover:not(.active) { background:#e0e0e0; }
+
+/* Cover input area */
+.cover-input-area {
+  border:1px solid rgba(140,140,140,.50);
+  background:#fff; overflow:hidden;
+}
+.cover-pane { display:none; }
+.cover-pane.active { display:block; }
+
+/* File upload zone */
+.cover-drop {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:4px; padding:12px 8px; cursor:pointer;
+  background:#fafafa; border:2px dashed rgba(140,140,140,.45);
+  border-radius:0; margin:4px; font-size:10.5px; color:#888;
+  transition:border-color .2s, background .2s; text-align:center; min-height:68px;
+}
+.cover-drop:hover { border-color:var(--accent); background:#fff5f5; color:var(--accent); }
+.cover-drop input[type=file] { display:none; }
+.cover-drop img.drop-icon { height:22px; opacity:.4; pointer-events:none; }
+
+/* Cover URL input */
+.cover-url-input {
+  width:100%; border:none; outline:none; background:#fff;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:11.5px;
+  color:#000; padding:10px 10px; display:block;
+}
+.cover-url-input::placeholder { color:#aaa; }
+
+/* Cover preview thumbnail */
+.cover-thumb-wrap {
+  width:180px; height:60px; flex-shrink:0;
+  border:1px solid rgba(140,140,140,.50);
+  background:#e8e8e8; overflow:hidden; display:flex;
+  align-items:center; justify-content:center;
+}
+.cover-thumb-wrap img {
+  width:100%; height:100%; object-fit:contain; object-position:center;
+  display:none;
+}
+.cover-thumb-wrap img.loaded { display:block; }
+.cover-thumb-placeholder { font-size:10px; color:#aaa; }
+
+/* Name section */
+.name-section {
+  flex:1; display:flex; flex-direction:column; gap:4px;
+}
+.name-label {
+  font-size:10.5px; color:var(--text-dim); letter-spacing:.5px;
+  text-transform:uppercase; margin-bottom:1px;
+}
+.name-input {
+  width:100%; flex:1; background:rgba(255,255,255,.97);
+  border:1px solid rgba(140,140,140,.50); outline:none; color:#000;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:12px;
+  padding:7px 10px; resize:none; min-height:52px;
+}
+.name-input::placeholder { color:#888; }
+.name-input:focus { background:#fff; }
+
+/* Add button — green like downloader's dl btn */
+.host-add-btn {
+  all:unset; box-sizing:border-box; width:100%;
+  background:linear-gradient(to bottom,#5cb85c 0%,#3d8b3d 50%,#2e6b2e 50%,#3a7a3a 100%);
+  border:1px solid rgba(30,90,30,.70);
+  color:#e8ffe6;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:13px;
+  text-shadow:0 1px 2px rgba(0,0,0,.60);
+  padding:8px 12px 10px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  min-height:40px; letter-spacing:.3px;
+  transition:filter .15s;
+}
+.host-add-btn:hover { filter:brightness(1.12); }
+.host-add-btn:active { filter:brightness(.88); }
+.host-add-btn:disabled {
+  opacity:.38; cursor:not-allowed;
+  background:var(--grad-bar); border-color:rgba(140,140,140,.50);
+  color:#555; box-shadow:none;
+}
+
+/* Status feedback */
+.host-status {
+  display:none; font-size:11px; padding:5px 10px; margin-top:4px;
+  border:1px solid rgba(140,140,140,.45);
+  background:linear-gradient(to bottom,#e2e2e2 0%,#cecece 50%,#c0c0c0 100%);
+  text-align:center;
+}
+.host-status.visible { display:block; }
+.host-status .ok  { color:var(--green); }
+.host-status .err { color:var(--accent); }
+
+/* Note — mirrors downloader */
+.note {
+  background:#f5f5f5;
+  border:1px solid rgba(0,0,0,.25);
+  border-left:3px solid rgba(120,120,120,.50);
+  padding:7px 10px; margin-top:6px;
+  font-size:11px; color:var(--text-dim); line-height:1.65;
+  text-align:center;
+}
+
 /* ── Mobile ── */
 @media (max-width:600px) {
   body { padding:8px 4px 24px; background-attachment:scroll; }
@@ -242,6 +410,10 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
   .aero-bar .back-link img { height:24px; }
   #cornerLogo img { height:28px; }
   .glass-box { padding:4px; }
+  .cover-name-row { flex-direction:column; }
+  .cover-section { width:100%; }
+  .cover-thumb-wrap { width:100%; }
+  .url-input { font-size:16px; }
 }
 </style>
 </head>
@@ -270,28 +442,29 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
     <div id="pg-introduction" class="page"></div>
     <div id="pg-contact"      class="page"></div>
     <div id="pg-resources"    class="page"></div>
-    <div id="pg-videos"       class="page">
+    <div id="pg-videos" class="page">
       <div id="videoListAnimes"></div>
       <div id="videoListNostalg"></div>
       <div id="videoListAwesome"></div>
     </div>
-    <div id="pg-sketchbook"   class="page">
+    <div id="pg-sketchbook" class="page">
       <div id="galleryGrid"></div>
       <div id="galleryAwarded"></div>
       <div id="paintEmbedWrap"></div>
     </div>
-    <div id="pg-community"    class="page">
+    <div id="pg-community" class="page">
       <div id="commPanelChat"></div>
       <div id="commPanelBlog" style="display:none"></div>
       <button id="commTabChat" class="comm-tab active"></button>
       <button id="commTabBlog" class="comm-tab"></button>
     </div>
-    <div id="pg-preferences"  class="page"></div>
+    <div id="pg-preferences" class="page"></div>
   </main>
 </div>
 
 <div id="_pageShell">
 
+  <!-- ── Topbar ── -->
   <div class="aero-bar">
     <a class="back-link" href="../index.html" title="Back to Archive">
       <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#8249;"
@@ -300,6 +473,7 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
     <span class="bar-title">MUSIC PLAYER ♪</span>
   </div>
 
+  <!-- ── Intro box ── -->
   <div class="glass-box">
     <div class="aero-inner">
       <div class="aero-pad" style="display:flex;align-items:flex-start;gap:10px;">
@@ -311,6 +485,7 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
     </div>
   </div>
 
+  <!-- ── Music Player ── -->
   <div id="pg-music" class="page active" style="display:block !important;">
     <div class="glass-box" id="playerGlassBox">
       <div id="musicPlayerContainer" class="aero-glass-overlay">
@@ -339,6 +514,9 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
             <nav id="playlistLeft"></nav>
             <div class="playlist-right" id="playlistRight">
               <canvas id="visualizerCanvas" width="175" height="96"></canvas>
+              <!-- CD img repurposed as album artwork — object-fit:contain via CSS above -->
+              <img src="https://frutigeraeroarchive.org/images/music_player/cd.png"
+                id="cdDisc" alt="Album Art" draggable="false">
               <img src="https://frutigeraeroarchive.org/images/music_player/cd.png"
                 id="spinningDisk" alt="CD" draggable="false">
             </div>
@@ -408,6 +586,87 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
     </div>
   </div>
 
+  <!-- ════════════════════════════════════════════
+       HOST UPLOAD PANEL
+       Toggle: add ?host=1 to URL or set localStorage.hostMode = '1'
+       ════════════════════════════════════════════ -->
+  <div id="hostPanel" class="glass-box">
+    <div class="section-bar">Add Track / Playlist — Host Only</div>
+    <div class="aero-inner">
+      <div class="aero-pad">
+
+        <div class="desc-box">
+          <p>Add a <strong>YouTube</strong> video or playlist link. Fill in the cover and name, then click Add.</p>
+        </div>
+
+        <!-- YouTube URL row -->
+        <div class="url-row">
+          <div class="url-input-wrap">
+            <input type="text" id="hostUrlInput" class="url-input"
+              placeholder="Paste YouTube video or playlist URL…"
+              autocomplete="off" spellcheck="false" inputmode="url">
+          </div>
+        </div>
+
+        <!-- Cover + Name row -->
+        <div class="cover-name-row">
+
+          <!-- Cover -->
+          <div class="cover-section">
+            <span class="cover-label">Cover Art</span>
+            <div class="cover-tabs">
+              <button class="cover-tab active" data-pane="file" onclick="switchCoverTab(this,'file')">File</button>
+              <button class="cover-tab"        data-pane="url"  onclick="switchCoverTab(this,'url')">URL</button>
+            </div>
+            <div class="cover-input-area">
+              <!-- File pane -->
+              <div class="cover-pane active" id="coverPaneFile">
+                <label class="cover-drop" for="coverFileInput" id="coverDropZone">
+                  <img class="drop-icon"
+                    src="https://cdn-icons-png.flaticon.com/128/685/685655.png"
+                    alt="" onerror="this.style.display='none'">
+                  <span id="coverDropLabel">Click or drag image here</span>
+                  <input type="file" id="coverFileInput" accept="image/*">
+                </label>
+              </div>
+              <!-- URL pane -->
+              <div class="cover-pane" id="coverPaneUrl">
+                <input type="text" id="coverUrlInput" class="cover-url-input"
+                  placeholder="https://…/cover.jpg"
+                  autocomplete="off" spellcheck="false">
+              </div>
+            </div>
+            <!-- Thumbnail preview -->
+            <div class="cover-thumb-wrap" id="coverThumbWrap">
+              <img id="coverThumbImg" src="" alt="preview">
+              <span class="cover-thumb-placeholder" id="coverThumbPlaceholder">Preview</span>
+            </div>
+          </div>
+
+          <!-- Name -->
+          <div class="name-section">
+            <span class="name-label">Track / Playlist Name</span>
+            <textarea class="name-input" id="hostNameInput"
+              placeholder="e.g. Higurashi OST — Vol. 1&#10;or leave blank to auto-detect"></textarea>
+          </div>
+
+        </div>
+
+        <!-- Add button -->
+        <button class="host-add-btn" id="hostAddBtn" onclick="handleHostAdd()">
+          ＋ ADD TO PLAYLIST
+        </button>
+
+        <div class="host-status" id="hostStatus"></div>
+
+        <div class="note">
+          Only the host (you) can see this panel. Changes take effect immediately in the player above.
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
@@ -418,8 +677,8 @@ p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0;
 <script src="../scripts/js/script.js"></script>
 
 <script>
+/* ── Background ── */
 var _BG_URL = 'https://preview.redd.it/is-there-any-kind-of-higurashi-audio-only-thing-that-i-can-v0-rlmimbxfqz0e1.jpeg?width=1080&crop=smart&auto=webp&s=a4b337ee1258844d21720824a2a0b17b640c122a';
-
 function _applyMusicBg() {
   var s = document.getElementById('_musicPageBg');
   if (!s) { s = document.createElement('style'); s.id = '_musicPageBg'; document.head.appendChild(s); }
@@ -427,7 +686,6 @@ function _applyMusicBg() {
   document.head.appendChild(s);
 }
 _applyMusicBg();
-
 new MutationObserver(function(muts) {
   muts.forEach(function(m) {
     m.addedNodes.forEach(function(node) {
@@ -442,6 +700,111 @@ window.gotoPage = function(name) {
   var pg = document.getElementById('pg-music');
   if (pg) { pg.style.display = 'block'; pg.classList.add('active'); }
 };
+
+/* ── Host panel visibility ── */
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var isHost = params.get('host') === '1' || localStorage.getItem('hostMode') === '1';
+  if (isHost) {
+    document.getElementById('hostPanel').classList.add('visible');
+    localStorage.setItem('hostMode', '1');
+  }
+})();
+
+/* ── Cover tab switcher ── */
+function switchCoverTab(btn, pane) {
+  document.querySelectorAll('.cover-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.cover-pane').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('coverPane' + pane.charAt(0).toUpperCase() + pane.slice(1)).classList.add('active');
+}
+
+/* ── Cover file input ── */
+var coverFile = null;
+document.getElementById('coverFileInput').addEventListener('change', function(e) {
+  var f = e.target.files[0];
+  if (!f) return;
+  coverFile = f;
+  document.getElementById('coverDropLabel').textContent = f.name;
+  var reader = new FileReader();
+  reader.onload = function(ev) { showThumb(ev.target.result); };
+  reader.readAsDataURL(f);
+});
+
+/* Drag-and-drop on the drop zone */
+var dropZone = document.getElementById('coverDropZone');
+dropZone.addEventListener('dragover', function(e){ e.preventDefault(); dropZone.style.borderColor='#cc1a1a'; });
+dropZone.addEventListener('dragleave', function(){ dropZone.style.borderColor=''; });
+dropZone.addEventListener('drop', function(e){
+  e.preventDefault(); dropZone.style.borderColor='';
+  var f = e.dataTransfer.files[0];
+  if (!f || !f.type.startsWith('image/')) return;
+  coverFile = f;
+  document.getElementById('coverDropLabel').textContent = f.name;
+  var reader = new FileReader();
+  reader.onload = function(ev){ showThumb(ev.target.result); };
+  reader.readAsDataURL(f);
+});
+
+/* ── Cover URL input preview ── */
+var _urlThumbTimer = null;
+document.getElementById('coverUrlInput').addEventListener('input', function() {
+  clearTimeout(_urlThumbTimer);
+  var val = this.value.trim();
+  if (!val) { clearThumb(); return; }
+  _urlThumbTimer = setTimeout(function(){ showThumb(val); }, 500);
+});
+
+function showThumb(src) {
+  var img = document.getElementById('coverThumbImg');
+  var ph  = document.getElementById('coverThumbPlaceholder');
+  img.classList.remove('loaded');
+  img.src = src;
+  img.onload  = function(){ img.classList.add('loaded'); ph.style.display='none'; };
+  img.onerror = function(){ img.classList.remove('loaded'); ph.style.display=''; };
+}
+function clearThumb() {
+  var img = document.getElementById('coverThumbImg');
+  img.classList.remove('loaded'); img.src='';
+  document.getElementById('coverThumbPlaceholder').style.display='';
+  coverFile = null;
+}
+
+/* ── Add button handler ── */
+function handleHostAdd() {
+  var url  = (document.getElementById('hostUrlInput').value || '').trim();
+  var name = (document.getElementById('hostNameInput').value || '').trim();
+  var coverUrl = (document.getElementById('coverUrlInput').value || '').trim();
+
+  if (!url) { setHostStatus('Please enter a YouTube URL.', 'err'); return; }
+  if (!/youtube\.com|youtu\.be/i.test(url)) { setHostStatus('Only YouTube links are supported.', 'err'); return; }
+
+  /* Resolve cover: file takes priority over URL */
+  var coverSrc = coverFile ? URL.createObjectURL(coverFile) : (coverUrl || '');
+
+  /* -------------------------------------------------
+     Plug into your existing music.js API here.
+     Replace the block below with actual calls to
+     whatever function your music.js exposes to add tracks,
+     e.g.:  addTrackToPlaylist({ url, name, cover: coverSrc });
+     ------------------------------------------------- */
+  console.log('[HOST ADD]', { url, name, cover: coverSrc });
+  setHostStatus('Track queued: ' + (name || url), 'ok');
+
+  /* Reset fields after adding */
+  document.getElementById('hostUrlInput').value  = '';
+  document.getElementById('hostNameInput').value = '';
+  document.getElementById('coverUrlInput').value = '';
+  clearThumb();
+  document.getElementById('coverFileInput').value = '';
+  document.getElementById('coverDropLabel').textContent = 'Click or drag image here';
+}
+
+function setHostStatus(msg, type) {
+  var el = document.getElementById('hostStatus');
+  el.innerHTML = type ? '<span class="'+type+'">'+msg+'</span>' : msg;
+  el.classList.add('visible');
+}
 
 /* ── Sounds ── */
 var _SB = '../assets/audio/';
@@ -475,7 +838,7 @@ document.addEventListener('pointerdown', function(){ Object.keys(_SND).forEach(f
 function _isInteractive(el) {
   if (!el||el===document.body||el===document.documentElement) return false;
   var t=el.tagName;
-  if(t==='BUTTON'||t==='A'||t==='SELECT') return true;
+  if(t==='BUTTON'||t==='A'||t==='SELECT'||t==='TEXTAREA') return true;
   if(t==='INPUT'&&el.type!=='range') return true;
   var cs=window.getComputedStyle(el); return cs&&cs.cursor==='pointer';
 }
