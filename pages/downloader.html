@@ -286,14 +286,9 @@ strong        { color:var(--accent); font-weight:400; }
   color:#aaa;
 }
 .src-tag img { height:16px; width:16px; object-fit:contain; flex-shrink:0; filter:grayscale(1) brightness(.5); transition:filter .22s; }
-.src-tag span { }
 .src-tag.initializing { animation:tagPulse 1.8s infinite ease-in-out; }
 @keyframes tagPulse { 0%,100%{opacity:.35} 50%{opacity:.75} }
-
-.src-tag.available {
-  color:var(--text-dim);
-  border-color:rgba(130,130,130,.55);
-}
+.src-tag.available { color:var(--text-dim); border-color:rgba(130,130,130,.55); }
 .src-tag.available img { filter:none; }
 .src-tag.sp.available  { color:#1a7a38; border-left:2px solid #1a7a38; }
 .src-tag.yt.available  { color:#a01515; border-left:2px solid #a01515; }
@@ -321,7 +316,6 @@ strong        { color:var(--accent); font-weight:400; }
   display:flex; align-items:center; gap:6px;
 }
 .preview-header img  { height:14px; width:14px; object-fit:contain; flex-shrink:0; }
-.preview-header span { }
 .preview-body { border:1px solid rgba(0,0,0,.44); border-top:none; background:#fff; }
 .sp-embed-wrap  { width:100%; overflow:hidden; background:#fff; }
 .sp-embed-wrap iframe { width:100%; border:none; display:block; }
@@ -341,15 +335,15 @@ strong        { color:var(--accent); font-weight:400; }
 .preview-checking { color:var(--text-dim); }
 .preview-invalid  { color:var(--accent); }
 
-/* ── Sound toggle ── */
-#soundToggle {
+/* ── Sound toggle — estilo igual às outras páginas do arquivo ── */
+.wa-sound-toggle {
   position:fixed; bottom:8px; left:10px; z-index:9999;
   font-family:'Sawarabi Gothic',Tahoma,sans-serif;
-  font-size:10px; color:rgb(255, 255, 255); cursor:pointer;
+  font-size:10px; color:#fff; cursor:pointer;
   user-select:none; padding:2px 0; background:none; border:none; outline:none;
 }
-#soundToggle:hover { color:rgb(255, 255, 255); }
-#soundToggle.off   { color:rgb(255, 255, 255); }
+.wa-sound-toggle:hover { color:#fff; }
+.wa-sound-toggle.off   { color:#aaa; }
 
 /* ── Aero glass overlay texture ── */
 .aero-glass-overlay { position:relative; overflow:hidden; }
@@ -493,187 +487,36 @@ strong        { color:var(--accent); font-weight:400; }
 
 </div><!-- /#pageWrap -->
 
-<button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
+<!-- Botão de som: classe .wa-sound-toggle é detectada e gerenciada pelo sounds.js -->
+<button class="wa-sound-toggle">Sounds: On</button>
+
 <a id="cornerLogo" href="../index.html#introduction" title="Watanagashi Archive — Home">
   <img src="../assets/images/watanagashilogo2.png" alt="Watanagashi Archive"
     onerror="this.style.display='none'">
 </a>
 
+<!-- ═══════════════════════════════════════════════════════════
+     sounds.js — sistema de áudio compartilhado do arquivo.
+     Deve estar em assets/js/sounds.js (ou ajuste o caminho).
+     Inclui: playSound(), toggleSound(), hover/click automáticos.
+     ═══════════════════════════════════════════════════════════ -->
+<script src="assets/js/sounds.js"></script>
+
 <script>
 const API_URL = "https://watanagashi-api.onrender.com";
 
-/* ══════════════════════════════════════════════════
-   WEB AUDIO API — Procedural sound engine
-   Replaces all local asset/audio/* files
-   ══════════════════════════════════════════════════ */
-let _audioCtx = null;
-function _getCtx() {
-  if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return _audioCtx;
-}
-
-/* Master volume helper */
-function _masterGain(ctx, vol) {
-  const g = ctx.createGain();
-  g.gain.value = vol;
-  g.connect(ctx.destination);
-  return g;
-}
-
-/* Generic oscillator burst */
-function _osc(type, freq, startTime, dur, gainVal, ctx, dest) {
-  const o = ctx.createOscillator();
-  const g = ctx.createGain();
-  o.type = type;
-  o.frequency.setValueAtTime(freq, startTime);
-  g.gain.setValueAtTime(gainVal, startTime);
-  g.gain.exponentialRampToValueAtTime(0.0001, startTime + dur);
-  o.connect(g); g.connect(dest);
-  o.start(startTime); o.stop(startTime + dur + 0.01);
-}
-
-/* ── Sound definitions ── */
-const SOUND_FNS = {
-
-  /* start — cheerful rising arpeggio (C5 E5 G5 C6) */
-  start(vol = 0.38) {
-    const ctx = _getCtx(), now = ctx.currentTime;
-    const dest = _masterGain(ctx, vol);
-    const notes = [523.25, 659.25, 783.99, 1046.50];
-    notes.forEach((f, i) => _osc('sine', f, now + i * 0.09, 0.18, 0.7, ctx, dest));
-  },
-
-  /* alert — two-tone descending warning */
-  alert(vol = 0.52) {
-    const ctx = _getCtx(), now = ctx.currentTime;
-    const dest = _masterGain(ctx, vol);
-    _osc('square', 880, now,        0.12, 0.4, ctx, dest);
-    _osc('square', 440, now + 0.14, 0.18, 0.4, ctx, dest);
-  },
-
-  /* dislike — low thud / negative click */
-  dislike(vol = 0.45) {
-    const ctx = _getCtx(), now = ctx.currentTime;
-    const dest = _masterGain(ctx, vol);
-    _osc('sawtooth', 120, now,       0.08, 0.6, ctx, dest);
-    _osc('sine',      60, now + 0.04, 0.12, 0.5, ctx, dest);
-  },
-
-  /* like — bright positive ping (E5 → G5) */
-  like(vol = 0.45) {
-    const ctx = _getCtx(), now = ctx.currentTime;
-    const dest = _masterGain(ctx, vol);
-    _osc('sine', 659.25, now,        0.15, 0.7, ctx, dest);
-    _osc('sine', 783.99, now + 0.10, 0.20, 0.6, ctx, dest);
-  },
-
-  /* sort — soft neutral click (high tick) */
-  sort(vol = 0.35) {
-    const ctx = _getCtx(), now = ctx.currentTime;
-    const dest = _masterGain(ctx, vol);
-    _osc('sine', 1200, now, 0.06, 0.5, ctx, dest);
-  },
-
-  /* button — clean UI click (mid tick) */
-  button(vol = 0.40) {
-    const ctx = _getCtx(), now = ctx.currentTime;
-    const dest = _masterGain(ctx, vol);
-    _osc('sine', 880, now,        0.05, 0.6, ctx, dest);
-    _osc('sine', 660, now + 0.03, 0.07, 0.3, ctx, dest);
-  },
-
-  /* hover — very soft high tick */
-  hover(vol = 0.18) {
-    const ctx = _getCtx(), now = ctx.currentTime;
-    const dest = _masterGain(ctx, vol);
-    _osc('sine', 1400, now, 0.04, 0.5, ctx, dest);
-  },
-};
-
-let _soundsOn = true;
-let _ctxUnlocked = false;
-
-/* Unlock AudioContext on first user gesture */
-function _unlockCtx() {
-  if (_ctxUnlocked) return;
-  try {
-    const ctx = _getCtx();
-    if (ctx.state === 'suspended') ctx.resume();
-    _ctxUnlocked = true;
-  } catch(e) {}
-}
-document.addEventListener('pointerdown', _unlockCtx, { once: true, passive: true });
-document.addEventListener('keydown',     _unlockCtx, { once: true, passive: true });
-
-function playSound(key) {
-  if (!_soundsOn) return;
-  _unlockCtx();
-  try {
-    const fn = SOUND_FNS[key];
-    if (fn) fn();
-  } catch(e) {}
-}
-
-function toggleSound() {
-  _soundsOn = !_soundsOn;
-  const btn = document.getElementById('soundToggle');
-  if (btn) { btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off'; btn.classList.toggle('off', !_soundsOn); }
-  if (_soundsOn) playSound('button');
-  sessionStorage.setItem('_soundsOn', String(_soundsOn));
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  if (sessionStorage.getItem('_soundsOn') === 'false') {
-    _soundsOn = false;
-    const btn = document.getElementById('soundToggle');
-    if (btn) { btn.textContent = 'Sounds: Off'; btn.classList.add('off'); }
-  }
-  if (!sessionStorage.getItem('_siteStartPlayed')) {
-    sessionStorage.setItem('_siteStartPlayed','1');
-    /* start sound needs a gesture on some browsers — attempt after short delay */
-    setTimeout(() => playSound('start'), 700);
-  }
-});
-
-/* ── Hover sound — throttled ── */
-let _hoverThrottle = 0;
-function _isInteractive(el) {
-  if (!el||el===document.body||el===document.documentElement) return false;
-  const tag = el.tagName;
-  if (tag==='BUTTON'||tag==='A'||tag==='SELECT') return true;
-  if (tag==='INPUT'&&el.type!=='range') return true;
-  const cs = window.getComputedStyle(el);
-  if (cs && cs.cursor==='pointer') return true;
-  return false;
-}
-document.addEventListener('mouseover', e => {
-  if (e.target.id === 'soundToggle') return;
-  if (!_isInteractive(e.target)) return;
-  const now = Date.now();
-  if (now - _hoverThrottle < 120) return;
-  _hoverThrottle = now;
-  playSound('hover');
-}, { passive: true });
-document.addEventListener('click', e => {
-  if (e.target.id === 'soundToggle') return;
-  if (_isInteractive(e.target)) playSound('button');
-}, true);
-
-/* ══════════════════════════════════════════════════
-   REST OF APP (unchanged)
-   ══════════════════════════════════════════════════ */
-
+/* ── Icons ── */
 const ICON_VALID = 'https://img1.picmix.com/output/stamp/thumb/6/4/0/6/2466046_12382.png';
 const SRC_ICONS = {
-  spotify:'assets/images/SPOTIFYAERO.jpeg',
-  youtube:'assets/images/YOUTUBEAERO.png',
-  soundcloud:'assets/images/SOUNDCLOUDAERO.png',
+  spotify:    'assets/images/SPOTIFYAERO.jpeg',
+  youtube:    'assets/images/YOUTUBEAERO.png',
+  soundcloud: 'assets/images/SOUNDCLOUDAERO.png',
 };
 
-const EST_MB = { mp3:5, flac:30, ogg:4, opus:3.5, aac:6, mp4:80, webm:55, mkv:70 };
+const EST_MB     = { mp3:5, flac:30, ogg:4, opus:3.5, aac:6, mp4:80, webm:55, mkv:70 };
 const VIDEO_FMTS = new Set(['mp4','webm','mkv']);
 
-const $  = id => document.getElementById(id);
+const $           = id => document.getElementById(id);
 const urlInput    = $('urlInput');
 const urlIconWrap = $('urlIconWrap');
 const fmtSelect   = $('fmtSelect');
@@ -798,9 +641,9 @@ function setUrlIcon(state) {
 }
 
 function showEstimate(url, src) {
-  const fmt  = fmtSelect.value;
-  const n    = estCount(url, src);
-  const mb   = n * (EST_MB[fmt] || 5);
+  const fmt = fmtSelect.value;
+  const n   = estCount(url, src);
+  const mb  = n * (EST_MB[fmt] || 5);
   dlSize.textContent = fmtMBdisp(mb) + (n > 1 ? ` (~${n} items)` : '');
   dlEta.textContent  = fmtEtaMB(mb);
   dlInfo.classList.add('visible');
@@ -861,13 +704,12 @@ async function initCheck() {
   urlInput.disabled = true; fmtSelect.disabled = true;
   srvBanner.classList.add('visible');
   const MAX_MS=90_000, INTERVAL=3_000, deadline=Date.now()+MAX_MS;
-  let got=false;
-  while (Date.now()<deadline) {
+  while (Date.now() < deadline) {
     try {
       const ctrl=new AbortController(), tid=setTimeout(()=>ctrl.abort(),5000);
       const r=await fetch(`${API_URL}/yt-status`,{signal:ctrl.signal});
       clearTimeout(tid);
-      if (r.ok) { const d=await r.json(); ytEnabled=d.youtube_enabled; got=true; break; }
+      if (r.ok) { const d=await r.json(); ytEnabled=d.youtube_enabled; break; }
     } catch(_) {}
     if (Date.now()<deadline) await sleep(INTERVAL);
   }
@@ -885,7 +727,7 @@ urlInput.addEventListener('keydown', e=>{ if(e.key==='Enter'&&!dlBtn.disabled) s
 
 async function startDownload() {
   const url = urlInput.value.trim();
-  if (!url||dlBtn.disabled) return;
+  if (!url || dlBtn.disabled) return;
   playSound('button');
   dlBtn.disabled=true; statusBox.classList.add('visible');
   dlInfo.classList.remove('visible'); setProgMarquee(); startWakeTimer();
