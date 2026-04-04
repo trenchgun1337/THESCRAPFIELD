@@ -256,11 +256,11 @@ strong        { color:var(--accent); font-weight:400; }
 #soundToggle {
   position:fixed; bottom:8px; left:10px; z-index:9999;
   font-family:'Sawarabi Gothic',Tahoma,sans-serif;
-  font-size:10px; color:rgba(0,0,0,.40); cursor:pointer;
+  font-size:10px; color:rgb(255, 255, 255); cursor:pointer;
   user-select:none; padding:2px 0; background:none; border:none; outline:none;
 }
-#soundToggle:hover { color:rgba(0,0,0,.70); }
-#soundToggle.off   { color:rgba(0,0,0,.22); }
+#soundToggle:hover { color:rgb(255, 255, 255); }
+#soundToggle.off   { color:rgb(255, 255, 255); }
 
 /* ══════════════════════════════════════════════
    SPINNING CD WIDGET — now as side panel next to playlist
@@ -1114,6 +1114,19 @@ function _setCdPlaying(playing) {
       audio.addEventListener('ended', function(){ _setCdPlaying(false); });
     }
     syncCd();
+    document.addEventListener('DOMContentLoaded', () => {
+  // Adicionar isso:
+  if (sessionStorage.getItem('_soundsOn') === 'false') {
+    _soundsOn = false;
+    const btn = document.getElementById('soundToggle');
+    if (btn) { btn.textContent = 'Sounds: Off'; btn.classList.add('off'); }
+  }
+  
+  if (!sessionStorage.getItem('_siteStartPlayed')) {
+    sessionStorage.setItem('_siteStartPlayed','1');
+    setTimeout(()=>playSound('start'),700);
+  }
+});
   });
 })();
 
@@ -1750,12 +1763,12 @@ var _SND={start:_SB+'sitestart.mp3',alert:_SB+'sitealert.mp3',dislike:_SB+'sited
 var _soundsOn=true,_aC={},_ht=0,_hT=null;
 function _gA(k){if(!_aC[k]){var a=new Audio(_SND[k]);a.preload='auto';_aC[k]=a;}return _aC[k];}
 function playSound(k){if(!_soundsOn)return;try{var c=_gA(k).cloneNode();c.volume=(k==='hover'?.30:.52);c.play().catch(function(){});}catch(e){}}
-function toggleSound(){
-  _soundsOn=!_soundsOn;
-  var b=document.getElementById('soundToggle');
-  if(b){b.textContent=_soundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_soundsOn);}
-  if(_soundsOn) playSound('button');
-  sessionStorage.setItem('_soundsOn',String(_soundsOn));
+function toggleSound() {
+  _soundsOn = !_soundsOn;
+  const btn = document.getElementById('soundToggle');
+  if (btn) { btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off'; btn.classList.toggle('off', !_soundsOn); }
+  if (_soundsOn) playSound('button');
+  sessionStorage.setItem('_soundsOn', String(_soundsOn)); // ← adicionar isso
 }
 document.addEventListener('DOMContentLoaded',function(){
   if(sessionStorage.getItem('_soundsOn')==='false'){
