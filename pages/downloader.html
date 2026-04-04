@@ -8,6 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
 <style>
+
+  #cornerLogo {
+  position:fixed; top:10px; right:14px; z-index:9998;
+  line-height:0; text-decoration:none;
+}
+#cornerLogo img { height:36px; width:auto; object-fit:contain; display:block; opacity:.82; pointer-events:auto; }
+#cornerLogo:hover img { opacity:1; }
+
 /* ── Reset ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 * { -webkit-tap-highlight-color: transparent; }
@@ -488,6 +496,10 @@ strong        { color:var(--accent); font-weight:400; }
 </div><!-- /#pageWrap -->
 
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
+<a id="cornerLogo" href="../index.html#introduction" title="Watanagashi Archive — Home">
+  <img src="../assets/images/watanagashilogo2.png" alt="Watanagashi Archive"
+    onerror="this.style.display='none'">
+</a>
 
 <script>
 const API_URL = "https://watanagashi-api.onrender.com";
