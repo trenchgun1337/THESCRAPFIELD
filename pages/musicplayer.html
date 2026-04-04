@@ -90,34 +90,75 @@ strong        { color:var(--accent); font-weight:400; }
   font-size:11px; font-weight:400; letter-spacing:1.5px; text-transform:uppercase; color:#fff;
 }
 
+/* ══════════════════════════════════════════
+   TRACK LOAD / INITIALIZING BANNER
+   ══════════════════════════════════════════ */
 #trackLoadBanner {
-  display:none; background:var(--grad-bar);
-  border:1px solid rgba(140,140,140,.50); box-shadow:var(--shadow-bar);
-  padding:5px 10px; margin-bottom:7px; align-items:center; gap:8px;
+  display:none;
+  background:var(--grad-bar);
+  border:1px solid rgba(140,140,140,.50);
+  box-shadow:var(--shadow-bar);
+  padding:5px 10px; margin-bottom:7px;
+  align-items:center; gap:8px;
   color:var(--text); font-size:11.5px;
 }
 #trackLoadBanner.visible { display:flex; }
 #trackLoadBanner img { height:18px; width:18px; flex-shrink:0; }
+
+/* Progress bar inside banner */
+#_loadProgressWrap {
+  flex:1; height:6px;
+  background:rgba(0,0,0,.15);
+  border:1px solid rgba(0,0,0,.25);
+  border-radius:2px;
+  overflow:hidden;
+  display:none;
+}
+#_loadProgressWrap.visible { display:block; }
+#_loadProgressBar {
+  height:100%;
+  width:0%;
+  background:linear-gradient(to right, #444, #222);
+  transition:width .4s ease;
+}
 
 /* ══════════════════════════════════════════
    PLAYER OVERRIDES
    ══════════════════════════════════════════ */
 #musicPlayerContainer .mp-header-bar { display:none !important; }
 
+/* Controls row — MOVED ABOVE status bar via flex order */
 #musicPlayerContainer .mp-controls-row {
   background:var(--grad-bar) !important;
   border-top:1px solid rgba(255,255,255,.70) !important;
   border-bottom:1px solid rgba(0,0,0,.15) !important;
   box-shadow:none !important;
+  order: 1;
 }
 
-/* No artwork in background — completely hidden */
+/* Status bar order */
+#mpStatusBar { order: 2; }
+
+/* Progress row order */
+#musicPlayerContainer .mp-progress-row { order: 3; }
+
+/* Make the container a flex column so order works */
+#musicPlayerContainer {
+  display:flex !important;
+  flex-direction:column !important;
+}
+
+/* musicBackground order — contains playlist + CD side by side */
 #musicBackground {
   position:relative !important;
   overflow:hidden !important;
   background-color:#f5f5f5 !important;
   background-image:none !important;
   transition: none !important;
+  order: 0; /* above controls */
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:stretch !important;
 }
 
 /* Art layer hidden — not used */
@@ -125,7 +166,7 @@ strong        { color:var(--accent); font-weight:400; }
   display: none !important;
 }
 
-/* Playlist area — clean, no artwork */
+/* Playlist area — left side */
 #musicPlayerPlaylist {
   background:repeating-linear-gradient(
     0deg,rgba(0,0,0,.04) 0px,rgba(0,0,0,.04) 1px,
@@ -133,11 +174,21 @@ strong        { color:var(--accent); font-weight:400; }
   ) !important;
   position:relative !important;
   z-index:1 !important;
+  flex:1 !important;
+  min-width:0 !important;
 }
 
-#playlistLeft { scrollbar-color:rgba(120,120,120,.50) transparent !important; }
+/* Playlist left scrollbar — black border */
+#playlistLeft {
+  scrollbar-color:rgba(120,120,120,.50) transparent !important;
+  border-right: 2px solid #000 !important;
+  box-sizing: border-box;
+}
+#playlistLeft::-webkit-scrollbar { width:6px !important; }
+#playlistLeft::-webkit-scrollbar-track { background:rgba(0,0,0,.08) !important; border:1px solid #000 !important; }
+#playlistLeft::-webkit-scrollbar-thumb { background:rgba(80,80,80,.70) !important; border-radius:0 !important; border:1px solid #333 !important; }
 
-/* Hide right panel (visualizer area) — replaced by our CD below */
+/* Hide original right panel */
 #playlistRight {
   display: none !important;
 }
@@ -209,24 +260,26 @@ strong        { color:var(--accent); font-weight:400; }
 #soundToggle.off   { color:rgba(0,0,0,.22); }
 
 /* ══════════════════════════════════════════════
-   SPINNING CD WIDGET
+   SPINNING CD WIDGET — now as side panel next to playlist
    ══════════════════════════════════════════════ */
-#_cdWidget {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 14px 0 8px;
-  background: var(--grad-bar);
-  border-top: 1px solid rgba(255,255,255,.70);
-  border-bottom: 1px solid rgba(0,0,0,.15);
+#_cdSidePanel {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:14px 10px;
+  background:var(--grad-bar);
+  border-left:1px solid rgba(0,0,0,.15);
+  border-top:none;
+  width:150px;
+  flex-shrink:0;
 }
 
 #_cdSpinWrapper {
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
-  /* The CD disc itself */
   flex-shrink: 0;
 }
 
@@ -255,20 +308,20 @@ strong        { color:var(--accent); font-weight:400; }
   animation: none;
 }
 
-/* Artwork ring — shows the track artwork clipped in a circle */
+/* Artwork ring */
 #_cdArt {
   position: absolute;
-  inset: 7px;
+  inset: 8px;
   border-radius: 50%;
   background: #c8c8c8 center/cover no-repeat;
   box-shadow: inset 0 0 8px rgba(0,0,0,.4);
   overflow: hidden;
 }
 
-/* Rainbow iridescent sheen on the CD */
+/* Rainbow iridescent sheen */
 #_cdSheen {
   position: absolute;
-  inset: 7px;
+  inset: 8px;
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
@@ -290,10 +343,11 @@ strong        { color:var(--accent); font-weight:400; }
 /* Inner ring border around hole */
 #_cdRingBorder {
   position: absolute;
-  left: 50%; top: 50%;
+  left: 50%;
+  top: 50%;
   transform: translate(-50%, -50%);
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: linear-gradient(135deg, #d0d0d0, #a0a0a0, #e0e0e0, #b0b0b0);
   box-shadow:
@@ -308,8 +362,8 @@ strong        { color:var(--accent); font-weight:400; }
   position: absolute;
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: #1a1a1a;
   box-shadow:
@@ -337,8 +391,22 @@ strong        { color:var(--accent); font-weight:400; }
   background-color: #b0b0b0 !important;
 }
 
+/* CD label under disc */
+#_cdNowPlayingLabel {
+  margin-top:8px;
+  font-size:9px;
+  color:#666;
+  text-align:center;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  max-width:130px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
 /* ══════════════════════════════════════════════
-   HOST UPLOAD PANEL
+   HOST UPLOAD PANEL — ALBUM-CENTRIC REDESIGN
    ══════════════════════════════════════════════ */
 #hostPanel { display:none; }
 #hostPanel.visible { display:block; }
@@ -428,7 +496,120 @@ strong        { color:var(--accent); font-weight:400; }
   font-size:11px; color:var(--text-dim); line-height:1.65; text-align:center;
 }
 
-/* ── HOST: track list manager ── */
+/* ── album field ── */
+.album-field-row { margin-bottom:6px; }
+.album-field-row label { display:block; font-size:10px; color:#888; text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px; }
+.album-field-row input {
+  width:100%; border:1px solid rgba(140,140,140,.45); outline:none; color:#000;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:12px;
+  padding:7px 10px; background:rgba(255,255,255,.97);
+}
+.album-field-row input::placeholder { color:#aaa; }
+
+/* ══════════════════════════════════════════════
+   ALBUM MANAGER — new drag-and-drop album UI
+   ══════════════════════════════════════════════ */
+#_albumManager {
+  margin-top:8px;
+}
+
+.album-bucket {
+  border:1px solid rgba(0,0,0,.30);
+  margin-bottom:6px;
+  background:#fff;
+}
+.album-bucket-header {
+  display:flex; align-items:center; gap:6px;
+  background:linear-gradient(to bottom,#e0e0e0,#d0d0d0);
+  padding:5px 8px;
+  border-bottom:1px solid rgba(0,0,0,.15);
+  cursor:pointer;
+  user-select:none;
+}
+.album-bucket-header .ab-name {
+  flex:1; font-size:11.5px; font-weight:400; color:#111; letter-spacing:.5px; text-transform:uppercase;
+}
+.album-bucket-header .ab-count {
+  font-size:10px; color:#888;
+}
+.album-bucket-header .ab-toggle {
+  font-size:10px; color:#666; flex-shrink:0;
+}
+.album-bucket-header .ab-del-album {
+  background:none; border:1px solid rgba(180,0,0,.35); color:var(--accent);
+  font-size:9.5px; padding:1px 5px; cursor:pointer; flex-shrink:0;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+}
+.album-bucket-header .ab-del-album:hover { background:var(--accent); color:#fff; }
+
+.album-bucket-body {
+  padding:4px;
+  min-height:36px;
+}
+/* Drop zone highlight */
+.album-bucket-body.drag-over {
+  background:#fff5f5 !important;
+  outline:2px dashed var(--accent);
+}
+
+/* track inside album bucket */
+.ab-track-item {
+  display:flex; align-items:center; gap:5px;
+  padding:4px 6px; margin-bottom:3px;
+  background:#f8f8f8; border:1px solid rgba(140,140,140,.30);
+  font-size:11px; cursor:grab;
+}
+.ab-track-item:active { cursor:grabbing; }
+.ab-track-item .abt-art {
+  width:24px; height:24px; object-fit:cover; flex-shrink:0;
+  border:1px solid rgba(0,0,0,.12); border-radius:1px;
+}
+.ab-track-item .abt-name {
+  flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#111;
+}
+.ab-track-item .abt-src {
+  font-size:9.5px; color:#aaa; flex-shrink:0;
+}
+.ab-track-item .abt-del {
+  background:none; border:1px solid rgba(180,0,0,.30); color:var(--accent);
+  font-size:9px; padding:1px 4px; cursor:pointer; flex-shrink:0;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+}
+.ab-track-item .abt-del:hover { background:var(--accent); color:#fff; }
+.ab-track-item .abt-drag-handle {
+  color:#aaa; font-size:11px; cursor:grab; flex-shrink:0; user-select:none;
+}
+
+/* Upload-to-album drop area */
+.album-file-drop {
+  display:flex; align-items:center; justify-content:center;
+  gap:4px; padding:6px 8px; margin-top:4px;
+  border:1px dashed rgba(140,140,140,.50);
+  background:#fafafa; font-size:10px; color:#999; cursor:pointer;
+}
+.album-file-drop:hover { border-color:var(--accent); color:var(--accent); background:#fff5f5; }
+.album-file-drop input[type=file] { display:none; }
+
+/* Create new album UI */
+#_newAlbumRow {
+  display:flex; gap:4px; margin-bottom:6px; align-items:stretch;
+}
+#_newAlbumName {
+  flex:1; border:1px solid rgba(140,140,140,.45); outline:none; color:#000;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:11.5px;
+  padding:6px 10px; background:#fff;
+}
+#_newAlbumName::placeholder { color:#aaa; }
+#_newAlbumBtn {
+  all:unset; box-sizing:border-box;
+  background:linear-gradient(to bottom,#555 0%,#333 50%,#222 50%,#2e2e2e 100%);
+  border:1px solid rgba(0,0,0,.50); color:#eee;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:11px;
+  padding:6px 12px; cursor:pointer; white-space:nowrap;
+}
+#_newAlbumBtn:hover { filter:brightness(1.2); }
+
+/* ── host track list (legacy) ── */
 #hostTrackList { margin-top:8px; }
 .host-track-item {
   display:flex; align-items:center; gap:6px;
@@ -449,23 +630,26 @@ strong        { color:var(--accent); font-weight:400; }
 .host-track-item .htl-del:hover { background:var(--accent); color:#fff; }
 .host-track-item.htl-deleted { opacity:.35; pointer-events:none; text-decoration:line-through; }
 
-/* ── album field ── */
-.album-field-row {
-  margin-bottom:6px;
+/* ══════════════════════════════════════════════
+   FOOTER PROMO STRIP
+   ══════════════════════════════════════════════ */
+#_footerPromo {
+  margin-top:10px;
+  border:1px solid rgba(0,0,0,.20);
+  background:var(--grad-bar);
+  box-shadow:var(--shadow-bar);
+  padding:10px 14px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  font-size:12px; color:var(--text-dim);
+  text-align:center;
+  flex-wrap:wrap;
 }
-.album-field-row label {
-  display:block; font-size:10px; color:#888; text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px;
+#_footerPromo a {
+  color:var(--accent); font-weight:400;
+  border-bottom:1px dotted var(--accent);
+  letter-spacing:.3px;
 }
-.album-field-row input {
-  width:100%;
-  border:1px solid rgba(140,140,140,.45); outline:none; color:#000;
-  font-family:'Sawarabi Gothic',Tahoma,sans-serif; font-size:12px;
-  padding:7px 10px; background:rgba(255,255,255,.97);
-}
-.album-field-row input::placeholder { color:#aaa; }
-.album-hint {
-  font-size:10px; color:#999; margin-top:2px;
-}
+#_footerPromo a:hover { color:#900; text-decoration:none; border-bottom-style:solid; }
 
 @media (max-width:600px) {
   body { padding:8px 4px 24px; background-attachment:scroll; }
@@ -478,7 +662,10 @@ strong        { color:var(--accent); font-weight:400; }
   .cover-section { width:100%; }
   .cover-thumb-wrap { width:100%; }
   .url-input { font-size:16px; }
-  #_cdSpinWrapper { width:88px; height:88px; }
+  #_cdSidePanel { width:110px; }
+  #_cdSpinWrapper { width:96px; height:96px; }
+  #musicBackground { flex-direction:column !important; }
+  #_cdSidePanel { width:100%; flex-direction:row; padding:8px; border-left:none; border-top:1px solid rgba(0,0,0,.15); }
 }
 </style>
 </head>
@@ -533,10 +720,14 @@ strong        { color:var(--accent); font-weight:400; }
     <span class="bar-title">MUSIC PLAYER ♪</span>
   </div>
 
+  <!-- INITIALIZING / LOADING BANNER -->
   <div id="trackLoadBanner">
     <img src="https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif" alt=""
       onerror="this.style.display='none'">
-    <span id="trackLoadMsg">Loading tracks, please wait&hellip;</span>
+    <span id="trackLoadMsg">Initializing&hellip;</span>
+    <div id="_loadProgressWrap">
+      <div id="_loadProgressBar"></div>
+    </div>
   </div>
 
   <div class="glass-box">
@@ -556,6 +747,39 @@ strong        { color:var(--accent); font-weight:400; }
 
         <div class="mp-header-bar">Music Player &#9834;</div>
 
+        <!-- MUSICPLAYER LIST bar — above playlist, no gap -->
+        <span class="section-bar" style="margin-bottom:0;">MUSICPLAYER LIST</span>
+
+        <!-- musicBackground: playlist (left) + CD side panel (right) -->
+        <div id="musicBackground">
+          <!-- Art layer hidden -->
+          <div id="mbArtLayer" class="no-art"></div>
+
+          <div id="musicPlayerPlaylist">
+            <nav id="playlistLeft"></nav>
+            <div class="playlist-right" id="playlistRight">
+              <canvas id="visualizerCanvas" width="175" height="96"></canvas>
+              <img src="https://frutigeraeroarchive.org/images/music_player/cd.png"
+                id="cdDisc" alt="Album Art" draggable="false">
+              <img src="https://frutigeraeroarchive.org/images/music_player/cd.png"
+                id="spinningDisk" alt="" draggable="false">
+            </div>
+          </div>
+
+          <!-- CD SIDE PANEL — alongside playlist -->
+          <div id="_cdSidePanel">
+            <div id="_cdSpinWrapper">
+              <div id="_cdOuter"></div>
+              <div id="_cdArt" class="no-art"></div>
+              <div id="_cdSheen"></div>
+              <div id="_cdRingBorder"></div>
+              <div id="_cdHole"></div>
+            </div>
+            <div id="_cdNowPlayingLabel">— idle —</div>
+          </div>
+        </div>
+
+        <!-- CONTROLS ROW — above status bar (order via flex) -->
         <div class="mp-controls-row">
           <button class="mp-ctrl-btn" id="audioBack" title="Previous">
             <img class="player-img" src="https://frutigeraeroarchive.org/images/music_player/music_player_back.png" alt="Back" draggable="false">
@@ -573,37 +797,7 @@ strong        { color:var(--accent); font-weight:400; }
           <div id="_ytEl"></div>
         </div>
 
-        <div id="musicBackground">
-          <!-- Art layer hidden -->
-          <div id="mbArtLayer" class="no-art"></div>
-          <div id="musicPlayerPlaylist">
-            <nav id="playlistLeft"></nav>
-            <div class="playlist-right" id="playlistRight">
-              <canvas id="visualizerCanvas" width="175" height="96"></canvas>
-              <img src="https://frutigeraeroarchive.org/images/music_player/cd.png"
-                id="cdDisc" alt="Album Art" draggable="false">
-              <img src="https://frutigeraeroarchive.org/images/music_player/cd.png"
-                id="spinningDisk" alt="" draggable="false">
-            </div>
-          </div>
-        </div>
-
-        <!-- SPINNING CD WIDGET — below the playlist -->
-        <div id="_cdWidget">
-          <div id="_cdSpinWrapper">
-            <!-- Outer shiny disc -->
-            <div id="_cdOuter"></div>
-            <!-- Artwork ring -->
-            <div id="_cdArt" class="no-art"></div>
-            <!-- Iridescent sheen -->
-            <div id="_cdSheen"></div>
-            <!-- Inner chrome ring around hole -->
-            <div id="_cdRingBorder"></div>
-            <!-- Center hole -->
-            <div id="_cdHole"></div>
-          </div>
-        </div>
-
+        <!-- STATUS BAR — currently playing, below controls -->
         <div class="mp-status-bar" id="mpStatusBar"
           style="position:relative;display:flex;align-items:center;gap:6px;padding:4px 8px;">
           <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
@@ -674,7 +868,7 @@ strong        { color:var(--accent); font-weight:400; }
       <div class="aero-pad">
 
         <div class="desc-box">
-          <p>Add via <strong>YouTube link</strong> (auto-fetches name &amp; artwork) or via <strong>file link</strong> (direct audio URL). Set an <strong>Album</strong> to group tracks — leave blank for "Uncategorized".</p>
+          <p>Add via <strong>YouTube link</strong> or <strong>file link</strong>. Tracks are grouped by <strong>Album</strong>. You can also create albums and drag existing tracks into them, or upload audio files directly into an album.</p>
         </div>
 
         <!-- Tab switcher: YouTube vs File -->
@@ -699,7 +893,6 @@ strong        { color:var(--accent); font-weight:400; }
               placeholder="e.g. Higurashi OST — Vol. 1"
               autocomplete="off">
           </div>
-          <!-- ALBUM FIELD -->
           <div class="album-field-row">
             <label>Album / Category <span style="color:#aaa;font-size:9px;">(leave blank → Uncategorized)</span></label>
             <input type="text" id="hostYtAlbum" class="url-input"
@@ -714,7 +907,7 @@ strong        { color:var(--accent); font-weight:400; }
               placeholder="https://... (optional)"
               autocomplete="off">
           </div>
-          <div id="hostYtPreview" style="display:none;margin-top:8px;padding:8px;background:#f5f5f5;border:1px solid rgba(140,140,140,.30);display:flex;align-items:center;gap:8px;">
+          <div id="hostYtPreview" style="display:none;margin-top:8px;padding:8px;background:#f5f5f5;border:1px solid rgba(140,140,140,.30);align-items:center;gap:8px;">
             <img id="hostYtPreviewArt" src="" alt="" style="width:48px;height:48px;object-fit:cover;border:1px solid rgba(0,0,0,.15);border-radius:2px;flex-shrink:0;">
             <div>
               <div id="hostYtPreviewName" style="font-size:12px;color:#111;font-weight:bold;margin-bottom:2px;"></div>
@@ -740,7 +933,6 @@ strong        { color:var(--accent); font-weight:400; }
               placeholder="e.g. Artist — Track Title"
               autocomplete="off">
           </div>
-          <!-- ALBUM FIELD -->
           <div class="album-field-row">
             <label>Album / Category <span style="color:#aaa;font-size:9px;">(leave blank → Uncategorized)</span></label>
             <input type="text" id="hostFileAlbum" class="url-input"
@@ -760,16 +952,34 @@ strong        { color:var(--accent); font-weight:400; }
 
         <div class="host-status" id="hostStatus"></div>
 
-        <!-- Track manager -->
-        <div class="section-bar" style="margin-top:8px;">Current Tracks — Click × to delete</div>
-        <div id="hostTrackList" style="max-height:220px;overflow-y:auto;background:#fff;border:1px solid rgba(140,140,140,.40);"></div>
+        <!-- ══ ALBUM MANAGER ══ -->
+        <div class="section-bar" style="margin-top:8px;">Album Manager — Drag tracks between albums</div>
+        <div id="_albumManager">
+          <!-- New album creator -->
+          <div style="padding:6px;background:#f5f5f5;border:1px solid rgba(140,140,140,.30);border-top:none;margin-bottom:6px;">
+            <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;">Create New Album</div>
+            <div id="_newAlbumRow">
+              <input type="text" id="_newAlbumName" placeholder="Album name…" autocomplete="off">
+              <button id="_newAlbumBtn" onclick="_createAlbumBucket()">＋ Create</button>
+            </div>
+          </div>
+          <!-- Album buckets rendered here -->
+          <div id="_albumBuckets"></div>
+        </div>
 
         <div class="note" style="margin-top:6px;">
-          Tracks without an album will appear in <strong>Uncategorized</strong>. Deletions are saved permanently in this browser.
+          Tracks without an album appear in <strong>Uncategorized</strong>. Drag tracks between album headers to re-assign. Upload audio files directly inside an album with the ＋ upload button.
         </div>
 
       </div>
     </div>
+  </div>
+
+  <!-- FOOTER PROMO -->
+  <div id="_footerPromo">
+    <span>So you like music? Why don't you try the</span>
+    <a href="pages/downloader.html">🎵 Music Convertor</a>
+    <span>and get some of those tracks?</span>
   </div>
 
 </div>
@@ -827,16 +1037,11 @@ new MutationObserver(function(ms){
    ════════════════════════════════════════════════════════════════ */
 var _mbEl = document.getElementById('musicBackground');
 if (_mbEl) {
-  /* Override inline style setter to prevent any background from showing */
-  var _origMbDesc = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'style');
-  /* Instead: just use MutationObserver to clear the backgroundImage when set */
   new MutationObserver(function(){
     if (_mbEl.style.backgroundImage && _mbEl.style.backgroundImage !== 'none') {
-      /* Capture for CD before clearing */
       var bgImg = _mbEl.style.backgroundImage;
       _mbEl.style.backgroundImage = 'none';
       _mbEl.style.background = '';
-      /* Update CD artwork */
       var m = bgImg.match(/url\(["']?([^"')]+)["']?\)/);
       if (m && m[1] && m[1].indexOf('cd.png') === -1) {
         _updateCdArt(m[1]);
@@ -850,6 +1055,7 @@ if (_mbEl) {
    ════════════════════════════════════════════════════════════════ */
 var _cdArtEl     = document.getElementById('_cdArt');
 var _cdWrapper   = document.getElementById('_cdSpinWrapper');
+var _cdLabel     = document.getElementById('_cdNowPlayingLabel');
 var _currentArt  = '';
 
 function _updateCdArt(url) {
@@ -865,9 +1071,12 @@ function _setCdPlaying(playing) {
   if (!_cdWrapper) return;
   if (playing) {
     _cdWrapper.classList.add('spinning');
+    /* Update label */
+    var nameEl = document.getElementById('audioName');
+    if (_cdLabel && nameEl) _cdLabel.textContent = nameEl.textContent || '— playing —';
   } else {
     _cdWrapper.classList.remove('spinning');
-    /* If not playing and no art — go grey */
+    if (_cdLabel) _cdLabel.textContent = '— paused —';
     if (!_currentArt && _cdArtEl) {
       _cdArtEl.classList.add('no-art');
     }
@@ -901,7 +1110,7 @@ function _setCdPlaying(playing) {
   });
 })();
 
-/* Also watch cdDisc src changes from script.js for artwork updates */
+/* Watch cdDisc src for artwork updates */
 (function(){
   var cdEl = document.getElementById('cdDisc');
   if (!cdEl) return;
@@ -913,18 +1122,120 @@ function _setCdPlaying(playing) {
   }).observe(cdEl, {attributes:true, attributeFilter:['src']});
 })();
 
+/* Also watch audioName changes to update CD label */
+(function(){
+  var nameEl = document.getElementById('audioName');
+  if (!nameEl) return;
+  new MutationObserver(function(){
+    if (_cdWrapper && _cdWrapper.classList.contains('spinning') && _cdLabel) {
+      _cdLabel.textContent = nameEl.textContent || '— playing —';
+    }
+  }).observe(nameEl, {childList:true, subtree:true, characterData:true});
+})();
+
 /* ════════════════════════════════════════════════════════════════
-   TRACK LOADING BANNER
+   TRACK LOADING BANNER — persistent until all tracks load
    ════════════════════════════════════════════════════════════════ */
 (function(){
-  var banner=document.getElementById('trackLoadBanner');
-  var msgEl=document.getElementById('trackLoadMsg');
-  var msgs=['Loading tracks, please wait\u2026','Fetching playlist data\u2026','Syncing track list\u2026','Buffering audio streams\u2026'];
-  function show(msg,ms){msgEl.textContent=msg;banner.classList.add('visible');setTimeout(function(){banner.classList.remove('visible');},ms);}
-  document.addEventListener('DOMContentLoaded',function(){
-    if(!sessionStorage.getItem('_tracksLoaded')){sessionStorage.setItem('_tracksLoaded','1');show(msgs[0],3500);}
-  });
-  setInterval(function(){show(msgs[Math.floor(Math.random()*msgs.length)],2000);},12*60*1000);
+  var banner   = document.getElementById('trackLoadBanner');
+  var msgEl    = document.getElementById('trackLoadMsg');
+  var progWrap = document.getElementById('_loadProgressWrap');
+  var progBar  = document.getElementById('_loadProgressBar');
+
+  var _loaded    = false;
+  var _progress  = 0;
+  var _animFrame = null;
+
+  var initMsgs = [
+    'Initializing\u2026',
+    'Loading track list\u2026',
+    'Fetching playlist data\u2026',
+    'Buffering audio streams\u2026',
+    'Syncing track index\u2026'
+  ];
+  var msgIdx = 0;
+
+  function showBanner(msg) {
+    if (msgEl) msgEl.textContent = msg;
+    banner.classList.add('visible');
+  }
+  function hideBanner() {
+    banner.classList.remove('visible');
+    if (progWrap) progWrap.classList.remove('visible');
+  }
+  function setProgress(pct) {
+    _progress = Math.min(100, Math.max(0, pct));
+    if (progBar) progBar.style.width = _progress + '%';
+    if (_progress >= 100) {
+      msgEl.textContent = 'Loading completely\u2026';
+    }
+  }
+
+  /* Show banner immediately */
+  showBanner(initMsgs[0]);
+  if (progWrap) progWrap.classList.add('visible');
+
+  /* Rotate messages while loading */
+  var rotateInterval = setInterval(function(){
+    if (_loaded) { clearInterval(rotateInterval); return; }
+    msgIdx = (msgIdx + 1) % initMsgs.length;
+    if (msgEl && !_loaded) msgEl.textContent = initMsgs[msgIdx];
+  }, 1800);
+
+  /* Fake progress animation until real data */
+  var fakeProgress = 0;
+  var fakeInterval = setInterval(function(){
+    if (_loaded) { clearInterval(fakeInterval); return; }
+    fakeProgress += Math.random() * 4;
+    if (fakeProgress >= 85) { clearInterval(fakeInterval); fakeProgress = 85; }
+    setProgress(fakeProgress);
+  }, 300);
+
+  /* Poll for TRACKS to be loaded */
+  var pollAttempts = 0;
+  var pollInterval = setInterval(function(){
+    pollAttempts++;
+    if (typeof TRACKS !== 'undefined' && TRACKS.length > 0) {
+      /* Tracks are available — complete progress to 100 */
+      var fill = setInterval(function(){
+        fakeProgress = Math.min(100, fakeProgress + 5);
+        setProgress(fakeProgress);
+        if (fakeProgress >= 100) {
+          clearInterval(fill);
+          setTimeout(function(){
+            _loaded = true;
+            clearInterval(rotateInterval);
+            clearInterval(fakeInterval);
+            clearInterval(pollInterval);
+            hideBanner();
+          }, 600);
+        }
+      }, 60);
+      clearInterval(pollInterval);
+      return;
+    }
+    /* Timeout after ~20s */
+    if (pollAttempts > 40) {
+      clearInterval(pollInterval);
+      _loaded = true;
+      setProgress(100);
+      msgEl.textContent = 'Loading completely\u2026';
+      setTimeout(hideBanner, 800);
+    }
+  }, 500);
+
+  /* If session already loaded, show briefly then hide */
+  if (sessionStorage.getItem('_tracksLoaded')) {
+    msgEl.textContent = 'Loading completely\u2026';
+    setProgress(100);
+    setTimeout(hideBanner, 1200);
+    _loaded = true;
+    clearInterval(rotateInterval);
+    clearInterval(fakeInterval);
+    clearInterval(pollInterval);
+  } else {
+    sessionStorage.setItem('_tracksLoaded', '1');
+  }
 })();
 
 /* ════════════════════════════════════════════════════════════════
@@ -992,7 +1303,7 @@ function switchHostTab(tab){
 }
 
 /* ════════════════════════════════════════════════════════════════
-   HOST: Add YouTube track (with album)
+   HOST: Add YouTube track
    ════════════════════════════════════════════════════════════════ */
 function hostAddYt(){
   var url   = (document.getElementById('hostYtUrl').value||'').trim();
@@ -1019,7 +1330,7 @@ function hostAddYt(){
     var added=getHostAdded(); added.unshift(track); saveHostAdded(added);
     setHostStatus('Playlist queued: '+(track.name),'ok');
     _hostInjectTracks();
-    _hostRenderTrackList();
+    _renderAlbumManager();
     _clearYtFields();
     return;
   }
@@ -1036,7 +1347,7 @@ function hostAddYt(){
     var added=getHostAdded(); added.unshift(track); saveHostAdded(added);
     setHostStatus('Added: '+finalName+' → '+album,'ok');
     _hostInjectTracks();
-    _hostRenderTrackList();
+    _renderAlbumManager();
     _clearYtFields();
     if(preview) preview.style.display='none';
   }
@@ -1074,7 +1385,7 @@ document.getElementById('hostYtUrl').addEventListener('input',function(){
 });
 
 /* ════════════════════════════════════════════════════════════════
-   HOST: Add File track (with album)
+   HOST: Add File track
    ════════════════════════════════════════════════════════════════ */
 function hostAddFile(){
   var url   = (document.getElementById('hostFileUrl').value||'').trim();
@@ -1093,7 +1404,7 @@ function hostAddFile(){
   var added=getHostAdded(); added.unshift(track); saveHostAdded(added);
   setHostStatus('Added: '+name+' → '+album,'ok');
   _hostInjectTracks();
-  _hostRenderTrackList();
+  _renderAlbumManager();
   document.getElementById('hostFileUrl').value='';
   document.getElementById('hostFileName').value='';
   document.getElementById('hostFileAlbum').value='';
@@ -1102,7 +1413,6 @@ function hostAddFile(){
 
 /* ════════════════════════════════════════════════════════════════
    HOST: Inject tracks + apply deletions
-   Uses album field for _plLabel; falls back to 'Uncategorized'
    ════════════════════════════════════════════════════════════════ */
 function _hostInjectTracks(){
   if(typeof TRACKS === 'undefined') return;
@@ -1110,13 +1420,11 @@ function _hostInjectTracks(){
   var deleted = getHostDeleted();
   var added   = getHostAdded();
 
-  /* 1. Remove deleted tracks */
   for(var i=TRACKS.length-1;i>=0;i--){
     var vid=TRACKS[i].videoId||TRACKS[i]._hostId;
     if(vid && deleted.indexOf(vid)!==-1) TRACKS.splice(i,1);
   }
 
-  /* 2. Inject host tracks */
   var existingIds=TRACKS.map(function(t){return t.videoId||t._hostId||'';});
 
   added.forEach(function(t){
@@ -1148,70 +1456,257 @@ function _hostInjectTracks(){
 }
 
 /* ════════════════════════════════════════════════════════════════
-   HOST: Render track manager list
+   ALBUM MANAGER — drag-and-drop + file upload per album
    ════════════════════════════════════════════════════════════════ */
-function _hostRenderTrackList(){
-  var el=document.getElementById('hostTrackList');
-  if(!el) return;
-  el.innerHTML='';
 
-  if(typeof TRACKS==='undefined'||!TRACKS.length){
-    el.innerHTML='<p style="padding:8px;font-size:11px;color:#888;">No tracks loaded yet.</p>';
-    return;
+/* Custom albums stored in localStorage as array of album names */
+var HS_CUSTOM_ALBUMS = 'host_custom_albums';
+function getCustomAlbums(){
+  try{return JSON.parse(localStorage.getItem(HS_CUSTOM_ALBUMS)||'[]');}catch(e){return[];}
+}
+function saveCustomAlbums(arr){
+  try{localStorage.setItem(HS_CUSTOM_ALBUMS,JSON.stringify(arr));}catch(e){}
+}
+
+/* Current drag state */
+var _dragTrackId = null;
+var _dragTrackSrc = null; /* 'added' or 'track_idx' */
+
+function _createAlbumBucket(){
+  var inp = document.getElementById('_newAlbumName');
+  var name = (inp.value||'').trim();
+  if(!name){ setHostStatus('Please enter an album name.','err'); return; }
+  var existing = getCustomAlbums();
+  if(existing.indexOf(name) !== -1){ setHostStatus('Album already exists.','err'); return; }
+  existing.push(name);
+  saveCustomAlbums(existing);
+  inp.value = '';
+  _renderAlbumManager();
+  setHostStatus('Album "'+name+'" created.','ok');
+}
+
+function _deleteAlbumBucket(albumName){
+  if(!confirm('Delete album "'+albumName+'"? Tracks will move to Uncategorized.')) return;
+  /* Move all tracks in this album to Uncategorized */
+  var added = getHostAdded();
+  added.forEach(function(t){
+    if(t.album === albumName) t.album = 'Uncategorized';
+  });
+  saveHostAdded(added);
+  /* Also update TRACKS if available */
+  if(typeof TRACKS !== 'undefined'){
+    TRACKS.forEach(function(t){
+      if(t._plLabel === albumName) t._plLabel = 'Uncategorized';
+    });
+    if(typeof buildPlaylist === 'function') buildPlaylist();
+  }
+  var custom = getCustomAlbums().filter(function(a){ return a !== albumName; });
+  saveCustomAlbums(custom);
+  _renderAlbumManager();
+}
+
+function _moveTrackToAlbum(trackId, newAlbum){
+  var added = getHostAdded();
+  added.forEach(function(t){
+    var tid = t.videoId || ('file_'+t.url);
+    if(tid === trackId) t.album = newAlbum;
+  });
+  saveHostAdded(added);
+  /* Update live TRACKS */
+  if(typeof TRACKS !== 'undefined'){
+    TRACKS.forEach(function(t){
+      var tid = t.videoId || t._hostId;
+      if(tid === trackId) t._plLabel = newAlbum;
+    });
+    if(typeof buildPlaylist === 'function') buildPlaylist();
+  }
+  _renderAlbumManager();
+}
+
+function _deleteTrackFromAlbum(trackId){
+  if(!confirm('Delete this track?')) return;
+  var d = getHostDeleted();
+  if(d.indexOf(trackId) === -1){ d.push(trackId); saveHostDeleted(d); }
+  var aa = getHostAdded();
+  aa = aa.filter(function(x){ return (x.videoId||'file_'+x.url) !== trackId; });
+  saveHostAdded(aa);
+  _hostInjectTracks();
+  _renderAlbumManager();
+  setHostStatus('Track deleted.','ok');
+}
+
+/* Handle local file upload into an album */
+function _handleAlbumFileUpload(albumName, files){
+  if(!files||!files.length) return;
+  Array.prototype.forEach.call(files, function(file){
+    if(!file.type.match(/audio\//)) return;
+    var objUrl = URL.createObjectURL(file);
+    var trackName = file.name.replace(/\.[^.]+$/, '');
+    var track = {
+      type:'file', url:objUrl,
+      name:trackName, album:albumName, artwork:'',
+      addedAt:Date.now()
+    };
+    var added = getHostAdded();
+    added.unshift(track);
+    saveHostAdded(added);
+    _hostInjectTracks();
+    setHostStatus('Uploaded: '+trackName+' → '+albumName,'ok');
+  });
+  _renderAlbumManager();
+}
+
+function _renderAlbumManager(){
+  var container = document.getElementById('_albumBuckets');
+  if(!container) return;
+  container.innerHTML = '';
+
+  /* Collect all album names from TRACKS + added + custom */
+  var albumSet = {'Uncategorized':[]};
+  var customAlbums = getCustomAlbums();
+  customAlbums.forEach(function(a){ if(!albumSet[a]) albumSet[a]=[]; });
+
+  var added = getHostAdded();
+  var deleted = getHostDeleted();
+
+  /* Use added tracks as source of truth (these are the host-managed ones) */
+  added.forEach(function(t){
+    var tid = t.videoId || ('file_'+t.url);
+    if(deleted.indexOf(tid) !== -1) return;
+    var alb = t.album || 'Uncategorized';
+    if(!albumSet[alb]) albumSet[alb] = [];
+    albumSet[alb].push(t);
+  });
+
+  /* Also add TRACKS not in added (pre-loaded ones) */
+  if(typeof TRACKS !== 'undefined'){
+    TRACKS.forEach(function(t){
+      var tid = t.videoId || t._hostId;
+      if(!tid) return;
+      if(deleted.indexOf(tid) !== -1) return;
+      /* Check if already in added */
+      var inAdded = added.some(function(a){ return (a.videoId||('file_'+a.url)) === tid; });
+      if(inAdded) return;
+      var alb = t._plLabel || 'Uncategorized';
+      if(!albumSet[alb]) albumSet[alb] = [];
+      albumSet[alb].push({
+        _fromTracks:true,
+        videoId:t.videoId, url:t._fileUrl,
+        name:t.title, album:alb, artwork:t.albumArt,
+        type:t.type
+      });
+    });
   }
 
-  var deleted=getHostDeleted();
+  /* Render each album bucket */
+  Object.keys(albumSet).forEach(function(albumName){
+    var tracks = albumSet[albumName];
+    var bucket = document.createElement('div');
+    bucket.className = 'album-bucket';
+    bucket.dataset.album = albumName;
 
-  TRACKS.forEach(function(t,i){
-    var vid=t.videoId||t._hostId||('idx_'+i);
-    var isDel=deleted.indexOf(vid)!==-1;
+    /* Header */
+    var header = document.createElement('div');
+    header.className = 'album-bucket-header';
+    header.innerHTML =
+      '<span class="ab-name">&#9654; '+albumName+'</span>'+
+      '<span class="ab-count">'+tracks.length+' track'+(tracks.length!==1?'s':'')+'</span>'+
+      (albumName !== 'Uncategorized'
+        ? '<button class="ab-del-album" onclick="event.stopPropagation();_deleteAlbumBucket(\''+albumName.replace(/'/g,"\\'")+'\')" title="Delete album">&#215;</button>'
+        : '');
 
-    var item=document.createElement('div');
-    item.className='host-track-item'+(isDel?' htl-deleted':'');
+    var body = document.createElement('div');
+    body.className = 'album-bucket-body';
+    body.dataset.album = albumName;
 
-    var art=document.createElement('img');
-    art.className='htl-art';
-    art.src=t.albumArt||'https://frutigeraeroarchive.org/images/music_player/cd.png';
-    art.onerror=function(){this.src='https://frutigeraeroarchive.org/images/music_player/cd.png';};
+    /* Toggle collapse */
+    header.addEventListener('click', function(){
+      var isCollapsed = body.style.display === 'none';
+      body.style.display = isCollapsed ? '' : 'none';
+      var arrow = header.querySelector('.ab-name');
+      if(arrow) arrow.textContent = (isCollapsed ? '▼ ' : '▶ ') + albumName;
+    });
 
-    var nameEl=document.createElement('span');
-    nameEl.className='htl-name';
-    nameEl.title=t.title+(t._plLabel?' ['+t._plLabel+']':'');
-    nameEl.textContent=t.title;
+    /* Drag-over for drop */
+    body.addEventListener('dragover', function(e){
+      e.preventDefault();
+      body.classList.add('drag-over');
+    });
+    body.addEventListener('dragleave', function(){
+      body.classList.remove('drag-over');
+    });
+    body.addEventListener('drop', function(e){
+      e.preventDefault();
+      body.classList.remove('drag-over');
+      var trackId = e.dataTransfer.getData('text/plain');
+      if(trackId && trackId !== albumName){
+        _moveTrackToAlbum(trackId, albumName);
+      }
+    });
 
-    /* Show album label */
-    var albumEl=document.createElement('span');
-    albumEl.style.cssText='font-size:9.5px;color:#888;flex-shrink:0;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
-    albumEl.textContent=t._plLabel||'Uncategorized';
+    /* Render tracks */
+    tracks.forEach(function(t){
+      var tid = t.videoId || ('file_'+t.url) || ('file_'+t._fileUrl);
+      if(!tid) return;
+      var item = document.createElement('div');
+      item.className = 'ab-track-item';
+      item.draggable = true;
+      item.dataset.trackId = tid;
 
-    var src=document.createElement('span');
-    src.className='htl-source';
-    src.textContent=t.type==='file'?'file':'yt';
+      item.addEventListener('dragstart', function(e){
+        e.dataTransfer.setData('text/plain', tid);
+      });
 
-    var del=document.createElement('button');
-    del.className='htl-del';
-    del.textContent='×';
-    del.title='Delete this track';
-    del.addEventListener('click',(function(trackVid){
-      return function(){
-        if(!confirm('Delete "'+t.title+'" from the player?')) return;
-        var d=getHostDeleted();
-        if(d.indexOf(trackVid)===-1){d.push(trackVid);saveHostDeleted(d);}
-        var aa=getHostAdded();
-        aa=aa.filter(function(x){return (x.videoId||'file_'+x.url)!==trackVid;});
-        saveHostAdded(aa);
-        _hostInjectTracks();
-        _hostRenderTrackList();
-        setHostStatus('Track deleted.','ok');
-      };
-    })(vid));
+      var art = document.createElement('img');
+      art.className = 'abt-art';
+      art.src = t.artwork || 'https://frutigeraeroarchive.org/images/music_player/cd.png';
+      art.onerror = function(){ this.src='https://frutigeraeroarchive.org/images/music_player/cd.png'; };
 
-    item.appendChild(art);
-    item.appendChild(nameEl);
-    item.appendChild(albumEl);
-    item.appendChild(src);
-    item.appendChild(del);
-    el.appendChild(item);
+      var nameSpan = document.createElement('span');
+      nameSpan.className = 'abt-name';
+      nameSpan.textContent = t.name || t.title || tid;
+      nameSpan.title = nameSpan.textContent;
+
+      var srcSpan = document.createElement('span');
+      srcSpan.className = 'abt-src';
+      srcSpan.textContent = (t.type==='file'||t.type==='audio/mpeg') ? 'file' : 'yt';
+
+      var handle = document.createElement('span');
+      handle.className = 'abt-drag-handle';
+      handle.textContent = '⠿';
+      handle.title = 'Drag to move album';
+
+      var delBtn = document.createElement('button');
+      delBtn.className = 'abt-del';
+      delBtn.textContent = '×';
+      delBtn.title = 'Delete track';
+      (function(id){ delBtn.addEventListener('click', function(e){ e.stopPropagation(); _deleteTrackFromAlbum(id); }); })(tid);
+
+      item.appendChild(handle);
+      item.appendChild(art);
+      item.appendChild(nameSpan);
+      item.appendChild(srcSpan);
+      item.appendChild(delBtn);
+      body.appendChild(item);
+    });
+
+    /* File upload drop zone inside album */
+    var uploadZone = document.createElement('label');
+    uploadZone.className = 'album-file-drop';
+    uploadZone.title = 'Upload audio files into '+albumName;
+    uploadZone.innerHTML = '＋ Upload audio files into this album';
+    var fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'audio/*';
+    fileInput.multiple = true;
+    var _alb = albumName;
+    fileInput.addEventListener('change', function(){ _handleAlbumFileUpload(_alb, this.files); });
+    uploadZone.appendChild(fileInput);
+    body.appendChild(uploadZone);
+
+    bucket.appendChild(header);
+    bucket.appendChild(body);
+    container.appendChild(bucket);
   });
 }
 
@@ -1225,17 +1720,17 @@ document.addEventListener('DOMContentLoaded',function(){
     if(typeof TRACKS!=='undefined' && TRACKS.length>0){
       clearInterval(interval);
       _hostInjectTracks();
-      _hostRenderTrackList();
+      _renderAlbumManager();
     } else if(attempts>30){
       clearInterval(interval);
-      _hostRenderTrackList();
+      _renderAlbumManager();
     }
   },500);
 
   var hp=document.getElementById('hostPanel');
   if(hp){
     new MutationObserver(function(){
-      if(hp.classList.contains('visible')) _hostRenderTrackList();
+      if(hp.classList.contains('visible')) _renderAlbumManager();
     }).observe(hp,{attributes:true,attributeFilter:['class']});
   }
 });
