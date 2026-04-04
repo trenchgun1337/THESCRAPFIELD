@@ -65,7 +65,7 @@ strong        { color:var(--accent); font-weight:400; }
 /* ── Page wrapper ── */
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; gap:0; }
 
-/* ── Aero topbar ── */
+/* ── Aero topbar (back link + title) — same grad-bar as index ── */
 .aero-bar {
   background: var(--grad-bar);
   border:2px ridge #727272;
@@ -100,7 +100,7 @@ strong        { color:var(--accent); font-weight:400; }
 #serverBanner.visible { display:flex; }
 #serverBanner img { height:18px; width:18px; flex-shrink:0; }
 
-/* ── Glass / aero boxes ── */
+/* ── Glass / aero boxes — same as index ── */
 .glass-box {
   background:#ebebeb;
   box-shadow: 0 2px 5px rgba(0,0,0,.15);
@@ -110,7 +110,7 @@ strong        { color:var(--accent); font-weight:400; }
 .aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
 .aero-pad   { padding:10px 12px; }
 
-/* ── Section headers ── */
+/* ── Section headers — same black strip as index h1/h2 ── */
 .section-bar {
   display:block; background:#000;
   padding:5px 8px; margin:0; line-height:1.6;
@@ -118,7 +118,7 @@ strong        { color:var(--accent); font-weight:400; }
   text-transform:uppercase; color:#fff;
 }
 
-/* ── Description box ── */
+/* ── Description box — styled-containers-headers ── */
 .desc-box {
   background:#fff;
   padding:8px 10px; margin-bottom:0;
@@ -152,7 +152,7 @@ strong        { color:var(--accent); font-weight:400; }
 #urlIconWrap.visible { display:flex; }
 #urlIcon { width:18px; height:18px; object-fit:contain; pointer-events:none; display:block; }
 
-/* ── Format Select ── */
+/* ── Format Select — same light aero style ── */
 .fmt-select {
   appearance:none; -webkit-appearance:none;
   background-color:#f0f0f0;
@@ -240,7 +240,7 @@ strong        { color:var(--accent); font-weight:400; }
 #dlInfo.visible { display:block; }
 #dlInfo .info-val { color:var(--accent); }
 
-/* ── Progress bar ── */
+/* ── Progress bar — light aero ── */
 #statusBox [role=progressbar] {
   width:100%; margin:0;
   border:1px solid rgba(140,140,140,.55) !important;
@@ -270,7 +270,7 @@ strong        { color:var(--accent); font-weight:400; }
 #statusBox [role=progressbar].marquee > div { display:none; }
 @keyframes marcheAero { from{background-position:0 0} to{background-position:28px 0} }
 
-/* ── Source Row tags ── */
+/* ── Source Row tags — light aero tiles ── */
 .src-row {
   display:flex; gap:5px; flex-wrap:wrap;
   margin-top:8px; padding-top:7px;
@@ -286,9 +286,14 @@ strong        { color:var(--accent); font-weight:400; }
   color:#aaa;
 }
 .src-tag img { height:16px; width:16px; object-fit:contain; flex-shrink:0; filter:grayscale(1) brightness(.5); transition:filter .22s; }
+.src-tag span { }
 .src-tag.initializing { animation:tagPulse 1.8s infinite ease-in-out; }
 @keyframes tagPulse { 0%,100%{opacity:.35} 50%{opacity:.75} }
-.src-tag.available { color:var(--text-dim); border-color:rgba(130,130,130,.55); }
+
+.src-tag.available {
+  color:var(--text-dim);
+  border-color:rgba(130,130,130,.55);
+}
 .src-tag.available img { filter:none; }
 .src-tag.sp.available  { color:#1a7a38; border-left:2px solid #1a7a38; }
 .src-tag.yt.available  { color:#a01515; border-left:2px solid #a01515; }
@@ -316,6 +321,7 @@ strong        { color:var(--accent); font-weight:400; }
   display:flex; align-items:center; gap:6px;
 }
 .preview-header img  { height:14px; width:14px; object-fit:contain; flex-shrink:0; }
+.preview-header span { }
 .preview-body { border:1px solid rgba(0,0,0,.44); border-top:none; background:#fff; }
 .sp-embed-wrap  { width:100%; overflow:hidden; background:#fff; }
 .sp-embed-wrap iframe { width:100%; border:none; display:block; }
@@ -335,15 +341,15 @@ strong        { color:var(--accent); font-weight:400; }
 .preview-checking { color:var(--text-dim); }
 .preview-invalid  { color:var(--accent); }
 
-/* ── Sound toggle — estilo igual às outras páginas do arquivo ── */
-.wa-sound-toggle {
+/* ── Sound toggle ── */
+#soundToggle {
   position:fixed; bottom:8px; left:10px; z-index:9999;
   font-family:'Sawarabi Gothic',Tahoma,sans-serif;
-  font-size:10px; color:#fff; cursor:pointer;
+  font-size:10px; color:rgb(255, 255, 255); cursor:pointer;
   user-select:none; padding:2px 0; background:none; border:none; outline:none;
 }
-.wa-sound-toggle:hover { color:#fff; }
-.wa-sound-toggle.off   { color:#aaa; }
+#soundToggle:hover { color:rgb(255, 255, 255); }
+#soundToggle.off   { color:rgb(255, 255, 255); }
 
 /* ── Aero glass overlay texture ── */
 .aero-glass-overlay { position:relative; overflow:hidden; }
@@ -487,36 +493,28 @@ strong        { color:var(--accent); font-weight:400; }
 
 </div><!-- /#pageWrap -->
 
-<!-- Botão de som: classe .wa-sound-toggle é detectada e gerenciada pelo sounds.js -->
-<button class="wa-sound-toggle">Sounds: On</button>
-
+<button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 <a id="cornerLogo" href="../index.html#introduction" title="Watanagashi Archive — Home">
   <img src="../assets/images/watanagashilogo2.png" alt="Watanagashi Archive"
     onerror="this.style.display='none'">
 </a>
 
-<!-- ═══════════════════════════════════════════════════════════
-     sounds.js — sistema de áudio compartilhado do arquivo.
-     Deve estar em assets/js/sounds.js (ou ajuste o caminho).
-     Inclui: playSound(), toggleSound(), hover/click automáticos.
-     ═══════════════════════════════════════════════════════════ -->
-<script src="assets/js/sounds.js"></script>
-
 <script>
+
 const API_URL = "https://watanagashi-api.onrender.com";
 
 /* ── Icons ── */
 const ICON_VALID = 'https://img1.picmix.com/output/stamp/thumb/6/4/0/6/2466046_12382.png';
 const SRC_ICONS = {
-  spotify:    'assets/images/SPOTIFYAERO.jpeg',
-  youtube:    'assets/images/YOUTUBEAERO.png',
-  soundcloud: 'assets/images/SOUNDCLOUDAERO.png',
+  spotify:'assets/images/SPOTIFYAERO.jpeg',
+  youtube:'assets/images/YOUTUBEAERO.png',
+  soundcloud:'assets/images/SOUNDCLOUDAERO.png',
 };
 
-const EST_MB     = { mp3:5, flac:30, ogg:4, opus:3.5, aac:6, mp4:80, webm:55, mkv:70 };
+const EST_MB = { mp3:5, flac:30, ogg:4, opus:3.5, aac:6, mp4:80, webm:55, mkv:70 };
 const VIDEO_FMTS = new Set(['mp4','webm','mkv']);
 
-const $           = id => document.getElementById(id);
+const $  = id => document.getElementById(id);
 const urlInput    = $('urlInput');
 const urlIconWrap = $('urlIconWrap');
 const fmtSelect   = $('fmtSelect');
@@ -641,9 +639,9 @@ function setUrlIcon(state) {
 }
 
 function showEstimate(url, src) {
-  const fmt = fmtSelect.value;
-  const n   = estCount(url, src);
-  const mb  = n * (EST_MB[fmt] || 5);
+  const fmt  = fmtSelect.value;
+  const n    = estCount(url, src);
+  const mb   = n * (EST_MB[fmt] || 5);
   dlSize.textContent = fmtMBdisp(mb) + (n > 1 ? ` (~${n} items)` : '');
   dlEta.textContent  = fmtEtaMB(mb);
   dlInfo.classList.add('visible');
@@ -704,12 +702,13 @@ async function initCheck() {
   urlInput.disabled = true; fmtSelect.disabled = true;
   srvBanner.classList.add('visible');
   const MAX_MS=90_000, INTERVAL=3_000, deadline=Date.now()+MAX_MS;
-  while (Date.now() < deadline) {
+  let got=false;
+  while (Date.now()<deadline) {
     try {
       const ctrl=new AbortController(), tid=setTimeout(()=>ctrl.abort(),5000);
       const r=await fetch(`${API_URL}/yt-status`,{signal:ctrl.signal});
       clearTimeout(tid);
-      if (r.ok) { const d=await r.json(); ytEnabled=d.youtube_enabled; break; }
+      if (r.ok) { const d=await r.json(); ytEnabled=d.youtube_enabled; got=true; break; }
     } catch(_) {}
     if (Date.now()<deadline) await sleep(INTERVAL);
   }
@@ -727,7 +726,7 @@ urlInput.addEventListener('keydown', e=>{ if(e.key==='Enter'&&!dlBtn.disabled) s
 
 async function startDownload() {
   const url = urlInput.value.trim();
-  if (!url || dlBtn.disabled) return;
+  if (!url||dlBtn.disabled) return;
   playSound('button');
   dlBtn.disabled=true; statusBox.classList.add('visible');
   dlInfo.classList.remove('visible'); setProgMarquee(); startWakeTimer();
@@ -849,5 +848,9 @@ urlInput.addEventListener('input', () => {
 });
 urlInput.addEventListener('paste', ()=>{ clearTimeout(previewTimer); previewTimer=setTimeout(()=>renderPreview(urlInput.value),250); });
 </script>
+
+<script src="assets/js/sounds.js"></script>
+<button class="wa-sound-toggle" onclick="toggleSound()">Sounds: On</button>
+
 </body>
 </html>
