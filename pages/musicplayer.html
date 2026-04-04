@@ -378,7 +378,7 @@ strong        { color:var(--accent); font-weight:400; }
 <body>
 
 <a id="cornerLogo" href="../index.html#introduction" title="Watanagashi Archive — Home">
-  <img src="../assets/images/watanagashilogo.png" alt="Watanagashi Archive"
+  <img src="../assets/images/watanagashilogo2.png" alt="Watanagashi Archive"
     onerror="this.style.display='none'">
 </a>
 
@@ -627,7 +627,15 @@ var _BG_URL = 'https://preview.redd.it/is-there-any-kind-of-higurashi-audio-only
 function _applyMusicBg() {
   var s = document.getElementById('_musicPageBg');
   if (!s) { s = document.createElement('style'); s.id='_musicPageBg'; document.head.appendChild(s); }
-  s.textContent = 'body{background-image:url("'+_BG_URL+'")!important;background-size:contain!important;background-attachment:fixed!important;background-repeat:no-repeat!important;background-position:center center!important;background-color:#000!important;}';
+  s.textContent = `
+body{
+  background-image:url("${_BG_URL}")!important;
+  background-size:cover!important;
+  background-attachment:fixed!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-color:#000!important;
+}`;
 }
 _applyMusicBg();
 new MutationObserver(function(muts){

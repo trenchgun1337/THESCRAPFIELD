@@ -228,7 +228,7 @@ h1 { font-size:12px; }
 /* ── Music Player ── */
 #playerGlassBox { position:relative; }
 #musicPlayerContainer { border-left:1px solid rgba(170,170,170,.44); border-right:1px solid rgba(170,170,170,.44); position:relative; z-index:1; }
-#musicBackground { background-size:100% 100%; background-color:#e8e8e8; }
+#musicBackground { background-size:100% 100%; }
 
 .mp-header-bar {
   background:var(--grad-bar);
@@ -290,8 +290,7 @@ h1 { font-size:12px; }
 #mpPlusBtn { opacity:1 !important; pointer-events:auto !important; color:rgba(0,0,0,.55) !important; }
 
 #musicPlayerPlaylist {
-  background:repeating-linear-gradient(0deg,rgba(0,0,0,.04) 0px,rgba(0,0,0,.04) 1px,transparent 1px,transparent 3px),
-             linear-gradient(90deg,rgba(240,240,240,.92) 0%,rgba(252,252,252,.12) 70%);
+  
   display:flex; justify-content:space-between; align-items:flex-start; height:258px;
 }
 #playlistLeft { flex:1; height:100%; overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.60) rgba(220,220,220,.70); }
