@@ -638,10 +638,6 @@ strong        { color:var(--accent); font-weight:400; }
    ══════════════════════════════════════════════ */
 #_footerPromo {
  margin-top: 10px;
-    /* border: 1px solid rgba(0, 0, 0, .20); */
-    /* background: var(--grad-bar); */
-    /* box-shadow: var(--shadow-bar); */
-    /* padding: 10px 14px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -653,7 +649,6 @@ strong        { color:var(--accent); font-weight:400; }
 }
 #_footerPromo a {
   color: #00ff0a;
-    /* font-weight: 400; */
     letter-spacing: .3px;
 }
 #_footerPromo a:hover { color:#00ff0a; text-decoration:underline; }
@@ -921,7 +916,7 @@ strong        { color:var(--accent); font-weight:400; }
               <div id="hostYtPreviewSub"  style="font-size:10px;color:#888;"></div>
             </div>
           </div>
-          <button class="host-add-btn" style="margin-top:8px;" onclick="hostAddYt()">＋ ADD YOUTUBE TRACK</button>
+          <button class="host-add-btn" style="margin-top:8px;" onclick="hostAddYt()">&#65291; ADD YOUTUBE TRACK</button>
         </div>
 
         <!-- File pane -->
@@ -954,7 +949,7 @@ strong        { color:var(--accent); font-weight:400; }
               placeholder="https://... cover image"
               autocomplete="off">
           </div>
-          <button class="host-add-btn" style="margin-top:8px;" onclick="hostAddFile()">＋ ADD FILE TRACK</button>
+          <button class="host-add-btn" style="margin-top:8px;" onclick="hostAddFile()">&#65291; ADD FILE TRACK</button>
         </div>
 
         <div class="host-status" id="hostStatus"></div>
@@ -967,7 +962,7 @@ strong        { color:var(--accent); font-weight:400; }
             <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;">Create New Album</div>
             <div id="_newAlbumRow">
               <input type="text" id="_newAlbumName" placeholder="Album name…" autocomplete="off">
-              <button id="_newAlbumBtn" onclick="_createAlbumBucket()">＋ Create</button>
+              <button id="_newAlbumBtn" onclick="_createAlbumBucket()">&#65291; Create</button>
             </div>
           </div>
           <!-- Album buckets rendered here -->
@@ -975,7 +970,7 @@ strong        { color:var(--accent); font-weight:400; }
         </div>
 
         <div class="note" style="margin-top:6px;">
-          Tracks without an album appear in <strong>Uncategorized</strong>. Drag tracks between album headers to re-assign. Upload audio files directly inside an album with the ＋ upload button.
+          Tracks without an album appear in <strong>Uncategorized</strong>. Drag tracks between album headers to re-assign. Upload audio files directly inside an album with the &#65291; upload button.
         </div>
 
       </div>
@@ -1078,7 +1073,6 @@ function _setCdPlaying(playing) {
   if (!_cdWrapper) return;
   if (playing) {
     _cdWrapper.classList.add('spinning');
-    /* Update label */
     var nameEl = document.getElementById('audioName');
     if (_cdLabel && nameEl) _cdLabel.textContent = nameEl.textContent || '— playing —';
   } else {
@@ -1114,19 +1108,6 @@ function _setCdPlaying(playing) {
       audio.addEventListener('ended', function(){ _setCdPlaying(false); });
     }
     syncCd();
-    document.addEventListener('DOMContentLoaded', () => {
-  // Adicionar isso:
-  if (sessionStorage.getItem('_soundsOn') === 'false') {
-    _soundsOn = false;
-    const btn = document.getElementById('soundToggle');
-    if (btn) { btn.textContent = 'Sounds: Off'; btn.classList.add('off'); }
-  }
-  
-  if (!sessionStorage.getItem('_siteStartPlayed')) {
-    sessionStorage.setItem('_siteStartPlayed','1');
-    setTimeout(()=>playSound('start'),700);
-  }
-});
   });
 })();
 
@@ -1164,7 +1145,6 @@ function _setCdPlaying(playing) {
 
   var _loaded    = false;
   var _progress  = 0;
-  var _animFrame = null;
 
   var initMsgs = [
     'Initializing\u2026',
@@ -1191,18 +1171,15 @@ function _setCdPlaying(playing) {
     }
   }
 
-  /* Show banner immediately */
   showBanner(initMsgs[0]);
   if (progWrap) progWrap.classList.add('visible');
 
-  /* Rotate messages while loading */
   var rotateInterval = setInterval(function(){
     if (_loaded) { clearInterval(rotateInterval); return; }
     msgIdx = (msgIdx + 1) % initMsgs.length;
     if (msgEl && !_loaded) msgEl.textContent = initMsgs[msgIdx];
   }, 1800);
 
-  /* Fake progress animation until real data */
   var fakeProgress = 0;
   var fakeInterval = setInterval(function(){
     if (_loaded) { clearInterval(fakeInterval); return; }
@@ -1211,12 +1188,10 @@ function _setCdPlaying(playing) {
     setProgress(fakeProgress);
   }, 300);
 
-  /* Poll for TRACKS to be loaded */
   var pollAttempts = 0;
   var pollInterval = setInterval(function(){
     pollAttempts++;
     if (typeof TRACKS !== 'undefined' && TRACKS.length > 0) {
-      /* Tracks are available — complete progress to 100 */
       var fill = setInterval(function(){
         fakeProgress = Math.min(100, fakeProgress + 5);
         setProgress(fakeProgress);
@@ -1234,7 +1209,6 @@ function _setCdPlaying(playing) {
       clearInterval(pollInterval);
       return;
     }
-    /* Timeout after ~20s */
     if (pollAttempts > 40) {
       clearInterval(pollInterval);
       _loaded = true;
@@ -1244,7 +1218,6 @@ function _setCdPlaying(playing) {
     }
   }, 500);
 
-  /* If session already loaded, show briefly then hide */
   if (sessionStorage.getItem('_tracksLoaded')) {
     msgEl.textContent = 'Loading completely\u2026';
     setProgress(100);
@@ -1365,7 +1338,7 @@ function hostAddYt(){
       name:finalName, album:album, artwork:finalArt, addedAt:Date.now()
     };
     var added=getHostAdded(); added.unshift(track); saveHostAdded(added);
-    setHostStatus('Added: '+finalName+' → '+album,'ok');
+    setHostStatus('Added: '+finalName+' \u2192 '+album,'ok');
     _hostInjectTracks();
     _renderAlbumManager();
     _clearYtFields();
@@ -1422,7 +1395,7 @@ function hostAddFile(){
     addedAt:Date.now()
   };
   var added=getHostAdded(); added.unshift(track); saveHostAdded(added);
-  setHostStatus('Added: '+name+' → '+album,'ok');
+  setHostStatus('Added: '+name+' \u2192 '+album,'ok');
   _hostInjectTracks();
   _renderAlbumManager();
   document.getElementById('hostFileUrl').value='';
@@ -1479,7 +1452,6 @@ function _hostInjectTracks(){
    ALBUM MANAGER — drag-and-drop + file upload per album
    ════════════════════════════════════════════════════════════════ */
 
-/* Custom albums stored in localStorage as array of album names */
 var HS_CUSTOM_ALBUMS = 'host_custom_albums';
 function getCustomAlbums(){
   try{return JSON.parse(localStorage.getItem(HS_CUSTOM_ALBUMS)||'[]');}catch(e){return[];}
@@ -1488,9 +1460,8 @@ function saveCustomAlbums(arr){
   try{localStorage.setItem(HS_CUSTOM_ALBUMS,JSON.stringify(arr));}catch(e){}
 }
 
-/* Current drag state */
 var _dragTrackId = null;
-var _dragTrackSrc = null; /* 'added' or 'track_idx' */
+var _dragTrackSrc = null;
 
 function _createAlbumBucket(){
   var inp = document.getElementById('_newAlbumName');
@@ -1507,13 +1478,11 @@ function _createAlbumBucket(){
 
 function _deleteAlbumBucket(albumName){
   if(!confirm('Delete album "'+albumName+'"? Tracks will move to Uncategorized.')) return;
-  /* Move all tracks in this album to Uncategorized */
   var added = getHostAdded();
   added.forEach(function(t){
     if(t.album === albumName) t.album = 'Uncategorized';
   });
   saveHostAdded(added);
-  /* Also update TRACKS if available */
   if(typeof TRACKS !== 'undefined'){
     TRACKS.forEach(function(t){
       if(t._plLabel === albumName) t._plLabel = 'Uncategorized';
@@ -1532,7 +1501,6 @@ function _moveTrackToAlbum(trackId, newAlbum){
     if(tid === trackId) t.album = newAlbum;
   });
   saveHostAdded(added);
-  /* Update live TRACKS */
   if(typeof TRACKS !== 'undefined'){
     TRACKS.forEach(function(t){
       var tid = t.videoId || t._hostId;
@@ -1555,7 +1523,6 @@ function _deleteTrackFromAlbum(trackId){
   setHostStatus('Track deleted.','ok');
 }
 
-/* Handle local file upload into an album */
 function _handleAlbumFileUpload(albumName, files){
   if(!files||!files.length) return;
   Array.prototype.forEach.call(files, function(file){
@@ -1571,7 +1538,7 @@ function _handleAlbumFileUpload(albumName, files){
     added.unshift(track);
     saveHostAdded(added);
     _hostInjectTracks();
-    setHostStatus('Uploaded: '+trackName+' → '+albumName,'ok');
+    setHostStatus('Uploaded: '+trackName+' \u2192 '+albumName,'ok');
   });
   _renderAlbumManager();
 }
@@ -1581,7 +1548,6 @@ function _renderAlbumManager(){
   if(!container) return;
   container.innerHTML = '';
 
-  /* Collect all album names from TRACKS + added + custom */
   var albumSet = {'Uncategorized':[]};
   var customAlbums = getCustomAlbums();
   customAlbums.forEach(function(a){ if(!albumSet[a]) albumSet[a]=[]; });
@@ -1589,7 +1555,6 @@ function _renderAlbumManager(){
   var added = getHostAdded();
   var deleted = getHostDeleted();
 
-  /* Use added tracks as source of truth (these are the host-managed ones) */
   added.forEach(function(t){
     var tid = t.videoId || ('file_'+t.url);
     if(deleted.indexOf(tid) !== -1) return;
@@ -1598,13 +1563,11 @@ function _renderAlbumManager(){
     albumSet[alb].push(t);
   });
 
-  /* Also add TRACKS not in added (pre-loaded ones) */
   if(typeof TRACKS !== 'undefined'){
     TRACKS.forEach(function(t){
       var tid = t.videoId || t._hostId;
       if(!tid) return;
       if(deleted.indexOf(tid) !== -1) return;
-      /* Check if already in added */
       var inAdded = added.some(function(a){ return (a.videoId||('file_'+a.url)) === tid; });
       if(inAdded) return;
       var alb = t._plLabel || 'Uncategorized';
@@ -1618,36 +1581,32 @@ function _renderAlbumManager(){
     });
   }
 
-  /* Render each album bucket */
   Object.keys(albumSet).forEach(function(albumName){
     var tracks = albumSet[albumName];
     var bucket = document.createElement('div');
     bucket.className = 'album-bucket';
     bucket.dataset.album = albumName;
 
-    /* Header */
     var header = document.createElement('div');
     header.className = 'album-bucket-header';
     header.innerHTML =
-      '<span class="ab-name">&#9654; '+albumName+'</span>'+
+      '<span class="ab-name">\u25ba '+albumName+'</span>'+
       '<span class="ab-count">'+tracks.length+' track'+(tracks.length!==1?'s':'')+'</span>'+
       (albumName !== 'Uncategorized'
-        ? '<button class="ab-del-album" onclick="event.stopPropagation();_deleteAlbumBucket(\''+albumName.replace(/'/g,"\\'")+'\')" title="Delete album">&#215;</button>'
+        ? '<button class="ab-del-album" onclick="event.stopPropagation();_deleteAlbumBucket(\''+albumName.replace(/'/g,"\\'")+'\')" title="Delete album">\u00d7</button>'
         : '');
 
     var body = document.createElement('div');
     body.className = 'album-bucket-body';
     body.dataset.album = albumName;
 
-    /* Toggle collapse */
     header.addEventListener('click', function(){
       var isCollapsed = body.style.display === 'none';
       body.style.display = isCollapsed ? '' : 'none';
       var arrow = header.querySelector('.ab-name');
-      if(arrow) arrow.textContent = (isCollapsed ? '▼ ' : '▶ ') + albumName;
+      if(arrow) arrow.textContent = (isCollapsed ? '\u25bc ' : '\u25ba ') + albumName;
     });
 
-    /* Drag-over for drop */
     body.addEventListener('dragover', function(e){
       e.preventDefault();
       body.classList.add('drag-over');
@@ -1664,7 +1623,6 @@ function _renderAlbumManager(){
       }
     });
 
-    /* Render tracks */
     tracks.forEach(function(t){
       var tid = t.videoId || ('file_'+t.url) || ('file_'+t._fileUrl);
       if(!tid) return;
@@ -1693,12 +1651,12 @@ function _renderAlbumManager(){
 
       var handle = document.createElement('span');
       handle.className = 'abt-drag-handle';
-      handle.textContent = '⠿';
+      handle.textContent = '\u2807';
       handle.title = 'Drag to move album';
 
       var delBtn = document.createElement('button');
       delBtn.className = 'abt-del';
-      delBtn.textContent = '×';
+      delBtn.textContent = '\u00d7';
       delBtn.title = 'Delete track';
       (function(id){ delBtn.addEventListener('click', function(e){ e.stopPropagation(); _deleteTrackFromAlbum(id); }); })(tid);
 
@@ -1710,11 +1668,10 @@ function _renderAlbumManager(){
       body.appendChild(item);
     });
 
-    /* File upload drop zone inside album */
     var uploadZone = document.createElement('label');
     uploadZone.className = 'album-file-drop';
     uploadZone.title = 'Upload audio files into '+albumName;
-    uploadZone.innerHTML = '＋ Upload audio files into this album';
+    uploadZone.innerHTML = '\uff0b Upload audio files into this album';
     var fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = 'audio/*';
@@ -1756,19 +1713,19 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 /* ════════════════════════════════════════════════════════════════
-   SOUNDS
+   SOUNDS — sem delay no hover, sincronizado entre páginas
    ════════════════════════════════════════════════════════════════ */
 var _SB='../assets/audio/';
 var _SND={start:_SB+'sitestart.mp3',alert:_SB+'sitealert.mp3',dislike:_SB+'sitedislikeclick.mp3',like:_SB+'sitelikeclick.mp3',sort:_SB+'sitesortclick.mp3',button:_SB+'sitebuttonclick.mp3',hover:_SB+'text.mp3'};
-var _soundsOn=true,_aC={},_ht=0,_hT=null;
+var _soundsOn=true,_aC={},_ht=0;
 function _gA(k){if(!_aC[k]){var a=new Audio(_SND[k]);a.preload='auto';_aC[k]=a;}return _aC[k];}
 function playSound(k){if(!_soundsOn)return;try{var c=_gA(k).cloneNode();c.volume=(k==='hover'?.30:.52);c.play().catch(function(){});}catch(e){}}
-function toggleSound() {
-  _soundsOn = !_soundsOn;
-  const btn = document.getElementById('soundToggle');
-  if (btn) { btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off'; btn.classList.toggle('off', !_soundsOn); }
-  if (_soundsOn) playSound('button');
-  sessionStorage.setItem('_soundsOn', String(_soundsOn)); // ← adicionar isso
+function toggleSound(){
+  _soundsOn=!_soundsOn;
+  var b=document.getElementById('soundToggle');
+  if(b){b.textContent=_soundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_soundsOn);}
+  if(_soundsOn) playSound('button');
+  sessionStorage.setItem('_soundsOn',String(_soundsOn));
 }
 document.addEventListener('DOMContentLoaded',function(){
   if(sessionStorage.getItem('_soundsOn')==='false'){
@@ -1783,8 +1740,8 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 document.addEventListener('pointerdown',function(){Object.keys(_SND).forEach(function(k){_gA(k);});},{once:true,passive:true});
 function _iI(el){if(!el||el===document.body||el===document.documentElement)return false;var t=el.tagName;if(t==='BUTTON'||t==='A'||t==='SELECT'||t==='TEXTAREA')return true;if(t==='INPUT'&&el.type!=='range')return true;var cs=window.getComputedStyle(el);return cs&&cs.cursor==='pointer';}
-document.addEventListener('mouseover',function(e){if(e.target.id==='soundToggle')return;if(!_iI(e.target))return;clearTimeout(_hT);_hT=setTimeout(function(){var n=Date.now();if(n-_ht<400)return;_ht=n;playSound('hover');},400);},{passive:true});
-document.addEventListener('mouseout',function(e){if(_iI(e.target))clearTimeout(_hT);},{passive:true});
+/* hover sem delay — throttle mínimo de 120ms */
+document.addEventListener('mouseover',function(e){if(e.target.id==='soundToggle')return;if(!_iI(e.target))return;var n=Date.now();if(n-_ht<120)return;_ht=n;playSound('hover');},{passive:true});
 document.addEventListener('click',function(e){if(e.target.id==='soundToggle')return;if(_iI(e.target))playSound('button');},true);
 
 (function(){

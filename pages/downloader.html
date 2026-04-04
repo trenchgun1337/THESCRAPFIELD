@@ -41,7 +41,6 @@ button:active, button:focus, button:focus-visible { outline:none !important; box
 body {
   font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
   font-size:12px;
-  /* keep original background */
   background:#000 url('https://static.myfigurecollection.net/upload/pictures/2022/10/24/3309088.jpeg') center/contain fixed no-repeat;
   color: var(--text);
   min-height:100vh;
@@ -431,9 +430,9 @@ strong        { color:var(--accent); font-weight:400; }
             <option value="ogg">OGG</option>
             <option value="opus">OPUS</option>
             <option value="aac">AAC</option>
-            <option value="mp4"  id="optMp4" >MP4 ▶</option>
-            <option value="webm" id="optWebm">WEBM ▶</option>
-            <option value="mkv"  id="optMkv" >MKV ▶</option>
+            <option value="mp4"  id="optMp4" >MP4 &#9654;</option>
+            <option value="webm" id="optWebm">WEBM &#9654;</option>
+            <option value="mkv"  id="optMkv" >MKV &#9654;</option>
           </select>
         </div>
 
@@ -533,8 +532,14 @@ function toggleSound() {
   const btn = document.getElementById('soundToggle');
   if (btn) { btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off'; btn.classList.toggle('off', !_soundsOn); }
   if (_soundsOn) playSound('button');
+  sessionStorage.setItem('_soundsOn', String(_soundsOn));
 }
 document.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('_soundsOn') === 'false') {
+    _soundsOn = false;
+    const btn = document.getElementById('soundToggle');
+    if (btn) { btn.textContent = 'Sounds: Off'; btn.classList.add('off'); }
+  }
   if (!sessionStorage.getItem('_siteStartPlayed')) {
     sessionStorage.setItem('_siteStartPlayed','1');
     setTimeout(()=>playSound('start'),700);
@@ -542,8 +547,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 document.addEventListener('pointerdown', ()=>Object.keys(SOUNDS).forEach(k=>_getAudio(k)), {once:true,passive:true});
 
+/* ── Hover sound — sem delay, throttle mínimo ── */
 let _hoverThrottle = 0;
-let _hoverTimer = null;
 function _isInteractive(el) {
   if (!el||el===document.body||el===document.documentElement) return false;
   const tag=el.tagName;
@@ -556,16 +561,10 @@ function _isInteractive(el) {
 document.addEventListener('mouseover', e=>{
   if (e.target.id==='soundToggle') return;
   if (!_isInteractive(e.target)) return;
-  clearTimeout(_hoverTimer);
-  _hoverTimer = setTimeout(()=>{
-    const now=Date.now();
-    if (now-_hoverThrottle<400) return;
-    _hoverThrottle=now;
-    playSound('hover');
-  }, 400);
-},{passive:true});
-document.addEventListener('mouseout', e=>{
-  if (_isInteractive(e.target)) clearTimeout(_hoverTimer);
+  const now = Date.now();
+  if (now - _hoverThrottle < 120) return;
+  _hoverThrottle = now;
+  playSound('hover');
 },{passive:true});
 document.addEventListener('click', e=>{
   if (e.target.id==='soundToggle') return;
