@@ -7,140 +7,213 @@
 <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
 <link rel="stylesheet" href="../scripts/css/style.css">
 
-<!-- Force #music hash BEFORE script.js reads it -->
 <script>
   if (window.location.hash !== '#music')
     history.replaceState(null, '', window.location.pathname + '#music');
 </script>
 
 <style>
-/* ── Reset ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 * { -webkit-tap-highlight-color:transparent; }
-::selection { background:rgba(204,26,26,.35)!important; color:#fff!important; }
-::-moz-selection { background:rgba(204,26,26,.35)!important; color:#fff!important; }
-*:focus { outline:none!important; }
-button:active,button:focus,button:focus-visible { outline:none!important; box-shadow:none!important; }
+::selection { background:rgba(80,80,80,.45); color:#fff; }
+::-moz-selection { background:rgba(80,80,80,.45); color:#fff; }
+*:focus { outline:none !important; }
+button:active, button:focus, button:focus-visible { outline:none !important; box-shadow:none !important; }
 
 :root {
-  --accent:       #cc1a1a;
-  --text:         #c8c8c8;
-  --green:        #3cda56;
-  --glass-border: rgba(150,150,150,.40);
-  --aero-border:  rgba(140,140,140,.40);
-  --bar-grad: linear-gradient(to bottom,
-    rgba(255,255,255,.22) 0%, rgba(185,185,185,.88) 0%,
-    rgba(120,120,120,.76) 4%, rgba(26,26,26,.98) 52%,
-    rgba(4,4,4,1) 52%, rgba(14,14,14,.99) 100%);
-  --bar-shine:    rgba(255,255,255,.24);
-  --bar-border-t: rgba(255,255,255,.18);
-  --bar-border-b: rgba(0,0,0,.88);
-  --bar-border-s: rgba(140,140,140,.44);
-  --bar-glow-top: linear-gradient(180deg,rgba(255,255,255,.14) 0%,rgba(200,200,200,.02) 100%);
-  --bar-text:     #f2f2f2;
-  --bar-tshadow:  0 1px 3px rgba(0,0,0,.98), 0 0 10px rgba(200,200,200,.20);
-  --th-accent: #cc1a1a;
-  --th-player-filter: sepia(100%) saturate(6) hue-rotate(300deg) brightness(1.1);
+  --accent:    #cc1a1a;
+  --text:      #111;
+  --text-dim:  #2c2c2c;
+  --grad-bar:  linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
+  --shadow-bar: 0 2px 5px rgba(0,0,0,.15);
 }
 
-html {
-  scrollbar-width:thin;
-  scrollbar-color:rgba(10,10,10,.62) transparent;
-}
-::-webkit-scrollbar { width:7px; height:7px; background:transparent; }
-::-webkit-scrollbar-track { background:rgba(0,0,0,.18); border-radius:0; }
-::-webkit-scrollbar-thumb { background:rgba(10,10,10,.62); border-radius:0; }
-::-webkit-scrollbar-thumb:hover { background:rgba(30,30,30,.80); }
+html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.50) transparent; }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(120,120,120,.50); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(54,54,54,.8); }
 
 body {
-  font-family: Tahoma,'Segoe UI',Geneva,Verdana,sans-serif;
-  font-size: 12px;
-  background: #000 center/contain fixed no-repeat;
-  color: var(--text);
-  min-height: 100vh;
-  padding: 12px 6px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
+  font-size:12px;
+  background:#000 center/contain fixed no-repeat;
+  color:var(--text);
+  min-height:100vh;
+  padding:12px 6px 40px;
+  display:flex; flex-direction:column; align-items:center;
 }
 
-a { color:var(--text); text-decoration:none; }
-a:hover { color:var(--green); text-decoration:underline; }
-p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
+img { -webkit-user-drag:none; user-select:none; }
+a             { color:#000; text-decoration:none; }
+a:hover       { color:var(--accent); text-decoration:underline; }
+p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
 
-/* Page system */
 .page        { display:none; }
 .page.active { display:block; }
 
-/* Outer layout */
-#_pageShell {
-  width: 800px;
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-}
+#_pageShell { width:800px; max-width:100%; display:flex; flex-direction:column; }
 
-/* Corner logo */
+/* ── Corner logo ── */
 #cornerLogo {
   position:fixed; top:10px; right:14px; z-index:9998;
   line-height:0; text-decoration:none;
 }
-#cornerLogo img {
-  height:36px; width:auto; object-fit:contain; display:block;
-  filter:drop-shadow(0 1px 4px rgba(0,0,0,.90));
-  opacity:.82; transition:opacity .18s, filter .18s;
-}
-#cornerLogo:hover img {
-  opacity:1;
-  filter:drop-shadow(0 0 8px rgba(255,255,255,.55)) drop-shadow(0 1px 4px rgba(0,0,0,.90));
-}
+#cornerLogo img { height:36px; width:auto; object-fit:contain; display:block; opacity:.82; pointer-events:auto; }
+#cornerLogo:hover img { opacity:1; }
 
-/* Aero top bar */
+/* ── Topbar ── */
 .aero-bar {
-  background:var(--bar-grad);
-  border:1px solid var(--bar-border-s);
-  border-top-color:var(--bar-border-t);
-  border-bottom-color:var(--bar-border-b);
-  box-shadow:inset 0 1px 0 var(--bar-shine), inset 0 2px 4px rgba(255,255,255,.10), 0 3px 10px rgba(0,0,0,.48);
-  color:var(--bar-text); font-size:14.6px; font-weight:400;
-  padding:2px 4px; text-shadow:var(--bar-tshadow);
-  position:relative; overflow:hidden;
-  display:flex; align-items:center; gap:4px;
+  background:var(--grad-bar);
+  border:2px ridge #727272;
+  box-shadow:var(--shadow-bar);
+  color:var(--text); font-size:13px; font-weight:400;
+  padding:4px 8px;
+  display:flex; align-items:center; gap:6px;
   margin-bottom:7px;
 }
-.aero-bar::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:50%;
-  background:var(--bar-glow-top); pointer-events:none;
-}
 .aero-bar .back-link {
-  z-index:1; flex-shrink:0; padding:2px 3px;
+  flex-shrink:0; padding:2px 3px;
   display:flex; align-items:center; line-height:0; text-decoration:none;
 }
-.aero-bar .back-link img {
-  height:30px; width:auto; object-fit:contain; display:block;
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.80));
-}
-.aero-bar .back-link:hover img {
-  filter:drop-shadow(0 0 6px rgba(255,255,255,.70)) brightness(1.2);
-}
-.aero-bar .bar-title { flex:1; text-align:center; z-index:1; padding-right:36px; }
+.aero-bar .back-link img { height:28px; width:auto; object-fit:contain; display:block; pointer-events:auto !important; }
+.aero-bar .back-link:hover img { filter:brightness(.85); }
+.aero-bar .bar-title { flex:1; text-align:center; font-size:12px; letter-spacing:.5px; }
 
-/* Glass box */
+/* ── Glass / aero boxes ── */
 .glass-box {
-  background-image:linear-gradient(rgb(255 255 255 / 12%), rgb(0 0 0 / 100%));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.07), 0 5px 6px rgba(0,0,0,.55);
-  border:1px solid var(--glass-border);
+  background:#ebebeb;
+  box-shadow:var(--shadow-bar);
+  border:2px ridge #727272;
   padding:5px; margin-bottom:7px;
 }
-.aero-inner { border:1px solid var(--aero-border); background:rgba(6,6,6,.92); }
-.aero-pad { padding:10px 12px; }
+.aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
+.aero-pad   { padding:10px 12px; }
 
-/* CD disc */
-#spinningDisk { display:none!important; }
+/* ── Override style.css player elements to use light theme ── */
+
+/* Header bar */
+#musicPlayerContainer .mp-header-bar {
+  background:var(--grad-bar) !important;
+  border-bottom:1px solid rgba(0,0,0,.18) !important;
+  border-top:1px solid rgba(255,255,255,.70) !important;
+  box-shadow:none !important;
+  color:var(--text) !important;
+  font-size:14px !important;
+}
+
+/* Controls row */
+#musicPlayerContainer .mp-controls-row {
+  background:var(--grad-bar) !important;
+  border-top:1px solid rgba(255,255,255,.70) !important;
+  border-bottom:1px solid rgba(0,0,0,.15) !important;
+  box-shadow:none !important;
+}
+
+/* Playlist background */
+#musicBackground {
+  background:#f0f0f0 !important;
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0px,rgba(0,0,0,.03) 1px,transparent 1px,transparent 3px) !important;
+}
+
+/* Playlist left scrollbar */
+#playlistLeft {
+  scrollbar-color:rgba(120,120,120,.50) transparent !important;
+}
+
+/* Group headers */
+.pl-group-header {
+  background:linear-gradient(to bottom,#e0e0e0,#d0d0d0) !important;
+  color:var(--accent) !important;
+  border-bottom:1px solid rgba(0,0,0,.15) !important;
+  border-top:1px solid rgba(255,255,255,.60) !important;
+}
+
+/* Track list */
+.pl-track-list li { color:var(--text) !important; }
+.pl-track-list li a { color:var(--text) !important; }
+.pl-track-list li a:hover { color:var(--accent) !important; }
+.pl-track-list li a.activeSong { color:var(--accent) !important; }
+
+/* Visualizer */
+#visualizerCanvas {
+  background:#e8e8e8 !important;
+  border:1px solid rgba(0,0,0,.20) !important;
+}
+
+/* Status bar */
+#musicPlayerContainer .mp-status-bar {
+  background:var(--grad-bar) !important;
+  border-top:1px solid rgba(255,255,255,.60) !important;
+  border-bottom:1px solid rgba(0,0,0,.15) !important;
+  color:var(--text) !important;
+}
+#audioName { color:var(--accent) !important; }
+#mpLikeVal, #mpDislikeVal { color:#444 !important; }
+#mpPlusBtn { color:rgba(0,0,0,.45) !important; }
+
+/* Plus popup */
+#mpPlusPopup {
+  background:#fff !important;
+  border:1px solid rgba(140,140,140,.50) !important;
+  box-shadow:0 4px 12px rgba(0,0,0,.15) !important;
+}
+#mpPopRandom, #mpPopShuffle, #mpPopSortToggle,
+#mpSortSubmenu div, #mpPopUrl { color:var(--text) !important; }
+#mpPopRandom:hover, #mpPopShuffle:hover, #mpPopSortToggle:hover,
+#mpSortSubmenu div:hover, #mpPopUrl:hover {
+  background:#ebebeb !important; color:var(--accent) !important;
+}
+#mpSortSubmenu { background:#f5f5f5 !important; border-top:1px solid rgba(0,0,0,.10) !important; }
+
+/* Progress row */
+#musicPlayerContainer .mp-progress-row {
+  background:var(--grad-bar) !important;
+  border-bottom:1px solid rgba(0,0,0,.15) !important;
+  border-top:1px solid rgba(255,255,255,.60) !important;
+  box-shadow:none !important;
+}
+#musicPlayerContainer .mp-progress-row span { color:var(--text-dim) !important; }
+#timeLeft { color:var(--accent) !important; }
+#volumeIndicator { color:var(--accent) !important; }
+
+/* Progress track */
+.mp-progress-track, .mp-vol-wrap {
+  background:linear-gradient(to bottom,#ccc,#e0e0e0) !important;
+  border:1px solid rgba(0,0,0,.20) !important;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.10) !important;
+}
+.mp-progress-fill, .mp-vol-fill {
+  background:linear-gradient(to bottom,#555 0%,#333 45%,#1a1a1a 50%,#444 100%) !important;
+}
+
+/* Player images — keep default colors, no red tint */
+.mp-ctrl-btn img, .mp-ctrl-btn .player-img,
+.mp-mute-btn img, .mp-loop-btn img {
+  filter:none !important; -webkit-filter:none !important;
+}
+.mp-ctrl-btn:hover img, .mp-ctrl-btn:hover .player-img,
+.mp-mute-btn:hover img, .mp-loop-btn:hover img {
+  filter:brightness(.75) !important; -webkit-filter:brightness(.75) !important;
+}
+#mpLikeBtn img, #mpDislikeBtn img {
+  filter:none !important; -webkit-filter:none !important;
+}
+
+/* Playlist right panel */
+#playlistRight {
+  display:flex !important; flex-direction:column !important;
+  align-items:center !important; justify-content:flex-start !important;
+  padding:8px 6px !important; gap:6px !important;
+  width:183px !important; flex-shrink:0 !important; overflow:visible !important;
+}
+
+/* CD */
+#spinningDisk { display:none !important; }
 #cdDisc {
   width:155px; height:136px; display:block; flex-shrink:0;
   cursor:pointer; border-radius:50%; object-fit:contain; margin-top:2px;
-  filter:drop-shadow(0 0 6px rgba(120,20,20,.5));
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.25));
   animation-name:_cdSpin; animation-duration:5000ms;
   animation-timing-function:linear; animation-iteration-count:infinite;
   animation-play-state:paused;
@@ -148,48 +221,25 @@ p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
 #cdDisc.cd-playing { animation-play-state:running; }
 @keyframes _cdSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 
-#playlistRight {
-  display:flex!important; flex-direction:column!important;
-  align-items:center!important; justify-content:flex-start!important;
-  padding:8px 6px!important; gap:6px!important;
-  width:183px!important; flex-shrink:0!important; overflow:visible!important;
-}
-#visualizerCanvas {
-  background:rgba(4,4,4,.97)!important;
-  border:1px solid rgba(100,100,100,.35);
-  width:163px!important; display:block; cursor:default;
-}
+/* Hide Rena/Rika */
+#renaChan, #rikaChan { display:none !important; }
 
-/* Player button tints */
-.mp-ctrl-btn:hover img, .mp-ctrl-btn:hover .player-img,
-.mp-mute-btn:hover img, .mp-loop-btn:hover img {
-  filter:sepia(100%) saturate(6) hue-rotate(300deg) brightness(1.25)!important;
-  -webkit-filter:sepia(100%) saturate(6) hue-rotate(300deg) brightness(1.25)!important;
-}
-#mpLikeBtn img, #mpDislikeBtn img {
-  filter:none!important; -webkit-filter:none!important;
-}
-
-/* Hide Rena/Rika on standalone */
-#renaChan, #rikaChan { display:none!important; }
-
-/* Sound toggle */
+/* ── Sound toggle ── */
 #soundToggle {
   position:fixed; bottom:8px; left:10px; z-index:9999;
-  font-family:Tahoma,sans-serif; font-size:10px;
-  color:rgba(140,140,140,.55); cursor:pointer; user-select:none;
-  padding:2px 0; background:none; border:none; outline:none; transition:color .15s;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+  font-size:10px; color:rgba(0,0,0,.40); cursor:pointer;
+  user-select:none; padding:2px 0; background:none; border:none; outline:none;
 }
-#soundToggle:hover { color:rgba(200,200,200,.80); }
-#soundToggle.off   { color:rgba(90,90,90,.50); }
+#soundToggle:hover { color:rgba(0,0,0,.70); }
+#soundToggle.off   { color:rgba(0,0,0,.22); }
 
-/* Mobile */
+/* ── Mobile ── */
 @media (max-width:600px) {
   body { padding:8px 4px 24px; background-attachment:scroll; }
   #_pageShell { width:100%; }
-  .aero-bar { font-size:13px; }
-  .aero-bar .back-link img { height:26px; }
-  .aero-bar .bar-title { padding-right:0; font-size:12px; }
+  .aero-bar { font-size:12px; }
+  .aero-bar .back-link img { height:24px; }
   #cornerLogo img { height:28px; }
   .glass-box { padding:4px; }
 }
@@ -197,17 +247,13 @@ p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
 </head>
 <body>
 
-<!-- Corner logo -->
 <a id="cornerLogo" href="../index.html#introduction" title="Watanagashi Archive — Home">
   <img src="../assets/images/watanagashilogo.png" alt="Watanagashi Archive"
     onerror="this.style.display='none'">
 </a>
 
-<!--
-  HIDDEN STUBS — script.js looks for these IDs (gotoPage, NavBadges, sidebar, etc.)
-  All are invisible and zero-size.
--->
-<div style="display:none!important;position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;">
+<!-- Hidden stubs for script.js -->
+<div style="display:none !important;position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;">
   <aside id="sidebarAside">
     <div id="navigationMenu">
       <a class="nav-link" id="nbtn-introduction" href="#introduction"></a>
@@ -244,19 +290,16 @@ p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
   </main>
 </div>
 
-<!-- VISIBLE SHELL -->
 <div id="_pageShell">
 
-  <!-- Aero navigation bar -->
   <div class="aero-bar">
     <a class="back-link" href="../index.html" title="Back to Archive">
       <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#8249;"
-        onerror="this.outerHTML='<span style=&quot;color:#bbb;font-size:22px;line-height:1;z-index:1;&quot;>&#8249;</span>'">
+        onerror="this.outerHTML='<span style=&quot;color:#333;font-size:22px;line-height:1;&quot;>&#8249;</span>'">
     </a>
-    <span class="bar-title">Music Player &#9834;</span>
+    <span class="bar-title">MUSIC PLAYER ♪</span>
   </div>
 
-  <!-- Intro blurb -->
   <div class="glass-box">
     <div class="aero-inner">
       <div class="aero-pad" style="display:flex;align-items:flex-start;gap:10px;">
@@ -268,8 +311,7 @@ p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
     </div>
   </div>
 
-  <!-- THE PLAYER — always visible, script.js targets pg-music by ID -->
-  <div id="pg-music" class="page active" style="display:block!important;">
+  <div id="pg-music" class="page active" style="display:block !important;">
     <div class="glass-box" id="playerGlassBox">
       <div id="musicPlayerContainer" class="aero-glass-overlay">
 
@@ -288,7 +330,6 @@ p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
           </button>
         </div>
 
-        <!-- Hidden YT container -->
         <div id="ytContainer" style="position:fixed;bottom:0;right:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;">
           <div id="_ytEl"></div>
         </div>
@@ -304,47 +345,45 @@ p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
           </div>
         </div>
 
-        <!-- Status bar -->
         <div class="mp-status-bar" id="mpStatusBar"
           style="position:relative;display:flex;align-items:center;gap:6px;padding:4px 8px;">
           <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
             <button id="mpLikeBtn" title="Like"
               style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;opacity:0.3;">
               <img src="https://cdn-icons-png.flaticon.com/128/739/739231.png"
-                style="width:16px;height:16px;pointer-events:none;filter:grayscale(80%) brightness(0.5);" draggable="false">
+                style="width:16px;height:16px;pointer-events:none;" draggable="false">
             </button>
-            <span id="mpLikeVal" style="font-size:11px;color:#ccc;min-width:12px;">0</span>
+            <span id="mpLikeVal" style="font-size:11px;min-width:12px;">0</span>
             <button id="mpDislikeBtn" title="Dislike"
               style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;opacity:0.3;">
               <img src="https://cdn-icons-png.flaticon.com/128/880/880613.png"
-                style="width:16px;height:16px;pointer-events:none;filter:grayscale(80%) brightness(0.5);" draggable="false">
+                style="width:16px;height:16px;pointer-events:none;" draggable="false">
             </button>
-            <span id="mpDislikeVal" style="font-size:11px;color:#ccc;min-width:12px;">0</span>
+            <span id="mpDislikeVal" style="font-size:11px;min-width:12px;">0</span>
           </div>
           <span style="flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;">
             Currently playing: <span id="audioName">&mdash;</span>
           </span>
           <span id="mpPlusBtn" title="Options"
-            style="cursor:pointer;font-size:15px;font-weight:bold;color:rgba(200,200,200,.55);padding:0 3px;user-select:none;flex-shrink:0;line-height:1;">+</span>
+            style="cursor:pointer;font-size:15px;font-weight:bold;padding:0 3px;user-select:none;flex-shrink:0;line-height:1;">+</span>
           <div id="mpPlusPopup"
-            style="display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;background:#0a0202;border:1px solid rgba(180,20,20,.5);min-width:200px;font-family:Tahoma,sans-serif;font-size:12px;padding:4px 0;box-shadow:0 -4px 16px rgba(0,0,0,.8);"
+            style="display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;min-width:200px;font-size:12px;padding:4px 0;"
             onclick="event.stopPropagation()">
-            <div id="mpPopRandom"     style="padding:7px 16px;cursor:pointer;color:#ccc;">Random</div>
-            <div id="mpPopShuffle"    style="padding:7px 16px;cursor:pointer;color:#ccc;">Shuffle: OFF</div>
-            <div style="border-top:1px solid rgba(255,255,255,.06);margin:3px 0;"></div>
-            <div id="mpPopSortToggle" style="padding:7px 16px;cursor:pointer;color:#ccc;display:flex;justify-content:space-between;align-items:center;">
+            <div id="mpPopRandom"     style="padding:7px 16px;cursor:pointer;">Random</div>
+            <div id="mpPopShuffle"    style="padding:7px 16px;cursor:pointer;">Shuffle: OFF</div>
+            <div style="border-top:1px solid rgba(0,0,0,.10);margin:3px 0;"></div>
+            <div id="mpPopSortToggle" style="padding:7px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
               Sort <span style="opacity:.5;font-size:10px;">&#9654;</span>
             </div>
-            <div id="mpSortSubmenu" style="display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(80,20,20,.3);"></div>
-            <div style="border-top:1px solid rgba(255,255,255,.06);margin:3px 0;"></div>
-            <a id="mpPopUrl" style="display:block;padding:7px 16px;cursor:pointer;color:#ccc;text-decoration:none;"
+            <div id="mpSortSubmenu" style="display:none;padding:3px 0;"></div>
+            <div style="border-top:1px solid rgba(0,0,0,.10);margin:3px 0;"></div>
+            <a id="mpPopUrl" style="display:block;padding:7px 16px;cursor:pointer;text-decoration:none;"
               target="_blank" rel="noopener noreferrer">URL</a>
           </div>
         </div>
 
-        <!-- Progress / volume -->
         <div class="mp-progress-row">
-          <span style="font-size:10px;color:#aaa;white-space:nowrap;">Time Left:</span>
+          <span style="font-size:10px;white-space:nowrap;">Time Left:</span>
           <span id="timeLeft" class="mp-time-val">0:00</span>
           <div class="mp-progress-track" style="flex:1 1 auto;">
             <div id="progressFill" class="mp-progress-fill"></div>
@@ -358,7 +397,7 @@ p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
             <div class="mp-vol-fill" id="volFill"></div>
             <input type="range" id="volumeSlider" class="mp-vol-range" min="0" max="100" step="1" value="30">
           </div>
-          <span style="font-size:10px;color:#aaa;white-space:nowrap;">Vol: <span id="volumeIndicator">30</span></span>
+          <span style="font-size:10px;white-space:nowrap;">Vol: <span id="volumeIndicator">30</span></span>
           <button id="audioLoop" class="mp-loop-btn" title="Loop">
             <img id="audioLoopImage"
               src="https://frutigeraeroarchive.org/images/music_player/music_player_loop_off.png" alt="Loop" draggable="false">
@@ -368,56 +407,35 @@ p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
       </div>
     </div>
   </div>
-  <!-- /pg-music -->
 
-</div><!-- /#_pageShell -->
+</div>
 
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 
-<!-- Scripts — same load order as index.html, paths adjusted for pages/ -->
 <script src="../scripts/js/music.js"></script>
 <script src="../scripts/js/video.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script src="../scripts/js/script.js"></script>
 
 <script>
-/* ──────────────────────────────────────────────────────────────
-   POST-SCRIPT PATCHES
-   ────────────────────────────────────────────────────────────── */
-
 var _BG_URL = 'https://preview.redd.it/is-there-any-kind-of-higurashi-audio-only-thing-that-i-can-v0-rlmimbxfqz0e1.jpeg?width=1080&crop=smart&auto=webp&s=a4b337ee1258844d21720824a2a0b17b640c122a';
 
-/* 1. Inject our background as the last style — wins over script.js's !important */
 function _applyMusicBg() {
   var s = document.getElementById('_musicPageBg');
   if (!s) { s = document.createElement('style'); s.id = '_musicPageBg'; document.head.appendChild(s); }
-  s.textContent = [
-    'body {',
-    '  background-image: url("' + _BG_URL + '") !important;',
-    '  background-size: contain !important;',
-    '  background-attachment: fixed !important;',
-    '  background-repeat: no-repeat !important;',
-    '  background-position: center center !important;',
-    '  background-color: #000 !important;',
-    '}'
-  ].join('\n');
-  /* Always keep it as the very last style */
+  s.textContent = 'body{background-image:url("'+_BG_URL+'")!important;background-size:contain!important;background-attachment:fixed!important;background-repeat:no-repeat!important;background-position:center center!important;background-color:#000!important;}';
   document.head.appendChild(s);
 }
 _applyMusicBg();
 
-/* Re-apply whenever script.js injects its own bg style */
 new MutationObserver(function(muts) {
   muts.forEach(function(m) {
     m.addedNodes.forEach(function(node) {
-      if (node.id === '_darkThemeBgStyle' || node.id === '_themeStyle') {
-        setTimeout(_applyMusicBg, 30);
-      }
+      if (node.id === '_darkThemeBgStyle' || node.id === '_themeStyle') setTimeout(_applyMusicBg, 30);
     });
   });
-}).observe(document.head, { childList: true });
+}).observe(document.head, { childList:true });
 
-/* 2. Keep pg-music always visible even if gotoPage() toggles .active */
 var _origGoto = window.gotoPage;
 window.gotoPage = function(name) {
   if (_origGoto) _origGoto(name);
@@ -425,30 +443,17 @@ window.gotoPage = function(name) {
   if (pg) { pg.style.display = 'block'; pg.classList.add('active'); }
 };
 
-/* ──────────────────────────────────────────────────────────────
-   SOUNDS
-   ────────────────────────────────────────────────────────────── */
+/* ── Sounds ── */
 var _SB = '../assets/audio/';
-var _SND = {
-  start:   _SB+'sitestart.mp3',   alert:   _SB+'sitealert.mp3',
-  dislike: _SB+'sitedislikeclick.mp3', like: _SB+'sitelikeclick.mp3',
-  sort:    _SB+'sitesortclick.mp3',    button: _SB+'sitebuttonclick.mp3',
-  hover:   _SB+'text.mp3',
-};
+var _SND = { start:_SB+'sitestart.mp3', alert:_SB+'sitealert.mp3', dislike:_SB+'sitedislikeclick.mp3', like:_SB+'sitelikeclick.mp3', sort:_SB+'sitesortclick.mp3', button:_SB+'sitebuttonclick.mp3', hover:_SB+'text.mp3' };
 var _soundsOn = true, _aCache = {}, _hoverThrottle = 0, _hoverTimer = null;
 
-function _getAudio(k) {
-  if (!_aCache[k]) { var a = new Audio(_SND[k]); a.preload='auto'; _aCache[k]=a; }
-  return _aCache[k];
-}
-function playSound(k) {
-  if (!_soundsOn) return;
-  try { var c=_getAudio(k).cloneNode(); c.volume=(k==='hover'?.30:.52); c.play().catch(function(){}); } catch(e){}
-}
+function _getAudio(k) { if (!_aCache[k]) { var a=new Audio(_SND[k]); a.preload='auto'; _aCache[k]=a; } return _aCache[k]; }
+function playSound(k) { if (!_soundsOn) return; try { var c=_getAudio(k).cloneNode(); c.volume=(k==='hover'?.30:.52); c.play().catch(function(){}); } catch(e){} }
 function toggleSound() {
   _soundsOn = !_soundsOn;
   var btn = document.getElementById('soundToggle');
-  if (btn) { btn.textContent = _soundsOn?'Sounds: On':'Sounds: Off'; btn.classList.toggle('off',!_soundsOn); }
+  if (btn) { btn.textContent=_soundsOn?'Sounds: On':'Sounds: Off'; btn.classList.toggle('off',!_soundsOn); }
   if (_soundsOn) playSound('button');
   sessionStorage.setItem('_soundsOn', String(_soundsOn));
 }
@@ -465,9 +470,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-document.addEventListener('pointerdown', function(){
-  Object.keys(_SND).forEach(function(k){ _getAudio(k); });
-},{once:true,passive:true});
+document.addEventListener('pointerdown', function(){ Object.keys(_SND).forEach(function(k){ _getAudio(k); }); },{once:true,passive:true});
 
 function _isInteractive(el) {
   if (!el||el===document.body||el===document.documentElement) return false;
@@ -476,32 +479,15 @@ function _isInteractive(el) {
   if(t==='INPUT'&&el.type!=='range') return true;
   var cs=window.getComputedStyle(el); return cs&&cs.cursor==='pointer';
 }
-document.addEventListener('mouseover',function(e){
-  if(e.target.id==='soundToggle') return;
-  if(!_isInteractive(e.target)) return;
-  clearTimeout(_hoverTimer);
-  _hoverTimer=setTimeout(function(){
-    var n=Date.now(); if(n-_hoverThrottle<400) return;
-    _hoverThrottle=n; playSound('hover');
-  },400);
-},{passive:true});
-document.addEventListener('mouseout',function(e){
-  if(_isInteractive(e.target)) clearTimeout(_hoverTimer);
-},{passive:true});
-document.addEventListener('click',function(e){
-  if(e.target.id==='soundToggle') return;
-  if(_isInteractive(e.target)) playSound('button');
-},true);
+document.addEventListener('mouseover',function(e){ if(e.target.id==='soundToggle') return; if(!_isInteractive(e.target)) return; clearTimeout(_hoverTimer); _hoverTimer=setTimeout(function(){ var n=Date.now(); if(n-_hoverThrottle<400) return; _hoverThrottle=n; playSound('hover'); },400); },{passive:true});
+document.addEventListener('mouseout',function(e){ if(_isInteractive(e.target)) clearTimeout(_hoverTimer); },{passive:true});
+document.addEventListener('click',function(e){ if(e.target.id==='soundToggle') return; if(_isInteractive(e.target)) playSound('button'); },true);
 
-/* Encoding fix for playlist text */
 (function(){
   var BAD='\u00e2\u20ac\u00a6';
   function fix(el){if(!el)return;if(el.textContent&&el.textContent.indexOf(BAD)!==-1)el.textContent=el.textContent.split(BAD).join('\u2026');}
   var pl=document.getElementById('playlistLeft');
-  if(pl) new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){
-    if(n.nodeType===3)fix(n.parentElement);
-    else if(n.querySelectorAll){n.querySelectorAll('p,span,div').forEach(fix);fix(n);}
-  });});}).observe(pl,{childList:true,subtree:true});
+  if(pl) new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){ if(n.nodeType===3)fix(n.parentElement); else if(n.querySelectorAll){n.querySelectorAll('p,span,div').forEach(fix);fix(n);} });});}).observe(pl,{childList:true,subtree:true});
 })();
 </script>
 </body>
