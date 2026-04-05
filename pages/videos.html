@@ -59,7 +59,7 @@ img{-webkit-user-drag:none;user-select:none}
 .section-desc{font-size:11px;color:#666;padding:5px 8px 4px;border-bottom:1px solid rgba(0,0,0,.08);margin-bottom:4px}
 
 /* ── video embed ── */
-.video-embed-wrap{position:relative;background:#000;border-bottom:2px solid rgba(0,0,0,.30)}
+.video-embed-wrap{position:relative;background:#000;}
 #videoEmbedRatio{position:relative;width:100%;padding-bottom:56.25%;background:#000}
 #videoEmbedRatio iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
 #videoEmbedPlaceholder{
@@ -441,13 +441,58 @@ function _baseDataForKey(key){
   return[];
 }
 
+/* ── oEmbed title cache ── */
+const _titleCache={};
+
+async function _fetchTitle(id){
+  if(!id) return {title:id,author:''};
+  if(_titleCache[id]) return _titleCache[id];
+  try{
+    const r=await fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='+id+'&format=json');
+    if(!r.ok) throw 0;
+    const d=await r.json();
+    _titleCache[id]={title:d.title||id, author:d.author_name||''};
+  }catch(e){ _titleCache[id]={title:id,author:''}; }
+  return _titleCache[id];
+}
+
+// Após renderizar os grids, busca títulos para todos os cards que ainda mostram o ID bruto
+async function _enrichCards(){
+  const cards=[...document.querySelectorAll('.vg-entry[data-vid]')];
+  // Filtra só os que precisam de título
+  const todo=cards.filter(c=>{
+    const t=c.querySelector('.vg-info-title');
+    return t && (t.textContent===c.dataset.vid || t.textContent.trim()==='');
+  });
+  // Busca em lotes de 4 para não sobrecarregar
+  for(let i=0;i<todo.length;i+=4){
+    const batch=todo.slice(i,i+4);
+    await Promise.all(batch.map(async card=>{
+      const id=card.dataset.vid;
+      const info=await _fetchTitle(id);
+      const tEl=card.querySelector('.vg-info-title');
+      const sEl=card.querySelector('.vg-info-sub');
+      if(tEl) tEl.textContent=info.title;
+      if(sEl && (!sEl.textContent||sEl.textContent===' '||sEl.textContent==='')) sEl.textContent=info.author;
+      if(tEl) tEl.title=info.title;
+      // Actualiza status bar se for o vídeo activo
+      if(id===_vCurId){
+        const n=document.getElementById('vAudioName');
+        const ti=document.getElementById('vInfoTitle');
+        const me=document.getElementById('vInfoMeta');
+        if(n&&(n.textContent===id||n.textContent==='—'||n.textContent==='—'))n.textContent=info.title;
+        if(ti&&(ti.textContent===id||ti.textContent==='—'||ti.textContent==='—'))ti.textContent=info.title;
+        if(me&&!me.textContent) me.textContent=info.author;
+      }
+    }));
+  }
+}
+
 function _normalizeEntry(e){
-  // Suporta todos os formatos possíveis:
-  // {videoId, name, ...}, {id, title, ...}, {videoId, title, ...}, etc.
-  const id    = e.id    || e.videoId || e.video_id || e.vid || '';
-  const title = e.title || e.name    || e.label    || e.text || id;
-  const year  = e.year  || e.description || e.desc  || e.subtitle || e.meta || '';
-  const thumb = e.thumb || e.thumbnail   || e.image || e.cover
+  const id    = e.id || e.videoId || e.video_id || e.vid || '';
+  const title = e.title || e.name || e.label || e.text || '';
+  const year  = e.year  || e.description || e.desc || e.subtitle || e.meta || '';
+  const thumb = e.thumb || e.thumbnail || e.image || e.cover
                 || (id ? 'https://img.youtube.com/vi/'+id+'/mqdefault.jpg' : null);
   return{ id, title, year, thumb, duration: e.duration||'' };
 }
@@ -477,13 +522,33 @@ function _playVideo(entry){
   _vPlaySound('button');
   _loadYT(entry.id,true);
 
-  const nameEl=document.getElementById('vAudioName');
-  if(nameEl) nameEl.textContent=entry.title||entry.id;
-
+  const nameEl =document.getElementById('vAudioName');
   const titleEl=document.getElementById('vInfoTitle');
   const metaEl =document.getElementById('vInfoMeta');
-  if(titleEl) titleEl.textContent=entry.title||entry.id;
-  if(metaEl)  metaEl.textContent=entry.year||entry.description||entry.desc||'';
+
+  // Mostra o que já temos (pode ser o ID se ainda não buscou)
+  const displayTitle = entry.title && entry.title!==entry.id ? entry.title : (entry.id);
+  if(nameEl)  nameEl.textContent  = displayTitle;
+  if(titleEl) titleEl.textContent = displayTitle;
+  if(metaEl)  metaEl.textContent  = entry.year||'';
+
+  // Busca título real via oEmbed de forma assíncrona
+  if(!entry.title || entry.title===entry.id){
+    _fetchTitle(entry.id).then(info=>{
+      if(_vCurId!==entry.id) return; // usuário já trocou de vídeo
+      if(nameEl)  nameEl.textContent  = info.title;
+      if(titleEl) titleEl.textContent = info.title;
+      if(metaEl && !metaEl.textContent) metaEl.textContent = info.author;
+      // Actualiza o card também
+      const card=document.querySelector('.vg-entry[data-vid="'+entry.id+'"]');
+      if(card){
+        const t=card.querySelector('.vg-info-title');
+        const s=card.querySelector('.vg-info-sub');
+        if(t) t.textContent=info.title;
+        if(s&&(!s.textContent||s.textContent===' ')) s.textContent=info.author;
+      }
+    });
+  }
 
   _updateVoteUI(entry.id);
   document.querySelectorAll('.vg-entry').forEach(el=>el.classList.toggle('active-entry',el.dataset.vid===entry.id));
@@ -704,6 +769,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   },true);
 
   _rebuildAllGrids();
+  setTimeout(_enrichCards, 200);
 });
 
 /* ── poll for video.js arrays (ANIME_VIDEOS etc.) ── */
@@ -714,17 +780,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const has=(typeof ANIME_VIDEOS!=='undefined'||typeof NOSTALGIA_VIDEOS!=='undefined'||typeof AWESOME_VIDEOS!=='undefined');
     if(has||c>60){
       clearInterval(poll);
-      if(has){
-        // DEBUG: mostra no console o formato real dos dados
-        const sample = (typeof ANIME_VIDEOS!=='undefined'&&ANIME_VIDEOS.length)
-          ? ANIME_VIDEOS[0]
-          : (typeof NOSTALGIA_VIDEOS!=='undefined'&&NOSTALGIA_VIDEOS.length)
-            ? NOSTALGIA_VIDEOS[0]
-            : (typeof AWESOME_VIDEOS!=='undefined'&&AWESOME_VIDEOS.length)
-              ? AWESOME_VIDEOS[0] : null;
-        if(sample) console.log('[VideoPlayer] Formato do objeto de vídeo:', JSON.stringify(sample));
-        _rebuildAllGrids();
-      }
+      if(has){ _rebuildAllGrids(); setTimeout(_enrichCards,400); }
     }
   },300);
 })();
