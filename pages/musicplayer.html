@@ -175,7 +175,7 @@ strong{color:var(--accent);font-weight:400}
 .mp-controls-row{
   display:flex;align-items:center;justify-content:center;gap:4px;padding:4px 8px;
 }
-.mp-ctrl-btn{background:none;border:none;cursor:pointer;padding:3px;display:flex;align-items:center}
+.mp-ctrl-btn{background-image: url('https://frutigeraeroarchive.org/images/music_player/music_player_forward.png') no-repeat; background-size: contain; border:none;cursor:pointer;padding:3px;display:flex;align-items:center}
 .mp-ctrl-btn img{height:28px;width:auto;object-fit:contain;pointer-events:none}
 .mp-ctrl-btn:hover img{filter:brightness(.75)}
 .mp-mute-btn,.mp-loop-btn{background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center}
@@ -396,7 +396,7 @@ strong{color:var(--accent);font-weight:400}
   </div>
 
   <div id="trackLoadBanner">
-    <img src="https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif" alt="" onerror="this.style.display='none'">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif" alt="" style="height:18px;width:18px;flex-shrink:0;" onerror="this.style.display='none'">
     <span id="trackLoadMsg">Initializing…</span>
   </div>
 
@@ -710,15 +710,6 @@ const VOTES = {
    ══════════════════════════════════════════════════════════════ */
 function resolveMOTW() {
   if (!TRACKS.length) return null;
-  // Find the track with the highest score
-  let best = null, bestScore = -Infinity;
-  TRACKS.forEach(t => {
-    if (!t.videoId) return;
-    const s = VOTES.getScore(t.videoId);
-    if (s > bestScore) { bestScore = s; best = t; }
-  });
-  // Only return as MOTW if actually has votes; otherwise pick random
-  if (best && bestScore > 0) return best;
   return TRACKS[Math.floor(Math.random() * TRACKS.length)];
 }
 
