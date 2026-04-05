@@ -1646,9 +1646,12 @@ function _setCdPlaying(playing) {
 if (label) {
   let text = (n && n.textContent) ? n.textContent : '';
 
-  //  remove tudo antes do " - "
-  if (text.includes(' - ')) {
-    text = text.split(' - ').pop();
+  const parts = text.split(' - ');
+
+  // 🔥 remove duplicação tipo: A - A - B
+  if (parts.length >= 3 && parts[0] === parts[1]) {
+    parts.splice(1, 1);
+    text = parts.join(' - ');
   }
 
   label.textContent = text || '\u2014 playing \u2014';
