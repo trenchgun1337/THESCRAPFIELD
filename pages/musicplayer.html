@@ -1643,8 +1643,16 @@ function _setCdPlaying(playing) {
   if (playing) {
     wrap.classList.add('spinning');
     const n = document.getElementById('audioName');
-    if (label) label.textContent = (n&&n.textContent) ? n.textContent : '\u2014 playing \u2014';
-  } else {
+if (label) {
+  let text = (n && n.textContent) ? n.textContent : '';
+
+  //  remove tudo antes do " - "
+  if (text.includes(' - ')) {
+    text = text.split(' - ').pop();
+  }
+
+  label.textContent = text || '\u2014 playing \u2014';
+}  } else {
     wrap.classList.remove('spinning');
     if (label) label.textContent = '\u2014 paused \u2014';
   }
