@@ -45,15 +45,12 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 p+p{margin-top:5px}
 strong{color:var(--accent);font-weight:400}
 
-/* ── PAGE SHELL ── */
 #_pageShell{width:800px;max-width:100%;display:flex;flex-direction:column}
 
-/* ── CORNER LOGO ── */
 #cornerLogo{position:fixed;top:10px;right:14px;z-index:9998;line-height:0;text-decoration:none}
 #cornerLogo img{height:36px;width:auto;object-fit:contain;display:block;opacity:.82}
 #cornerLogo:hover img{opacity:1}
 
-/* ── AERO BAR ── */
 .aero-bar{
   background:var(--grad-bar);border:2px ridge #727272;
   box-shadow:var(--shadow-bar);color:var(--text);font-size:13px;
@@ -62,148 +59,148 @@ strong{color:var(--accent);font-weight:400}
 .aero-bar .back-link{flex-shrink:0;padding:2px 3px;display:flex;align-items:center;line-height:0;text-decoration:none}
 .aero-bar .back-link img{height:28px;width:auto;object-fit:contain;display:block}
 .aero-bar .back-link:hover img{filter:brightness(.85)}
-.aero-bar .back-link.flip img{transform:scaleX(-1)}
 .aero-bar .bar-title{flex:1;text-align:center;font-size:12px;letter-spacing:.5px}
 
-/* ── GLASS BOX / AERO INNER ── */
 .glass-box{background:#ebebeb;box-shadow:var(--shadow-bar);border:2px ridge #727272;padding:5px;margin-bottom:7px}
 .aero-inner{border:1px solid rgba(0,0,0,.30);background:#f2f2f2}
 .aero-pad{padding:10px 12px}
 
-/* ── SECTION BAR (black strip headers) ── */
 .section-bar{
   display:block;background:#000;padding:5px 8px;margin:0;line-height:1.6;
   font-size:11px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:#fff;
 }
 
-/* ── SECTION DESC ── */
 .section-desc{
   font-size:11px;color:#666;padding:5px 8px 4px;
   border-bottom:1px solid rgba(0,0,0,.08);margin-bottom:4px;
 }
 
 /* ── VIDEO EMBED ── */
-.video-embed-wrap{
-  position:relative;background:#000;
-  border-bottom:2px solid rgba(0,0,0,.30);
-}
-.video-embed-wrap iframe,
-.video-embed-wrap .yt-embed-inner{
-  display:block;width:100%;border:none;
-}
-/* 16:9 ratio container */
-#videoEmbedRatio{
-  position:relative;width:100%;padding-bottom:56.25%;background:#000;
-}
-#videoEmbedRatio iframe{
-  position:absolute;inset:0;width:100%;height:100%;border:none;
-}
-/* placeholder when nothing is loaded */
+.video-embed-wrap{position:relative;background:#000;border-bottom:2px solid rgba(0,0,0,.30);}
+#videoEmbedRatio{position:relative;width:100%;padding-bottom:56.25%;background:#000;}
+#videoEmbedRatio iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
 #videoEmbedPlaceholder{
   display:flex;align-items:center;justify-content:center;
   height:200px;background:#0a0a0a;
   font-size:11px;color:rgba(255,255,255,.25);letter-spacing:1px;text-transform:uppercase;
 }
 
-/* ── VIDEO INFO BOX ── */
-.video-info-box{
-  padding:7px 10px;font-size:11.5px;color:var(--text-dim);
-  border-top:1px solid rgba(0,0,0,.15);
-  display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;
-  min-height:32px;
+/* ── STATUS BAR ── */
+.v-status-bar{
+  background:var(--grad-bar)!important;
+  border-top:1px solid rgba(255,255,255,.60)!important;
+  border-bottom:1px solid rgba(0,0,0,.15)!important;
+  color:var(--text)!important;
+  display:flex;align-items:center;gap:6px;padding:4px 8px;
+  position:relative;overflow:visible;font-size:11.5px;
 }
-.video-info-box .vi-title{
-  flex:1;min-width:0;font-size:12px;color:var(--text);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.video-info-box .vi-meta{font-size:10.5px;color:#888;white-space:nowrap}
-.video-info-box .vi-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.vi-vote-btn{
-  background:none;border:1px solid rgba(140,140,140,.45);
-  padding:2px 7px;cursor:pointer;font-size:11px;color:#555;
-  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
-  display:flex;align-items:center;gap:3px;
-}
-.vi-vote-btn:hover{border-color:rgba(100,100,100,.70);color:#111}
-.vi-vote-btn.active-like{color:var(--green);border-color:rgba(30,120,30,.50)}
-.vi-vote-btn.active-dislike{color:var(--accent);border-color:rgba(180,20,20,.50)}
-.vi-vote-btn img{width:13px;height:13px;object-fit:contain;pointer-events:none}
-.vi-link-btn{
-  background:var(--grad-dl);border:1px solid rgba(140,140,140,.50);
-  padding:2px 8px;cursor:pointer;font-size:10.5px;color:#333;
-  font-family:'Sawarabi Gothic',Tahoma,sans-serif;text-decoration:none;
-  display:inline-flex;align-items:center;gap:3px;
-}
-.vi-link-btn:hover{background:#fff;color:var(--accent);text-decoration:none}
+#vAudioName{color:var(--accent)!important}
 
-/* ── AUTOPLAY TOGGLE ── */
-#videoAutoPlayBtn{
-  background:var(--grad-bar);border:1px solid rgba(140,140,140,.50);
-  padding:3px 9px;cursor:pointer;font-size:10.5px;color:#555;
-  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+/* Like/dislike — opacity .45 by default, 1 when voted */
+#vLikeBtn,#vDislikeBtn{
+  background:none;border:none;cursor:pointer;padding:2px;
+  display:flex;align-items:center;gap:3px;
+  opacity:.45!important;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:11px;color:#555;
+}
+#vLikeBtn.voted-like{opacity:1!important;color:var(--green)!important}
+#vDislikeBtn.voted-dislike{opacity:1!important;color:var(--accent)!important}
+#vLikeBtn img,#vDislikeBtn img{width:16px;height:16px;object-fit:contain;pointer-events:none}
+
+/* ── INFO ROW (title + description) ── */
+.video-info-box{
+  padding:6px 10px;
+  display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
+  min-height:28px;background:#f2f2f2;border:1px solid rgba(0,0,0,.30);
+  border-top:1px solid rgba(0,0,0,.10);
+}
+.vi-title{
+  font-size:12px;color:var(--text);font-weight:400;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;
+}
+.vi-meta{font-size:10.5px;color:#888;white-space:nowrap;flex-shrink:0}
+
+/* ── "+" POPUP ── */
+#vPlusBtn{
+  cursor:pointer;font-size:15px;font-weight:bold;padding:0 3px;
+  user-select:none;flex-shrink:0;line-height:1;position:relative;
+  color:rgba(0,0,0,.45)!important;
+}
+#vPlusPopup{
+  display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;
+  min-width:195px;font-size:12px;padding:4px 0;
+  background:rgba(4,4,4,.97);border:1px solid rgba(100,20,20,.50);
+}
+#vPlusPopup div,#vPlusPopup a{
+  display:block;padding:7px 16px;cursor:pointer;color:#ccc;
+  text-decoration:none;white-space:nowrap;
+}
+#vPlusPopup div:hover,#vPlusPopup a:hover{background:rgba(50,50,50,.80);color:#fff}
+#vPopAutoplayDot{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:#555;margin-right:5px;vertical-align:middle;
+}
+#vPopAutoplayDot.dot-on{background:var(--accent)}
+
+/* ── SORT SUBMENU — strictly black & white ── */
+#vSortSubmenu{
+  display:none;
+  background:#111!important;
+  padding:2px 0;
+  border-top:1px solid rgba(255,255,255,.10)!important;
+}
+.vsort-item{
+  padding:5px 22px!important;
+  cursor:pointer;font-size:11.5px;
+  color:#bbb!important;
+  background:#111!important;
   white-space:nowrap;
 }
-#videoAutoPlayBtn.on{
-  background:linear-gradient(to bottom,#3a3a3a 0%,#222 50%,#111 50%,#1e1e1e 100%);
-  border-color:rgba(80,80,80,.60);color:#ddd;
-}
-#videoAutoPlayBtn:hover{filter:brightness(1.10)}
+.vsort-item:hover{background:#2a2a2a!important;color:#fff!important}
+.vsort-item.sort-active{color:#fff!important;font-weight:bold;background:#000!important}
 
 /* ── VIDEO GRID ── */
 .vg-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:6px;
-  padding:6px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px;
 }
 .vg-entry{
-  cursor:pointer;
-  background:#e0e0e0;
+  cursor:pointer;background:#e0e0e0;
   border:1px solid rgba(0,0,0,.18);
-  overflow:hidden;
-  transition:border-color .15s;
-  position:relative;
+  overflow:hidden;position:relative;
 }
 .vg-entry:hover{border-color:rgba(180,20,20,.55)}
 .vg-entry.active-entry{border-color:var(--accent);border-width:2px}
 
-/* Thumbnail */
+/* Thumbnail — NO opacity transition, NO dim on hover */
 .vg-thumb-wrap{
   position:relative;width:100%;padding-bottom:56.25%;background:#111;overflow:hidden;
 }
 .vg-thumb-wrap img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  display:block;transition:opacity .2s;
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
 }
-.vg-entry:hover .vg-thumb-wrap img{opacity:.85}
 
-/* Play overlay */
+/* Play overlay — appears on hover but image itself does not dim */
 .vg-play-overlay{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  background:rgba(0,0,0,.18);opacity:0;transition:opacity .18s;pointer-events:none;
+  background:rgba(0,0,0,.20);opacity:0;pointer-events:none;
 }
 .vg-entry:hover .vg-play-overlay{opacity:1}
-.vg-play-overlay svg{width:32px;height:32px;fill:#fff;drop-shadow:0 0 4px rgba(0,0,0,.7)}
+.vg-play-overlay svg{width:34px;height:34px;fill:#fff;filter:drop-shadow(0 1px 3px rgba(0,0,0,.7))}
 
-/* Vote badge on thumbnail */
 .vg-vote-badge{
   position:absolute;top:3px;right:3px;
   background:rgba(0,0,0,.65);color:#fff;
-  font-size:9px;padding:1px 5px;pointer-events:none;
-  display:none;
+  font-size:9px;padding:1px 5px;pointer-events:none;display:none;
 }
 .vg-vote-badge.visible{display:block}
 .vg-vote-badge.pos{color:#7ef07e}
 .vg-vote-badge.neg{color:#f07e7e}
 
-/* Duration badge */
 .vg-dur{
   position:absolute;bottom:3px;right:3px;
-  background:rgba(0,0,0,.72);color:#fff;
-  font-size:9px;padding:1px 5px;pointer-events:none;
+  background:rgba(0,0,0,.72);color:#fff;font-size:9px;padding:1px 5px;pointer-events:none;
 }
 
-/* Entry info */
 .vg-info{
   padding:4px 6px 5px;
   background:var(--grad-bar);
@@ -211,16 +208,14 @@ strong{color:var(--accent);font-weight:400}
 }
 .vg-info-title{
   font-size:10.5px;color:var(--text);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  margin-bottom:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;
 }
 .vg-info-sub{font-size:9.5px;color:#888}
 
 /* ── PAGER ── */
 .vg-pager{
   display:flex;align-items:center;justify-content:center;
-  gap:3px;padding:6px 6px 4px;border-top:1px solid rgba(0,0,0,.10);
-  flex-wrap:wrap;
+  gap:3px;padding:6px 6px 4px;border-top:1px solid rgba(0,0,0,.10);flex-wrap:wrap;
 }
 .vg-pager-btn{
   background:var(--grad-bar);border:1px solid rgba(140,140,140,.50);
@@ -236,65 +231,126 @@ strong{color:var(--accent);font-weight:400}
 }
 .vg-pager-arrow{font-size:13px;font-weight:bold}
 
-/* ── SORT / OPTIONS POPUP (video "+" button) ── */
-#vPlusBtn{
-  cursor:pointer;font-size:15px;font-weight:bold;padding:0 4px;
-  user-select:none;flex-shrink:0;line-height:1;position:relative;
-  color:rgba(0,0,0,.45);
-}
-#vPlusPopup{
-  display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;
-  min-width:190px;font-size:12px;padding:4px 0;
-  background:rgba(4,4,4,.97);border:1px solid rgba(100,20,20,.50);
-}
-#vPlusPopup div,#vPlusPopup a{
-  display:block;padding:7px 16px;cursor:pointer;color:#ccc;
-  text-decoration:none;white-space:nowrap;
-}
-#vPlusPopup div:hover,#vPlusPopup a:hover{background:rgba(50,50,50,.80);color:#fff}
-#vPopAutoplayDot{
-  display:inline-block;width:7px;height:7px;border-radius:50%;
-  background:#555;margin-right:5px;vertical-align:middle;transition:background .2s;
-}
-#vPopAutoplayDot.dot-on{background:var(--accent)}
+.empty-msg{font-size:11px;color:#aaa;padding:10px 8px;text-align:center;}
 
-/* ── STATUS BAR for video player ── */
-.v-status-bar{
-  background:var(--grad-bar);
-  border-top:1px solid rgba(255,255,255,.60);
-  border-bottom:1px solid rgba(0,0,0,.15);
-  display:flex;align-items:center;gap:6px;padding:4px 8px;
-  position:relative;overflow:visible;font-size:11.5px;
-}
-#vAudioName{color:var(--accent)}
-
-/* ── EMPTY MESSAGE ── */
-.empty-msg{
-  font-size:11px;color:#aaa;padding:10px 8px;text-align:center;
-}
-
-/* ── COPYRIGHT BOX ── */
 .copyright-notice{padding:8px 12px}
 .copyright-notice p{font-size:11px;color:#555;line-height:1.7}
 .copyright-notice a{color:var(--accent)}
-.copyright-notice a:hover{text-decoration:underline}
 
-/* ── NOTE ── */
+/* ── HOST PANEL ── */
+#hostPanel{display:none}
+#hostPanel.visible{display:block}
+.desc-box{background:#fff;padding:8px 10px;margin-bottom:9px;border:1px solid rgba(0,0,0,.30)}
+.url-input{
+  width:100%;background:rgba(255,255,255,.97);border:none;outline:none;color:#000;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:12px;
+  padding:7px 10px;display:block;height:100%;
+}
+.url-input::placeholder{color:#888}
+.host-add-btn{
+  all:unset;box-sizing:border-box;width:100%;
+  background:linear-gradient(to bottom,#5cb85c 0%,#3d8b3d 50%,#2e6b2e 50%,#3a7a3a 100%);
+  border:1px solid rgba(30,90,30,.70);color:#e8ffe6;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:13px;
+  text-shadow:0 1px 2px rgba(0,0,0,.60);
+  padding:8px 12px 10px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;min-height:40px;letter-spacing:.3px;
+}
+.host-add-btn:hover{filter:brightness(1.12)}
+.host-add-btn:active{filter:brightness(.88)}
+.host-status{
+  display:none;font-size:11px;padding:5px 10px;margin-top:4px;
+  border:1px solid rgba(140,140,140,.45);
+  background:linear-gradient(to bottom,#e2e2e2 0%,#cecece 50%,#c0c0c0 100%);
+  text-align:center;
+}
+.host-status.visible{display:block}
+.host-status .ok{color:var(--green)}
+.host-status .err{color:var(--accent)}
 .note{
   background:#f5f5f5;border:1px solid rgba(0,0,0,.25);
   border-left:3px solid rgba(120,120,120,.50);
-  padding:7px 10px;margin-top:6px;
-  font-size:11px;color:var(--text-dim);line-height:1.65;text-align:center;
+  padding:7px 10px;margin-top:6px;font-size:11px;color:var(--text-dim);line-height:1.65;text-align:center;
 }
+.album-field-row{margin-bottom:6px}
+.album-field-row label{display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.album-field-row input{
+  width:100%;border:1px solid rgba(140,140,140,.45);outline:none;color:#000;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:12px;
+  padding:7px 10px;background:rgba(255,255,255,.97);
+}
+.album-existing-pills{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.album-pill{
+  font-size:9.5px;padding:2px 7px;
+  background:var(--grad-bar);border:1px solid rgba(140,140,140,.45);
+  color:#444;cursor:pointer;user-select:none;
+}
+.album-pill:hover{background:#fff;color:var(--accent);border-color:var(--accent)}
+.album-bucket{border:1px solid rgba(0,0,0,.30);margin-bottom:6px;background:#fff}
+.album-bucket-header{
+  display:flex;align-items:center;gap:6px;
+  background:linear-gradient(to bottom,#e0e0e0,#d0d0d0);
+  padding:5px 8px;border-bottom:1px solid rgba(0,0,0,.15);cursor:pointer;user-select:none;
+}
+.album-bucket-header .ab-name{flex:1;font-size:11.5px;font-weight:400;color:#111;letter-spacing:.5px;text-transform:uppercase}
+.album-bucket-header .ab-count{font-size:10px;color:#888}
+.album-bucket-header .ab-del-album{
+  background:none;border:1px solid rgba(180,0,0,.35);color:var(--accent);
+  font-size:9.5px;padding:1px 5px;cursor:pointer;flex-shrink:0;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+}
+.album-bucket-header .ab-del-album:hover{background:var(--accent);color:#fff}
+.album-bucket-body{padding:4px;min-height:36px}
+.album-bucket-body.drag-over{background:#fff5f5!important;outline:2px dashed var(--accent)}
+.ab-track-item{
+  display:flex;align-items:center;gap:5px;padding:4px 6px;margin-bottom:3px;
+  background:#f8f8f8;border:1px solid rgba(140,140,140,.30);font-size:11px;cursor:grab;
+}
+.ab-track-item:active{cursor:grabbing}
+.ab-track-item .abt-art{width:36px;height:24px;object-fit:cover;flex-shrink:0;border:1px solid rgba(0,0,0,.12)}
+.ab-track-item .abt-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#111}
+.ab-track-item .abt-del{
+  background:none;border:1px solid rgba(180,0,0,.30);color:var(--accent);
+  font-size:9px;padding:1px 4px;cursor:pointer;flex-shrink:0;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+}
+.ab-track-item .abt-del:hover{background:var(--accent);color:#fff}
+.abt-move-select{
+  font-size:9.5px;padding:1px 3px;border:1px solid rgba(140,140,140,.45);
+  background:#fff;color:#333;cursor:pointer;flex-shrink:0;max-width:100px;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+}
+#_vNewAlbumRow{display:flex;gap:4px;margin-bottom:6px;align-items:stretch}
+#_vNewAlbumName{
+  flex:1;border:1px solid rgba(140,140,140,.45);outline:none;color:#000;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:11.5px;
+  padding:6px 10px;background:#fff;
+}
+#_vNewAlbumName::placeholder{color:#aaa}
+#_vNewAlbumBtn{
+  all:unset;box-sizing:border-box;
+  background:linear-gradient(to bottom,#555 0%,#333 50%,#222 50%,#2e2e2e 100%);
+  border:1px solid rgba(0,0,0,.50);color:#eee;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:11px;
+  padding:6px 12px;cursor:pointer;white-space:nowrap;
+}
+#_vNewAlbumBtn:hover{filter:brightness(1.2)}
+.host-reset-btn{
+  all:unset;box-sizing:border-box;
+  background:linear-gradient(to bottom,#c44 0%,#922 50%,#611 50%,#822 100%);
+  border:1px solid rgba(100,0,0,.60);color:#ffe8e8;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:11px;
+  padding:5px 10px;cursor:pointer;white-space:nowrap;
+  text-shadow:0 1px 2px rgba(0,0,0,.60);
+}
+.host-reset-btn:hover{filter:brightness(1.15)}
 
-/* ── BOTTOM UTILITY BAR ── */
 #soundToggle{
   position:fixed;bottom:8px;left:10px;z-index:9999;
   font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:10px;
   color:#fff;cursor:pointer;user-select:none;padding:2px 0;background:none;border:none;outline:none;
 }
 
-/* ── GLASS TEXTURE OVERLAY ── */
 .aero-glass-overlay{position:relative;overflow:hidden}
 .aero-glass-overlay::after{
   content:'';position:absolute;inset:0;
@@ -304,22 +360,15 @@ strong{color:var(--accent);font-weight:400}
 }
 .aero-glass-overlay>*{position:relative;z-index:1}
 
-/* ── MOBILE ── */
 @media(max-width:600px){
   body{padding:8px 4px 24px;background-attachment:scroll}
   #_pageShell{width:100%}
   .vg-grid{grid-template-columns:repeat(2,1fr);gap:4px;padding:4px}
-  .video-info-box{flex-direction:column;gap:5px}
-  .vi-actions{flex-wrap:wrap}
-}
-@media(max-width:380px){
-  .vg-grid{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- ── Background injection ── -->
 <script>
 (function(){
   const url='https://static.wikia.nocookie.net/umineko/images/0/0b/MinagoroshiCG_%2820%29.png/revision/latest/scale-to-width-down/1000?cb=20201102135337';
@@ -335,67 +384,57 @@ strong{color:var(--accent);font-weight:400}
 
 <div id="_pageShell">
 
-  <!-- ── Top navigation bar ── -->
   <div class="aero-bar">
-    <a class="back-link" href="../index.html#resources" title="Back to Resources">
-      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="‹"
-        onerror="this.outerHTML='<span style=&quot;color:#333;font-size:22px;line-height:1;&quot;>‹</span>'">
+    <a class="back-link" href="../index.html#resources" title="Back">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#8249;"
+        onerror="this.outerHTML='<span style=&quot;color:#333;font-size:22px;line-height:1;&quot;>&#8249;</span>'">
     </a>
     <span class="bar-title">VIDEO PLAYER</span>
-    
   </div>
 
-  <!-- ── Video player card ── -->
+  <!-- ── Player card ── -->
   <div class="glass-box aero-glass-overlay">
-
-    <!-- Embed -->
     <div class="video-embed-wrap">
       <div id="videoEmbedRatio">
+        <div id="videoEmbedPlaceholder">Select a video below to begin</div>
       </div>
     </div>
 
-    <!-- Info / controls bar -->
     <div class="v-status-bar" id="vStatusBar">
-      <!-- Like / Dislike -->
       <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
-        <button class="vi-vote-btn" id="vLikeBtn" title="Like">
-          <img src="https://cdn-icons-png.flaticon.com/128/739/739231.png" alt="▲"
-            onerror="this.outerHTML='▲'"> <span id="vLikeVal">0</span>
+        <button id="vLikeBtn" title="Like">
+          <img src="https://cdn-icons-png.flaticon.com/128/739/739231.png" alt="&#9650;"
+            onerror="this.outerHTML='&#9650;'">
+          <span id="vLikeVal">0</span>
         </button>
-        <button class="vi-vote-btn" id="vDislikeBtn" title="Dislike">
-          <img src="https://cdn-icons-png.flaticon.com/128/880/880613.png" alt="▼"
-            onerror="this.outerHTML='▼'"> <span id="vDislikeVal">0</span>
+        <button id="vDislikeBtn" title="Dislike">
+          <img src="https://cdn-icons-png.flaticon.com/128/880/880613.png" alt="&#9660;"
+            onerror="this.outerHTML='&#9660;'">
+          <span id="vDislikeVal">0</span>
         </button>
       </div>
 
-      <!-- Title -->
       <span style="flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-        Now playing: <span id="vAudioName">—</span>
+        Now playing: <span id="vAudioName">&#8212;</span>
       </span>
 
-      <!-- Options "+" -->
       <span id="vPlusBtn" title="Options">+
         <div id="vPlusPopup" onclick="event.stopPropagation()">
-          <div id="vPopAutoplay">
-            <span id="vPopAutoplayDot"></span>Autoplay: OFF
-          </div>
+          <div id="vPopAutoplay"><span id="vPopAutoplayDot"></span>Autoplay: OFF</div>
           <div style="border-top:1px solid rgba(255,255,255,.12);margin:3px 0;"></div>
-          <div id="vPopSortToggle" style="display:flex;justify-content:space-between;align-items:center;">
-            Sort <span>▶</span>
-          </div>
-          <div id="vSortSubmenu" style="display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(80,20,20,.3);"></div>
+          <div id="vPopSortToggle" style="display:flex;justify-content:space-between;align-items:center;">Sort <span id="vSortArrow">&#9658;</span></div>
+          <div id="vSortSubmenu"></div>
           <div style="border-top:1px solid rgba(255,255,255,.12);margin:3px 0;"></div>
           <a id="vPopUrl" target="_blank" rel="noopener noreferrer" style="opacity:.4;pointer-events:none;">Open on YouTube</a>
         </div>
       </span>
     </div>
 
-    <!-- Extended info row -->
-    <div class="video-info-box aero-inner" id="videoInfoBox">
-      <span class="vi-title" id="vInfoTitle">—</span>
+    <!-- Info row — title + year/desc always visible -->
+    <div class="video-info-box" id="videoInfoBox">
+      <span class="vi-title" id="vInfoTitle">&#8212;</span>
       <span class="vi-meta" id="vInfoMeta"></span>
     </div>
-
   </div>
 
   <!-- ── Animes ── -->
@@ -403,9 +442,7 @@ strong{color:var(--accent);font-weight:400}
     <span class="section-bar">Animes</span>
     <div class="aero-inner">
       <p class="section-desc">Openings, endings &amp; classic anime clips.</p>
-      <div id="videoListAnimes">
-        <div class="vg-grid" id="vgGridAnimes"></div>
-      </div>
+      <div class="vg-grid" id="vgGridAnimes"></div>
       <p id="animes-empty" class="empty-msg" style="display:none">No videos added yet.</p>
     </div>
   </div>
@@ -415,21 +452,80 @@ strong{color:var(--accent);font-weight:400}
     <span class="section-bar">Internet Nostalgia</span>
     <div class="aero-inner">
       <p class="section-desc">Old internet classics and nostalgia videos.</p>
-      <div id="videoListNostalg">
-        <div class="vg-grid" id="vgGridNostalg"></div>
-      </div>
+      <div class="vg-grid" id="vgGridNostalg"></div>
       <p id="nostalg-empty" class="empty-msg" style="display:none">No videos added yet.</p>
     </div>
   </div>
 
-  <!-- ── Awesome Internet Videos ── -->
+  <!-- ── Awesome ── -->
   <div class="glass-box">
     <span class="section-bar">Awesome Internet Videos</span>
     <div class="aero-inner">
-      <div id="videoListAwesome">
-        <div class="vg-grid" id="vgGridAwesome"></div>
-      </div>
+      <div class="vg-grid" id="vgGridAwesome"></div>
       <p id="awesome-empty" class="empty-msg" style="display:none">No videos added yet.</p>
+    </div>
+  </div>
+
+  <!-- Host-added custom category sections rendered here -->
+  <div id="vHostAlbumsContainer"></div>
+
+  <!-- ── Host Panel ── -->
+  <div id="hostPanel" class="glass-box">
+    <div class="section-bar">Add Video &#8212; Host Only</div>
+    <div class="aero-inner">
+      <div class="aero-pad">
+        <div class="desc-box">
+          <p>Add via <strong>YouTube link</strong>. Videos are grouped by <strong>Category</strong>. Use existing categories or create new ones below.</p>
+        </div>
+
+        <div style="margin-bottom:6px;">
+          <label style="display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">YouTube URL</label>
+          <input type="text" id="hostVidUrl" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off" spellcheck="false">
+        </div>
+        <div style="margin-bottom:6px;">
+          <label style="display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Title <strong style="color:var(--accent)">*</strong></label>
+          <input type="text" id="hostVidTitle" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Higurashi no Naku Koro ni OP" autocomplete="off">
+        </div>
+        <div style="margin-bottom:6px;">
+          <label style="display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Year / Description <span style="color:#aaa;font-size:9px;">(optional &#8212; shown below title)</span></label>
+          <input type="text" id="hostVidDesc" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. 2006" autocomplete="off">
+        </div>
+        <div class="album-field-row">
+          <label>Category <span style="color:#aaa;font-size:9px;">(existing or new)</span></label>
+          <input type="text" id="hostVidCat" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="Animes / Internet Nostalgia / Awesome Internet Videos / or custom…" autocomplete="off" list="vCatDatalist">
+          <datalist id="vCatDatalist"></datalist>
+          <div class="album-existing-pills" id="vCatPills"></div>
+        </div>
+        <button class="host-add-btn" style="margin-top:8px;" onclick="_vHostAdd()">&#xFF0B; ADD VIDEO</button>
+
+        <div class="host-status" id="vHostStatus"></div>
+
+        <div class="section-bar" style="margin-top:8px;">Reset Tools</div>
+        <div style="padding:8px;background:#f5f5f5;border:1px solid rgba(140,140,140,.30);border-top:none;margin-bottom:6px;">
+          <div style="font-size:10px;color:#888;margin-bottom:6px;">These actions cannot be undone.</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="host-reset-btn" onclick="_vResetRatings()">&#x2718; Reset All Ratings</button>
+            <button class="host-reset-btn" onclick="_vResetAllAdded()">&#x2718; Clear All Added Videos</button>
+          </div>
+        </div>
+
+        <div class="section-bar" style="margin-top:8px;">Category Manager &#8212; Drag videos between categories</div>
+        <div id="_vCatManager">
+          <div style="padding:6px;background:#f5f5f5;border:1px solid rgba(140,140,140,.30);border-top:none;margin-bottom:6px;">
+            <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;">Create New Category</div>
+            <div id="_vNewAlbumRow">
+              <input type="text" id="_vNewAlbumName" placeholder="Category name&#8230;" autocomplete="off">
+              <button id="_vNewAlbumBtn" onclick="_vCreateCat()">&#xFF0B; Create</button>
+            </div>
+          </div>
+          <div id="_vCatBuckets"></div>
+        </div>
+
+        <div class="note">
+          Videos added here appear as sections below the built-in categories.
+          Drag items between buckets to re-assign them.
+        </div>
+      </div>
     </div>
   </div>
 
@@ -440,20 +536,16 @@ strong{color:var(--accent);font-weight:400}
       <p>All content on this website is for archiving, educational, or informational purposes and is not for profit.
       We believe its use qualifies as fair use. If you own any content here and would like it removed or properly credited,
       please contact at
-      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website"
+      <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=trenchgun1337@gmail.com&amp;su=Contact%20from%20Website"
         target="_blank" rel="noopener noreferrer">trenchgun1337@gmail.com</a>
       and action will be taken as soon as possible.</p>
     </div>
   </div>
 
-  <div style="height:4px;"></div>
+</div>
 
-</div><!-- /#_pageShell -->
-
-<!-- ── Sound toggle ── -->
 <button id="soundToggle" onclick="_toggleSound()">Sounds: On</button>
 
-<!-- ── YouTube IFrame API ── -->
 <iframe id="_ytVidPlayer" src="about:blank"
   allow="autoplay; encrypted-media" allowfullscreen
   style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0.01;pointer-events:none;border:none;">
@@ -461,29 +553,19 @@ strong{color:var(--accent);font-weight:400}
 
 <script>
 /* ================================================================
-   VIDEO PAGE — standalone, no external dependencies
-   Video data comes from video.js (ANIME_VIDEOS, NOSTALGIA_VIDEOS,
-   AWESOME_VIDEOS) — falls back to empty arrays if not loaded.
+   SOUNDS
    ================================================================ */
-
-/* ── Sounds ── */
-const _VSBX = '../assets/audio/';
-const _VSND = {
-  start:  _VSBX + 'sitestart.mp3',
-  button: _VSBX + 'sitebuttonclick.mp3',
-  hover:  _VSBX + 'text.mp3',
-  like:   _VSBX + 'sitelikeclick.mp3',
-  alert:  _VSBX + 'sitealert.mp3',
-};
-let _vSoundsOn = true, _vHT = 0;
-const _vAC = {};
-function _vgA(k){ if(!_vAC[k]){const a=new Audio(_VSND[k]);a.preload='auto';_vAC[k]=a;}return _vAC[k]; }
-function _vPlaySound(k){ if(!_vSoundsOn)return; try{const c=_vgA(k).cloneNode();c.volume=(k==='hover'?.30:.52);c.play().catch(()=>{});}catch(e){} }
+const _VSBX='../assets/audio/';
+const _VSND={start:_VSBX+'sitestart.mp3',button:_VSBX+'sitebuttonclick.mp3',hover:_VSBX+'text.mp3',like:_VSBX+'sitelikeclick.mp3'};
+let _vSoundsOn=true,_vHT=0;
+const _vAC={};
+function _vgA(k){if(!_vAC[k]){const a=new Audio(_VSND[k]);a.preload='auto';_vAC[k]=a;}return _vAC[k];}
+function _vPlaySound(k){if(!_vSoundsOn)return;try{const c=_vgA(k).cloneNode();c.volume=(k==='hover'?.30:.52);c.play().catch(()=>{});}catch(e){}}
 function _toggleSound(){
   _vSoundsOn=!_vSoundsOn;
   const b=document.getElementById('soundToggle');
-  if(b) b.textContent=_vSoundsOn?'Sounds: On':'Sounds: Off';
-  if(_vSoundsOn) _vPlaySound('button');
+  if(b)b.textContent=_vSoundsOn?'Sounds: On':'Sounds: Off';
+  if(_vSoundsOn)_vPlaySound('button');
   sessionStorage.setItem('_soundsOn',String(_vSoundsOn));
 }
 function _vIsInteractive(el){
@@ -494,11 +576,12 @@ function _vIsInteractive(el){
   return window.getComputedStyle(el).cursor==='pointer';
 }
 
-/* ── Vote storage (localStorage) ── */
-const VID_VOTES_KEY = '_vidVotes_v1';
-const VID_UID_KEY   = '_vidUserId';
-const VidVotes = {
-  _d: {}, _uid: '',
+/* ================================================================
+   VOTE STORAGE
+   ================================================================ */
+const VID_VOTES_KEY='_vidVotes_v1',VID_UID_KEY='_vidUserId';
+const VidVotes={
+  _d:{},_uid:'',
   init(){
     let uid=localStorage.getItem(VID_UID_KEY);
     if(!uid){uid='vv_'+Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem(VID_UID_KEY,uid);}
@@ -507,388 +590,563 @@ const VidVotes = {
   },
   _k(id){return String(id).replace(/[.#$[\]]/g,'_');},
   vote(id,dir){
-    const k=this._k(id);
-    if(!this._d[k])this._d[k]={};
-    const prev=this._d[k][this._uid]||0, next=(prev===dir)?0:dir;
-    if(next===0)delete this._d[k][this._uid];
-    else this._d[k][this._uid]=next;
+    const k=this._k(id);if(!this._d[k])this._d[k]={};
+    const prev=this._d[k][this._uid]||0,next=(prev===dir)?0:dir;
+    if(next===0)delete this._d[k][this._uid];else this._d[k][this._uid]=next;
     this._save();return this.get(id);
   },
   get(id){
-    const d=this._d[this._k(id)]||{};
-    let up=0,down=0;
+    const d=this._d[this._k(id)]||{};let up=0,down=0;
     Object.values(d).forEach(v=>{if(v===1)up++;else if(v===-1)down++;});
     return{up,down,vote:d[this._uid]||0};
   },
   score(id){const s=this.get(id);return s.up-s.down;},
+  reset(){this._d={};this._save();},
   _save(){try{localStorage.setItem(VID_VOTES_KEY,JSON.stringify(this._d));}catch(e){}}
 };
 
-/* ── Player state ── */
-let _vCurId    = null;  // current YouTube videoId
-let _vAutoplay = false;
-let _vSortMode = 'default'; // default | highest | lowest | rated
-const ALL_SECTIONS = [
-  { gridId:'vgGridAnimes',   listId:'videoListAnimes',  emptyId:'animes-empty'  },
-  { gridId:'vgGridNostalg',  listId:'videoListNostalg', emptyId:'nostalg-empty' },
-  { gridId:'vgGridAwesome',  listId:'videoListAwesome', emptyId:'awesome-empty' },
-];
+/* ================================================================
+   HOST STORAGE
+   ================================================================ */
+const VH_ADDED='_vhAdded_v1',VH_DELETED='_vhDeleted_v1',VH_CATS='_vhCats_v1';
+function _vhGetAdded(){try{return JSON.parse(localStorage.getItem(VH_ADDED)||'[]');}catch(e){return[];}}
+function _vhSaveAdded(a){try{localStorage.setItem(VH_ADDED,JSON.stringify(a));}catch(e){}}
+function _vhGetDeleted(){try{return JSON.parse(localStorage.getItem(VH_DELETED)||'[]');}catch(e){return[];}}
+function _vhSaveDeleted(a){try{localStorage.setItem(VH_DELETED,JSON.stringify(a));}catch(e){}}
+function _vhGetCats(){try{return JSON.parse(localStorage.getItem(VH_CATS)||'[]');}catch(e){return[];}}
+function _vhSaveCats(a){try{localStorage.setItem(VH_CATS,JSON.stringify(a));}catch(e){}}
 
-/* ── YT iframe helper ── */
-function _ytVCmd(cmd,args){
-  const f=document.getElementById('_ytVidPlayer');
-  if(!f||!f.contentWindow)return;
-  try{f.contentWindow.postMessage(JSON.stringify({event:'command',func:cmd,args:args||[]}),'*');}catch(e){}
+/* ================================================================
+   PLAYER STATE
+   ================================================================ */
+let _vCurId=null,_vAutoplay=false,_vSortMode='default';
+
+const BASE_SECTIONS=[
+  {key:'animes', gridId:'vgGridAnimes', emptyId:'animes-empty', label:'Animes'},
+  {key:'nostalg',gridId:'vgGridNostalg',emptyId:'nostalg-empty',label:'Internet Nostalgia'},
+  {key:'awesome',gridId:'vgGridAwesome',emptyId:'awesome-empty',label:'Awesome Internet Videos'},
+];
+const BASE_LABELS=new Set(['Animes','Internet Nostalgia','Awesome Internet Videos']);
+
+function _baseDataForKey(key){
+  if(key==='animes')  return(typeof ANIME_VIDEOS    !=='undefined'?ANIME_VIDEOS   :[]);
+  if(key==='nostalg') return(typeof NOSTALGIA_VIDEOS!=='undefined'?NOSTALGIA_VIDEOS:[]);
+  if(key==='awesome') return(typeof AWESOME_VIDEOS  !=='undefined'?AWESOME_VIDEOS :[]);
+  return[];
 }
-function _loadYT(videoId, autoplay){
-  const ratio=document.getElementById('videoEmbedRatio');
-  if(!ratio)return;
-  // Replace placeholder with iframe
+
+function _normalizeEntry(e){
+  return{
+    id:   e.id||e.videoId||'',
+    title:e.title||e.name||'',
+    year: e.year||e.description||e.desc||'',
+    thumb:e.thumb||null,
+    duration:e.duration||''
+  };
+}
+
+/* ================================================================
+   SORT
+   ================================================================ */
+function _sortEntries(arr){
+  const a=[...arr];
+  if(_vSortMode==='highest') a.sort((x,y)=>VidVotes.score(y.id)-VidVotes.score(x.id));
+  else if(_vSortMode==='lowest') a.sort((x,y)=>VidVotes.score(x.id)-VidVotes.score(y.id));
+  else if(_vSortMode==='rated') return a.filter(e=>{const s=VidVotes.get(e.id);return s.up>0||s.down>0;});
+  return a;
+}
+
+/* ================================================================
+   PLAY VIDEO
+   ================================================================ */
+function _loadYT(videoId,autoplay){
+  const ratio=document.getElementById('videoEmbedRatio');if(!ratio)return;
   ratio.innerHTML='<iframe id="ytMainEmbed" src="https://www.youtube.com/embed/'+videoId
     +'?autoplay='+(autoplay?1:0)+'&rel=0&modestbranding=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)
     +'" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
   _vCurId=videoId;
-  // Update "Open on YouTube" link
   const link=document.getElementById('vPopUrl');
   if(link){link.href='https://www.youtube.com/watch?v='+videoId;link.style.opacity='1';link.style.pointerEvents='auto';}
 }
 
-/* ── Play a video entry ── */
 function _playVideo(entry){
   if(!entry||!entry.id)return;
   _vPlaySound('button');
-  _loadYT(entry.id, true);
-  // Update title displays
+  _loadYT(entry.id,true);
+
+  // Status bar title
   const nameEl=document.getElementById('vAudioName');
-  const titleEl=document.getElementById('vInfoTitle');
-  const metaEl=document.getElementById('vInfoMeta');
   if(nameEl) nameEl.textContent=entry.title||entry.id;
+
+  // Info row — title AND year/desc
+  const titleEl=document.getElementById('vInfoTitle');
+  const metaEl =document.getElementById('vInfoMeta');
   if(titleEl) titleEl.textContent=entry.title||entry.id;
-  if(metaEl) metaEl.textContent=entry.category||'';
-  // Update vote display
+  if(metaEl)  metaEl.textContent=entry.year||entry.description||entry.desc||'';
+
   _updateVoteUI(entry.id);
-  // Mark active entry in all grids
-  document.querySelectorAll('.vg-entry').forEach(el=>{
-    el.classList.toggle('active-entry', el.dataset.vid===entry.id);
-  });
-  // Scroll player into view
-  const wrap=document.querySelector('.video-embed-wrap');
-  if(wrap) wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.querySelectorAll('.vg-entry').forEach(el=>el.classList.toggle('active-entry',el.dataset.vid===entry.id));
+
+  // Scroll page to top
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ── Vote UI ── */
+/* ================================================================
+   VOTE UI
+   ================================================================ */
 function _updateVoteUI(videoId){
   const s=VidVotes.get(videoId||'');
-  const lb=document.getElementById('vLikeBtn'), db=document.getElementById('vDislikeBtn');
-  const lv=document.getElementById('vLikeVal'), dv=document.getElementById('vDislikeVal');
+  const lb=document.getElementById('vLikeBtn'),    db=document.getElementById('vDislikeBtn');
+  const lv=document.getElementById('vLikeVal'),    dv=document.getElementById('vDislikeVal');
   if(lv) lv.textContent=s.up;
   if(dv) dv.textContent=s.down;
-  if(lb){lb.classList.toggle('active-like',s.vote===1);lb.classList.toggle('active-dislike',false);}
-  if(db){db.classList.toggle('active-dislike',s.vote===-1);db.classList.toggle('active-like',false);}
+  if(lb){lb.classList.toggle('voted-like',   s.vote===1);}
+  if(db){db.classList.toggle('voted-dislike',s.vote===-1);}
 }
 
-/* ── Sort entries ── */
-function _sortEntries(entries){
-  const arr=[...entries];
-  if(_vSortMode==='highest') arr.sort((a,b)=>VidVotes.score(b.id)-VidVotes.score(a.id));
-  else if(_vSortMode==='lowest') arr.sort((a,b)=>VidVotes.score(a.id)-VidVotes.score(b.id));
-  else if(_vSortMode==='rated') return arr.filter(e=>VidVotes.get(e.id).up>0||VidVotes.get(e.id).down>0);
-  return arr;
-}
+/* ================================================================
+   CARD BUILDER
+   ================================================================ */
+function _esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-/* ── Build a video grid ── */
-const PAGE_SIZE = 9;
-function _buildGrid(gridEl, entries){
-  if(!gridEl||!entries) return;
-  gridEl.innerHTML='';
-
-  const sorted = _sortEntries(entries);
-  if(!sorted.length){ gridEl.innerHTML=''; return; }
-
-  // Remove old pager
-  const oldPager = gridEl.parentNode.querySelector('.vg-pager');
-  if(oldPager) oldPager.remove();
-
-  if(sorted.length <= PAGE_SIZE){
-    sorted.forEach(e=>gridEl.appendChild(_makeCard(e)));
-    return;
-  }
-
-  // Pagination
-  let curPage=0;
-  const totalPages=Math.ceil(sorted.length/PAGE_SIZE);
-  const pager=document.createElement('div'); pager.className='vg-pager';
-  gridEl.parentNode.insertBefore(pager, gridEl.nextSibling);
-
-  function showPage(p){
-    curPage=p;
-    gridEl.innerHTML='';
-    const start=p*PAGE_SIZE;
-    sorted.slice(start, start+PAGE_SIZE).forEach(e=>gridEl.appendChild(_makeCard(e)));
-    pager.innerHTML='';
-
-    const prev=document.createElement('span');
-    prev.className='vg-pager-btn vg-pager-arrow'; prev.textContent='<';
-    prev.addEventListener('click',()=>{ if(curPage>0) showPage(curPage-1); });
-    pager.appendChild(prev);
-
-    for(let i=0;i<totalPages;i++){
-      const btn=document.createElement('span');
-      btn.className='vg-pager-btn'+(i===curPage?' active':'');
-      btn.textContent=i+1;
-      btn.addEventListener('click',()=>showPage(i));
-      pager.appendChild(btn);
-    }
-
-    const next=document.createElement('span');
-    next.className='vg-pager-btn vg-pager-arrow'; next.textContent='>';
-    next.addEventListener('click',()=>{ if(curPage<totalPages-1) showPage(curPage+1); });
-    pager.appendChild(next);
-  }
-  showPage(0);
-}
-
-/* ── Make a single video card ── */
 function _makeCard(entry){
   const div=document.createElement('div');
-  div.className='vg-entry';
-  div.dataset.vid=entry.id;
-  if(entry.id===_vCurId) div.classList.add('active-entry');
+  div.className='vg-entry';div.dataset.vid=entry.id;
+  if(entry.id===_vCurId)div.classList.add('active-entry');
 
   const thumb=entry.thumb||('https://img.youtube.com/vi/'+entry.id+'/mqdefault.jpg');
   const score=VidVotes.score(entry.id);
   const stats=VidVotes.get(entry.id);
   const hasVotes=stats.up>0||stats.down>0;
-  const badgeClass=score>0?'pos':score<0?'neg':'';
+  const bClass=score>0?'pos':score<0?'neg':'';
+  const sub=entry.year||entry.description||entry.desc||'';
 
-  div.innerHTML=`
-    <div class="vg-thumb-wrap">
-      <img src="${thumb}" alt="${_esc(entry.title||entry.id)}"
-        onerror="this.src='https://img.youtube.com/vi/${entry.id}/default.jpg'">
-      <div class="vg-play-overlay">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-      </div>
-      ${hasVotes?`<span class="vg-vote-badge visible ${badgeClass}">${score>0?'+':''}${score}</span>`:''}
-      ${entry.duration?`<span class="vg-dur">${entry.duration}</span>`:''}
-    </div>
-    <div class="vg-info">
-      <div class="vg-info-title" title="${_esc(entry.title||entry.id)}">${_esc(entry.title||entry.id)}</div>
-      ${entry.year?`<div class="vg-info-sub">${_esc(entry.year)}</div>`:'<div class="vg-info-sub">&nbsp;</div>'}
-    </div>`;
+  div.innerHTML=
+    '<div class="vg-thumb-wrap">'
+    +'<img src="'+_esc(thumb)+'" alt="'+_esc(entry.title||entry.id)+'" onerror="this.src=\'https://img.youtube.com/vi/'+_esc(entry.id)+'/default.jpg\'">'
+    +'<div class="vg-play-overlay"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg></div>'
+    +(hasVotes?'<span class="vg-vote-badge visible '+bClass+'">'+(score>0?'+':'')+score+'</span>':'')
+    +(entry.duration?'<span class="vg-dur">'+_esc(entry.duration)+'</span>':'')
+    +'</div>'
+    +'<div class="vg-info">'
+    +'<div class="vg-info-title" title="'+_esc(entry.title||entry.id)+'">'+_esc(entry.title||entry.id)+'</div>'
+    +'<div class="vg-info-sub">'+(sub?_esc(sub):'&nbsp;')+'</div>'
+    +'</div>';
 
   div.addEventListener('click',()=>_playVideo(entry));
   return div;
 }
 
-function _esc(s){
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+/* ================================================================
+   BUILD GRID + PAGINATION
+   ================================================================ */
+const PAGE_SIZE=9;
+function _buildGrid(gridEl,entries,parentEl){
+  if(!gridEl)return;
+  gridEl.innerHTML='';
+  if(parentEl){const op=parentEl.querySelector('.vg-pager');if(op)op.remove();}
+
+  const sorted=_sortEntries(entries);
+  if(!sorted.length)return;
+
+  if(sorted.length<=PAGE_SIZE){sorted.forEach(e=>gridEl.appendChild(_makeCard(e)));return;}
+
+  let curPage=0;
+  const totalPages=Math.ceil(sorted.length/PAGE_SIZE);
+  const pager=document.createElement('div');pager.className='vg-pager';
+  const insertAfter=parentEl||gridEl.parentNode;
+  insertAfter.insertBefore(pager,gridEl.nextSibling);
+
+  function showPage(p){
+    curPage=p;gridEl.innerHTML='';
+    sorted.slice(p*PAGE_SIZE,(p+1)*PAGE_SIZE).forEach(e=>gridEl.appendChild(_makeCard(e)));
+    pager.innerHTML='';
+    const prev=document.createElement('span');prev.className='vg-pager-btn vg-pager-arrow';prev.textContent='<';
+    prev.addEventListener('click',()=>{if(curPage>0)showPage(curPage-1);});pager.appendChild(prev);
+    for(let i=0;i<totalPages;i++){
+      const btn=document.createElement('span');btn.className='vg-pager-btn'+(i===curPage?' active':'');
+      btn.textContent=i+1;btn.addEventListener('click',()=>showPage(i));pager.appendChild(btn);
+    }
+    const next=document.createElement('span');next.className='vg-pager-btn vg-pager-arrow';next.textContent='>';
+    next.addEventListener('click',()=>{if(curPage<totalPages-1)showPage(curPage+1);});pager.appendChild(next);
+  }
+  showPage(0);
 }
 
-/* ── Rebuild all grids ── */
+/* ================================================================
+   REBUILD ALL GRIDS
+   ================================================================ */
 function _rebuildAllGrids(){
-  const animes  = (typeof ANIME_VIDEOS    !=='undefined'?ANIME_VIDEOS   :[]);
-  const nostalg = (typeof NOSTALGIA_VIDEOS!=='undefined'?NOSTALGIA_VIDEOS:[]);
-  const awesome = (typeof AWESOME_VIDEOS  !=='undefined'?AWESOME_VIDEOS :[]);
+  const deleted=_vhGetDeleted();
+  const added  =_vhGetAdded();
 
-  const pairs=[
-    {grid:'vgGridAnimes',  data:animes,  empty:'animes-empty'},
-    {grid:'vgGridNostalg', data:nostalg, empty:'nostalg-empty'},
-    {grid:'vgGridAwesome', data:awesome, empty:'awesome-empty'},
-  ];
-  pairs.forEach(({grid,data,empty})=>{
-    const g=document.getElementById(grid);
-    const e=document.getElementById(empty);
-    if(!g) return;
-    if(!data||!data.length){
-      g.innerHTML='';
-      if(e) e.style.display='';
+  // Host-added by category
+  const hostByCat={};
+  added.forEach(v=>{
+    if(deleted.includes(v.id))return;
+    const cat=v.category||'Uncategorized';
+    if(!hostByCat[cat])hostByCat[cat]=[];
+    hostByCat[cat].push(_normalizeEntry(v));
+  });
+
+  // Base sections
+  BASE_SECTIONS.forEach(({key,gridId,emptyId,label})=>{
+    const grid=document.getElementById(gridId);
+    const emptyEl=document.getElementById(emptyId);
+    if(!grid)return;
+    const base=_baseDataForKey(key)
+      .filter(e=>!deleted.includes(e.id||e.videoId))
+      .map(_normalizeEntry);
+    const extra=hostByCat[label]||[];
+    const all=[...base,...extra];
+    if(!all.length){
+      if(emptyEl)emptyEl.style.display='';grid.innerHTML='';
     } else {
-      if(e) e.style.display='none';
-      _buildGrid(g, data);
+      if(emptyEl)emptyEl.style.display='none';
+      _buildGrid(grid,all,grid.parentNode);
     }
+  });
+
+  // Custom category sections
+  const customCats=[..._vhGetCats(),...Object.keys(hostByCat)].filter((c,i,a)=>a.indexOf(c)===i&&!BASE_LABELS.has(c));
+  const container=document.getElementById('vHostAlbumsContainer');
+  if(container){
+    container.innerHTML='';
+    customCats.forEach(cat=>{
+      const entries=hostByCat[cat]||[];
+      if(!entries.length)return;
+      const box=document.createElement('div');box.className='glass-box';
+      const bar=document.createElement('span');bar.className='section-bar';bar.textContent=cat;
+      const inner=document.createElement('div');inner.className='aero-inner';
+      const grid=document.createElement('div');grid.className='vg-grid';
+      inner.appendChild(grid);box.appendChild(bar);box.appendChild(inner);
+      container.appendChild(box);
+      _buildGrid(grid,entries,inner);
+    });
+  }
+}
+
+/* ================================================================
+   HOST PANEL — ADD VIDEO
+   ================================================================ */
+function _vHostAdd(){
+  const url  =(document.getElementById('hostVidUrl').value  ||'').trim();
+  const title=(document.getElementById('hostVidTitle').value||'').trim();
+  const desc =(document.getElementById('hostVidDesc').value ||'').trim();
+  const cat  =(document.getElementById('hostVidCat').value  ||'').trim()||'Uncategorized';
+
+  if(!url)  {_vHostStatus('Please enter a YouTube URL.','err');return;}
+  if(!title){_vHostStatus('Please enter a title.','err');return;}
+
+  const m=url.match(/[?&]v=([^&]+)/)||url.match(/youtu\.be\/([^?&#]+)/)||url.match(/embed\/([^?&]+)/);
+  if(!m){_vHostStatus('Could not parse YouTube video ID.','err');return;}
+  const id=m[1];
+
+  const added=_vhGetAdded();
+  if(added.find(v=>v.id===id)){_vHostStatus('Video already added.','err');return;}
+  added.unshift({id,title,desc,category:cat,addedAt:Date.now()});
+  _vhSaveAdded(added);
+
+  if(!BASE_LABELS.has(cat)){
+    const cats=_vhGetCats();if(!cats.includes(cat)){cats.push(cat);_vhSaveCats(cats);}
+  }
+
+  _vHostStatus('Added: '+title+' \u2192 '+cat,'ok');
+  _rebuildAllGrids();_vRenderCatManager();_vRefreshCatPicker();
+
+  ['hostVidUrl','hostVidTitle','hostVidDesc','hostVidCat'].forEach(id=>{ const el=document.getElementById(id);if(el)el.value=''; });
+}
+
+function _vHostStatus(msg,type){
+  const el=document.getElementById('vHostStatus');
+  el.innerHTML=type?'<span class="'+type+'">'+msg+'</span>':msg;
+  el.classList.add('visible');
+}
+
+/* ── Category picker ── */
+function _vGetAllCats(){
+  const s=new Set(['Animes','Internet Nostalgia','Awesome Internet Videos']);
+  _vhGetCats().forEach(c=>s.add(c));
+  _vhGetAdded().forEach(v=>{if(v.category)s.add(v.category);});
+  return[...s];
+}
+function _vRefreshCatPicker(){
+  const cats=_vGetAllCats();
+  const dl  =document.getElementById('vCatDatalist');
+  const pills=document.getElementById('vCatPills');
+  const inp =document.getElementById('hostVidCat');
+  if(dl){dl.innerHTML='';cats.forEach(c=>{const o=document.createElement('option');o.value=c;dl.appendChild(o);});}
+  if(pills&&inp){
+    pills.innerHTML='';
+    cats.forEach(c=>{
+      const p=document.createElement('span');p.className='album-pill';p.textContent=c;
+      p.addEventListener('click',()=>{inp.value=c;});pills.appendChild(p);
+    });
+  }
+}
+
+/* ── Category manager ── */
+function _vCreateCat(){
+  const inp=document.getElementById('_vNewAlbumName');
+  const name=(inp.value||'').trim();
+  if(!name){_vHostStatus('Please enter a category name.','err');return;}
+  const cats=_vhGetCats();
+  if(cats.includes(name)){_vHostStatus('Category already exists.','err');return;}
+  cats.push(name);_vhSaveCats(cats);inp.value='';
+  _vRenderCatManager();_vRefreshCatPicker();
+  _vHostStatus('Category "'+name+'" created.','ok');
+}
+function _vDeleteCat(catName){
+  if(!confirm('Delete category "'+catName+'"? Videos move to Uncategorized.'))return;
+  const added=_vhGetAdded();added.forEach(v=>{if(v.category===catName)v.category='Uncategorized';});
+  _vhSaveAdded(added);
+  const cats=_vhGetCats().filter(c=>c!==catName);_vhSaveCats(cats);
+  _rebuildAllGrids();_vRenderCatManager();_vRefreshCatPicker();
+}
+function _vMoveVideo(id,newCat){
+  if(!id||!newCat)return;
+  const added=_vhGetAdded();let changed=false;
+  added.forEach(v=>{if(v.id===id){v.category=newCat;changed=true;}});
+  if(!changed)return;
+  _vhSaveAdded(added);_rebuildAllGrids();_vRenderCatManager();
+}
+function _vDeleteVideo(id){
+  if(!confirm('Delete this video?'))return;
+  const del=_vhGetDeleted();if(!del.includes(id)){del.push(id);_vhSaveDeleted(del);}
+  const added=_vhGetAdded().filter(v=>v.id!==id);_vhSaveAdded(added);
+  _rebuildAllGrids();_vRenderCatManager();_vHostStatus('Video deleted.','ok');
+}
+
+function _vRenderCatManager(){
+  const container=document.getElementById('_vCatBuckets');if(!container)return;
+  container.innerHTML='';
+
+  const allCats=_vGetAllCats();
+  const baseList=['Animes','Internet Nostalgia','Awesome Internet Videos'];
+  const ordered=[...baseList,...allCats.filter(c=>!baseList.includes(c))];
+  const deleted=_vhGetDeleted();
+  const added  =_vhGetAdded();
+
+  const catMap={};ordered.forEach(c=>catMap[c]=[]);
+  added.forEach(v=>{
+    if(deleted.includes(v.id))return;
+    const c=v.category||'Uncategorized';
+    if(!catMap[c])catMap[c]=[];
+    catMap[c].push(v);
+  });
+
+  ordered.forEach(catName=>{
+    const items=catMap[catName]||[];
+    const bucket=document.createElement('div');bucket.className='album-bucket';
+
+    const header=document.createElement('div');header.className='album-bucket-header';
+    const nameSpan=document.createElement('span');nameSpan.className='ab-name';nameSpan.textContent='\u25BC '+catName;
+    const countSpan=document.createElement('span');countSpan.className='ab-count';countSpan.textContent=items.length+' video'+(items.length!==1?'s':'');
+    header.appendChild(nameSpan);header.appendChild(countSpan);
+
+    if(!BASE_LABELS.has(catName)){
+      const delBtn=document.createElement('button');delBtn.className='ab-del-album';delBtn.textContent='\xD7';delBtn.title='Delete category';
+      delBtn.addEventListener('click',e=>{e.stopPropagation();_vDeleteCat(catName);});header.appendChild(delBtn);
+    }
+
+    const body=document.createElement('div');body.className='album-bucket-body';body.dataset.cat=catName;
+    header.addEventListener('click',()=>{
+      const col=body.style.display==='none';
+      body.style.display=col?'':'none';
+      nameSpan.textContent=(col?'\u25BC ':'\u25BA ')+catName;
+    });
+    body.addEventListener('dragover',e=>{e.preventDefault();body.classList.add('drag-over');});
+    body.addEventListener('dragleave',()=>body.classList.remove('drag-over'));
+    body.addEventListener('drop',e=>{
+      e.preventDefault();body.classList.remove('drag-over');
+      const vid=e.dataTransfer.getData('text/plain');if(vid)_vMoveVideo(vid,catName);
+    });
+
+    items.forEach(v=>{
+      const item=document.createElement('div');item.className='ab-track-item';item.draggable=true;
+      item.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain',v.id));
+
+      const thumb=document.createElement('img');thumb.className='abt-art';
+      thumb.src='https://img.youtube.com/vi/'+v.id+'/default.jpg';
+
+      const nm=document.createElement('span');nm.className='abt-name';nm.textContent=v.title||v.id;nm.title=nm.textContent;
+
+      const moveSelect=document.createElement('select');moveSelect.className='abt-move-select';
+      const defOpt=document.createElement('option');defOpt.value='';defOpt.textContent='Move\u2026';moveSelect.appendChild(defOpt);
+      ordered.forEach(cn=>{
+        if(cn===catName)return;
+        const o=document.createElement('option');o.value=cn;o.textContent=cn;moveSelect.appendChild(o);
+      });
+      moveSelect.addEventListener('change',function(){if(this.value)_vMoveVideo(v.id,this.value);});
+
+      const delBtn=document.createElement('button');delBtn.className='abt-del';delBtn.textContent='\xD7';
+      delBtn.addEventListener('click',()=>_vDeleteVideo(v.id));
+
+      item.appendChild(thumb);item.appendChild(nm);item.appendChild(moveSelect);item.appendChild(delBtn);
+      body.appendChild(item);
+    });
+
+    bucket.appendChild(header);bucket.appendChild(body);container.appendChild(bucket);
   });
 }
 
-/* ── Sort submenu ── */
+/* ================================================================
+   RESET TOOLS
+   ================================================================ */
+function _vResetRatings(){
+  if(!confirm('Reset ALL video ratings? This cannot be undone.'))return;
+  VidVotes.reset();if(_vCurId)_updateVoteUI(_vCurId);
+  _rebuildAllGrids();_vHostStatus('All ratings reset.','ok');
+}
+function _vResetAllAdded(){
+  if(!confirm('Clear ALL host-added videos?'))return;
+  localStorage.removeItem(VH_ADDED);localStorage.removeItem(VH_DELETED);
+  _rebuildAllGrids();_vRenderCatManager();_vRefreshCatPicker();
+  _vHostStatus('All added videos cleared.','ok');
+}
+
+/* ================================================================
+   SORT SUBMENU
+   ================================================================ */
 const SORT_OPTS=[
-  {v:'default', l:'Default Order'},
-  {v:'highest', l:'Highest Rated'},
-  {v:'lowest',  l:'Lowest Rated'},
-  {v:'rated',   l:'Only Rated'},
+  {v:'default',l:'Default Order'},
+  {v:'highest',l:'Highest Rated'},
+  {v:'lowest', l:'Lowest Rated'},
+  {v:'rated',  l:'Only Rated'},
 ];
 function _buildSortSubmenu(){
-  const sub=document.getElementById('vSortSubmenu');
-  if(!sub)return;
-  sub.innerHTML='';
+  const sub=document.getElementById('vSortSubmenu');if(!sub)return;sub.innerHTML='';
   SORT_OPTS.forEach(({v,l})=>{
-    const d=document.createElement('div');
-    const active=v===_vSortMode;
-    d.style.cssText='padding:5px 22px;cursor:pointer;font-size:12px;color:'+(active?'#fff':'#ccc')+';background:#050505;';
-    d.textContent=(active?'✔ ':'')+l;
-    d.addEventListener('mouseenter',()=>{d.style.background='rgba(50,50,50,.80)';d.style.color='#fff';});
-    d.addEventListener('mouseleave',()=>{d.style.background='#050505';d.style.color=(v===_vSortMode?'#fff':'#ccc');});
-    d.addEventListener('click',e=>{
-      e.stopPropagation();
-      _vSortMode=v;
-      _closePlusPopup();
-      _rebuildAllGrids();
-    });
+    const d=document.createElement('div');d.className='vsort-item'+(v===_vSortMode?' sort-active':'');
+    d.textContent=(v===_vSortMode?'\u2714 ':'')+l;
+    d.addEventListener('mouseover',()=>{d.style.background='#2a2a2a';d.style.color='#fff';});
+    d.addEventListener('mouseout', ()=>{d.style.background='';d.style.color='';});
+    d.addEventListener('click',e=>{e.stopPropagation();_vSortMode=v;_closePlusPopup();_rebuildAllGrids();});
     sub.appendChild(d);
   });
 }
 
-/* ── "+" popup ── */
-let _vPlusOpen=false, _vSortSubOpen=false;
+/* ================================================================
+   "+" POPUP
+   ================================================================ */
+let _vPlusOpen=false,_vSortSubOpen=false;
 function _closePlusPopup(){
-  const p=document.getElementById('vPlusPopup');
-  if(p) p.style.display='none';
-  const sub=document.getElementById('vSortSubmenu');
-  if(sub) sub.style.display='none';
-  _vPlusOpen=false; _vSortSubOpen=false;
+  const p=document.getElementById('vPlusPopup');if(p)p.style.display='none';
+  const s=document.getElementById('vSortSubmenu');if(s)s.style.display='none';
+  const a=document.getElementById('vSortArrow');if(a){a.style.transform='';a.textContent='\u25B6';}
+  _vPlusOpen=false;_vSortSubOpen=false;
 }
-
-/* ── Autoplay toggle visual ── */
 function _syncAutoplayDot(){
   const dot=document.getElementById('vPopAutoplayDot');
+  if(dot)dot.classList.toggle('dot-on',_vAutoplay);
   const row=document.getElementById('vPopAutoplay');
-  if(dot) dot.classList.toggle('dot-on',_vAutoplay);
-  if(row) row.innerHTML=(dot?dot.outerHTML:'')+'Autoplay: '+(typeof _vAutoplay!=='undefined'&&_vAutoplay?'ON':'OFF');
-  // Rebuild dot after innerHTML replace
-  const newDot=document.getElementById('vPopAutoplayDot');
-  if(newDot) newDot.classList.toggle('dot-on',_vAutoplay);
+  if(row){
+    const savedDot=dot?dot.outerHTML:'<span id="vPopAutoplayDot"></span>';
+    row.innerHTML=savedDot+'Autoplay: '+(_vAutoplay?'ON':'OFF');
+    const fresh=document.getElementById('vPopAutoplayDot');
+    if(fresh)fresh.classList.toggle('dot-on',_vAutoplay);
+  }
 }
 
-/* ── DOMContentLoaded ── */
+/* ================================================================
+   HOST PANEL INIT
+   ================================================================ */
+function _initHostPanel(){
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('host')==='1'||localStorage.getItem('hostMode')==='1'){
+    document.getElementById('hostPanel').classList.add('visible');
+    localStorage.setItem('hostMode','1');
+    _vRenderCatManager();_vRefreshCatPicker();
+  }
+}
+
+/* ================================================================
+   DOMCONTENTLOADED
+   ================================================================ */
 document.addEventListener('DOMContentLoaded',()=>{
   VidVotes.init();
 
-  // Sounds pref
   if(sessionStorage.getItem('_soundsOn')==='false'){
-    _vSoundsOn=false;
-    const b=document.getElementById('soundToggle');
-    if(b) b.textContent='Sounds: Off';
+    _vSoundsOn=false;const b=document.getElementById('soundToggle');if(b)b.textContent='Sounds: Off';
   }
   if(!sessionStorage.getItem('_siteStartPlayed')){
-    sessionStorage.setItem('_siteStartPlayed','1');
-    setTimeout(()=>_vPlaySound('start'),700);
+    sessionStorage.setItem('_siteStartPlayed','1');setTimeout(()=>_vPlaySound('start'),700);
   }
 
-  // Like / dislike buttons
   document.getElementById('vLikeBtn').addEventListener('click',()=>{
-    if(!_vCurId)return;
-    VidVotes.vote(_vCurId,1);
-    _updateVoteUI(_vCurId);
-    _rebuildAllGrids();
-    _vPlaySound('like');
+    if(!_vCurId)return;VidVotes.vote(_vCurId,1);_updateVoteUI(_vCurId);_rebuildAllGrids();_vPlaySound('like');
   });
   document.getElementById('vDislikeBtn').addEventListener('click',()=>{
-    if(!_vCurId)return;
-    VidVotes.vote(_vCurId,-1);
-    _updateVoteUI(_vCurId);
-    _rebuildAllGrids();
+    if(!_vCurId)return;VidVotes.vote(_vCurId,-1);_updateVoteUI(_vCurId);_rebuildAllGrids();
   });
 
-  // "+" popup
   const plusBtn=document.getElementById('vPlusBtn');
   const plusPopup=document.getElementById('vPlusPopup');
   if(plusBtn&&plusPopup){
     plusBtn.addEventListener('click',e=>{
       e.stopPropagation();
       if(_vPlusOpen){_closePlusPopup();return;}
-      _buildSortSubmenu();
-      _syncAutoplayDot();
-      plusPopup.style.display='block';
-      _vPlusOpen=true;
+      _buildSortSubmenu();_syncAutoplayDot();
+      plusPopup.style.display='block';_vPlusOpen=true;
     });
     plusPopup.addEventListener('click',e=>e.stopPropagation());
     document.addEventListener('click',()=>{if(_vPlusOpen)_closePlusPopup();});
 
-    // Autoplay toggle
-    const apRow=document.getElementById('vPopAutoplay');
-    if(apRow) apRow.addEventListener('click',e=>{
-      e.stopPropagation();
-      _vAutoplay=!_vAutoplay;
-      _syncAutoplayDot();
-      // Rebuild so dot updates stay after sort submenu reopens
-      const newDot=document.getElementById('vPopAutoplayDot');
-      if(newDot) newDot.classList.toggle('dot-on',_vAutoplay);
+    document.getElementById('vPopAutoplay').addEventListener('click',e=>{
+      e.stopPropagation();_vAutoplay=!_vAutoplay;_syncAutoplayDot();
     });
 
-    // Sort submenu toggle
-    const sortRow=document.getElementById('vPopSortToggle');
-    const sortSub=document.getElementById('vSortSubmenu');
-    if(sortRow&&sortSub){
-      sortRow.addEventListener('click',e=>{
-        e.stopPropagation();
-        _vSortSubOpen=!_vSortSubOpen;
-        sortSub.style.display=_vSortSubOpen?'block':'none';
-        const arrow=sortRow.querySelector('span');
-        if(arrow) arrow.style.transform=_vSortSubOpen?'rotate(90deg)':'';
-      });
-    }
+    document.getElementById('vPopSortToggle').addEventListener('click',e=>{
+      e.stopPropagation();_vSortSubOpen=!_vSortSubOpen;
+      const sub=document.getElementById('vSortSubmenu');if(sub)sub.style.display=_vSortSubOpen?'block':'none';
+      const arrow=document.getElementById('vSortArrow');
+      if(arrow){arrow.style.transform=_vSortSubOpen?'rotate(90deg)':'';arrow.textContent='\u25B6';}
+    });
   }
 
-  // Sound hover/click
   document.addEventListener('mouseover',e=>{
     if(e.target.id==='soundToggle')return;
     if(!_vIsInteractive(e.target))return;
-    const n=Date.now(); if(n-_vHT<120)return; _vHT=n; _vPlaySound('hover');
+    const n=Date.now();if(n-_vHT<120)return;_vHT=n;_vPlaySound('hover');
   },{passive:true});
   document.addEventListener('click',e=>{
     if(e.target.id==='soundToggle')return;
-    if(_vIsInteractive(e.target)) _vPlaySound('button');
+    if(_vIsInteractive(e.target))_vPlaySound('button');
   },true);
 
-  // Initial grid build (video.js may load after this)
+  _initHostPanel();
   _rebuildAllGrids();
 });
 
-/* ── Re-render when video.js sets window.ANIME_VIDEOS etc. ── */
-// video.js is expected to call window.initVideos() or just define the arrays.
-// We patch initVideos to trigger rebuild.
-window.initVideos = (function(_orig){
-  return function(){
-    if(typeof _orig==='function') _orig();
-    setTimeout(_rebuildAllGrids, 100);
-  };
-})(window.initVideos);
-
-// Also watch for the arrays being defined
+/* ── Poll for video.js arrays ── */
+window.initVideos=(function(_orig){return function(){if(typeof _orig==='function')_orig();setTimeout(_rebuildAllGrids,100);};})(window.initVideos);
 (function(){
-  let _checked=0;
-  const _poll=setInterval(()=>{
-    _checked++;
+  let c=0;
+  const poll=setInterval(()=>{
+    c++;
     const has=(typeof ANIME_VIDEOS!=='undefined'||typeof NOSTALGIA_VIDEOS!=='undefined'||typeof AWESOME_VIDEOS!=='undefined');
-    if(has||_checked>60){ clearInterval(_poll); if(has) _rebuildAllGrids(); }
+    if(has||c>60){clearInterval(poll);if(has)_rebuildAllGrids();}
   },300);
 })();
 
-// stopVideos — called by index.html navigation system when leaving the video page
-window.stopVideos = function(){
+window.stopVideos=function(){
   const ratio=document.getElementById('videoEmbedRatio');
-  if(ratio) ratio.innerHTML='<div id="videoEmbedPlaceholder">Select a video below to begin</div>';
+  if(ratio)ratio.innerHTML='<div id="videoEmbedPlaceholder">Select a video below to begin</div>';
   _vCurId=null;
-  const nameEl=document.getElementById('vAudioName'); if(nameEl) nameEl.textContent='—';
-  const titleEl=document.getElementById('vInfoTitle'); if(titleEl) titleEl.textContent='—';
+  const n=document.getElementById('vAudioName');if(n)n.textContent='\u2014';
+  const t=document.getElementById('vInfoTitle');if(t)t.textContent='\u2014';
+  const m=document.getElementById('vInfoMeta'); if(m)m.textContent='';
   const link=document.getElementById('vPopUrl');
   if(link){link.removeAttribute('href');link.style.opacity='0.4';link.style.pointerEvents='none';}
   document.querySelectorAll('.vg-entry').forEach(el=>el.classList.remove('active-entry'));
 };
-
-// videoAutoPlay global (read by index.html navigation)
 Object.defineProperty(window,'videoAutoPlay',{
-  get:()=>_vAutoplay,
-  set:(v)=>{ _vAutoplay=!!v; _syncAutoplayDot(); },
-  configurable:true
+  get:()=>_vAutoplay,set:(v)=>{_vAutoplay=!!v;_syncAutoplayDot();},configurable:true
 });
 </script>
 
-<!-- Load video data (defines ANIME_VIDEOS, NOSTALGIA_VIDEOS, AWESOME_VIDEOS) -->
 <script src="../scripts/js/video.js" onerror="console.warn('video.js not found')"></script>
-<script src="https://www.youtube.com/iframe_api" onerror="console.warn('YT API unavailable')"></script>
-<!-- Optional: sounds & codes from main site -->
+<script src="https://www.youtube.com/iframe_api" onerror=""></script>
 <script src="../scripts/js/sounds.js" onerror=""></script>
 <script src="../scripts/js/codes.js" onerror=""></script>
 
