@@ -1649,8 +1649,10 @@ if (label) {
   const parts = text.split(' - ');
 
   // 🔥 remove duplicação tipo: A - A - B
-  if (parts.length >= 3 && parts[0] === parts[1]) {
-    parts.splice(1, 1);
+if (
+  parts.length >= 3 &&
+  parts[0].trim().toLowerCase() === parts[1].trim().toLowerCase()
+) {    parts.splice(1, 1);
     text = parts.join(' - ');
   }
 
