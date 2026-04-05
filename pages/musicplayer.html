@@ -73,6 +73,39 @@ strong{color:var(--accent);font-weight:400}
 }
 #trackLoadBanner.visible{display:flex}
 
+/* TOP 3 PANEL */
+#_top3Panel{
+  background:var(--grad-bar);border:2px ridge #727272;
+  box-shadow:var(--shadow-bar);padding:6px 8px;margin-bottom:7px;
+}
+#_top3Panel .top3-title{
+  font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#555;margin-bottom:5px;display:flex;align-items:center;gap:6px;
+}
+#_top3Panel .top3-title span{font-weight:bold;color:var(--accent)}
+.top3-list{display:flex;flex-direction:column;gap:3px}
+.top3-item{
+  display:flex;align-items:center;gap:6px;padding:3px 6px;
+  background:#fff;border:1px solid rgba(140,140,140,.30);cursor:pointer;
+}
+.top3-item:hover{background:#f5f5f5;border-color:var(--accent)}
+.top3-rank{
+  font-size:14px;font-weight:bold;min-width:18px;text-align:center;flex-shrink:0;
+}
+.top3-rank.r1{color:gold}
+.top3-rank.r2{color:silver}
+.top3-rank.r3{color:#cd7f32}
+.top3-name{flex:1;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top3-score{font-size:10px;color:#888;flex-shrink:0}
+.try-this{
+  margin-top:5px;background:linear-gradient(to bottom,#1a1a1a,#0a0a0a);
+  border:1px solid rgba(200,50,50,.35);padding:5px 8px;
+  display:flex;align-items:center;gap:8px;cursor:pointer;
+}
+.try-this:hover{border-color:var(--accent)}
+.try-this-label{font-size:9.5px;color:var(--accent);letter-spacing:.8px;text-transform:uppercase;flex-shrink:0}
+.try-this-name{font-size:11px;color:#ddd;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.try-this-btn{font-size:9.5px;color:#888;flex-shrink:0}
+
 /* PLAYER CONTAINER */
 #musicPlayerContainer{display:flex!important;flex-direction:column!important}
 #musicPlayerContainer .mp-header-bar{display:none!important}
@@ -104,7 +137,7 @@ strong{color:var(--accent);font-weight:400}
 #playlistLeft::-webkit-scrollbar-track{background:rgba(0,0,0,.08)!important}
 #playlistLeft::-webkit-scrollbar-thumb{background:rgba(80,80,80,.70)!important;border-radius:0!important}
 
-/* GROUP HEADER — collapsible */
+/* GROUP HEADER — album */
 .pl-group-header{
   background:linear-gradient(to bottom,#e0e0e0,#d0d0d0)!important;
   border-bottom:1px solid rgba(0,0,0,.15)!important;
@@ -123,9 +156,25 @@ strong{color:var(--accent);font-weight:400}
 .pl-group-name.has-playlist{color:#a03030;text-decoration:underline dotted;cursor:pointer}
 .pl-group-name.has-playlist:hover{color:var(--accent)}
 .pl-group-meta{font-size:9.5px;color:#999;white-space:nowrap;flex-shrink:0}
-.pl-group-img{height:13px;width:13px;vertical-align:middle;image-rendering:pixelated;flex-shrink:0}
 
 .pl-group-body.collapsed{display:none}
+
+/* SUB-GROUP HEADER */
+.pl-subgroup-header{
+  background:linear-gradient(to bottom,#f0f0f0,#e4e4e4)!important;
+  border-bottom:1px solid rgba(0,0,0,.09)!important;
+  border-top:1px solid rgba(255,255,255,.50)!important;
+  padding:3px 8px 3px 20px;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;
+  display:flex;align-items:center;gap:4px;
+  cursor:pointer;user-select:none;
+  position:sticky;top:24px;z-index:2;
+}
+.pl-subgroup-header:hover{background:linear-gradient(to bottom,#f6f6f6,#eaeaea)!important}
+.pl-subgroup-toggle{font-size:8px;color:#aaa;flex-shrink:0;transition:transform .15s;width:9px;display:inline-block}
+.pl-subgroup-toggle.open{transform:rotate(90deg)}
+.pl-subgroup-name{flex:1;color:#555;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pl-subgroup-meta{font-size:9px;color:#bbb;white-space:nowrap;flex-shrink:0}
+.pl-subgroup-body.collapsed{display:none}
 
 /* TRACK LIST */
 .pl-track-list{list-style:none;padding:0;margin:0}
@@ -247,6 +296,13 @@ strong{color:var(--accent);font-weight:400}
 #audioName{color:var(--accent)!important}
 #mpPlusBtn{color:rgba(0,0,0,.45)!important}
 
+/* PLAYED TIMES */
+#mpPlayedTimes{
+  font-size:10px;color:#888;white-space:nowrap;flex-shrink:0;
+  padding:0 4px;border-left:1px solid rgba(0,0,0,.12);
+}
+#mpPlayedTimes span{color:var(--accent);font-weight:bold}
+
 /* PROGRESS ROW */
 .mp-progress-row{
   background:var(--grad-bar)!important;
@@ -350,8 +406,23 @@ strong{color:var(--accent);font-weight:400}
 }
 .album-pill:hover{background:#fff;color:var(--accent);border-color:var(--accent)}
 
-/* publisher field hint */
 .field-hint{font-size:9px;color:#aaa;margin-top:2px}
+
+/* Undo/Redo bar */
+#_undoRedoBar{
+  display:flex;gap:4px;align-items:center;margin-bottom:6px;padding:4px 6px;
+  background:var(--grad-bar);border:1px solid rgba(140,140,140,.35);
+}
+.undo-btn{
+  all:unset;box-sizing:border-box;
+  background:linear-gradient(to bottom,#555 0%,#333 50%,#222 50%,#2e2e2e 100%);
+  border:1px solid rgba(0,0,0,.50);color:#eee;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:10px;
+  padding:3px 8px;cursor:pointer;white-space:nowrap;
+}
+.undo-btn:hover{filter:brightness(1.25)}
+.undo-btn:disabled{filter:brightness(.5);cursor:not-allowed}
+#_undoRedoInfo{font-size:9.5px;color:#888;flex:1;text-align:right}
 
 /* Playlist preview box */
 #hostPlPreview{
@@ -476,6 +547,17 @@ strong{color:var(--accent);font-weight:400}
     <span id="trackLoadMsg">Initializing&#x2026;</span>
   </div>
 
+  <!-- TOP 3 + TRY THIS -->
+  <div id="_top3Panel" style="display:none;">
+    <div class="top3-title">&#x2605; Top Rated &mdash; <span>Top 3</span></div>
+    <div class="top3-list" id="_top3List"></div>
+    <div class="try-this" id="_tryThisRow">
+      <span class="try-this-label">&#x25B6; Try this:</span>
+      <span class="try-this-name" id="_tryThisName">&#x2014;</span>
+      <span class="try-this-btn">&#x1F3B2; shuffle</span>
+    </div>
+  </div>
+
   <div class="glass-box">
     <div class="aero-inner">
       <div class="aero-pad" style="display:flex;align-items:flex-start;gap:10px;">
@@ -495,7 +577,6 @@ strong{color:var(--accent);font-weight:400}
         </div>
 
         <div id="_cdSidePanel">
-          <!-- Search bar near scrollbar, inside CD frame -->
           <div id="_mpSearchWrap">
             <div class="sw-inner">
               <input type="text" id="_mpSearchInput" placeholder="Search tracks&#x2026;" autocomplete="off" spellcheck="false">
@@ -506,7 +587,6 @@ strong{color:var(--accent);font-weight:400}
             </select>
           </div>
 
-          <!-- CD spinner — click opens YouTube -->
           <div id="_cdSpinWrapper" title="Click to open on YouTube">
             <div id="_cdOuter"></div>
             <div id="_cdArt"></div>
@@ -542,6 +622,8 @@ strong{color:var(--accent);font-weight:400}
           </button>
           <span id="mpDislikeVal" style="font-size:11px;min-width:12px;">0</span>
         </div>
+        <!-- PLAYED TIMES — right after like/dislike -->
+        <div id="mpPlayedTimes">Played: <span id="mpPlayedVal">0</span>x</div>
         <span style="flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;">
           Currently playing: <span id="audioName">&#x2014;</span>
         </span>
@@ -594,8 +676,15 @@ strong{color:var(--accent);font-weight:400}
     <div class="aero-inner">
       <div class="aero-pad">
 
+        <!-- UNDO / REDO -->
+        <div id="_undoRedoBar">
+          <button class="undo-btn" id="_undoBtn" disabled onclick="_undoAction()">&#x21A9; Undo</button>
+          <button class="undo-btn" id="_redoBtn" disabled onclick="_redoAction()">&#x21AA; Redo</button>
+          <span id="_undoRedoInfo">No actions yet</span>
+        </div>
+
         <div class="desc-box">
-          <p>Add via <strong>YouTube link</strong>, <strong>YouTube Playlist</strong>, or <strong>file link</strong>. Tracks are grouped by <strong>Album</strong>. Include a <strong>publisher name</strong> (max 15 chars) to stamp who added it.</p>
+          <p>Add via <strong>YouTube link</strong>, <strong>YouTube Playlist</strong>, or <strong>file link</strong>. Tracks are grouped by <strong>Album &gt; Sub-album</strong>. Include a <strong>publisher name</strong> (max 15 chars) to stamp who added it.</p>
         </div>
 
         <div style="display:flex;border:1px solid rgba(140,140,140,.50);border-bottom:none;overflow:hidden;">
@@ -622,9 +711,15 @@ strong{color:var(--accent);font-weight:400}
           </div>
           <div class="album-field-row">
             <label>Album / Category <span style="color:#aaa;font-size:9px;">(blank &#x2192; Uncategorized)</span></label>
-            <input type="text" id="hostYtAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Higurashi OST" autocomplete="off" list="albumDatalistYt">
+            <input type="text" id="hostYtAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Game OSTs" autocomplete="off" list="albumDatalistYt">
             <datalist id="albumDatalistYt"></datalist>
             <div class="album-existing-pills" id="albumPillsYt"></div>
+          </div>
+          <div class="album-field-row">
+            <label>Sub-album <span style="color:#aaa;font-size:9px;">(optional — e.g. Resident Evil, Persona)</span></label>
+            <input type="text" id="hostYtSubAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Resident Evil" autocomplete="off" list="subAlbumDatalistYt">
+            <datalist id="subAlbumDatalistYt"></datalist>
+            <div class="album-existing-pills" id="subAlbumPillsYt"></div>
           </div>
           <div style="margin-bottom:6px;">
             <label style="display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Artwork URL <span style="color:#aaa;font-size:9px;">(optional)</span></label>
@@ -641,13 +736,26 @@ strong{color:var(--accent);font-weight:400}
           </div>
           <div style="margin-bottom:6px;">
             <label style="display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Album / Category <span style="color:#aaa;font-size:9px;">(blank &#x2192; playlist name)</span></label>
-            <input type="text" id="hostPlAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Higurashi OST" autocomplete="off" list="albumDatalistPl">
+            <input type="text" id="hostPlAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Game OSTs" autocomplete="off" list="albumDatalistPl">
             <datalist id="albumDatalistPl"></datalist>
             <div class="album-existing-pills" id="albumPillsPl"></div>
+          </div>
+          <div class="album-field-row">
+            <label>Sub-album <span style="color:#aaa;font-size:9px;">(optional — e.g. Persona, Devil May Cry)</span></label>
+            <input type="text" id="hostPlSubAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Persona 5" autocomplete="off" list="subAlbumDatalistPl">
+            <datalist id="subAlbumDatalistPl"></datalist>
+            <div class="album-existing-pills" id="subAlbumPillsPl"></div>
           </div>
           <div style="margin-bottom:6px;">
             <label style="display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Publisher <span style="color:var(--accent);font-size:9px;">*</span> <span style="color:#aaa;font-size:9px;">(max 15 chars)</span></label>
             <input type="text" id="hostPlPublisher" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. watanagashi" maxlength="15" autocomplete="off">
+          </div>
+          <div style="margin-bottom:6px;">
+            <label style="display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">
+              Text Before Track Names <span style="color:#aaa;font-size:9px;">(optional prefix — e.g. "Persona" → "Persona - Music 1")</span>
+            </label>
+            <input type="text" id="hostPlPrefix" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Persona" autocomplete="off">
+            <div class="field-hint">Will be prepended as: [prefix] - [track name]</div>
           </div>
           <div style="margin-bottom:6px;">
             <label style="display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Shared Artwork URL <span style="color:#aaa;font-size:9px;">(optional)</span></label>
@@ -677,9 +785,15 @@ strong{color:var(--accent);font-weight:400}
           </div>
           <div class="album-field-row">
             <label>Album / Category</label>
-            <input type="text" id="hostFileAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Higurashi OST" autocomplete="off" list="albumDatalistFile">
+            <input type="text" id="hostFileAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Game OSTs" autocomplete="off" list="albumDatalistFile">
             <datalist id="albumDatalistFile"></datalist>
             <div class="album-existing-pills" id="albumPillsFile"></div>
+          </div>
+          <div class="album-field-row">
+            <label>Sub-album <span style="color:#aaa;font-size:9px;">(optional)</span></label>
+            <input type="text" id="hostFileSubAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Resident Evil" autocomplete="off" list="subAlbumDatalistFile">
+            <datalist id="subAlbumDatalistFile"></datalist>
+            <div class="album-existing-pills" id="subAlbumPillsFile"></div>
           </div>
           <div style="margin-bottom:6px;">
             <label style="display:block;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Artwork URL (optional)</label>
@@ -699,6 +813,10 @@ strong{color:var(--accent);font-weight:400}
             <input type="text" id="hostUploadAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="Album name or leave blank" autocomplete="off" list="albumDatalistUpload">
             <datalist id="albumDatalistUpload"></datalist>
             <div class="album-existing-pills" id="albumPillsUpload"></div>
+          </div>
+          <div class="album-field-row">
+            <label>Sub-album <span style="color:#aaa;font-size:9px;">(optional)</span></label>
+            <input type="text" id="hostUploadSubAlbum" class="url-input" style="border:1px solid rgba(140,140,140,.45);" placeholder="e.g. Nightcore Pop" autocomplete="off">
           </div>
           <label id="uploadDropZone" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px 12px;cursor:pointer;background:#fafafa;border:2px dashed rgba(140,140,140,.45);font-size:11px;color:#888;text-align:center;min-height:90px;margin-top:4px;">
             <span style="font-size:20px;">&#x266C;</span>
@@ -731,7 +849,7 @@ strong{color:var(--accent);font-weight:400}
           </div>
           <div id="_albumBuckets"></div>
         </div>
-        <div class="note">Tracks without an album appear in <strong>Uncategorized</strong>. Drag tracks between album headers to re-assign.</div>
+        <div class="note">Tracks without an album appear in <strong>Uncategorized</strong>. Sub-albums group tracks within an album.</div>
 
       </div>
     </div>
@@ -749,15 +867,20 @@ strong{color:var(--accent);font-weight:400}
 
 <script>
 /* ═══════════════════════════════════════════════════════════
-   STORAGE — shared via window.storage (artifact), fallback localStorage
+   STORAGE KEYS
    ═══════════════════════════════════════════════════════════ */
 const HS_ADDED         = 'mp_added_v4';
 const HS_DELETED       = 'mp_deleted_v4';
 const HS_CUSTOM_ALBUMS = 'mp_albums_v4';
 const HS_VOTES         = 'mp_votes_v4';
 const HS_USERID        = '_musicUserId';
-const HS_ALBUM_META    = 'mp_album_meta_v4'; // {albumName: {playlistUrl, addedAt}}
+const HS_ALBUM_META    = 'mp_album_meta_v4';
+const HS_PLAY_COUNTS   = 'mp_play_counts_v4';
 
+/* ═══════════════════════════════════════════════════════════
+   SHARED STORAGE (window.storage fallback to localStorage)
+   ALL writes go to BOTH so all devices see data
+   ═══════════════════════════════════════════════════════════ */
 async function _storeGet(key) {
   try {
     if (window.storage) {
@@ -769,18 +892,18 @@ async function _storeGet(key) {
 }
 async function _storeSet(key, val) {
   const s = JSON.stringify(val);
+  // Always write to shared storage (visible to all devices)
   try { if (window.storage) await window.storage.set(key, s, true); } catch(e) {}
+  // Also keep local copy for fast reads
   try { localStorage.setItem(key, s); } catch(e) {}
 }
 
 /* ═══════════════════════════════════════════════════════════
    STATE
    ═══════════════════════════════════════════════════════════ */
-// !! MUSIC_CONFIG is intentionally empty — only published tracks appear
 const MUSIC_CONFIG = [];
-
-const TRACKS     = [];  // runtime track array
-let _albumMeta   = {};  // {name: {playlistUrl, addedAt}}
+const TRACKS = [];
+let _albumMeta   = {};
 let curIdx       = -1;
 let isPlaying    = false;
 let shuffleOn    = false;
@@ -795,7 +918,35 @@ let _currentArtUrl = '';
 let _plPreviewItems = [];
 let _searchQuery = '';
 let _albumFilterVal = '';
-let _collapsedGroups = new Set(); // album names that are collapsed
+let _collapsedGroups = new Set();
+let _collapsedSubGroups = new Set();
+
+// UNDO/REDO stacks — each entry: { type:'add'|'delete', snapshot: [...added] }
+let _undoStack = [];
+let _redoStack = [];
+
+/* ═══════════════════════════════════════════════════════════
+   PLAY COUNTS
+   ═══════════════════════════════════════════════════════════ */
+let _playCounts = {};
+function _loadPlayCounts() {
+  try { _playCounts = JSON.parse(localStorage.getItem(HS_PLAY_COUNTS)||'{}'); } catch(e) { _playCounts={}; }
+}
+function _savePlayCounts() {
+  try { localStorage.setItem(HS_PLAY_COUNTS, JSON.stringify(_playCounts)); } catch(e) {}
+  _storeSet(HS_PLAY_COUNTS, _playCounts);
+}
+function _incrementPlayCount(trackId) {
+  if (!trackId) return;
+  const k = String(trackId).replace(/[^a-z0-9_-]/gi,'_');
+  _playCounts[k] = (_playCounts[k]||0) + 1;
+  _savePlayCounts();
+}
+function _getPlayCount(trackId) {
+  if (!trackId) return 0;
+  const k = String(trackId).replace(/[^a-z0-9_-]/gi,'_');
+  return _playCounts[k]||0;
+}
 
 /* ═══════════════════════════════════════════════════════════
    DATE HELPERS
@@ -836,42 +987,88 @@ const VOTES = {
   },
   getScore(videoId) { const s=this.getStats(videoId); return s.up-s.down; },
   reset() { this._data={}; this._save(); },
-  _save() { try { localStorage.setItem(HS_VOTES,JSON.stringify(this._data)); } catch(e){} },
+  _save() {
+    try { localStorage.setItem(HS_VOTES,JSON.stringify(this._data)); } catch(e){}
+    _storeSet(HS_VOTES, this._data);
+  },
   _s(id) { return String(id).replace(/[.#$[\]]/g,'_'); }
 };
 
 /* ═══════════════════════════════════════════════════════════
-   STORAGE LOAD/SAVE
+   STORAGE LOAD/SAVE — always shared
    ═══════════════════════════════════════════════════════════ */
 function getHostAdded()       { try { return JSON.parse(localStorage.getItem(HS_ADDED) ||'[]'); } catch(e) { return []; } }
-function saveHostAdded(arr)   { _storeSet(HS_ADDED, arr); localStorage.setItem(HS_ADDED, JSON.stringify(arr)); }
+function saveHostAdded(arr)   { localStorage.setItem(HS_ADDED, JSON.stringify(arr)); _storeSet(HS_ADDED, arr); }
 function getHostDeleted()     { try { return JSON.parse(localStorage.getItem(HS_DELETED)||'[]'); } catch(e) { return []; } }
-function saveHostDeleted(arr) { _storeSet(HS_DELETED, arr); localStorage.setItem(HS_DELETED, JSON.stringify(arr)); }
+function saveHostDeleted(arr) { localStorage.setItem(HS_DELETED, JSON.stringify(arr)); _storeSet(HS_DELETED, arr); }
 function getCustomAlbums()    { try { return JSON.parse(localStorage.getItem(HS_CUSTOM_ALBUMS)||'[]'); } catch(e) { return []; } }
-function saveCustomAlbums(a)  { _storeSet(HS_CUSTOM_ALBUMS, a); localStorage.setItem(HS_CUSTOM_ALBUMS, JSON.stringify(a)); }
+function saveCustomAlbums(a)  { localStorage.setItem(HS_CUSTOM_ALBUMS, JSON.stringify(a)); _storeSet(HS_CUSTOM_ALBUMS, a); }
 function getAlbumMeta()       { try { return JSON.parse(localStorage.getItem(HS_ALBUM_META)||'{}'); } catch(e) { return {}; } }
-function saveAlbumMeta(m)     { _storeSet(HS_ALBUM_META, m); localStorage.setItem(HS_ALBUM_META, JSON.stringify(m)); }
+function saveAlbumMeta(m)     { localStorage.setItem(HS_ALBUM_META, JSON.stringify(m)); _storeSet(HS_ALBUM_META, m); }
 
+/* Load shared data from window.storage and sync to localStorage */
 async function _loadSharedData() {
   try {
-    const [a,d,ca,am] = await Promise.all([
+    const [a,d,ca,am,pc,vt] = await Promise.all([
       _storeGet(HS_ADDED), _storeGet(HS_DELETED),
-      _storeGet(HS_CUSTOM_ALBUMS), _storeGet(HS_ALBUM_META)
+      _storeGet(HS_CUSTOM_ALBUMS), _storeGet(HS_ALBUM_META),
+      _storeGet(HS_PLAY_COUNTS), _storeGet(HS_VOTES)
     ]);
     if (a)  { localStorage.setItem(HS_ADDED,  JSON.stringify(a));  }
     if (d)  { localStorage.setItem(HS_DELETED,JSON.stringify(d));  }
     if (ca) { localStorage.setItem(HS_CUSTOM_ALBUMS, JSON.stringify(ca)); }
     if (am) { localStorage.setItem(HS_ALBUM_META,    JSON.stringify(am)); _albumMeta = am; }
+    if (pc) { localStorage.setItem(HS_PLAY_COUNTS,   JSON.stringify(pc)); _playCounts = pc; }
+    if (vt) { localStorage.setItem(HS_VOTES,          JSON.stringify(vt)); VOTES._data = vt; }
   } catch(e) {}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UNDO / REDO
+   ═══════════════════════════════════════════════════════════ */
+function _pushUndo(description, prevAdded) {
+  _undoStack.push({ description, snapshot: JSON.parse(JSON.stringify(prevAdded)) });
+  _redoStack = []; // clear redo on new action
+  _updateUndoRedoUI();
+}
+function _undoAction() {
+  if (!_undoStack.length) return;
+  const entry = _undoStack.pop();
+  const currentAdded = getHostAdded();
+  _redoStack.push({ description: entry.description, snapshot: JSON.parse(JSON.stringify(currentAdded)) });
+  saveHostAdded(entry.snapshot);
+  rebuildTracks(); _renderAlbumManager(); _refreshAlbumPickers();
+  setHostStatus('Undid: ' + entry.description, 'ok');
+  _updateUndoRedoUI();
+}
+function _redoAction() {
+  if (!_redoStack.length) return;
+  const entry = _redoStack.pop();
+  const currentAdded = getHostAdded();
+  _undoStack.push({ description: entry.description, snapshot: JSON.parse(JSON.stringify(currentAdded)) });
+  saveHostAdded(entry.snapshot);
+  rebuildTracks(); _renderAlbumManager(); _refreshAlbumPickers();
+  setHostStatus('Redid: ' + entry.description, 'ok');
+  _updateUndoRedoUI();
+}
+function _updateUndoRedoUI() {
+  const ub = document.getElementById('_undoBtn'), rb = document.getElementById('_redoBtn');
+  const info = document.getElementById('_undoRedoInfo');
+  if (ub) ub.disabled = _undoStack.length === 0;
+  if (rb) rb.disabled = _redoStack.length === 0;
+  if (info) {
+    const parts = [];
+    if (_undoStack.length) parts.push(_undoStack.length + ' undo');
+    if (_redoStack.length) parts.push(_redoStack.length + ' redo');
+    info.textContent = parts.length ? parts.join(' | ') + ' available' : 'No actions yet';
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
    REBUILD TRACKS
    ═══════════════════════════════════════════════════════════ */
 function rebuildTracks() {
-  // Remove all non-base (there are no base tracks now)
   TRACKS.length = 0;
-
   const deleted = getHostDeleted();
   const added   = getHostAdded();
   _albumMeta    = getAlbumMeta();
@@ -879,37 +1076,37 @@ function rebuildTracks() {
   added.forEach(t => {
     const tid = t.videoId || t._hostId || ('file_'+t.url);
     if (deleted.includes(tid)) return;
-    const album = t.album || 'Uncategorized';
+    const album    = t.album    || 'Uncategorized';
+    const subAlbum = t.subAlbum || '';
     if (t.type === 'yt') {
       if (!t.videoId) return;
       const art = t.artwork || ('https://img.youtube.com/vi/'+t.videoId+'/mqdefault.jpg');
       TRACKS.push({ title:t.name, videoId:t.videoId, albumArt:art, type:'youtube',
-        _plLabel:album, _isBase:false, _hostId:t.videoId,
+        _plLabel:album, _subLabel:subAlbum, _isBase:false, _hostId:t.videoId,
         publisher:t.publisher||'', addedAt:t.addedAt||0 });
     } else if (t.type === 'file') {
       const hid = t._hostId || ('file_'+t.url);
       TRACKS.push({ title:t.name, videoId:null, _fileUrl:t.url, albumArt:t.artwork||'',
-        type:'file', _plLabel:album, _isBase:false, _hostId:hid,
+        type:'file', _plLabel:album, _subLabel:subAlbum, _isBase:false, _hostId:hid,
         publisher:t.publisher||'', addedAt:t.addedAt||0 });
     }
   });
 
   buildPlaylist();
   _refreshAlbumFilterDropdown();
+  _renderTop3();
+  _refreshTryThis();
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SORT HELPERS — sort albums by their newest track's addedAt
+   SORT HELPERS
    ═══════════════════════════════════════════════════════════ */
 function _groupOrder(groups) {
-  // groups: Map<label, [{track,idx,num}]>
   const labels = [...groups.keys()];
-
   if (_musicSort === 'newest' || _musicSort === 'oldest') {
     labels.sort((a, b) => {
       const metaA = _albumMeta[a] || {};
       const metaB = _albumMeta[b] || {};
-      // Album addedAt or fallback to max track addedAt
       const tA = metaA.addedAt || Math.max(...(groups.get(a).map(e=>e.track.addedAt||0)));
       const tB = metaB.addedAt || Math.max(...(groups.get(b).map(e=>e.track.addedAt||0)));
       return _musicSort === 'newest' ? tB - tA : tA - tB;
@@ -927,7 +1124,42 @@ function _groupOrder(groups) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   BUILD PLAYLIST
+   TOP 3 + TRY THIS
+   ═══════════════════════════════════════════════════════════ */
+function _renderTop3() {
+  const panel = document.getElementById('_top3Panel');
+  const list  = document.getElementById('_top3List');
+  if (!panel || !list) return;
+  const scored = TRACKS.map((t,i) => ({ t, i, score:VOTES.getScore(t.videoId||t._hostId||'') }))
+    .filter(x => x.score > 0)
+    .sort((a,b) => b.score - a.score)
+    .slice(0,3);
+  if (!scored.length) { panel.style.display='none'; return; }
+  panel.style.display='block';
+  list.innerHTML='';
+  const ranks=['r1','r2','r3'], medals=['🥇','🥈','🥉'];
+  scored.forEach((x,pos) => {
+    const row = document.createElement('div');
+    row.className='top3-item';
+    row.innerHTML='<span class="top3-rank '+ranks[pos]+'">'+medals[pos]+'</span>'
+      +'<span class="top3-name">'+(x.t.title||'?')+'</span>'
+      +'<span class="top3-score">▲'+x.score+'</span>';
+    row.addEventListener('click', () => selectAndPlay(x.i));
+    list.appendChild(row);
+  });
+}
+
+let _tryThisIdx = -1;
+function _refreshTryThis() {
+  const row = document.getElementById('_tryThisRow');
+  const nameEl = document.getElementById('_tryThisName');
+  if (!row || !TRACKS.length) return;
+  _tryThisIdx = Math.floor(Math.random()*TRACKS.length);
+  if (nameEl) nameEl.textContent = TRACKS[_tryThisIdx]?.title || '—';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUILD PLAYLIST — with sub-albums
    ═══════════════════════════════════════════════════════════ */
 function buildPlaylist() {
   const pl = document.getElementById('playlistLeft');
@@ -936,150 +1168,181 @@ function buildPlaylist() {
 
   if (!TRACKS.length) {
     pl.innerHTML = '<p style="opacity:.5;padding:10px 8px;font-size:11px;">No tracks published yet.</p>';
-    const cnt = document.getElementById('mpPlaylistCount');
-    if (cnt) cnt.textContent = '';
     return;
   }
 
-  // Apply search + album filter
   const sq = _searchQuery.toLowerCase().trim();
   const af = _albumFilterVal;
 
-  // Build groups map (preserving TRACKS order for index mapping)
-  const groupMap = new Map();
+  // Build album → subAlbum → entries
+  // albumMap: Map<albumLabel, Map<subLabel, [{track,idx}]>>
+  const albumMap = new Map();
   TRACKS.forEach((t, i) => {
     const lbl = t._plLabel || 'Uncategorized';
-    if (!groupMap.has(lbl)) groupMap.set(lbl, []);
-    groupMap.get(lbl).push({ track:t, idx:i });
+    const sub = t._subLabel || '';
+    if (!albumMap.has(lbl)) albumMap.set(lbl, new Map());
+    const subMap = albumMap.get(lbl);
+    if (!subMap.has(sub)) subMap.set(sub, []);
+    subMap.get(sub).push({ track:t, idx:i });
   });
 
-  // Sort album order
-  const orderedLabels = _groupOrder(groupMap);
+  // Build flat list for groupOrder (treat album as top-level group)
+  const flatGroupMap = new Map();
+  albumMap.forEach((subMap, lbl) => {
+    const allEntries = [];
+    subMap.forEach(entries => allEntries.push(...entries));
+    flatGroupMap.set(lbl, allEntries);
+  });
+  const orderedAlbums = _groupOrder(flatGroupMap);
 
-  // Assign global track numbers AFTER sorting (so .1 = first in display order)
+  // Assign global numbers per-subgroup
   let globalNum = 1;
-  const globalNums = {}; // idx -> display number
-  orderedLabels.forEach(lbl => {
-    let entries = groupMap.get(lbl);
-    // Sort within album
-    if (_musicSort === 'popular' || _musicSort === 'highest') {
-      entries = [...entries].sort((a,b) => VOTES.getScore(b.track.videoId||'') - VOTES.getScore(a.track.videoId||''));
-    } else if (_musicSort === 'alpha') {
-      entries = [...entries].sort((a,b) => (a.track.title||'').localeCompare(b.track.title||''));
-    } else if (_musicSort === 'oldest') {
-      entries = [...entries].sort((a,b) => (a.track.addedAt||0) - (b.track.addedAt||0));
-    }
-    groupMap.set(lbl, entries);
-    entries.forEach(e => { globalNums[e.idx] = globalNum++; });
+  const globalNums = {};
+  orderedAlbums.forEach(lbl => {
+    const subMap = albumMap.get(lbl);
+    subMap.forEach((entries, sub) => {
+      let sorted = [...entries];
+      if (_musicSort === 'popular' || _musicSort === 'highest') {
+        sorted.sort((a,b) => VOTES.getScore(b.track.videoId||'') - VOTES.getScore(a.track.videoId||''));
+      } else if (_musicSort === 'alpha') {
+        sorted.sort((a,b) => (a.track.title||'').localeCompare(b.track.title||''));
+      } else if (_musicSort === 'oldest') {
+        sorted.sort((a,b) => (a.track.addedAt||0) - (b.track.addedAt||0));
+      }
+      subMap.set(sub, sorted);
+      sorted.forEach(e => { globalNums[e.idx] = globalNum++; });
+    });
   });
 
   let totalVisible = 0;
 
-  orderedLabels.forEach(lbl => {
-    let entries = groupMap.get(lbl);
-
-    // Filter
-    let filtered = entries;
+  orderedAlbums.forEach(lbl => {
     if (af && af !== lbl) return;
-    if (sq) filtered = filtered.filter(e => (e.track.title||'').toLowerCase().includes(sq));
-    if (!filtered.length) return;
+    const subMap = albumMap.get(lbl);
 
-    totalVisible += filtered.length;
+    // Count filtered entries across all sub-albums
+    let totalInAlbum = 0;
+    subMap.forEach((entries, sub) => {
+      let filtered = sq ? entries.filter(e => (e.track.title||'').toLowerCase().includes(sq)) : entries;
+      totalInAlbum += filtered.length;
+    });
+    if (!totalInAlbum) return;
+
+    totalVisible += totalInAlbum;
     const collapsed = _collapsedGroups.has(lbl);
 
-    const groupDiv = document.createElement('div');
-    groupDiv.dataset.group = lbl;
+    const albumDiv = document.createElement('div');
+    albumDiv.dataset.group = lbl;
 
-    // --- GROUP HEADER ---
+    // ALBUM HEADER
     const hdr = document.createElement('div');
     hdr.className = 'pl-group-header';
-
     const toggle = document.createElement('span');
     toggle.className = 'pl-group-toggle' + (collapsed ? '' : ' open');
     toggle.textContent = '▶';
 
-    // Album name — clickable for playlist URL
     const nameEl = document.createElement('span');
     const meta = _albumMeta[lbl] || {};
     const hasUrl = !!meta.playlistUrl;
     nameEl.className = 'pl-group-name' + (hasUrl ? ' has-playlist' : '');
     nameEl.textContent = lbl;
-    nameEl.title = hasUrl ? 'Click to open YouTube playlist' : lbl;
-
     if (hasUrl) {
-      nameEl.addEventListener('click', e => {
-        e.stopPropagation();
-        window.open(meta.playlistUrl, '_blank', 'noopener,noreferrer');
-      });
+      nameEl.addEventListener('click', e => { e.stopPropagation(); window.open(meta.playlistUrl,'_blank','noopener,noreferrer'); });
     }
-
     const metaEl = document.createElement('span');
     metaEl.className = 'pl-group-meta';
-    metaEl.textContent = 'tracks: ' + filtered.length;
+    metaEl.textContent = 'tracks: ' + totalInAlbum;
 
-    hdr.appendChild(toggle);
-    hdr.appendChild(nameEl);
-    hdr.appendChild(metaEl);
+    hdr.appendChild(toggle); hdr.appendChild(nameEl); hdr.appendChild(metaEl);
 
-    // Click on BAR (not on name text) → collapse/expand
+    const albumBody = document.createElement('div');
+    albumBody.className = 'pl-group-body' + (collapsed ? ' collapsed' : '');
+
     hdr.addEventListener('click', () => {
-      const isNowCollapsed = body.classList.contains('collapsed');
+      const isNowCollapsed = albumBody.classList.contains('collapsed');
       if (isNowCollapsed) {
-        body.classList.remove('collapsed');
-        toggle.classList.add('open');
-        _collapsedGroups.delete(lbl);
+        albumBody.classList.remove('collapsed'); toggle.classList.add('open'); _collapsedGroups.delete(lbl);
       } else {
-        body.classList.add('collapsed');
-        toggle.classList.remove('open');
-        _collapsedGroups.add(lbl);
+        albumBody.classList.add('collapsed'); toggle.classList.remove('open'); _collapsedGroups.add(lbl);
       }
     });
 
-    // --- GROUP BODY ---
-    const body = document.createElement('div');
-    body.className = 'pl-group-body' + (collapsed ? ' collapsed' : '');
+    // For each sub-album (or "" = no sub-album)
+    subMap.forEach((entries, sub) => {
+      let filtered = sq ? entries.filter(e => (e.track.title||'').toLowerCase().includes(sq)) : entries;
+      if (!filtered.length) return;
 
-    const ol = document.createElement('ol');
-    ol.className = 'pl-track-list';
+      // Sub-album wrapper
+      let trackContainer;
+      if (sub) {
+        // Has a real sub-album — render sub-header
+        const subKey = lbl + '::' + sub;
+        const subCollapsed = _collapsedSubGroups.has(subKey);
 
-    filtered.forEach(e => {
-      const li = document.createElement('li');
-      const a  = document.createElement('a');
-      a.href = '#';
-      a.dataset.idx = e.idx;
-      if (e.idx === curIdx) a.classList.add('activeSong');
+        const subDiv = document.createElement('div');
+        const subHdr = document.createElement('div');
+        subHdr.className = 'pl-subgroup-header';
+        const subToggle = document.createElement('span');
+        subToggle.className = 'pl-subgroup-toggle' + (subCollapsed ? '' : ' open');
+        subToggle.textContent = '▶';
+        const subName = document.createElement('span');
+        subName.className = 'pl-subgroup-name';
+        subName.textContent = sub;
+        const subMeta = document.createElement('span');
+        subMeta.className = 'pl-subgroup-meta';
+        subMeta.textContent = filtered.length + ' track' + (filtered.length!==1?'s':'');
+        subHdr.appendChild(subToggle); subHdr.appendChild(subName); subHdr.appendChild(subMeta);
 
-      const numSpan = document.createElement('span');
-      numSpan.className = 'pl-track-num';
-      numSpan.textContent = '.' + (globalNums[e.idx] || '?');
+        const subBody = document.createElement('div');
+        subBody.className = 'pl-subgroup-body' + (subCollapsed ? ' collapsed' : '');
 
-      const titleWrap = document.createElement('span');
-      titleWrap.className = 'pl-track-title-wrap';
+        subHdr.addEventListener('click', e => {
+          e.stopPropagation();
+          const isNowC = subBody.classList.contains('collapsed');
+          if (isNowC) { subBody.classList.remove('collapsed'); subToggle.classList.add('open'); _collapsedSubGroups.delete(subKey); }
+          else { subBody.classList.add('collapsed'); subToggle.classList.remove('open'); _collapsedSubGroups.add(subKey); }
+        });
+        subDiv.appendChild(subHdr); subDiv.appendChild(subBody);
+        albumBody.appendChild(subDiv);
+        trackContainer = subBody;
+      } else {
+        trackContainer = albumBody;
+      }
 
-      const titleSpan = document.createElement('span');
-      titleSpan.className = 'pl-track-title';
-      titleSpan.textContent = e.track.title || '(untitled)';
+      // Tracks — numbered PER sub-album (or per album if no sub-album)
+      const ol = document.createElement('ol');
+      ol.className = 'pl-track-list';
+      // Local numbers within this sub-album
+      filtered.forEach((e, localIdx) => {
+        const li = document.createElement('li');
+        const a  = document.createElement('a');
+        a.href = '#'; a.dataset.idx = e.idx;
+        if (e.idx === curIdx) a.classList.add('activeSong');
 
-      const pubSpan = document.createElement('span');
-      pubSpan.className = 'pl-track-pub';
-      const pub = e.track.publisher ? e.track.publisher + ' \u2022 ' : '';
-      pubSpan.textContent = pub + _fmtDate(e.track.addedAt);
+        const numSpan = document.createElement('span');
+        numSpan.className = 'pl-track-num';
+        // Use local 1-based number within this group
+        numSpan.textContent = '.' + (localIdx+1);
 
-      titleWrap.appendChild(titleSpan);
-      titleWrap.appendChild(pubSpan);
-
-      a.appendChild(numSpan);
-      a.appendChild(titleWrap);
-
-      a.addEventListener('click', ev => { ev.preventDefault(); selectAndPlay(e.idx); });
-      li.appendChild(a);
-      ol.appendChild(li);
+        const titleWrap = document.createElement('span');
+        titleWrap.className = 'pl-track-title-wrap';
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'pl-track-title';
+        titleSpan.textContent = e.track.title || '(untitled)';
+        const pubSpan = document.createElement('span');
+        pubSpan.className = 'pl-track-pub';
+        const pub = e.track.publisher ? e.track.publisher + ' \u2022 ' : '';
+        pubSpan.textContent = pub + _fmtDate(e.track.addedAt);
+        titleWrap.appendChild(titleSpan); titleWrap.appendChild(pubSpan);
+        a.appendChild(numSpan); a.appendChild(titleWrap);
+        a.addEventListener('click', ev => { ev.preventDefault(); selectAndPlay(e.idx); });
+        li.appendChild(a); ol.appendChild(li);
+      });
+      trackContainer.appendChild(ol);
     });
 
-    body.appendChild(ol);
-    groupDiv.appendChild(hdr);
-    groupDiv.appendChild(body);
-    pl.appendChild(groupDiv);
+    albumDiv.appendChild(hdr); albumDiv.appendChild(albumBody);
+    pl.appendChild(albumDiv);
   });
 
   if (totalVisible === 0 && (sq || af)) {
@@ -1103,8 +1366,7 @@ function _refreshAlbumFilterDropdown() {
   const labels = [...new Set(TRACKS.map(t => t._plLabel || 'Uncategorized'))];
   labels.forEach(l => {
     const o = document.createElement('option');
-    o.value = l; o.textContent = l;
-    sel.appendChild(o);
+    o.value = l; o.textContent = l; sel.appendChild(o);
   });
   if (labels.includes(cur)) sel.value = cur;
 }
@@ -1161,7 +1423,6 @@ async function fetchVideoDuration(videoId) {
 }
 
 async function fetchYtTitle(videoId) {
-  // Try Invidious first (no API key needed)
   const INV = ['https://inv.nadeko.net','https://invidious.nerdvpn.de'];
   for (const base of INV) {
     try {
@@ -1171,7 +1432,6 @@ async function fetchYtTitle(videoId) {
       if (d?.title) return d.title;
     } catch(e) {}
   }
-  // Fallback oembed
   try {
     const r = await fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='+videoId+'&format=json');
     if (r.ok) { const d = await r.json(); return d.title || null; }
@@ -1229,13 +1489,15 @@ function loadTrack(idx, play) {
     if (play) {
       setTimeout(() => ytCmd('setVolume', [prevVol]), 1200);
       setPlaying(true);
+      _incrementPlayCount(t.videoId);
+      _updatePlayedTimesDisplay(t.videoId);
       fetchVideoDuration(t.videoId).then(dur => {
         if (curIdx !== idx) return;
         _trackDuration = dur; _trackStartTime = Date.now();
         if (dur > 0) startEndTimer(dur);
         startPollTimer();
       });
-    } else { setPlaying(false); }
+    } else { setPlaying(false); _updatePlayedTimesDisplay(t.videoId); }
   } else if ((t.type === 'file' || t.type === 'audio/mpeg') && t._fileUrl) {
     if (ae) {
       ae.src = t._fileUrl;
@@ -1243,6 +1505,8 @@ function loadTrack(idx, play) {
       if (play) {
         ae.play().catch(e => console.warn('Audio play error:', e));
         setPlaying(true);
+        _incrementPlayCount(t._hostId||t._fileUrl);
+        _updatePlayedTimesDisplay(t._hostId||t._fileUrl);
         ae.onloadedmetadata = () => {
           if (curIdx !== idx) return;
           _trackDuration = ae.duration || 0;
@@ -1251,9 +1515,14 @@ function loadTrack(idx, play) {
           startPollTimer();
         };
         ae.onended = () => { if (!loopOn) nextTrack(); else loadTrack(curIdx, true); };
-      } else { setPlaying(false); }
+      } else { setPlaying(false); _updatePlayedTimesDisplay(t._hostId||t._fileUrl); }
     }
   } else { setPlaying(false); }
+}
+
+function _updatePlayedTimesDisplay(trackId) {
+  const el = document.getElementById('mpPlayedVal');
+  if (el) el.textContent = _getPlayCount(trackId);
 }
 
 function selectAndPlay(idx) { loadTrack(idx, true); }
@@ -1361,15 +1630,11 @@ function _setCdPlaying(playing) {
     if (label) label.textContent = '\u2014 paused \u2014';
   }
 }
-/* CD click → open YouTube */
 function _cdClick() {
   if (curIdx < 0 || !TRACKS[curIdx]) return;
   const t = TRACKS[curIdx];
-  if (t.videoId) {
-    window.open('https://www.youtube.com/watch?v='+t.videoId, '_blank', 'noopener,noreferrer');
-  } else if (t._fileUrl) {
-    window.open(t._fileUrl, '_blank', 'noopener,noreferrer');
-  }
+  if (t.videoId) window.open('https://www.youtube.com/watch?v='+t.videoId,'_blank','noopener,noreferrer');
+  else if (t._fileUrl) window.open(t._fileUrl,'_blank','noopener,noreferrer');
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1431,13 +1696,15 @@ function _initHostPanel() {
     localStorage.setItem('hostMode','1');
     _renderAlbumManager();
     _refreshAlbumPickers();
+    _updateUndoRedoUI();
   }
 }
 
 function switchHostTab(tab) {
   ['yt','playlist','file','upload'].forEach(t => {
-    const p = document.getElementById('hostPane'+t.charAt(0).toUpperCase()+t.slice(1));
-    const b = document.getElementById('hostTab'+t.charAt(0).toUpperCase()+t.slice(1));
+    const key = t.charAt(0).toUpperCase()+t.slice(1);
+    const p = document.getElementById('hostPane'+key);
+    const b = document.getElementById('hostTab'+key);
     if (p) p.style.display = t===tab?'':'none';
     if (b) b.classList.toggle('active', t===tab);
   });
@@ -1457,6 +1724,16 @@ function _getAllAlbumNames() {
   return [...set];
 }
 
+function _getAllSubAlbumNames(albumFilter) {
+  const set = new Set();
+  getHostAdded().forEach(t => {
+    if (t.subAlbum) {
+      if (!albumFilter || t.album === albumFilter) set.add(t.subAlbum);
+    }
+  });
+  return [...set];
+}
+
 function _refreshAlbumPickers() {
   const albums = _getAllAlbumNames();
   const pairs = [
@@ -1472,7 +1749,47 @@ function _refreshAlbumPickers() {
       pills.innerHTML='';
       albums.forEach(a=>{
         const p=document.createElement('span');p.className='album-pill';p.textContent=a;
-        p.addEventListener('click',()=>{inp.value=a;});pills.appendChild(p);
+        p.addEventListener('click',()=>{inp.value=a;_refreshSubAlbumPickers(a);});pills.appendChild(p);
+      });
+    }
+  });
+  // Sub-album pickers
+  const subPairs = [
+    ['subAlbumDatalistYt','subAlbumPillsYt','hostYtSubAlbum','hostYtAlbum'],
+    ['subAlbumDatalistPl','subAlbumPillsPl','hostPlSubAlbum','hostPlAlbum'],
+    ['subAlbumDatalistFile','subAlbumPillsFile','hostFileSubAlbum','hostFileAlbum'],
+  ];
+  subPairs.forEach(([dlId,pillsId,inpId,albumInpId]) => {
+    const dl=document.getElementById(dlId), pills=document.getElementById(pillsId);
+    const inp=document.getElementById(inpId), albumInp=document.getElementById(albumInpId);
+    const curAlbum = albumInp ? albumInp.value.trim() : '';
+    const subs = _getAllSubAlbumNames(curAlbum);
+    if(dl){dl.innerHTML='';subs.forEach(s=>{const o=document.createElement('option');o.value=s;dl.appendChild(o);});}
+    if(pills&&inp){
+      pills.innerHTML='';
+      subs.forEach(s=>{
+        const p=document.createElement('span');p.className='album-pill';p.textContent=s;
+        p.addEventListener('click',()=>{inp.value=s;});pills.appendChild(p);
+      });
+    }
+  });
+}
+
+function _refreshSubAlbumPickers(albumFilter) {
+  const subPairs = [
+    ['subAlbumDatalistYt','subAlbumPillsYt','hostYtSubAlbum'],
+    ['subAlbumDatalistPl','subAlbumPillsPl','hostPlSubAlbum'],
+    ['subAlbumDatalistFile','subAlbumPillsFile','hostFileSubAlbum'],
+  ];
+  const subs = _getAllSubAlbumNames(albumFilter);
+  subPairs.forEach(([dlId,pillsId,inpId]) => {
+    const dl=document.getElementById(dlId), pills=document.getElementById(pillsId), inp=document.getElementById(inpId);
+    if(dl){dl.innerHTML='';subs.forEach(s=>{const o=document.createElement('option');o.value=s;dl.appendChild(o);});}
+    if(pills&&inp){
+      pills.innerHTML='';
+      subs.forEach(s=>{
+        const p=document.createElement('span');p.className='album-pill';p.textContent=s;
+        p.addEventListener('click',()=>{inp.value=s;});pills.appendChild(p);
       });
     }
   });
@@ -1482,28 +1799,29 @@ function _refreshAlbumPickers() {
    HOST: ADD SINGLE YT
    ═══════════════════════════════════════════════════════════ */
 async function hostAddYt() {
-  const url   = (document.getElementById('hostYtUrl').value||'').trim();
-  const name  = (document.getElementById('hostYtName').value||'').trim();
-  const pub   = (document.getElementById('hostYtPublisher').value||'').trim().slice(0,15);
-  const album = (document.getElementById('hostYtAlbum').value||'').trim()||'Uncategorized';
-  const art   = (document.getElementById('hostYtArt').value||'').trim();
+  const url      = (document.getElementById('hostYtUrl').value||'').trim();
+  const name     = (document.getElementById('hostYtName').value||'').trim();
+  const pub      = (document.getElementById('hostYtPublisher').value||'').trim().slice(0,15);
+  const album    = (document.getElementById('hostYtAlbum').value||'').trim()||'Uncategorized';
+  const subAlbum = (document.getElementById('hostYtSubAlbum').value||'').trim();
+  const art      = (document.getElementById('hostYtArt').value||'').trim();
   if (!url) { setHostStatus('Please enter a YouTube URL.','err'); return; }
   const videoId = _ytExtractId(url);
   if (!videoId) { setHostStatus('Could not parse YouTube video ID.','err'); return; }
   setHostStatus('Fetching track info\u2026','');
   let finalName = name || await fetchYtTitle(videoId) || ('YouTube \u2014 '+videoId);
   const finalArt = art || ('https://img.youtube.com/vi/'+videoId+'/mqdefault.jpg');
-  const added = getHostAdded();
-  if (added.find(t=>t.videoId===videoId)) { setHostStatus('Track already added.','err'); return; }
+  const prevAdded = getHostAdded();
+  if (prevAdded.find(t=>t.videoId===videoId)) { setHostStatus('Track already added.','err'); return; }
+  _pushUndo('Add: '+finalName, prevAdded);
   const now = Date.now();
-  added.unshift({ type:'yt', videoId, name:finalName, album, artwork:finalArt, publisher:pub, addedAt:now });
+  const added = [{ type:'yt', videoId, name:finalName, album, subAlbum, artwork:finalArt, publisher:pub, addedAt:now }, ...prevAdded];
   saveHostAdded(added);
-  // Update album meta
   const am = getAlbumMeta();
   if (!am[album]) { am[album] = { addedAt:now, playlistUrl:'' }; saveAlbumMeta(am); _albumMeta = am; }
-  setHostStatus('Added: '+finalName+' \u2192 '+album,'ok');
+  setHostStatus('Added: '+finalName+' \u2192 '+album+(subAlbum?' / '+subAlbum:''),'ok');
   rebuildTracks(); _renderAlbumManager(); _refreshAlbumPickers();
-  ['hostYtUrl','hostYtName','hostYtPublisher','hostYtAlbum','hostYtArt'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+  ['hostYtUrl','hostYtName','hostYtPublisher','hostYtAlbum','hostYtSubAlbum','hostYtArt'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1530,9 +1848,14 @@ async function hostFetchPlaylistPreview() {
     }
     const albumInp = document.getElementById('hostPlAlbum');
     if (albumInp && !albumInp.value.trim() && meta) albumInp.value = meta;
+    const prefix = (document.getElementById('hostPlPrefix').value||'').trim();
     if (preview) {
       preview.style.display='block'; preview.innerHTML='<div class="pl-prev-count">\u2713 '+items.length+' track'+(items.length!==1?'s':'')+' found'+(meta?' in "'+meta+'"':'')+' \u2014 playlist URL saved</div>';
-      items.slice(0,12).forEach((it,i)=>{const d=document.createElement('div');d.className='pl-prev-item';d.textContent=(i+1)+'. '+it.title;preview.appendChild(d);});
+      items.slice(0,12).forEach((it,i)=>{
+        const d=document.createElement('div'); d.className='pl-prev-item';
+        const displayName = prefix ? prefix + ' - ' + it.title : it.title;
+        d.textContent=(i+1)+'. '+displayName; preview.appendChild(d);
+      });
       if(items.length>12){const m=document.createElement('div');m.style.cssText='color:#aaa;font-style:italic;padding-top:3px;';m.textContent='\u2026 and '+(items.length-12)+' more';preview.appendChild(m);}
     }
     setHostStatus('Preview loaded \u2014 click ADD ALL TRACKS.','ok');
@@ -1546,35 +1869,40 @@ async function hostFetchPlaylistPreview() {
    ═══════════════════════════════════════════════════════════ */
 function hostConfirmPlaylist() {
   if (!_plPreviewItems.length) { setHostStatus('No tracks to add. Fetch the playlist first.','err'); return; }
-  const rawUrl = (document.getElementById('hostPlUrl').value||'').trim();
-  const album  = (document.getElementById('hostPlAlbum').value||'').trim()||'Uncategorized';
-  const pub    = (document.getElementById('hostPlPublisher').value||'').trim().slice(0,15);
-  const art    = (document.getElementById('hostPlArt').value||'').trim();
-  const added  = getHostAdded();
+  const rawUrl   = (document.getElementById('hostPlUrl').value||'').trim();
+  const album    = (document.getElementById('hostPlAlbum').value||'').trim()||'Uncategorized';
+  const subAlbum = (document.getElementById('hostPlSubAlbum').value||'').trim();
+  const pub      = (document.getElementById('hostPlPublisher').value||'').trim().slice(0,15);
+  const art      = (document.getElementById('hostPlArt').value||'').trim();
+  const prefix   = (document.getElementById('hostPlPrefix').value||'').trim();
+
+  const prevAdded = getHostAdded();
+  _pushUndo('Add playlist → '+album+(subAlbum?' / '+subAlbum:''), prevAdded);
+
+  const added = [...prevAdded];
   const existIds = new Set(added.map(t=>t.videoId).filter(Boolean));
   let count = 0;
   const now = Date.now();
   _plPreviewItems.forEach(item => {
     if (existIds.has(item.videoId)) return;
     const fa = art || ('https://img.youtube.com/vi/'+item.videoId+'/mqdefault.jpg');
-    added.unshift({ type:'yt', videoId:item.videoId, name:item.title, album, artwork:fa, publisher:pub, addedAt:now });
+    const finalName = prefix ? prefix + ' - ' + item.title : item.title;
+    added.unshift({ type:'yt', videoId:item.videoId, name:finalName, album, subAlbum, artwork:fa, publisher:pub, addedAt:now });
     existIds.add(item.videoId); count++;
   });
   saveHostAdded(added);
-  // Store album meta WITH playlist URL
   const am = getAlbumMeta();
   if (!am[album]) am[album] = { addedAt:now, playlistUrl:'' };
   if (rawUrl) {
-    // Extract canonical playlist URL
     const pid = _ytExtractPlaylistId(rawUrl);
     am[album].playlistUrl = pid ? 'https://www.youtube.com/playlist?list='+pid : rawUrl;
   }
   if (!am[album].addedAt) am[album].addedAt = now;
   saveAlbumMeta(am); _albumMeta = am;
 
-  setHostStatus(count+' track'+(count!==1?'s':'')+' added to "'+album+'" ('+ (_plPreviewItems.length-count)+' skipped).','ok');
+  setHostStatus(count+' track'+(count!==1?'s':'')+' added to "'+album+(subAlbum?' / '+subAlbum:'')+'" ('+ (_plPreviewItems.length-count)+' skipped).','ok');
   _plPreviewItems=[];
-  ['hostPlUrl','hostPlAlbum','hostPlPublisher','hostPlArt'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+  ['hostPlUrl','hostPlAlbum','hostPlSubAlbum','hostPlPublisher','hostPlArt','hostPlPrefix'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
   const preview=document.getElementById('hostPlPreview'); if(preview){preview.style.display='none';preview.innerHTML='';}
   const addBtn=document.getElementById('hostPlAddBtn'); if(addBtn)addBtn.style.display='none';
   rebuildTracks(); _renderAlbumManager(); _refreshAlbumPickers();
@@ -1584,24 +1912,26 @@ function hostConfirmPlaylist() {
    HOST: ADD FILE
    ═══════════════════════════════════════════════════════════ */
 function hostAddFile() {
-  const url   = (document.getElementById('hostFileUrl').value||'').trim();
-  const name  = (document.getElementById('hostFileName').value||'').trim();
-  const pub   = (document.getElementById('hostFilePublisher').value||'').trim().slice(0,15);
-  const album = (document.getElementById('hostFileAlbum').value||'').trim()||'Uncategorized';
-  const art   = (document.getElementById('hostFileArt').value||'').trim();
+  const url      = (document.getElementById('hostFileUrl').value||'').trim();
+  const name     = (document.getElementById('hostFileName').value||'').trim();
+  const pub      = (document.getElementById('hostFilePublisher').value||'').trim().slice(0,15);
+  const album    = (document.getElementById('hostFileAlbum').value||'').trim()||'Uncategorized';
+  const subAlbum = (document.getElementById('hostFileSubAlbum').value||'').trim();
+  const art      = (document.getElementById('hostFileArt').value||'').trim();
   if (!url)  { setHostStatus('Please enter the audio file URL.','err'); return; }
   if (!name) { setHostStatus('Please enter the track name.','err'); return; }
   const hid = 'file_'+url;
-  const added = getHostAdded();
-  if (added.find(t=>('file_'+t.url)===hid)) { setHostStatus('Track already added.','err'); return; }
+  const prevAdded = getHostAdded();
+  if (prevAdded.find(t=>('file_'+t.url)===hid)) { setHostStatus('Track already added.','err'); return; }
+  _pushUndo('Add file: '+name, prevAdded);
   const now = Date.now();
-  added.unshift({ type:'file', url, name, album, artwork:art||'', publisher:pub, addedAt:now, _hostId:hid });
+  const added = [{ type:'file', url, name, album, subAlbum, artwork:art||'', publisher:pub, addedAt:now, _hostId:hid }, ...prevAdded];
   saveHostAdded(added);
   const am = getAlbumMeta();
   if (!am[album]) { am[album]={addedAt:now,playlistUrl:''}; saveAlbumMeta(am); _albumMeta=am; }
-  setHostStatus('Added: '+name+' \u2192 '+album,'ok');
+  setHostStatus('Added: '+name+' \u2192 '+album+(subAlbum?' / '+subAlbum:''),'ok');
   rebuildTracks(); _renderAlbumManager(); _refreshAlbumPickers();
-  ['hostFileUrl','hostFileName','hostFilePublisher','hostFileAlbum','hostFileArt'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+  ['hostFileUrl','hostFileName','hostFilePublisher','hostFileAlbum','hostFileSubAlbum','hostFileArt'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1637,21 +1967,24 @@ function _renderPendingList() {
 }
 function hostConfirmUpload() {
   if (!_pendingFiles.length) return;
-  const album = (document.getElementById('hostUploadAlbum').value||'').trim()||'Uncategorized';
-  const pub   = (document.getElementById('hostUploadPublisher').value||'').trim().slice(0,15);
-  const added = getHostAdded(); const now=Date.now(); let count=0;
+  const album    = (document.getElementById('hostUploadAlbum').value||'').trim()||'Uncategorized';
+  const subAlbum = (document.getElementById('hostUploadSubAlbum').value||'').trim();
+  const pub      = (document.getElementById('hostUploadPublisher').value||'').trim().slice(0,15);
+  const prevAdded = getHostAdded();
+  _pushUndo('Upload '+_pendingFiles.length+' file(s)', prevAdded);
+  const added = [...prevAdded]; const now=Date.now(); let count=0;
   _pendingFiles.forEach(file=>{
     const url=URL.createObjectURL(file);
     const hid='file_'+url;
     const nm=file.name.replace(/\.[^.]+$/,'');
-    added.unshift({type:'file',url,name:nm,album,artwork:'',publisher:pub,addedAt:now,_hostId:hid});
+    added.unshift({type:'file',url,name:nm,album,subAlbum,artwork:'',publisher:pub,addedAt:now,_hostId:hid});
     count++;
   });
   saveHostAdded(added);
   const am=getAlbumMeta(); if(!am[album]){am[album]={addedAt:now,playlistUrl:''};saveAlbumMeta(am);_albumMeta=am;}
   _pendingFiles=[]; _renderPendingList();
   rebuildTracks(); _renderAlbumManager(); _refreshAlbumPickers();
-  setHostStatus(count+' file(s) added to "'+album+'"','ok');
+  setHostStatus(count+' file(s) added to "'+album+(subAlbum?' / '+subAlbum:'')+'"','ok');
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -1672,19 +2005,20 @@ function _resetRatings() {
   if (!confirm('Reset ALL like/dislike ratings?')) return;
   VOTES.reset();
   if (curIdx>=0&&TRACKS[curIdx]) _updateVoteDisplay(TRACKS[curIdx]);
-  buildPlaylist(); setHostStatus('All ratings reset.','ok');
+  buildPlaylist(); _renderTop3(); setHostStatus('All ratings reset.','ok');
 }
 function _resetAllTracks() {
-  if (!confirm('Clear ALL host-added tracks?')) return;
+  if (!confirm('Clear ALL host-added tracks? This also clears undo/redo history.')) return;
   localStorage.removeItem(HS_ADDED);localStorage.removeItem(HS_DELETED);localStorage.removeItem(HS_ALBUM_META);
-  _albumMeta = {};
+  _storeSet(HS_ADDED,[]); _storeSet(HS_DELETED,[]); _storeSet(HS_ALBUM_META,{});
+  _albumMeta = {}; _undoStack=[]; _redoStack=[];
   TRACKS.length = 0;
-  buildPlaylist(); _renderAlbumManager(); _refreshAlbumPickers();
+  buildPlaylist(); _renderAlbumManager(); _refreshAlbumPickers(); _updateUndoRedoUI();
   setHostStatus('All added tracks cleared.','ok');
 }
 
 /* ═══════════════════════════════════════════════════════════
-   ALBUM MANAGER — with RENAME
+   ALBUM MANAGER
    ═══════════════════════════════════════════════════════════ */
 function _createAlbumBucket() {
   const inp=document.getElementById('_newAlbumName');
@@ -1702,6 +2036,8 @@ function _createAlbumBucket() {
 
 function _deleteAlbumBucket(albumName) {
   if (!confirm('Delete album "'+albumName+'"? Tracks will move to Uncategorized.')) return;
+  const prevAdded = getHostAdded();
+  _pushUndo('Delete album '+albumName, prevAdded);
   const added=getHostAdded();added.forEach(t=>{if(t.album===albumName)t.album='Uncategorized';});saveHostAdded(added);
   const custom=getCustomAlbums().filter(a=>a!==albumName);saveCustomAlbums(custom);
   const am=getAlbumMeta();delete am[albumName];saveAlbumMeta(am);_albumMeta=am;
@@ -1712,14 +2048,13 @@ function _renameAlbum(oldName) {
   const newName = prompt('Rename album "'+oldName+'" to:', oldName);
   if (!newName || newName.trim() === oldName) return;
   const nm = newName.trim();
-  // Update added tracks
+  const prevAdded = getHostAdded();
+  _pushUndo('Rename album '+oldName+' → '+nm, prevAdded);
   const added = getHostAdded();
   added.forEach(t => { if (t.album===oldName) t.album=nm; });
   saveHostAdded(added);
-  // Update custom albums list
   const custom = getCustomAlbums().map(a => a===oldName ? nm : a);
   saveCustomAlbums(custom);
-  // Update album meta
   const am = getAlbumMeta();
   if (am[oldName]) { am[nm]=am[oldName]; delete am[oldName]; saveAlbumMeta(am); _albumMeta=am; }
   rebuildTracks(); _renderAlbumManager(); _refreshAlbumPickers();
@@ -1739,6 +2074,8 @@ function _moveTrackToAlbum(hostId, newAlbum) {
 
 function _deleteHostTrack(hostId) {
   if (!confirm('Delete this track?')) return;
+  const prevAdded = getHostAdded();
+  _pushUndo('Delete track', prevAdded);
   const del=getHostDeleted(); if(!del.includes(hostId)){del.push(hostId);saveHostDeleted(del);}
   const added=getHostAdded().filter(t=>{const tid=t.videoId||t._hostId||('file_'+t.url);return tid!==hostId;});
   saveHostAdded(added); rebuildTracks(); _renderAlbumManager(); setHostStatus('Track deleted.','ok');
@@ -1749,24 +2086,28 @@ function _renderAlbumManager() {
   const allAlbums=_getAllAlbumNames();
   const ordered=['Uncategorized',...allAlbums.filter(a=>a!=='Uncategorized')];
   const deleted=getHostDeleted(), added=getHostAdded();
-  const albumMap={}; ordered.forEach(a=>albumMap[a]=[]);
+  // albumMap: albumName → subAlbum → tracks[]
+  const albumMap={};
+  ordered.forEach(a=>albumMap[a]={});
   added.forEach(t=>{
     const tid=t.videoId||t._hostId||('file_'+t.url);
     if(deleted.includes(tid))return;
     const alb=t.album||'Uncategorized';
-    if(!albumMap[alb])albumMap[alb]=[];
-    albumMap[alb].push({_tid:tid,name:t.name,artwork:t.artwork||(t.videoId?'https://img.youtube.com/vi/'+t.videoId+'/mqdefault.jpg':''),type:t.type,videoId:t.videoId,publisher:t.publisher||''});
+    const sub=t.subAlbum||'';
+    if(!albumMap[alb])albumMap[alb]={};
+    if(!albumMap[alb][sub])albumMap[alb][sub]=[];
+    albumMap[alb][sub].push({_tid:tid,name:t.name,artwork:t.artwork||(t.videoId?'https://img.youtube.com/vi/'+t.videoId+'/mqdefault.jpg':''),type:t.type,videoId:t.videoId,publisher:t.publisher||'',subAlbum:sub});
   });
 
-  ordered.forEach((albumName,albIdx) => {
-    const tracks=albumMap[albumName]||[];
+  ordered.forEach(albumName => {
+    const subMap = albumMap[albumName]||{};
+    const totalTracks = Object.values(subMap).reduce((s,arr)=>s+arr.length,0);
     const bucket=document.createElement('div'); bucket.className='album-bucket';
     const header=document.createElement('div'); header.className='album-bucket-header';
     const nameSpan=document.createElement('span'); nameSpan.className='ab-name'; nameSpan.textContent='\u25bc '+albumName;
-    const countSpan=document.createElement('span'); countSpan.className='ab-count'; countSpan.textContent=tracks.length+' track'+(tracks.length!==1?'s':'');
+    const countSpan=document.createElement('span'); countSpan.className='ab-count'; countSpan.textContent=totalTracks+' track'+(totalTracks!==1?'s':'');
     header.appendChild(nameSpan); header.appendChild(countSpan);
 
-    // Rename button
     const renBtn=document.createElement('button'); renBtn.className='ab-ren-album'; renBtn.textContent='Rename';
     renBtn.addEventListener('click',e=>{e.stopPropagation();_renameAlbum(albumName);}); header.appendChild(renBtn);
 
@@ -1785,33 +2126,45 @@ function _renderAlbumManager() {
     body.addEventListener('dragleave',()=>body.classList.remove('drag-over'));
     body.addEventListener('drop',e=>{e.preventDefault();body.classList.remove('drag-over');const tid=e.dataTransfer.getData('text/plain');if(tid)_moveTrackToAlbum(tid,albumName);});
 
-    tracks.forEach((t,ti) => {
-      const item=document.createElement('div'); item.className='ab-track-item';
-      item.draggable=true; item.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain',t._tid));
+    // Render sub-albums
+    Object.entries(subMap).forEach(([subName, tracks]) => {
+      if (!tracks.length) return;
+      if (subName) {
+        // Sub-album label in manager
+        const subHeader = document.createElement('div');
+        subHeader.style.cssText='padding:2px 6px;font-size:9.5px;color:#666;text-transform:uppercase;letter-spacing:.5px;background:#f0f0f0;border-bottom:1px solid rgba(0,0,0,.08);margin-top:4px;';
+        subHeader.textContent='↳ ' + subName;
+        body.appendChild(subHeader);
+      }
+      tracks.forEach((t,ti) => {
+        const item=document.createElement('div'); item.className='ab-track-item';
+        item.draggable=true; item.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain',t._tid));
 
-      const numEl=document.createElement('span'); numEl.className='abt-num'; numEl.textContent='.'+(ti+1);
-      const art=document.createElement('img'); art.className='abt-art';
-      art.src=t.artwork||'https://frutigeraeroarchive.org/images/music_player/cd.png';
-      art.onerror=()=>{art.src='https://frutigeraeroarchive.org/images/music_player/cd.png';};
-      const nm=document.createElement('span'); nm.className='abt-name'; nm.textContent=t.name||t._tid; nm.title=nm.textContent;
-      const pubEl=document.createElement('span'); pubEl.className='abt-pub'; pubEl.textContent=t.publisher||'';
+        const numEl=document.createElement('span'); numEl.className='abt-num'; numEl.textContent='.'+(ti+1);
+        const art=document.createElement('img'); art.className='abt-art';
+        art.src=t.artwork||'https://frutigeraeroarchive.org/images/music_player/cd.png';
+        art.onerror=()=>{art.src='https://frutigeraeroarchive.org/images/music_player/cd.png';};
+        const nm=document.createElement('span'); nm.className='abt-name'; nm.textContent=t.name||t._tid; nm.title=nm.textContent;
+        const pubEl=document.createElement('span'); pubEl.className='abt-pub'; pubEl.textContent=t.publisher||'';
 
-      const moveSelect=document.createElement('select'); moveSelect.className='abt-move-select';
-      const defOpt=document.createElement('option'); defOpt.value=''; defOpt.textContent='Move\u2026'; moveSelect.appendChild(defOpt);
-      ordered.forEach(an=>{
-        if(an===albumName)return;
-        const o=document.createElement('option');o.value=an;o.textContent=an;moveSelect.appendChild(o);
+        const moveSelect=document.createElement('select'); moveSelect.className='abt-move-select';
+        const defOpt=document.createElement('option'); defOpt.value=''; defOpt.textContent='Move\u2026'; moveSelect.appendChild(defOpt);
+        ordered.forEach(an=>{
+          if(an===albumName)return;
+          const o=document.createElement('option');o.value=an;o.textContent=an;moveSelect.appendChild(o);
+        });
+        moveSelect.addEventListener('change',function(){if(this.value)_moveTrackToAlbum(t._tid,this.value);});
+
+        const delBtn=document.createElement('button'); delBtn.className='abt-del'; delBtn.textContent='\xd7';
+        delBtn.addEventListener('click',()=>_deleteHostTrack(t._tid));
+
+        item.appendChild(numEl);item.appendChild(art);item.appendChild(nm);item.appendChild(pubEl);
+        item.appendChild(moveSelect);item.appendChild(delBtn);
+        body.appendChild(item);
       });
-      moveSelect.addEventListener('change',function(){if(this.value)_moveTrackToAlbum(t._tid,this.value);});
-
-      const delBtn=document.createElement('button'); delBtn.className='abt-del'; delBtn.textContent='\xd7';
-      delBtn.addEventListener('click',()=>_deleteHostTrack(t._tid));
-
-      item.appendChild(numEl);item.appendChild(art);item.appendChild(nm);item.appendChild(pubEl);
-      item.appendChild(moveSelect);item.appendChild(delBtn);
-      body.appendChild(item);
     });
-    if(!tracks.length){const e=document.createElement('div');e.style.cssText='font-size:10px;color:#bbb;padding:5px 6px;';e.textContent='No tracks.';body.appendChild(e);}
+
+    if(!totalTracks){const e=document.createElement('div');e.style.cssText='font-size:10px;color:#bbb;padding:5px 6px;';e.textContent='No tracks.';body.appendChild(e);}
     bucket.appendChild(header); bucket.appendChild(body); container.appendChild(bucket);
   });
 }
@@ -1843,6 +2196,7 @@ function _iI(el){if(!el||el===document.body||el===document.documentElement)retur
    ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', async () => {
   VOTES.init();
+  _loadPlayCounts();
 
   if (sessionStorage.getItem('_soundsOn')==='false') {
     _soundsOn=false;
@@ -1855,7 +2209,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   _setVol(30);
 
-  // Load shared data then build
   showBanner('Loading tracks\u2026');
   await _loadSharedData();
   rebuildTracks();
@@ -1889,18 +2242,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('audioBack').addEventListener('click',prevTrack);
   document.getElementById('audioForward').addEventListener('click',nextTrack);
 
-  // CD click → YouTube
+  // CD click
   const cdWrap=document.getElementById('_cdSpinWrapper');
   if(cdWrap)cdWrap.addEventListener('click',_cdClick);
 
   // Like/dislike
   document.getElementById('mpLikeBtn').addEventListener('click',()=>{
     if(curIdx<0||!TRACKS[curIdx]?.videoId)return;
-    VOTES.vote(TRACKS[curIdx].videoId,1);_updateVoteDisplay(TRACKS[curIdx]);buildPlaylist();markActiveTrack(curIdx);
+    VOTES.vote(TRACKS[curIdx].videoId,1);_updateVoteDisplay(TRACKS[curIdx]);buildPlaylist();markActiveTrack(curIdx);_renderTop3();
   });
   document.getElementById('mpDislikeBtn').addEventListener('click',()=>{
     if(curIdx<0||!TRACKS[curIdx]?.videoId)return;
-    VOTES.vote(TRACKS[curIdx].videoId,-1);_updateVoteDisplay(TRACKS[curIdx]);buildPlaylist();markActiveTrack(curIdx);
+    VOTES.vote(TRACKS[curIdx].videoId,-1);_updateVoteDisplay(TRACKS[curIdx]);buildPlaylist();markActiveTrack(curIdx);_renderTop3();
   });
 
   // Search
@@ -1910,6 +2263,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   if(clr)clr.addEventListener('click',()=>{if(srch)srch.value='';_searchQuery='';buildPlaylist();});
   const af=document.getElementById('_mpAlbumFilter');
   if(af)af.addEventListener('change',()=>{_albumFilterVal=af.value;buildPlaylist();});
+
+  // Try this button
+  const tryRow=document.getElementById('_tryThisRow');
+  if(tryRow)tryRow.addEventListener('click',()=>{
+    if(_tryThisIdx>=0&&_tryThisIdx<TRACKS.length) selectAndPlay(_tryThisIdx);
+    _refreshTryThis();
+  });
 
   // Sort popup
   (function(){
