@@ -4,85 +4,894 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video Player &mdash; Watanagashi Archive</title>
-<link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-<link rel="stylesheet" href="scripts/css/style.css">
+<title>Video Player — Watanagashi Archive</title>
+<link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+*{-webkit-tap-highlight-color:transparent}
+::selection{background:rgba(80,80,80,.45);color:#fff}
+*:focus{outline:none!important}
+button:active,button:focus,button:focus-visible{outline:none!important;box-shadow:none!important}
+
+:root{
+  --accent:#cc1a1a;
+  --text:#111;
+  --text-dim:#2c2c2c;
+  --green:#1a9c2a;
+  --grad-bar:linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
+  --grad-dl:linear-gradient(to bottom,#e8e8e8 0%,#d2d2d2 50%,#bfbfbf 50%,#cbcbcb 100%);
+  --shadow-bar:0 2px 5px rgba(0,0,0,.15);
+}
+
+html{scrollbar-width:thin;scrollbar-color:rgba(120,120,120,.50) transparent}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(120,120,120,.50);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(54,54,54,.8)}
+
+body{
+  font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
+  font-size:12px;
+  background:#000 center/49% fixed no-repeat;
+  color:var(--text);
+  padding:12px 6px 56px;
+  display:flex;flex-direction:column;align-items:center;
+}
+
+img{-webkit-user-drag:none;user-select:none}
+a{color:#000;text-decoration:none}
+a:hover{color:var(--accent);text-decoration:underline}
+p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
+p+p{margin-top:5px}
+strong{color:var(--accent);font-weight:400}
+
+/* ── PAGE SHELL ── */
+#_pageShell{width:800px;max-width:100%;display:flex;flex-direction:column}
+
+/* ── CORNER LOGO ── */
+#cornerLogo{position:fixed;top:10px;right:14px;z-index:9998;line-height:0;text-decoration:none}
+#cornerLogo img{height:36px;width:auto;object-fit:contain;display:block;opacity:.82}
+#cornerLogo:hover img{opacity:1}
+
+/* ── AERO BAR ── */
+.aero-bar{
+  background:var(--grad-bar);border:2px ridge #727272;
+  box-shadow:var(--shadow-bar);color:var(--text);font-size:13px;
+  padding:4px 8px;display:flex;align-items:center;gap:6px;margin-bottom:7px;
+}
+.aero-bar .back-link{flex-shrink:0;padding:2px 3px;display:flex;align-items:center;line-height:0;text-decoration:none}
+.aero-bar .back-link img{height:28px;width:auto;object-fit:contain;display:block}
+.aero-bar .back-link:hover img{filter:brightness(.85)}
+.aero-bar .back-link.flip img{transform:scaleX(-1)}
+.aero-bar .bar-title{flex:1;text-align:center;font-size:12px;letter-spacing:.5px}
+
+/* ── GLASS BOX / AERO INNER ── */
+.glass-box{background:#ebebeb;box-shadow:var(--shadow-bar);border:2px ridge #727272;padding:5px;margin-bottom:7px}
+.aero-inner{border:1px solid rgba(0,0,0,.30);background:#f2f2f2}
+.aero-pad{padding:10px 12px}
+
+/* ── SECTION BAR (black strip headers) ── */
+.section-bar{
+  display:block;background:#000;padding:5px 8px;margin:0;line-height:1.6;
+  font-size:11px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:#fff;
+}
+
+/* ── SECTION DESC ── */
+.section-desc{
+  font-size:11px;color:#666;padding:5px 8px 4px;
+  border-bottom:1px solid rgba(0,0,0,.08);margin-bottom:4px;
+}
+
+/* ── VIDEO EMBED ── */
+.video-embed-wrap{
+  position:relative;background:#000;
+  border-bottom:2px solid rgba(0,0,0,.30);
+}
+.video-embed-wrap iframe,
+.video-embed-wrap .yt-embed-inner{
+  display:block;width:100%;border:none;
+}
+/* 16:9 ratio container */
+#videoEmbedRatio{
+  position:relative;width:100%;padding-bottom:56.25%;background:#000;
+}
+#videoEmbedRatio iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:none;
+}
+/* placeholder when nothing is loaded */
+#videoEmbedPlaceholder{
+  display:flex;align-items:center;justify-content:center;
+  height:200px;background:#0a0a0a;
+  font-size:11px;color:rgba(255,255,255,.25);letter-spacing:1px;text-transform:uppercase;
+}
+
+/* ── VIDEO INFO BOX ── */
+.video-info-box{
+  padding:7px 10px;font-size:11.5px;color:var(--text-dim);
+  border-top:1px solid rgba(0,0,0,.15);
+  display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;
+  min-height:32px;
+}
+.video-info-box .vi-title{
+  flex:1;min-width:0;font-size:12px;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.video-info-box .vi-meta{font-size:10.5px;color:#888;white-space:nowrap}
+.video-info-box .vi-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.vi-vote-btn{
+  background:none;border:1px solid rgba(140,140,140,.45);
+  padding:2px 7px;cursor:pointer;font-size:11px;color:#555;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+  display:flex;align-items:center;gap:3px;
+}
+.vi-vote-btn:hover{border-color:rgba(100,100,100,.70);color:#111}
+.vi-vote-btn.active-like{color:var(--green);border-color:rgba(30,120,30,.50)}
+.vi-vote-btn.active-dislike{color:var(--accent);border-color:rgba(180,20,20,.50)}
+.vi-vote-btn img{width:13px;height:13px;object-fit:contain;pointer-events:none}
+.vi-link-btn{
+  background:var(--grad-dl);border:1px solid rgba(140,140,140,.50);
+  padding:2px 8px;cursor:pointer;font-size:10.5px;color:#333;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;text-decoration:none;
+  display:inline-flex;align-items:center;gap:3px;
+}
+.vi-link-btn:hover{background:#fff;color:var(--accent);text-decoration:none}
+
+/* ── AUTOPLAY TOGGLE ── */
+#videoAutoPlayBtn{
+  background:var(--grad-bar);border:1px solid rgba(140,140,140,.50);
+  padding:3px 9px;cursor:pointer;font-size:10.5px;color:#555;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+  white-space:nowrap;
+}
+#videoAutoPlayBtn.on{
+  background:linear-gradient(to bottom,#3a3a3a 0%,#222 50%,#111 50%,#1e1e1e 100%);
+  border-color:rgba(80,80,80,.60);color:#ddd;
+}
+#videoAutoPlayBtn:hover{filter:brightness(1.10)}
+
+/* ── VIDEO GRID ── */
+.vg-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  padding:6px;
+}
+.vg-entry{
+  cursor:pointer;
+  background:#e0e0e0;
+  border:1px solid rgba(0,0,0,.18);
+  overflow:hidden;
+  transition:border-color .15s;
+  position:relative;
+}
+.vg-entry:hover{border-color:rgba(180,20,20,.55)}
+.vg-entry.active-entry{border-color:var(--accent);border-width:2px}
+
+/* Thumbnail */
+.vg-thumb-wrap{
+  position:relative;width:100%;padding-bottom:56.25%;background:#111;overflow:hidden;
+}
+.vg-thumb-wrap img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  display:block;transition:opacity .2s;
+}
+.vg-entry:hover .vg-thumb-wrap img{opacity:.85}
+
+/* Play overlay */
+.vg-play-overlay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.18);opacity:0;transition:opacity .18s;pointer-events:none;
+}
+.vg-entry:hover .vg-play-overlay{opacity:1}
+.vg-play-overlay svg{width:32px;height:32px;fill:#fff;drop-shadow:0 0 4px rgba(0,0,0,.7)}
+
+/* Vote badge on thumbnail */
+.vg-vote-badge{
+  position:absolute;top:3px;right:3px;
+  background:rgba(0,0,0,.65);color:#fff;
+  font-size:9px;padding:1px 5px;pointer-events:none;
+  display:none;
+}
+.vg-vote-badge.visible{display:block}
+.vg-vote-badge.pos{color:#7ef07e}
+.vg-vote-badge.neg{color:#f07e7e}
+
+/* Duration badge */
+.vg-dur{
+  position:absolute;bottom:3px;right:3px;
+  background:rgba(0,0,0,.72);color:#fff;
+  font-size:9px;padding:1px 5px;pointer-events:none;
+}
+
+/* Entry info */
+.vg-info{
+  padding:4px 6px 5px;
+  background:var(--grad-bar);
+  border-top:1px solid rgba(0,0,0,.12);
+}
+.vg-info-title{
+  font-size:10.5px;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  margin-bottom:1px;
+}
+.vg-info-sub{font-size:9.5px;color:#888}
+
+/* ── PAGER ── */
+.vg-pager{
+  display:flex;align-items:center;justify-content:center;
+  gap:3px;padding:6px 6px 4px;border-top:1px solid rgba(0,0,0,.10);
+  flex-wrap:wrap;
+}
+.vg-pager-btn{
+  background:var(--grad-bar);border:1px solid rgba(140,140,140,.50);
+  min-width:22px;height:22px;padding:0 5px;
+  display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:11px;color:#555;user-select:none;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
+}
+.vg-pager-btn:hover{background:#fff;color:var(--accent)}
+.vg-pager-btn.active{
+  background:linear-gradient(to bottom,#2a2a2a,#111);
+  border-color:rgba(80,80,80,.60);color:#fff;
+}
+.vg-pager-arrow{font-size:13px;font-weight:bold}
+
+/* ── SORT / OPTIONS POPUP (video "+" button) ── */
+#vPlusBtn{
+  cursor:pointer;font-size:15px;font-weight:bold;padding:0 4px;
+  user-select:none;flex-shrink:0;line-height:1;position:relative;
+  color:rgba(0,0,0,.45);
+}
+#vPlusPopup{
+  display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;
+  min-width:190px;font-size:12px;padding:4px 0;
+  background:rgba(4,4,4,.97);border:1px solid rgba(100,20,20,.50);
+}
+#vPlusPopup div,#vPlusPopup a{
+  display:block;padding:7px 16px;cursor:pointer;color:#ccc;
+  text-decoration:none;white-space:nowrap;
+}
+#vPlusPopup div:hover,#vPlusPopup a:hover{background:rgba(50,50,50,.80);color:#fff}
+#vPopAutoplayDot{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:#555;margin-right:5px;vertical-align:middle;transition:background .2s;
+}
+#vPopAutoplayDot.dot-on{background:var(--accent)}
+
+/* ── STATUS BAR for video player ── */
+.v-status-bar{
+  background:var(--grad-bar);
+  border-top:1px solid rgba(255,255,255,.60);
+  border-bottom:1px solid rgba(0,0,0,.15);
+  display:flex;align-items:center;gap:6px;padding:4px 8px;
+  position:relative;overflow:visible;font-size:11.5px;
+}
+#vAudioName{color:var(--accent)}
+
+/* ── EMPTY MESSAGE ── */
+.empty-msg{
+  font-size:11px;color:#aaa;padding:10px 8px;text-align:center;
+}
+
+/* ── COPYRIGHT BOX ── */
+.copyright-notice{padding:8px 12px}
+.copyright-notice p{font-size:11px;color:#555;line-height:1.7}
+.copyright-notice a{color:var(--accent)}
+.copyright-notice a:hover{text-decoration:underline}
+
+/* ── NOTE ── */
+.note{
+  background:#f5f5f5;border:1px solid rgba(0,0,0,.25);
+  border-left:3px solid rgba(120,120,120,.50);
+  padding:7px 10px;margin-top:6px;
+  font-size:11px;color:var(--text-dim);line-height:1.65;text-align:center;
+}
+
+/* ── BOTTOM UTILITY BAR ── */
+#soundToggle{
+  position:fixed;bottom:8px;left:10px;z-index:9999;
+  font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:10px;
+  color:#fff;cursor:pointer;user-select:none;padding:2px 0;background:none;border:none;outline:none;
+}
+
+/* ── GLASS TEXTURE OVERLAY ── */
+.aero-glass-overlay{position:relative;overflow:hidden}
+.aero-glass-overlay::after{
+  content:'';position:absolute;inset:0;
+  background-image:url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/187f5a85-67cd-4efe-a6cd-961434a82910/d1sd0t3-af1fc87a-6fbf-431b-9f33-6e3044ad93ae.jpg/v1/fill/w_1131,h_707,q_70,strp/aero_glass_texture_by_optimusprimm_d1sd0t3-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTIwMCIsInBhdGgiOiIvZi8xODdmNWE4NS02N2NkLTRlZmUtYTZjZC05NjE0MzRhODI5MTAvZDFzZDB0My1hZjFmYzg3YS02ZmJmLTQzMWItOWYzMy02ZTMwNDRhZDkzYWUuanBnIiwid2lkdGgiOiI8PTE5MjAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.X3lWfRlCucWwaIUiClPHTfKLlXxCzWbZNN2n0TlQP54');
+  background-size:contain;background-position:center;
+  opacity:.05;pointer-events:none;mix-blend-mode:multiply;z-index:0;
+}
+.aero-glass-overlay>*{position:relative;z-index:1}
+
+/* ── MOBILE ── */
+@media(max-width:600px){
+  body{padding:8px 4px 24px;background-attachment:scroll}
+  #_pageShell{width:100%}
+  .vg-grid{grid-template-columns:repeat(2,1fr);gap:4px;padding:4px}
+  .video-info-box{flex-direction:column;gap:5px}
+  .vi-actions{flex-wrap:wrap}
+}
+@media(max-width:380px){
+  .vg-grid{grid-template-columns:1fr 1fr}
+}
+</style>
 </head>
 <body>
-<div id="pageWrap">
 
+<!-- ── Background injection ── -->
+<script>
+(function(){
+  const url='https://static.wikia.nocookie.net/umineko/images/0/0b/MinagoroshiCG_%2820%29.png/revision/latest/scale-to-width-down/1000?cb=20201102135337';
+  let s=document.getElementById('_vpBg');
+  if(!s){s=document.createElement('style');s.id='_vpBg';document.head.appendChild(s);}
+  s.textContent='body{background-image:url("'+url+'")!important;background-size:90%!important;background-attachment:fixed!important;background-repeat:no-repeat!important;background-position:center!important;background-color:#000!important;}';
+})();
+</script>
+
+<a id="cornerLogo" href="../index.html#introduction" title="Watanagashi Archive — Home">
+  <img src="../assets/images/watanagashilogo2.png" alt="Watanagashi Archive" onerror="this.style.display='none'">
+</a>
+
+<div id="_pageShell">
+
+  <!-- ── Top navigation bar ── -->
   <div class="aero-bar">
-    <a href="pages/music.html" class="aero-nav-btn" title="Back: Music Player">
-      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="Back"
-        onerror="this.outerHTML='&lt;span style=&quot;color:#bbb;font-size:24px;line-height:1;z-index:1&quot;&gt;&amp;#8249;&lt;/span&gt;'">
+    <a class="back-link" href="../index.html#resources" title="Back to Resources">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="‹"
+        onerror="this.outerHTML='<span style=&quot;color:#333;font-size:22px;line-height:1;&quot;>‹</span>'">
     </a>
-    <span class="aero-bar-title">The Watanagashi Archive &mdash; Video Player</span>
-    <a href="pages/sketchbook.html" class="aero-nav-btn" title="Next: Sketchbook">
-      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="Next"
-        style="transform:scaleX(-1)"
-        onerror="this.outerHTML='&lt;span style=&quot;color:#bbb;font-size:24px;line-height:1;z-index:1&quot;&gt;&amp;#8250;&lt;/span&gt;'">
-    </a>
+    <span class="bar-title">VIDEO PLAYER</span>
+    
   </div>
 
-  <div class="glass-box">
-    <div class="aero-inner" style="overflow:hidden">
-      <div class="video-embed-wrap">
-        <div id="videoEmbed"></div>
+  <!-- ── Video player card ── -->
+  <div class="glass-box aero-glass-overlay">
+
+    <!-- Embed -->
+    <div class="video-embed-wrap">
+      <div id="videoEmbedRatio">
+        <div id="videoEmbedPlaceholder">Select a video below to begin</div>
       </div>
     </div>
-    <div id="videoInfoBox" class="video-info-box aero-inner"></div>
+
+    <!-- Info / controls bar -->
+    <div class="v-status-bar" id="vStatusBar">
+      <!-- Like / Dislike -->
+      <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+        <button class="vi-vote-btn" id="vLikeBtn" title="Like">
+          <img src="https://cdn-icons-png.flaticon.com/128/739/739231.png" alt="▲"
+            onerror="this.outerHTML='▲'"> <span id="vLikeVal">0</span>
+        </button>
+        <button class="vi-vote-btn" id="vDislikeBtn" title="Dislike">
+          <img src="https://cdn-icons-png.flaticon.com/128/880/880613.png" alt="▼"
+            onerror="this.outerHTML='▼'"> <span id="vDislikeVal">0</span>
+        </button>
+      </div>
+
+      <!-- Title -->
+      <span style="flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+        Now playing: <span id="vAudioName">—</span>
+      </span>
+
+      <!-- Options "+" -->
+      <span id="vPlusBtn" title="Options">+
+        <div id="vPlusPopup" onclick="event.stopPropagation()">
+          <div id="vPopAutoplay">
+            <span id="vPopAutoplayDot"></span>Autoplay: OFF
+          </div>
+          <div style="border-top:1px solid rgba(255,255,255,.12);margin:3px 0;"></div>
+          <div id="vPopSortToggle" style="display:flex;justify-content:space-between;align-items:center;">
+            Sort <span>▶</span>
+          </div>
+          <div id="vSortSubmenu" style="display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(80,20,20,.3);"></div>
+          <div style="border-top:1px solid rgba(255,255,255,.12);margin:3px 0;"></div>
+          <a id="vPopUrl" target="_blank" rel="noopener noreferrer" style="opacity:.4;pointer-events:none;">Open on YouTube</a>
+        </div>
+      </span>
+    </div>
+
+    <!-- Extended info row -->
+    <div class="video-info-box aero-inner" id="videoInfoBox">
+      <span class="vi-title" id="vInfoTitle">—</span>
+      <span class="vi-meta" id="vInfoMeta"></span>
+    </div>
+
   </div>
 
+  <!-- ── Animes ── -->
   <div class="glass-box">
-    <h2><span>Animes</span></h2>
-    <div class="styled-containers aero-inner">
+    <span class="section-bar">Animes</span>
+    <div class="aero-inner">
       <p class="section-desc">Openings, endings &amp; classic anime clips.</p>
-      <div id="videoListAnimes" class="video-list"></div>
+      <div id="videoListAnimes">
+        <div class="vg-grid" id="vgGridAnimes"></div>
+      </div>
       <p id="animes-empty" class="empty-msg" style="display:none">No videos added yet.</p>
     </div>
   </div>
 
+  <!-- ── Internet Nostalgia ── -->
   <div class="glass-box">
-    <h2><span>Internet Nostalgia</span></h2>
-    <div class="styled-containers aero-inner">
+    <span class="section-bar">Internet Nostalgia</span>
+    <div class="aero-inner">
       <p class="section-desc">Old internet classics and nostalgia videos.</p>
-      <div id="videoListNostalg" class="video-list"></div>
-      <p id="nostalg-empty" class="empty-msg">No videos added yet.</p>
+      <div id="videoListNostalg">
+        <div class="vg-grid" id="vgGridNostalg"></div>
+      </div>
+      <p id="nostalg-empty" class="empty-msg" style="display:none">No videos added yet.</p>
     </div>
   </div>
 
+  <!-- ── Awesome Internet Videos ── -->
   <div class="glass-box">
-    <h2><span>Awesome Internet Videos</span></h2>
-    <div class="styled-containers aero-inner">
-      <div id="videoListAwesome" class="video-list"></div>
-      <p id="awesome-empty" class="empty-msg">No videos added yet.</p>
+    <span class="section-bar">Awesome Internet Videos</span>
+    <div class="aero-inner">
+      <div id="videoListAwesome">
+        <div class="vg-grid" id="vgGridAwesome"></div>
+      </div>
+      <p id="awesome-empty" class="empty-msg" style="display:none">No videos added yet.</p>
     </div>
   </div>
 
+  <!-- ── Copyright ── -->
   <div class="glass-box">
-    <h2><span>Copyright Notice</span></h2>
+    <span class="section-bar">Copyright Notice</span>
     <div class="copyright-notice aero-inner">
       <p>All content on this website is for archiving, educational, or informational purposes and is not for profit.
       We believe its use qualifies as fair use. If you own any content here and would like it removed or properly credited,
-      please contact me at
-      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank">
-      trenchgun1337@gmail.com</a>
-      and I will take action as soon as possible to fulfill your request.</p>
+      please contact at
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website"
+        target="_blank" rel="noopener noreferrer">trenchgun1337@gmail.com</a>
+      and action will be taken as soon as possible.</p>
     </div>
   </div>
 
-</div>
+  <div style="height:4px;"></div>
 
-<div id="bottomUtil">
-  <button class="bottom-btn wa-sound-toggle" onclick="toggleSound()">Sounds: On</button>
-  <a href="pages/preferences.html" class="bottom-btn">Preferences</a>
-</div>
+</div><!-- /#_pageShell -->
 
-<div id="renaChan" style="position:fixed;bottom:0;right:0;width:250px;height:350px;background-image:url('assets/images/renaidle1.png');background-size:contain;background-repeat:no-repeat;background-position:bottom right;z-index:9999;cursor:pointer;"></div>
+<!-- ── Sound toggle ── -->
+<button id="soundToggle" onclick="_toggleSound()">Sounds: On</button>
 
-<script src="scripts/js/video.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
-<script src="scripts/js/sounds.js"></script>
-<script src="scripts/js/codes.js"></script>
+<!-- ── YouTube IFrame API ── -->
+<iframe id="_ytVidPlayer" src="about:blank"
+  allow="autoplay; encrypted-media" allowfullscreen
+  style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0.01;pointer-events:none;border:none;">
+</iframe>
+
+<script>
+/* ================================================================
+   VIDEO PAGE — standalone, no external dependencies
+   Video data comes from video.js (ANIME_VIDEOS, NOSTALGIA_VIDEOS,
+   AWESOME_VIDEOS) — falls back to empty arrays if not loaded.
+   ================================================================ */
+
+/* ── Sounds ── */
+const _VSBX = '../assets/audio/';
+const _VSND = {
+  start:  _VSBX + 'sitestart.mp3',
+  button: _VSBX + 'sitebuttonclick.mp3',
+  hover:  _VSBX + 'text.mp3',
+  like:   _VSBX + 'sitelikeclick.mp3',
+  alert:  _VSBX + 'sitealert.mp3',
+};
+let _vSoundsOn = true, _vHT = 0;
+const _vAC = {};
+function _vgA(k){ if(!_vAC[k]){const a=new Audio(_VSND[k]);a.preload='auto';_vAC[k]=a;}return _vAC[k]; }
+function _vPlaySound(k){ if(!_vSoundsOn)return; try{const c=_vgA(k).cloneNode();c.volume=(k==='hover'?.30:.52);c.play().catch(()=>{});}catch(e){} }
+function _toggleSound(){
+  _vSoundsOn=!_vSoundsOn;
+  const b=document.getElementById('soundToggle');
+  if(b) b.textContent=_vSoundsOn?'Sounds: On':'Sounds: Off';
+  if(_vSoundsOn) _vPlaySound('button');
+  sessionStorage.setItem('_soundsOn',String(_vSoundsOn));
+}
+function _vIsInteractive(el){
+  if(!el||el===document.body||el===document.documentElement)return false;
+  const t=el.tagName;
+  if(t==='BUTTON'||t==='A'||t==='SELECT'||t==='TEXTAREA')return true;
+  if(t==='INPUT'&&el.type!=='range')return true;
+  return window.getComputedStyle(el).cursor==='pointer';
+}
+
+/* ── Vote storage (localStorage) ── */
+const VID_VOTES_KEY = '_vidVotes_v1';
+const VID_UID_KEY   = '_vidUserId';
+const VidVotes = {
+  _d: {}, _uid: '',
+  init(){
+    let uid=localStorage.getItem(VID_UID_KEY);
+    if(!uid){uid='vv_'+Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem(VID_UID_KEY,uid);}
+    this._uid=uid;
+    try{this._d=JSON.parse(localStorage.getItem(VID_VOTES_KEY)||'{}');}catch(e){this._d={};}
+  },
+  _k(id){return String(id).replace(/[.#$[\]]/g,'_');},
+  vote(id,dir){
+    const k=this._k(id);
+    if(!this._d[k])this._d[k]={};
+    const prev=this._d[k][this._uid]||0, next=(prev===dir)?0:dir;
+    if(next===0)delete this._d[k][this._uid];
+    else this._d[k][this._uid]=next;
+    this._save();return this.get(id);
+  },
+  get(id){
+    const d=this._d[this._k(id)]||{};
+    let up=0,down=0;
+    Object.values(d).forEach(v=>{if(v===1)up++;else if(v===-1)down++;});
+    return{up,down,vote:d[this._uid]||0};
+  },
+  score(id){const s=this.get(id);return s.up-s.down;},
+  _save(){try{localStorage.setItem(VID_VOTES_KEY,JSON.stringify(this._d));}catch(e){}}
+};
+
+/* ── Player state ── */
+let _vCurId    = null;  // current YouTube videoId
+let _vAutoplay = false;
+let _vSortMode = 'default'; // default | highest | lowest | rated
+const ALL_SECTIONS = [
+  { gridId:'vgGridAnimes',   listId:'videoListAnimes',  emptyId:'animes-empty'  },
+  { gridId:'vgGridNostalg',  listId:'videoListNostalg', emptyId:'nostalg-empty' },
+  { gridId:'vgGridAwesome',  listId:'videoListAwesome', emptyId:'awesome-empty' },
+];
+
+/* ── YT iframe helper ── */
+function _ytVCmd(cmd,args){
+  const f=document.getElementById('_ytVidPlayer');
+  if(!f||!f.contentWindow)return;
+  try{f.contentWindow.postMessage(JSON.stringify({event:'command',func:cmd,args:args||[]}),'*');}catch(e){}
+}
+function _loadYT(videoId, autoplay){
+  const ratio=document.getElementById('videoEmbedRatio');
+  if(!ratio)return;
+  // Replace placeholder with iframe
+  ratio.innerHTML='<iframe id="ytMainEmbed" src="https://www.youtube.com/embed/'+videoId
+    +'?autoplay='+(autoplay?1:0)+'&rel=0&modestbranding=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)
+    +'" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+  _vCurId=videoId;
+  // Update "Open on YouTube" link
+  const link=document.getElementById('vPopUrl');
+  if(link){link.href='https://www.youtube.com/watch?v='+videoId;link.style.opacity='1';link.style.pointerEvents='auto';}
+}
+
+/* ── Play a video entry ── */
+function _playVideo(entry){
+  if(!entry||!entry.id)return;
+  _vPlaySound('button');
+  _loadYT(entry.id, true);
+  // Update title displays
+  const nameEl=document.getElementById('vAudioName');
+  const titleEl=document.getElementById('vInfoTitle');
+  const metaEl=document.getElementById('vInfoMeta');
+  if(nameEl) nameEl.textContent=entry.title||entry.id;
+  if(titleEl) titleEl.textContent=entry.title||entry.id;
+  if(metaEl) metaEl.textContent=entry.category||'';
+  // Update vote display
+  _updateVoteUI(entry.id);
+  // Mark active entry in all grids
+  document.querySelectorAll('.vg-entry').forEach(el=>{
+    el.classList.toggle('active-entry', el.dataset.vid===entry.id);
+  });
+  // Scroll player into view
+  const wrap=document.querySelector('.video-embed-wrap');
+  if(wrap) wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* ── Vote UI ── */
+function _updateVoteUI(videoId){
+  const s=VidVotes.get(videoId||'');
+  const lb=document.getElementById('vLikeBtn'), db=document.getElementById('vDislikeBtn');
+  const lv=document.getElementById('vLikeVal'), dv=document.getElementById('vDislikeVal');
+  if(lv) lv.textContent=s.up;
+  if(dv) dv.textContent=s.down;
+  if(lb){lb.classList.toggle('active-like',s.vote===1);lb.classList.toggle('active-dislike',false);}
+  if(db){db.classList.toggle('active-dislike',s.vote===-1);db.classList.toggle('active-like',false);}
+}
+
+/* ── Sort entries ── */
+function _sortEntries(entries){
+  const arr=[...entries];
+  if(_vSortMode==='highest') arr.sort((a,b)=>VidVotes.score(b.id)-VidVotes.score(a.id));
+  else if(_vSortMode==='lowest') arr.sort((a,b)=>VidVotes.score(a.id)-VidVotes.score(b.id));
+  else if(_vSortMode==='rated') return arr.filter(e=>VidVotes.get(e.id).up>0||VidVotes.get(e.id).down>0);
+  return arr;
+}
+
+/* ── Build a video grid ── */
+const PAGE_SIZE = 9;
+function _buildGrid(gridEl, entries){
+  if(!gridEl||!entries) return;
+  gridEl.innerHTML='';
+
+  const sorted = _sortEntries(entries);
+  if(!sorted.length){ gridEl.innerHTML=''; return; }
+
+  // Remove old pager
+  const oldPager = gridEl.parentNode.querySelector('.vg-pager');
+  if(oldPager) oldPager.remove();
+
+  if(sorted.length <= PAGE_SIZE){
+    sorted.forEach(e=>gridEl.appendChild(_makeCard(e)));
+    return;
+  }
+
+  // Pagination
+  let curPage=0;
+  const totalPages=Math.ceil(sorted.length/PAGE_SIZE);
+  const pager=document.createElement('div'); pager.className='vg-pager';
+  gridEl.parentNode.insertBefore(pager, gridEl.nextSibling);
+
+  function showPage(p){
+    curPage=p;
+    gridEl.innerHTML='';
+    const start=p*PAGE_SIZE;
+    sorted.slice(start, start+PAGE_SIZE).forEach(e=>gridEl.appendChild(_makeCard(e)));
+    pager.innerHTML='';
+
+    const prev=document.createElement('span');
+    prev.className='vg-pager-btn vg-pager-arrow'; prev.textContent='<';
+    prev.addEventListener('click',()=>{ if(curPage>0) showPage(curPage-1); });
+    pager.appendChild(prev);
+
+    for(let i=0;i<totalPages;i++){
+      const btn=document.createElement('span');
+      btn.className='vg-pager-btn'+(i===curPage?' active':'');
+      btn.textContent=i+1;
+      btn.addEventListener('click',()=>showPage(i));
+      pager.appendChild(btn);
+    }
+
+    const next=document.createElement('span');
+    next.className='vg-pager-btn vg-pager-arrow'; next.textContent='>';
+    next.addEventListener('click',()=>{ if(curPage<totalPages-1) showPage(curPage+1); });
+    pager.appendChild(next);
+  }
+  showPage(0);
+}
+
+/* ── Make a single video card ── */
+function _makeCard(entry){
+  const div=document.createElement('div');
+  div.className='vg-entry';
+  div.dataset.vid=entry.id;
+  if(entry.id===_vCurId) div.classList.add('active-entry');
+
+  const thumb=entry.thumb||('https://img.youtube.com/vi/'+entry.id+'/mqdefault.jpg');
+  const score=VidVotes.score(entry.id);
+  const stats=VidVotes.get(entry.id);
+  const hasVotes=stats.up>0||stats.down>0;
+  const badgeClass=score>0?'pos':score<0?'neg':'';
+
+  div.innerHTML=`
+    <div class="vg-thumb-wrap">
+      <img src="${thumb}" alt="${_esc(entry.title||entry.id)}"
+        onerror="this.src='https://img.youtube.com/vi/${entry.id}/default.jpg'">
+      <div class="vg-play-overlay">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </div>
+      ${hasVotes?`<span class="vg-vote-badge visible ${badgeClass}">${score>0?'+':''}${score}</span>`:''}
+      ${entry.duration?`<span class="vg-dur">${entry.duration}</span>`:''}
+    </div>
+    <div class="vg-info">
+      <div class="vg-info-title" title="${_esc(entry.title||entry.id)}">${_esc(entry.title||entry.id)}</div>
+      ${entry.year?`<div class="vg-info-sub">${_esc(entry.year)}</div>`:'<div class="vg-info-sub">&nbsp;</div>'}
+    </div>`;
+
+  div.addEventListener('click',()=>_playVideo(entry));
+  return div;
+}
+
+function _esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Rebuild all grids ── */
+function _rebuildAllGrids(){
+  const animes  = (typeof ANIME_VIDEOS    !=='undefined'?ANIME_VIDEOS   :[]);
+  const nostalg = (typeof NOSTALGIA_VIDEOS!=='undefined'?NOSTALGIA_VIDEOS:[]);
+  const awesome = (typeof AWESOME_VIDEOS  !=='undefined'?AWESOME_VIDEOS :[]);
+
+  const pairs=[
+    {grid:'vgGridAnimes',  data:animes,  empty:'animes-empty'},
+    {grid:'vgGridNostalg', data:nostalg, empty:'nostalg-empty'},
+    {grid:'vgGridAwesome', data:awesome, empty:'awesome-empty'},
+  ];
+  pairs.forEach(({grid,data,empty})=>{
+    const g=document.getElementById(grid);
+    const e=document.getElementById(empty);
+    if(!g) return;
+    if(!data||!data.length){
+      g.innerHTML='';
+      if(e) e.style.display='';
+    } else {
+      if(e) e.style.display='none';
+      _buildGrid(g, data);
+    }
+  });
+}
+
+/* ── Sort submenu ── */
+const SORT_OPTS=[
+  {v:'default', l:'Default Order'},
+  {v:'highest', l:'Highest Rated'},
+  {v:'lowest',  l:'Lowest Rated'},
+  {v:'rated',   l:'Only Rated'},
+];
+function _buildSortSubmenu(){
+  const sub=document.getElementById('vSortSubmenu');
+  if(!sub)return;
+  sub.innerHTML='';
+  SORT_OPTS.forEach(({v,l})=>{
+    const d=document.createElement('div');
+    const active=v===_vSortMode;
+    d.style.cssText='padding:5px 22px;cursor:pointer;font-size:12px;color:'+(active?'#fff':'#ccc')+';background:#050505;';
+    d.textContent=(active?'✔ ':'')+l;
+    d.addEventListener('mouseenter',()=>{d.style.background='rgba(50,50,50,.80)';d.style.color='#fff';});
+    d.addEventListener('mouseleave',()=>{d.style.background='#050505';d.style.color=(v===_vSortMode?'#fff':'#ccc');});
+    d.addEventListener('click',e=>{
+      e.stopPropagation();
+      _vSortMode=v;
+      _closePlusPopup();
+      _rebuildAllGrids();
+    });
+    sub.appendChild(d);
+  });
+}
+
+/* ── "+" popup ── */
+let _vPlusOpen=false, _vSortSubOpen=false;
+function _closePlusPopup(){
+  const p=document.getElementById('vPlusPopup');
+  if(p) p.style.display='none';
+  const sub=document.getElementById('vSortSubmenu');
+  if(sub) sub.style.display='none';
+  _vPlusOpen=false; _vSortSubOpen=false;
+}
+
+/* ── Autoplay toggle visual ── */
+function _syncAutoplayDot(){
+  const dot=document.getElementById('vPopAutoplayDot');
+  const row=document.getElementById('vPopAutoplay');
+  if(dot) dot.classList.toggle('dot-on',_vAutoplay);
+  if(row) row.innerHTML=(dot?dot.outerHTML:'')+'Autoplay: '+(typeof _vAutoplay!=='undefined'&&_vAutoplay?'ON':'OFF');
+  // Rebuild dot after innerHTML replace
+  const newDot=document.getElementById('vPopAutoplayDot');
+  if(newDot) newDot.classList.toggle('dot-on',_vAutoplay);
+}
+
+/* ── DOMContentLoaded ── */
+document.addEventListener('DOMContentLoaded',()=>{
+  VidVotes.init();
+
+  // Sounds pref
+  if(sessionStorage.getItem('_soundsOn')==='false'){
+    _vSoundsOn=false;
+    const b=document.getElementById('soundToggle');
+    if(b) b.textContent='Sounds: Off';
+  }
+  if(!sessionStorage.getItem('_siteStartPlayed')){
+    sessionStorage.setItem('_siteStartPlayed','1');
+    setTimeout(()=>_vPlaySound('start'),700);
+  }
+
+  // Like / dislike buttons
+  document.getElementById('vLikeBtn').addEventListener('click',()=>{
+    if(!_vCurId)return;
+    VidVotes.vote(_vCurId,1);
+    _updateVoteUI(_vCurId);
+    _rebuildAllGrids();
+    _vPlaySound('like');
+  });
+  document.getElementById('vDislikeBtn').addEventListener('click',()=>{
+    if(!_vCurId)return;
+    VidVotes.vote(_vCurId,-1);
+    _updateVoteUI(_vCurId);
+    _rebuildAllGrids();
+  });
+
+  // "+" popup
+  const plusBtn=document.getElementById('vPlusBtn');
+  const plusPopup=document.getElementById('vPlusPopup');
+  if(plusBtn&&plusPopup){
+    plusBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      if(_vPlusOpen){_closePlusPopup();return;}
+      _buildSortSubmenu();
+      _syncAutoplayDot();
+      plusPopup.style.display='block';
+      _vPlusOpen=true;
+    });
+    plusPopup.addEventListener('click',e=>e.stopPropagation());
+    document.addEventListener('click',()=>{if(_vPlusOpen)_closePlusPopup();});
+
+    // Autoplay toggle
+    const apRow=document.getElementById('vPopAutoplay');
+    if(apRow) apRow.addEventListener('click',e=>{
+      e.stopPropagation();
+      _vAutoplay=!_vAutoplay;
+      _syncAutoplayDot();
+      // Rebuild so dot updates stay after sort submenu reopens
+      const newDot=document.getElementById('vPopAutoplayDot');
+      if(newDot) newDot.classList.toggle('dot-on',_vAutoplay);
+    });
+
+    // Sort submenu toggle
+    const sortRow=document.getElementById('vPopSortToggle');
+    const sortSub=document.getElementById('vSortSubmenu');
+    if(sortRow&&sortSub){
+      sortRow.addEventListener('click',e=>{
+        e.stopPropagation();
+        _vSortSubOpen=!_vSortSubOpen;
+        sortSub.style.display=_vSortSubOpen?'block':'none';
+        const arrow=sortRow.querySelector('span');
+        if(arrow) arrow.style.transform=_vSortSubOpen?'rotate(90deg)':'';
+      });
+    }
+  }
+
+  // Sound hover/click
+  document.addEventListener('mouseover',e=>{
+    if(e.target.id==='soundToggle')return;
+    if(!_vIsInteractive(e.target))return;
+    const n=Date.now(); if(n-_vHT<120)return; _vHT=n; _vPlaySound('hover');
+  },{passive:true});
+  document.addEventListener('click',e=>{
+    if(e.target.id==='soundToggle')return;
+    if(_vIsInteractive(e.target)) _vPlaySound('button');
+  },true);
+
+  // Initial grid build (video.js may load after this)
+  _rebuildAllGrids();
+});
+
+/* ── Re-render when video.js sets window.ANIME_VIDEOS etc. ── */
+// video.js is expected to call window.initVideos() or just define the arrays.
+// We patch initVideos to trigger rebuild.
+window.initVideos = (function(_orig){
+  return function(){
+    if(typeof _orig==='function') _orig();
+    setTimeout(_rebuildAllGrids, 100);
+  };
+})(window.initVideos);
+
+// Also watch for the arrays being defined
+(function(){
+  let _checked=0;
+  const _poll=setInterval(()=>{
+    _checked++;
+    const has=(typeof ANIME_VIDEOS!=='undefined'||typeof NOSTALGIA_VIDEOS!=='undefined'||typeof AWESOME_VIDEOS!=='undefined');
+    if(has||_checked>60){ clearInterval(_poll); if(has) _rebuildAllGrids(); }
+  },300);
+})();
+
+// stopVideos — called by index.html navigation system when leaving the video page
+window.stopVideos = function(){
+  const ratio=document.getElementById('videoEmbedRatio');
+  if(ratio) ratio.innerHTML='<div id="videoEmbedPlaceholder">Select a video below to begin</div>';
+  _vCurId=null;
+  const nameEl=document.getElementById('vAudioName'); if(nameEl) nameEl.textContent='—';
+  const titleEl=document.getElementById('vInfoTitle'); if(titleEl) titleEl.textContent='—';
+  const link=document.getElementById('vPopUrl');
+  if(link){link.removeAttribute('href');link.style.opacity='0.4';link.style.pointerEvents='none';}
+  document.querySelectorAll('.vg-entry').forEach(el=>el.classList.remove('active-entry'));
+};
+
+// videoAutoPlay global (read by index.html navigation)
+Object.defineProperty(window,'videoAutoPlay',{
+  get:()=>_vAutoplay,
+  set:(v)=>{ _vAutoplay=!!v; _syncAutoplayDot(); },
+  configurable:true
+});
+</script>
+
+<!-- Load video data (defines ANIME_VIDEOS, NOSTALGIA_VIDEOS, AWESOME_VIDEOS) -->
+<script src="../scripts/js/video.js" onerror="console.warn('video.js not found')"></script>
+<script src="https://www.youtube.com/iframe_api" onerror="console.warn('YT API unavailable')"></script>
+<!-- Optional: sounds & codes from main site -->
+<script src="../scripts/js/sounds.js" onerror=""></script>
+<script src="../scripts/js/codes.js" onerror=""></script>
+
 </body>
 </html>
