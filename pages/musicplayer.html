@@ -552,9 +552,8 @@ strong{color:var(--accent);font-weight:400}
     <div class="top3-title">&#x2605; Top Rated &mdash; <span>Top 3</span></div>
     <div class="top3-list" id="_top3List"></div>
     <div class="try-this" id="_tryThisRow">
-      <span class="try-this-label">&#x25B6; Try this:</span>
+      <span class="try-this-label"> Try this:</span>
       <span class="try-this-name" id="_tryThisName">&#x2014;</span>
-      <span class="try-this-btn">&#x1F3B2; shuffle</span>
     </div>
   </div>
 
@@ -623,7 +622,7 @@ strong{color:var(--accent);font-weight:400}
           <span id="mpDislikeVal" style="font-size:11px;min-width:12px;">0</span>
         </div>
         <!-- PLAYED TIMES — right after like/dislike -->
-        <div id="mpPlayedTimes">Played: <span id="mpPlayedVal">0</span>x</div>
+        <div id="mpPlayedTimes">Times Played: <span id="mpPlayedVal">0</span></div>
         <span style="flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;">
           Currently playing: <span id="audioName">&#x2014;</span>
         </span>
@@ -1137,7 +1136,7 @@ function _renderTop3() {
   if (!scored.length) { panel.style.display='none'; return; }
   panel.style.display='block';
   list.innerHTML='';
-  const ranks=['r1','r2','r3'], medals=['🥇','🥈','🥉'];
+  const ranks=['r1','r2','r3'], medals=['1º','2º','3º'];
   scored.forEach((x,pos) => {
     const row = document.createElement('div');
     row.className='top3-item';
