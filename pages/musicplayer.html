@@ -866,8 +866,11 @@ strong{color:var(--accent);font-weight:400}
 
 <script>
 /* ═══════════════════════════════════════════════════════════
-   STORAGE KEYS
+   FIREBASE CONFIG
    ═══════════════════════════════════════════════════════════ */
+const FB_URL = 'https://scrapfielddatabase-default-rtdb.firebaseio.com';
+
+/* Storage keys (só usados como chaves de localStorage agora) */
 const HS_ADDED         = 'mp_added_v4';
 const HS_DELETED       = 'mp_deleted_v4';
 const HS_CUSTOM_ALBUMS = 'mp_albums_v4';
@@ -876,25 +879,92 @@ const HS_USERID        = '_musicUserId';
 const HS_ALBUM_META    = 'mp_album_meta_v4';
 const HS_PLAY_COUNTS   = 'mp_play_counts_v4';
 
+/* Cache em memória */
+let _cachedAdded        = [];
+let _cachedDeleted      = [];
+let _cachedAlbumMeta    = {};
+let _cachedCustomAlbums = [];
+
+/* Leitura — sempre do cache (rápido, síncrono) */
+function getHostAdded()    { return _cachedAdded; }
+function getHostDeleted()  { return _cachedDeleted; }
+function getCustomAlbums() { return _cachedCustomAlbums; }
+function getAlbumMeta()    { return _cachedAlbumMeta; }
+
+/* Escrita — salva no cache + Firebase + localStorage (fallback) */
+function saveHostAdded(arr) {
+  _cachedAdded = arr;
+  localStorage.setItem(HS_ADDED, JSON.stringify(arr));
+  fetch(`${FB_URL}/music/added.json`, {
+    method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(arr)
+  }).catch(()=>{});
+}
+function saveHostDeleted(arr) {
+  _cachedDeleted = arr;
+  localStorage.setItem(HS_DELETED, JSON.stringify(arr));
+  fetch(`${FB_URL}/music/deleted.json`, {
+    method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(arr)
+  }).catch(()=>{});
+}
+function saveCustomAlbums(arr) {
+  _cachedCustomAlbums = arr;
+  localStorage.setItem(HS_CUSTOM_ALBUMS, JSON.stringify(arr));
+  fetch(`${FB_URL}/music/albums.json`, {
+    method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(arr)
+  }).catch(()=>{});
+}
+function saveAlbumMeta(m) {
+  _cachedAlbumMeta = m;
+  localStorage.setItem(HS_ALBUM_META, JSON.stringify(m));
+  fetch(`${FB_URL}/music/album_meta.json`, {
+    method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(m)
+  }).catch(()=>{});
+}
+
 /* ═══════════════════════════════════════════════════════════
-   SHARED STORAGE (window.storage fallback to localStorage)
-   ALL writes go to BOTH so all devices see data
+   LOAD SHARED DATA (Firebase → cache → localStorage fallback)
    ═══════════════════════════════════════════════════════════ */
-async function _storeGet(key) {
+async function _loadSharedData() {
   try {
-    if (window.storage) {
-      const r = await window.storage.get(key, true);
-      if (r && r.value != null) return JSON.parse(r.value);
+    const res = await fetch(`${FB_URL}/music.json`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data) {
+        if (Array.isArray(data.added))   { _cachedAdded        = data.added;      localStorage.setItem(HS_ADDED,        JSON.stringify(data.added));      }
+        if (Array.isArray(data.deleted)) { _cachedDeleted      = data.deleted;    localStorage.setItem(HS_DELETED,      JSON.stringify(data.deleted));    }
+        if (data.albums)                 { _cachedCustomAlbums = data.albums;     localStorage.setItem(HS_CUSTOM_ALBUMS,JSON.stringify(data.albums));     }
+        if (data.album_meta)             { _cachedAlbumMeta    = data.album_meta; localStorage.setItem(HS_ALBUM_META,   JSON.stringify(data.album_meta)); _albumMeta = data.album_meta; }
+        return;
+      }
     }
   } catch(e) {}
-  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : null; } catch(e) { return null; }
+  /* Fallback: usa localStorage se Firebase falhar */
+  try { _cachedAdded        = JSON.parse(localStorage.getItem(HS_ADDED)        ||'[]'); } catch(e){}
+  try { _cachedDeleted      = JSON.parse(localStorage.getItem(HS_DELETED)      ||'[]'); } catch(e){}
+  try { _cachedCustomAlbums = JSON.parse(localStorage.getItem(HS_CUSTOM_ALBUMS)||'[]'); } catch(e){}
+  try { _cachedAlbumMeta    = JSON.parse(localStorage.getItem(HS_ALBUM_META)   ||'{}'); _albumMeta = _cachedAlbumMeta; } catch(e){}
 }
-async function _storeSet(key, val) {
-  const s = JSON.stringify(val);
-  // Always write to shared storage (visible to all devices)
-  try { if (window.storage) await window.storage.set(key, s, true); } catch(e) {}
-  // Also keep local copy for fast reads
-  try { localStorage.setItem(key, s); } catch(e) {}
+
+/* ═══════════════════════════════════════════════════════════
+   MIGRATE localStorage → Firebase (roda só uma vez)
+   ═══════════════════════════════════════════════════════════ */
+async function _migrateLocalToFirebase() {
+  if (localStorage.getItem('_fbMigrated')) return;
+  const local = JSON.parse(localStorage.getItem(HS_ADDED) || '[]');
+  if (!local.length) { localStorage.setItem('_fbMigrated','1'); return; }
+  try {
+    const res = await fetch(`${FB_URL}/music/added.json`);
+    const existing = res.ok ? await res.json() : null;
+    if (existing && Array.isArray(existing) && existing.length) {
+      localStorage.setItem('_fbMigrated','1'); return;
+    }
+    await fetch(`${FB_URL}/music/added.json`, {
+      method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(local)
+    });
+    _cachedAdded = local;
+    console.log('Migração concluída:', local.length, 'músicas enviadas ao Firebase');
+  } catch(e) { console.warn('Migração falhou:', e); }
+  localStorage.setItem('_fbMigrated','1');
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -920,7 +990,6 @@ let _albumFilterVal = '';
 let _collapsedGroups = new Set();
 let _collapsedSubGroups = new Set();
 
-// UNDO/REDO stacks — each entry: { type:'add'|'delete', snapshot: [...added] }
 let _undoStack = [];
 let _redoStack = [];
 
@@ -933,7 +1002,6 @@ function _loadPlayCounts() {
 }
 function _savePlayCounts() {
   try { localStorage.setItem(HS_PLAY_COUNTS, JSON.stringify(_playCounts)); } catch(e) {}
-  _storeSet(HS_PLAY_COUNTS, _playCounts);
 }
 function _incrementPlayCount(trackId) {
   if (!trackId) return;
@@ -988,46 +1056,16 @@ const VOTES = {
   reset() { this._data={}; this._save(); },
   _save() {
     try { localStorage.setItem(HS_VOTES,JSON.stringify(this._data)); } catch(e){}
-    _storeSet(HS_VOTES, this._data);
   },
   _s(id) { return String(id).replace(/[.#$[\]]/g,'_'); }
 };
-
-/* ═══════════════════════════════════════════════════════════
-   STORAGE LOAD/SAVE — always shared
-   ═══════════════════════════════════════════════════════════ */
-function getHostAdded()       { try { return JSON.parse(localStorage.getItem(HS_ADDED) ||'[]'); } catch(e) { return []; } }
-function saveHostAdded(arr)   { localStorage.setItem(HS_ADDED, JSON.stringify(arr)); _storeSet(HS_ADDED, arr); }
-function getHostDeleted()     { try { return JSON.parse(localStorage.getItem(HS_DELETED)||'[]'); } catch(e) { return []; } }
-function saveHostDeleted(arr) { localStorage.setItem(HS_DELETED, JSON.stringify(arr)); _storeSet(HS_DELETED, arr); }
-function getCustomAlbums()    { try { return JSON.parse(localStorage.getItem(HS_CUSTOM_ALBUMS)||'[]'); } catch(e) { return []; } }
-function saveCustomAlbums(a)  { localStorage.setItem(HS_CUSTOM_ALBUMS, JSON.stringify(a)); _storeSet(HS_CUSTOM_ALBUMS, a); }
-function getAlbumMeta()       { try { return JSON.parse(localStorage.getItem(HS_ALBUM_META)||'{}'); } catch(e) { return {}; } }
-function saveAlbumMeta(m)     { localStorage.setItem(HS_ALBUM_META, JSON.stringify(m)); _storeSet(HS_ALBUM_META, m); }
-
-/* Load shared data from window.storage and sync to localStorage */
-async function _loadSharedData() {
-  try {
-    const [a,d,ca,am,pc,vt] = await Promise.all([
-      _storeGet(HS_ADDED), _storeGet(HS_DELETED),
-      _storeGet(HS_CUSTOM_ALBUMS), _storeGet(HS_ALBUM_META),
-      _storeGet(HS_PLAY_COUNTS), _storeGet(HS_VOTES)
-    ]);
-    if (a)  { localStorage.setItem(HS_ADDED,  JSON.stringify(a));  }
-    if (d)  { localStorage.setItem(HS_DELETED,JSON.stringify(d));  }
-    if (ca) { localStorage.setItem(HS_CUSTOM_ALBUMS, JSON.stringify(ca)); }
-    if (am) { localStorage.setItem(HS_ALBUM_META,    JSON.stringify(am)); _albumMeta = am; }
-    if (pc) { localStorage.setItem(HS_PLAY_COUNTS,   JSON.stringify(pc)); _playCounts = pc; }
-    if (vt) { localStorage.setItem(HS_VOTES,          JSON.stringify(vt)); VOTES._data = vt; }
-  } catch(e) {}
-}
 
 /* ═══════════════════════════════════════════════════════════
    UNDO / REDO
    ═══════════════════════════════════════════════════════════ */
 function _pushUndo(description, prevAdded) {
   _undoStack.push({ description, snapshot: JSON.parse(JSON.stringify(prevAdded)) });
-  _redoStack = []; // clear redo on new action
+  _redoStack = [];
   _updateUndoRedoUI();
 }
 function _undoAction() {
@@ -1173,8 +1211,6 @@ function buildPlaylist() {
   const sq = _searchQuery.toLowerCase().trim();
   const af = _albumFilterVal;
 
-  // Build album → subAlbum → entries
-  // albumMap: Map<albumLabel, Map<subLabel, [{track,idx}]>>
   const albumMap = new Map();
   TRACKS.forEach((t, i) => {
     const lbl = t._plLabel || 'Uncategorized';
@@ -1185,7 +1221,6 @@ function buildPlaylist() {
     subMap.get(sub).push({ track:t, idx:i });
   });
 
-  // Build flat list for groupOrder (treat album as top-level group)
   const flatGroupMap = new Map();
   albumMap.forEach((subMap, lbl) => {
     const allEntries = [];
@@ -1194,23 +1229,21 @@ function buildPlaylist() {
   });
   const orderedAlbums = _groupOrder(flatGroupMap);
 
-  // Assign global numbers per-subgroup
-  let globalNum = 1;
-  const globalNums = {};
   orderedAlbums.forEach(lbl => {
     const subMap = albumMap.get(lbl);
-    subMap.forEach((entries, sub) => {
-      let sorted = [...entries];
-      if (_musicSort === 'popular' || _musicSort === 'highest') {
-        sorted.sort((a,b) => VOTES.getScore(b.track.videoId||'') - VOTES.getScore(a.track.videoId||''));
-      } else if (_musicSort === 'alpha') {
-        sorted.sort((a,b) => (a.track.title||'').localeCompare(b.track.title||''));
-      } else if (_musicSort === 'oldest') {
-        sorted.sort((a,b) => (a.track.addedAt||0) - (b.track.addedAt||0));
-      }
-      subMap.set(sub, sorted);
-      sorted.forEach(e => { globalNums[e.idx] = globalNum++; });
-    });
+    if (_musicSort === 'popular' || _musicSort === 'highest') {
+      subMap.forEach((entries, sub) => {
+        subMap.set(sub, [...entries].sort((a,b) => VOTES.getScore(b.track.videoId||'') - VOTES.getScore(a.track.videoId||'')));
+      });
+    } else if (_musicSort === 'alpha') {
+      subMap.forEach((entries, sub) => {
+        subMap.set(sub, [...entries].sort((a,b) => (a.track.title||'').localeCompare(b.track.title||'')));
+      });
+    } else if (_musicSort === 'oldest') {
+      subMap.forEach((entries, sub) => {
+        subMap.set(sub, [...entries].sort((a,b) => (a.track.addedAt||0) - (b.track.addedAt||0)));
+      });
+    }
   });
 
   let totalVisible = 0;
@@ -1219,9 +1252,8 @@ function buildPlaylist() {
     if (af && af !== lbl) return;
     const subMap = albumMap.get(lbl);
 
-    // Count filtered entries across all sub-albums
     let totalInAlbum = 0;
-    subMap.forEach((entries, sub) => {
+    subMap.forEach((entries) => {
       let filtered = sq ? entries.filter(e => (e.track.title||'').toLowerCase().includes(sq)) : entries;
       totalInAlbum += filtered.length;
     });
@@ -1233,7 +1265,6 @@ function buildPlaylist() {
     const albumDiv = document.createElement('div');
     albumDiv.dataset.group = lbl;
 
-    // ALBUM HEADER
     const hdr = document.createElement('div');
     hdr.className = 'pl-group-header';
     const toggle = document.createElement('span');
@@ -1266,18 +1297,14 @@ function buildPlaylist() {
       }
     });
 
-    // For each sub-album (or "" = no sub-album)
     subMap.forEach((entries, sub) => {
       let filtered = sq ? entries.filter(e => (e.track.title||'').toLowerCase().includes(sq)) : entries;
       if (!filtered.length) return;
 
-      // Sub-album wrapper
       let trackContainer;
       if (sub) {
-        // Has a real sub-album — render sub-header
         const subKey = lbl + '::' + sub;
         const subCollapsed = _collapsedSubGroups.has(subKey);
-
         const subDiv = document.createElement('div');
         const subHdr = document.createElement('div');
         subHdr.className = 'pl-subgroup-header';
@@ -1291,10 +1318,8 @@ function buildPlaylist() {
         subMeta.className = 'pl-subgroup-meta';
         subMeta.textContent = filtered.length + ' track' + (filtered.length!==1?'s':'');
         subHdr.appendChild(subToggle); subHdr.appendChild(subName); subHdr.appendChild(subMeta);
-
         const subBody = document.createElement('div');
         subBody.className = 'pl-subgroup-body' + (subCollapsed ? ' collapsed' : '');
-
         subHdr.addEventListener('click', e => {
           e.stopPropagation();
           const isNowC = subBody.classList.contains('collapsed');
@@ -1308,21 +1333,16 @@ function buildPlaylist() {
         trackContainer = albumBody;
       }
 
-      // Tracks — numbered PER sub-album (or per album if no sub-album)
       const ol = document.createElement('ol');
       ol.className = 'pl-track-list';
-      // Local numbers within this sub-album
       filtered.forEach((e, localIdx) => {
         const li = document.createElement('li');
         const a  = document.createElement('a');
         a.href = '#'; a.dataset.idx = e.idx;
         if (e.idx === curIdx) a.classList.add('activeSong');
-
         const numSpan = document.createElement('span');
         numSpan.className = 'pl-track-num';
-        // Use local 1-based number within this group
         numSpan.textContent = '.' + (localIdx+1);
-
         const titleWrap = document.createElement('span');
         titleWrap.className = 'pl-track-title-wrap';
         const titleSpan = document.createElement('span');
@@ -1752,7 +1772,6 @@ function _refreshAlbumPickers() {
       });
     }
   });
-  // Sub-album pickers
   const subPairs = [
     ['subAlbumDatalistYt','subAlbumPillsYt','hostYtSubAlbum','hostYtAlbum'],
     ['subAlbumDatalistPl','subAlbumPillsPl','hostPlSubAlbum','hostPlAlbum'],
@@ -1794,9 +1813,7 @@ function _refreshSubAlbumPickers(albumFilter) {
   });
 }
 
-/* ═══════════════════════════════════════════════════════════
-   HOST: ADD SINGLE YT
-   ═══════════════════════════════════════════════════════════ */
+/* HOST: ADD SINGLE YT */
 async function hostAddYt() {
   const url      = (document.getElementById('hostYtUrl').value||'').trim();
   const name     = (document.getElementById('hostYtName').value||'').trim();
@@ -1823,9 +1840,7 @@ async function hostAddYt() {
   ['hostYtUrl','hostYtName','hostYtPublisher','hostYtAlbum','hostYtSubAlbum','hostYtArt'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
 }
 
-/* ═══════════════════════════════════════════════════════════
-   HOST: PLAYLIST PREVIEW
-   ═══════════════════════════════════════════════════════════ */
+/* HOST: PLAYLIST PREVIEW */
 async function hostFetchPlaylistPreview() {
   const url = (document.getElementById('hostPlUrl').value||'').trim();
   if (!url) { setHostStatus('Please enter a YouTube playlist URL.','err'); return; }
@@ -1863,9 +1878,7 @@ async function hostFetchPlaylistPreview() {
   if(fetchBtn)fetchBtn.disabled=false;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   HOST: CONFIRM PLAYLIST
-   ═══════════════════════════════════════════════════════════ */
+/* HOST: CONFIRM PLAYLIST */
 function hostConfirmPlaylist() {
   if (!_plPreviewItems.length) { setHostStatus('No tracks to add. Fetch the playlist first.','err'); return; }
   const rawUrl   = (document.getElementById('hostPlUrl').value||'').trim();
@@ -1874,10 +1887,8 @@ function hostConfirmPlaylist() {
   const pub      = (document.getElementById('hostPlPublisher').value||'').trim().slice(0,15);
   const art      = (document.getElementById('hostPlArt').value||'').trim();
   const prefix   = (document.getElementById('hostPlPrefix').value||'').trim();
-
   const prevAdded = getHostAdded();
   _pushUndo('Add playlist → '+album+(subAlbum?' / '+subAlbum:''), prevAdded);
-
   const added = [...prevAdded];
   const existIds = new Set(added.map(t=>t.videoId).filter(Boolean));
   let count = 0;
@@ -1892,13 +1903,9 @@ function hostConfirmPlaylist() {
   saveHostAdded(added);
   const am = getAlbumMeta();
   if (!am[album]) am[album] = { addedAt:now, playlistUrl:'' };
-  if (rawUrl) {
-    const pid = _ytExtractPlaylistId(rawUrl);
-    am[album].playlistUrl = pid ? 'https://www.youtube.com/playlist?list='+pid : rawUrl;
-  }
+  if (rawUrl) { const pid = _ytExtractPlaylistId(rawUrl); am[album].playlistUrl = pid ? 'https://www.youtube.com/playlist?list='+pid : rawUrl; }
   if (!am[album].addedAt) am[album].addedAt = now;
   saveAlbumMeta(am); _albumMeta = am;
-
   setHostStatus(count+' track'+(count!==1?'s':'')+' added to "'+album+(subAlbum?' / '+subAlbum:'')+'" ('+ (_plPreviewItems.length-count)+' skipped).','ok');
   _plPreviewItems=[];
   ['hostPlUrl','hostPlAlbum','hostPlSubAlbum','hostPlPublisher','hostPlArt','hostPlPrefix'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
@@ -1907,9 +1914,7 @@ function hostConfirmPlaylist() {
   rebuildTracks(); _renderAlbumManager(); _refreshAlbumPickers();
 }
 
-/* ═══════════════════════════════════════════════════════════
-   HOST: ADD FILE
-   ═══════════════════════════════════════════════════════════ */
+/* HOST: ADD FILE */
 function hostAddFile() {
   const url      = (document.getElementById('hostFileUrl').value||'').trim();
   const name     = (document.getElementById('hostFileName').value||'').trim();
@@ -1933,9 +1938,7 @@ function hostAddFile() {
   ['hostFileUrl','hostFileName','hostFilePublisher','hostFileAlbum','hostFileSubAlbum','hostFileArt'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
 }
 
-/* ═══════════════════════════════════════════════════════════
-   HOST: UPLOAD FILES
-   ═══════════════════════════════════════════════════════════ */
+/* HOST: UPLOAD FILES */
 let _pendingFiles = [];
 function _isAudioFile(file) {
   if (file.type&&file.type.match(/^audio\//)) return true;
@@ -1997,9 +2000,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 });
 
-/* ═══════════════════════════════════════════════════════════
-   RESET TOOLS
-   ═══════════════════════════════════════════════════════════ */
+/* RESET TOOLS */
 function _resetRatings() {
   if (!confirm('Reset ALL like/dislike ratings?')) return;
   VOTES.reset();
@@ -2008,17 +2009,18 @@ function _resetRatings() {
 }
 function _resetAllTracks() {
   if (!confirm('Clear ALL host-added tracks? This also clears undo/redo history.')) return;
+  _cachedAdded=[]; _cachedDeleted=[]; _cachedAlbumMeta={}; _cachedCustomAlbums=[];
   localStorage.removeItem(HS_ADDED);localStorage.removeItem(HS_DELETED);localStorage.removeItem(HS_ALBUM_META);
-  _storeSet(HS_ADDED,[]); _storeSet(HS_DELETED,[]); _storeSet(HS_ALBUM_META,{});
+  fetch(`${FB_URL}/music/added.json`,  {method:'PUT',headers:{'Content-Type':'application/json'},body:'[]'}).catch(()=>{});
+  fetch(`${FB_URL}/music/deleted.json`,{method:'PUT',headers:{'Content-Type':'application/json'},body:'[]'}).catch(()=>{});
+  fetch(`${FB_URL}/music/album_meta.json`,{method:'PUT',headers:{'Content-Type':'application/json'},body:'{}'}).catch(()=>{});
   _albumMeta = {}; _undoStack=[]; _redoStack=[];
   TRACKS.length = 0;
   buildPlaylist(); _renderAlbumManager(); _refreshAlbumPickers(); _updateUndoRedoUI();
   setHostStatus('All added tracks cleared.','ok');
 }
 
-/* ═══════════════════════════════════════════════════════════
-   ALBUM MANAGER
-   ═══════════════════════════════════════════════════════════ */
+/* ALBUM MANAGER */
 function _createAlbumBucket() {
   const inp=document.getElementById('_newAlbumName');
   const name=(inp.value||'').trim();
@@ -2085,7 +2087,6 @@ function _renderAlbumManager() {
   const allAlbums=_getAllAlbumNames();
   const ordered=['Uncategorized',...allAlbums.filter(a=>a!=='Uncategorized')];
   const deleted=getHostDeleted(), added=getHostAdded();
-  // albumMap: albumName → subAlbum → tracks[]
   const albumMap={};
   ordered.forEach(a=>albumMap[a]={});
   added.forEach(t=>{
@@ -2106,15 +2107,12 @@ function _renderAlbumManager() {
     const nameSpan=document.createElement('span'); nameSpan.className='ab-name'; nameSpan.textContent='\u25bc '+albumName;
     const countSpan=document.createElement('span'); countSpan.className='ab-count'; countSpan.textContent=totalTracks+' track'+(totalTracks!==1?'s':'');
     header.appendChild(nameSpan); header.appendChild(countSpan);
-
     const renBtn=document.createElement('button'); renBtn.className='ab-ren-album'; renBtn.textContent='Rename';
     renBtn.addEventListener('click',e=>{e.stopPropagation();_renameAlbum(albumName);}); header.appendChild(renBtn);
-
     if (albumName!=='Uncategorized') {
       const delBtn=document.createElement('button'); delBtn.className='ab-del-album'; delBtn.textContent='\xd7'; delBtn.title='Delete album';
       delBtn.addEventListener('click',e=>{e.stopPropagation();_deleteAlbumBucket(albumName);}); header.appendChild(delBtn);
     }
-
     const body=document.createElement('div'); body.className='album-bucket-body'; body.dataset.album=albumName;
     header.addEventListener('click',()=>{
       const col=body.style.display==='none';
@@ -2124,12 +2122,9 @@ function _renderAlbumManager() {
     body.addEventListener('dragover',e=>{e.preventDefault();body.classList.add('drag-over');});
     body.addEventListener('dragleave',()=>body.classList.remove('drag-over'));
     body.addEventListener('drop',e=>{e.preventDefault();body.classList.remove('drag-over');const tid=e.dataTransfer.getData('text/plain');if(tid)_moveTrackToAlbum(tid,albumName);});
-
-    // Render sub-albums
     Object.entries(subMap).forEach(([subName, tracks]) => {
       if (!tracks.length) return;
       if (subName) {
-        // Sub-album label in manager
         const subHeader = document.createElement('div');
         subHeader.style.cssText='padding:2px 6px;font-size:9.5px;color:#666;text-transform:uppercase;letter-spacing:.5px;background:#f0f0f0;border-bottom:1px solid rgba(0,0,0,.08);margin-top:4px;';
         subHeader.textContent='↳ ' + subName;
@@ -2138,14 +2133,12 @@ function _renderAlbumManager() {
       tracks.forEach((t,ti) => {
         const item=document.createElement('div'); item.className='ab-track-item';
         item.draggable=true; item.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain',t._tid));
-
         const numEl=document.createElement('span'); numEl.className='abt-num'; numEl.textContent='.'+(ti+1);
         const art=document.createElement('img'); art.className='abt-art';
         art.src=t.artwork||'https://frutigeraeroarchive.org/images/music_player/cd.png';
         art.onerror=()=>{art.src='https://frutigeraeroarchive.org/images/music_player/cd.png';};
         const nm=document.createElement('span'); nm.className='abt-name'; nm.textContent=t.name||t._tid; nm.title=nm.textContent;
         const pubEl=document.createElement('span'); pubEl.className='abt-pub'; pubEl.textContent=t.publisher||'';
-
         const moveSelect=document.createElement('select'); moveSelect.className='abt-move-select';
         const defOpt=document.createElement('option'); defOpt.value=''; defOpt.textContent='Move\u2026'; moveSelect.appendChild(defOpt);
         ordered.forEach(an=>{
@@ -2153,16 +2146,13 @@ function _renderAlbumManager() {
           const o=document.createElement('option');o.value=an;o.textContent=an;moveSelect.appendChild(o);
         });
         moveSelect.addEventListener('change',function(){if(this.value)_moveTrackToAlbum(t._tid,this.value);});
-
         const delBtn=document.createElement('button'); delBtn.className='abt-del'; delBtn.textContent='\xd7';
         delBtn.addEventListener('click',()=>_deleteHostTrack(t._tid));
-
         item.appendChild(numEl);item.appendChild(art);item.appendChild(nm);item.appendChild(pubEl);
         item.appendChild(moveSelect);item.appendChild(delBtn);
         body.appendChild(item);
       });
     });
-
     if(!totalTracks){const e=document.createElement('div');e.style.cssText='font-size:10px;color:#bbb;padding:5px 6px;';e.textContent='No tracks.';body.appendChild(e);}
     bucket.appendChild(header); bucket.appendChild(body); container.appendChild(bucket);
   });
@@ -2210,18 +2200,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   showBanner('Loading tracks\u2026');
   await _loadSharedData();
+  await _migrateLocalToFirebase();
   rebuildTracks();
   hideBanner();
 
-  // Progress bar
   const prog=document.getElementById('progressBar');
   if(prog)prog.addEventListener('input',()=>{const pct=parseFloat(prog.value);const fill=document.getElementById('progressFill');if(fill)fill.style.width=pct+'%';seekTo(pct);});
 
-  // Volume
   const vol=document.getElementById('volumeSlider');
   if(vol)vol.addEventListener('input',()=>{const v=parseInt(vol.value);_setVol(v);if(v>0)ytCmd('unMute');});
 
-  // Mute
   const muteBtn=document.getElementById('muteButton');
   if(muteBtn)muteBtn.addEventListener('click',()=>{
     if(!vol)return;const v=parseInt(vol.value);
@@ -2229,7 +2217,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     else{vol.value=prevVol;_setVol(prevVol);ytCmd('unMute');}
   });
 
-  // Loop
   const loopBtn=document.getElementById('audioLoop');
   if(loopBtn)loopBtn.addEventListener('click',()=>{
     loopOn=!loopOn;
@@ -2241,11 +2228,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('audioBack').addEventListener('click',prevTrack);
   document.getElementById('audioForward').addEventListener('click',nextTrack);
 
-  // CD click
   const cdWrap=document.getElementById('_cdSpinWrapper');
   if(cdWrap)cdWrap.addEventListener('click',_cdClick);
 
-  // Like/dislike
   document.getElementById('mpLikeBtn').addEventListener('click',()=>{
     if(curIdx<0||!TRACKS[curIdx]?.videoId)return;
     VOTES.vote(TRACKS[curIdx].videoId,1);_updateVoteDisplay(TRACKS[curIdx]);buildPlaylist();markActiveTrack(curIdx);_renderTop3();
@@ -2255,7 +2240,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     VOTES.vote(TRACKS[curIdx].videoId,-1);_updateVoteDisplay(TRACKS[curIdx]);buildPlaylist();markActiveTrack(curIdx);_renderTop3();
   });
 
-  // Search
   const srch=document.getElementById('_mpSearchInput');
   if(srch)srch.addEventListener('input',()=>{_searchQuery=srch.value;buildPlaylist();});
   const clr=document.getElementById('_mpSearchClear');
@@ -2263,14 +2247,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const af=document.getElementById('_mpAlbumFilter');
   if(af)af.addEventListener('change',()=>{_albumFilterVal=af.value;buildPlaylist();});
 
-  // Try this button
   const tryRow=document.getElementById('_tryThisRow');
   if(tryRow)tryRow.addEventListener('click',()=>{
     if(_tryThisIdx>=0&&_tryThisIdx<TRACKS.length) selectAndPlay(_tryThisIdx);
     _refreshTryThis();
   });
 
-  // Sort popup
   (function(){
     const plusBtn=document.getElementById('mpPlusBtn'),plusPopup=document.getElementById('mpPlusPopup');
     if(!plusBtn||!plusPopup)return;
@@ -2302,7 +2284,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })();
 
-  // Sound interactions
   document.addEventListener('mouseover',e=>{if(e.target.id==='soundToggle')return;if(!_iI(e.target))return;const n=Date.now();if(n-_ht<120)return;_ht=n;_playSound('hover');},{passive:true});
   document.addEventListener('click',e=>{if(e.target.id==='soundToggle')return;if(_iI(e.target))_playSound('button');},true);
 
