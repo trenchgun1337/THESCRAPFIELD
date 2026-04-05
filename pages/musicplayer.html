@@ -913,7 +913,7 @@ function buildPlaylist() {
   // ── Music of the Week ──
   const motwTrack = resolveMOTW();
   if (motwTrack) {
-    _addGroupHeader(pl, 'Music of the Week', true);
+    _addGroupHeader(pl, 'Give it a try', true);
     const motwIdx = TRACKS.indexOf(motwTrack);
     const ol = document.createElement('ol'); ol.className = 'pl-track-list';
     _addTrackLi(ol, motwTrack, motwIdx);
