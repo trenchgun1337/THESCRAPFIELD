@@ -345,7 +345,7 @@ img{-webkit-user-drag:none;user-select:none}
       We believe its use qualifies as fair use. If you own any content here and would like it removed or properly credited,
       please contact at
       <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=trenchgun1337@gmail.com&amp;su=Contact%20from%20Website"
-        target="_blank" rel="noopener noreferrer">trenchgun1337@gmail.com</a>
+        target="_blank" rel="noopener noreferrer"><span class="__cf_email__" data-cfemail="9befe9fef5f8f3fceef5aaa8a8acdbfcf6faf2f7b5f8f4f6">[email&#160;protected]</span></a>
       and action will be taken as soon as possible.</p>
     </div>
   </div>
@@ -365,7 +365,7 @@ img{-webkit-user-drag:none;user-select:none}
      (identical to the working standalone player,
       but with paths adjusted for the pages/ subfolder)
      ============================================================ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── sounds ── */
 const _VSBX='../assets/audio/';
 const _VSND={start:_VSBX+'sitestart.mp3',button:_VSBX+'sitebuttonclick.mp3',hover:_VSBX+'text.mp3',like:_VSBX+'sitelikeclick.mp3'};
@@ -442,13 +442,14 @@ function _baseDataForKey(key){
 }
 
 function _normalizeEntry(e){
-  return{
-    id:       e.id||e.videoId||'',
-    title:    e.title||e.name||'',
-    year:     e.year||e.description||e.desc||'',
-    thumb:    e.thumb||null,
-    duration: e.duration||''
-  };
+  // Suporta todos os formatos possíveis:
+  // {videoId, name, ...}, {id, title, ...}, {videoId, title, ...}, etc.
+  const id    = e.id    || e.videoId || e.video_id || e.vid || '';
+  const title = e.title || e.name    || e.label    || e.text || id;
+  const year  = e.year  || e.description || e.desc  || e.subtitle || e.meta || '';
+  const thumb = e.thumb || e.thumbnail   || e.image || e.cover
+                || (id ? 'https://img.youtube.com/vi/'+id+'/mqdefault.jpg' : null);
+  return{ id, title, year, thumb, duration: e.duration||'' };
 }
 
 /* ── sort ── */
@@ -711,7 +712,20 @@ document.addEventListener('DOMContentLoaded',()=>{
   const poll=setInterval(()=>{
     c++;
     const has=(typeof ANIME_VIDEOS!=='undefined'||typeof NOSTALGIA_VIDEOS!=='undefined'||typeof AWESOME_VIDEOS!=='undefined');
-    if(has||c>60){clearInterval(poll);if(has)_rebuildAllGrids();}
+    if(has||c>60){
+      clearInterval(poll);
+      if(has){
+        // DEBUG: mostra no console o formato real dos dados
+        const sample = (typeof ANIME_VIDEOS!=='undefined'&&ANIME_VIDEOS.length)
+          ? ANIME_VIDEOS[0]
+          : (typeof NOSTALGIA_VIDEOS!=='undefined'&&NOSTALGIA_VIDEOS.length)
+            ? NOSTALGIA_VIDEOS[0]
+            : (typeof AWESOME_VIDEOS!=='undefined'&&AWESOME_VIDEOS.length)
+              ? AWESOME_VIDEOS[0] : null;
+        if(sample) console.log('[VideoPlayer] Formato do objeto de vídeo:', JSON.stringify(sample));
+        _rebuildAllGrids();
+      }
+    }
   },300);
 })();
 
@@ -738,8 +752,4 @@ Object.defineProperty(window,'videoAutoPlay',{
 <!-- video data (ANIME_VIDEOS, NOSTALGIA_VIDEOS, AWESOME_VIDEOS) -->
 <script src="../scripts/js/video.js" onerror="console.warn('video.js not found')"></script>
 <script src="https://www.youtube.com/iframe_api" onerror=""></script>
-<script src="../scripts/js/sounds.js"  onerror="console.warn('sounds.js not found')"></script>
-<script src="../scripts/js/codes.js"   onerror="console.warn('codes.js not found')"></script>
-
-</body>
-</html>
+<
