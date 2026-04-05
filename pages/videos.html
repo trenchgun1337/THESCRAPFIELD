@@ -133,14 +133,9 @@ strong{color:var(--accent);font-weight:400}
 .vg-vote-badge.visible{display:block}
 .vg-vote-badge.pos{color:#7ef07e}.vg-vote-badge.neg{color:#f07e7e}
 .vg-dur{position:absolute;bottom:3px;right:3px;background:rgba(0,0,0,.72);color:#fff;font-size:9px;padding:1px 5px;pointer-events:none}
-.vg-unavail-badge{position:absolute;top:3px;left:3px;background:rgba(150,0,0,.85);color:#fff;
-  font-size:9px;padding:1px 5px;pointer-events:none;display:none;}
-.vg-unavail-badge.show{display:block}
 .vg-info{padding:4px 6px 5px;background:var(--grad-bar);border-top:1px solid rgba(0,0,0,.12)}
 .vg-info-title{font-size:10.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .vg-info-title.loading{color:#bbb;font-style:italic}
-.vg-entry.unavailable{opacity:.5;filter:grayscale(.5)}
-.vg-entry.unavailable .vg-thumb-wrap img{filter:grayscale(1)}
 
 /* pager */
 .vg-pager{display:flex;align-items:center;justify-content:center;gap:3px;padding:6px 6px 4px;
@@ -236,6 +231,7 @@ strong{color:var(--accent);font-weight:400}
   border:1px solid rgba(100,0,0,.60);color:#ffe8e8;font-family:'Sawarabi Gothic',Tahoma,sans-serif;font-size:11px;
   padding:5px 10px;cursor:pointer;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.60);}
 .host-reset-btn:hover{filter:brightness(1.15)}
+.host-reset-btn:disabled{opacity:.5;cursor:not-allowed;filter:none}
 
 /* PC UPLOAD area */
 .upload-drop-zone{border:2px dashed rgba(140,140,140,.55);background:#fafafa;
@@ -382,7 +378,7 @@ document.head.appendChild(s);})();
       <div class="vib-stats-row" id="vStatsRow">
         <div class="vib-stat vib-stat-like">👍 <span id="vYtLikes">—</span></div>
         <div class="vib-stat">👁 <span id="vYtViews">—</span></div>
-        <span class="vib-yt-link" id="vYtExtLink" onclick="_openExternalLink(this.dataset.href)" data-href="">▶ Open on YouTube</span>
+        <span class="vib-yt-link" id="vYtExtLink" onclick="_openExternalLink(this.dataset.href)" data-href="" style="opacity:.3;pointer-events:none;">▶ Open on YouTube</span>
       </div>
       <!-- Description scrollbox -->
       <div class="vib-desc-wrap" id="vDescBox"></div>
@@ -518,7 +514,7 @@ document.head.appendChild(s);})();
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
           <button class="host-reset-btn" onclick="_vResetRatings()">✘ Reset All Ratings</button>
           <button class="host-reset-btn" onclick="_vResetAllAdded()">✘ Clear All Added Videos</button>
-          <button class="host-reset-btn" onclick="_vCheckUnavailable()">⟳ Check Unavailable Videos</button>
+          <button class="host-reset-btn" id="btnCheckUnavail" onclick="_vCheckUnavailable()">⟳ Check Unavailable Videos</button>
         </div>
       </div>
 
@@ -548,7 +544,7 @@ document.head.appendChild(s);})();
     <div class="copyright-notice aero-inner">
       <p>All content on this website is for archiving, educational, or informational purposes and is not for profit.
       We believe its use qualifies as fair use. If you own any content here and would like it removed or properly credited,
-      please contact at <span class="ext-link" onclick="_openExternalLink('https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com')" style="color:var(--accent);cursor:pointer;text-decoration:underline"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="abdfd9cec5c8c3ccdec59a98989cebccc6cac2c785c8c4c6">[email&#160;protected]</a></span>
+      please contact at <span class="ext-link" onclick="_openExternalLink('https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=trenchgun1337@gmail.com')" style="color:var(--accent);cursor:pointer;text-decoration:underline">trenchgun1337@gmail.com</span>
       and action will be taken as soon as possible.</p>
     </div>
   </div>
@@ -556,7 +552,7 @@ document.head.appendChild(s);})();
 
 <button id="soundToggle" onclick="_toggleSound()">Sounds: On</button>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ══════════════════════════════════════════════
    LINK WARNING
 ══════════════════════════════════════════════ */
@@ -575,7 +571,6 @@ function _proceedLink(){
   if(_pendingLink)window.open(_pendingLink,'_blank','noopener,noreferrer');
   _closeLinkWarn();
 }
-// Intercept all external links in description
 function _makeLinksExternal(container){
   container.querySelectorAll('a[href]').forEach(a=>{
     const href=a.getAttribute('href');
@@ -641,15 +636,15 @@ function _vhGetUnavail(){try{return JSON.parse(localStorage.getItem(VH_UNAVAIL)|
 function _vhSaveUnavail(a){try{localStorage.setItem(VH_UNAVAIL,JSON.stringify(a));}catch(e){}}
 
 /* ══════════════════════════════════════════════
-   oEMBED + INVIDIOUS META CACHE
+   META CACHE + INVIDIOUS
 ══════════════════════════════════════════════ */
 const _oCache={};
-const _oFetching={}; // prevent duplicate in-flight requests
+const _oFetching={};
 
 async function _fetchMeta(id){
   if(!id||id.startsWith('direct_')||id.startsWith('upload_'))return null;
-  if(_oCache[id]&&_oCache[id]._full)return _oCache[id]; // fully loaded
-  if(_oFetching[id])return _oFetching[id];              // return in-flight promise
+  if(_oCache[id]&&_oCache[id]._full)return _oCache[id];
+  if(_oFetching[id])return _oFetching[id];
   _oFetching[id]=_doFetchMeta(id);
   const result=await _oFetching[id];
   delete _oFetching[id];
@@ -657,14 +652,8 @@ async function _fetchMeta(id){
 }
 
 async function _doFetchMeta(id){
-  // 1) Try Invidious first — it gives EVERYTHING in one call
   const inv=await _fetchInvidiousMeta(id);
-  if(inv){
-    _oCache[id]=inv;
-    _oCache[id]._full=true;
-    return _oCache[id];
-  }
-  // 2) Fallback to oEmbed (title + author only)
+  if(inv){_oCache[id]=inv;_oCache[id]._full=true;return _oCache[id];}
   if(!_oCache[id]){
     try{
       const r=await fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='+id+'&format=json',{signal:AbortSignal.timeout(6000)});
@@ -686,27 +675,27 @@ async function _doFetchMeta(id){
 }
 
 const INV_INSTANCES=['https://inv.nadeko.net','https://invidious.nerdvpn.de','https://invidious.privacyredirect.com'];
-// Returns populated meta object or null on failure
+
 async function _fetchInvidiousMeta(id){
   if(!id||id.startsWith('direct_')||id.startsWith('upload_'))return null;
   for(const base of INV_INSTANCES){
     try{
-      const r=await fetch(base+'/api/v1/videos/'+id+'?fields=title,author,authorId,publishedText,viewCount,likeCount,description,authorThumbnails,isFamilyFriendly,isListed,hlsUrl',
+      const r=await fetch(base+'/api/v1/videos/'+id+'?fields=title,author,authorId,publishedText,viewCount,likeCount,description,authorThumbnails,isListed',
         {signal:AbortSignal.timeout(7000)});
       if(!r.ok)continue;
       const d=await r.json();
       if(!d||!d.title)continue;
 
-      // Detect embedding-blocked / deleted / private
-      const deleted=_vhGetUnavail();
+      // Detect deleted / private
+      const unavailList=_vhGetUnavail();
       const isUnavail=(d.title==='[Deleted video]'||d.title==='[Private video]'||d.isListed===false);
       if(isUnavail){
-        if(!deleted.includes(id)){deleted.push(id);_vhSaveUnavail(deleted);}
+        if(!unavailList.includes(id)){unavailList.push(id);_vhSaveUnavail(unavailList);}
       }else{
-        const idx=deleted.indexOf(id);if(idx>-1){deleted.splice(idx,1);_vhSaveUnavail(deleted);}
+        const idx=unavailList.indexOf(id);
+        if(idx>-1){unavailList.splice(idx,1);_vhSaveUnavail(unavailList);}
       }
 
-      // Channel avatar — pick closest to 48px
       let chAvatar='';
       if(d.authorThumbnails&&d.authorThumbnails.length){
         const sorted=[...d.authorThumbnails].sort((a,b)=>Math.abs(a.width-48)-Math.abs(b.width-48));
@@ -727,7 +716,7 @@ async function _fetchInvidiousMeta(id){
         _full:true
       };
 
-      // Update UI live if currently playing
+      // Live-update info panel if this video is currently playing
       if(_vCurId===id)_updateInfoPanel(id,meta);
       _updateCardTitle(id,meta.title);
       return meta;
@@ -735,6 +724,7 @@ async function _fetchInvidiousMeta(id){
   }
   return null;
 }
+
 function _fmtNum(n){
   if(n==null)return'—';
   if(n>=1e9)return(n/1e9).toFixed(1)+'B';
@@ -743,7 +733,6 @@ function _fmtNum(n){
   return String(n);
 }
 
-/* Check if a YT video is truly playable (not deleted, private, or embedding-blocked) */
 async function _checkVideoAvailable(id){
   if(!id||id.startsWith('direct_')||id.startsWith('upload_'))return true;
   for(const base of INV_INSTANCES){
@@ -757,7 +746,6 @@ async function _checkVideoAvailable(id){
       return true;
     }catch(e){}
   }
-  // If all Invidious instances fail, try oEmbed as final fallback
   try{
     const r=await fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='+id+'&format=json',{signal:AbortSignal.timeout(5000)});
     return r.ok;
@@ -765,9 +753,14 @@ async function _checkVideoAvailable(id){
 }
 
 /* ══════════════════════════════════════════════
-   UNAVAILABLE VIDEO CHECKER (manual button)
+   UNAVAILABLE VIDEO CHECKER — FIX: disable btn, show feedback
 ══════════════════════════════════════════════ */
+let _vCheckRunning=false;
 async function _vCheckUnavailable(){
+  if(_vCheckRunning)return;
+  _vCheckRunning=true;
+  const btn=document.getElementById('btnCheckUnavail');
+  if(btn){btn.disabled=true;btn.textContent='⟳ Checking…';}
   const added=_vhGetAdded();
   const ytIds=added.filter(v=>!v._direct&&!v._upload).map(v=>v.id);
   const baseIds=[];
@@ -789,18 +782,24 @@ async function _vCheckUnavailable(){
   _vhSaveUnavail(unavail);
   _vHostStatus('Done! '+newFound+' newly hidden, '+newRestored+' restored. Total filtered: '+unavail.length,'ok');
   _rebuildAllGrids();
+  _vCheckRunning=false;
+  if(btn){btn.disabled=false;btn.textContent='⟳ Check Unavailable Videos';}
 }
 
 /* ══════════════════════════════════════════════
    PLAYER STATE
 ══════════════════════════════════════════════ */
 let _vCurId=null,_vCurEntry=null,_vAutoplay=false,_vSortMode='default';
+// Flat ordered list of all currently visible entries for autoplay next
+let _vCurrentPlaylist=[];
+
 const BASE_SECTIONS=[
   {key:'animes', gridId:'vgGridAnimes', emptyId:'animes-empty'},
   {key:'nostalg',gridId:'vgGridNostalg',emptyId:'nostalg-empty'},
   {key:'awesome',gridId:'vgGridAwesome',emptyId:'awesome-empty'},
 ];
 const BASE_LABELS=new Set(['Animes','Internet Nostalgia','Awesome Internet Videos']);
+
 function _baseDataForKey(k){
   if(k==='animes')  return typeof ANIME_VIDEOS    !=='undefined'?ANIME_VIDEOS   :[];
   if(k==='nostalg') return typeof NOSTALGIA_VIDEOS!=='undefined'?NOSTALGIA_VIDEOS:[];
@@ -828,6 +827,27 @@ function _sortEntries(arr){
 }
 
 /* ══════════════════════════════════════════════
+   AUTOPLAY — FIX: actually advance to next video
+══════════════════════════════════════════════ */
+function _playNextVideo(){
+  if(!_vAutoplay||!_vCurId||!_vCurrentPlaylist.length)return;
+  const idx=_vCurrentPlaylist.findIndex(e=>e.id===_vCurId);
+  if(idx===-1||idx>=_vCurrentPlaylist.length-1)return;
+  _playVideo(_vCurrentPlaylist[idx+1]);
+}
+
+// Listen for YT iframe postMessage to detect video end
+window.addEventListener('message',e=>{
+  try{
+    const data=typeof e.data==='string'?JSON.parse(e.data):e.data;
+    // YT iframe API state: -1=unstarted, 0=ended, 1=playing, 2=paused, 3=buffering, 5=cued
+    if(data&&data.event==='onStateChange'&&data.info===0){
+      _playNextVideo();
+    }
+  }catch(err){}
+});
+
+/* ══════════════════════════════════════════════
    PLAY
 ══════════════════════════════════════════════ */
 function _loadYT(videoId,autoplay){
@@ -850,32 +870,37 @@ async function _playVideo(entry){
 
   if(entry._upload&&entry._uploadUrl){
     const ratio=document.getElementById('videoEmbedRatio');if(!ratio)return;
-    ratio.innerHTML='<video controls autoplay style="position:absolute;inset:0;width:100%;height:100%;background:#000;" src="'+entry._uploadUrl+'"></video>';
+    // For uploaded videos, listen for ended event via direct <video> element
+    ratio.innerHTML='<video id="localVideoEl" controls autoplay style="position:absolute;inset:0;width:100%;height:100%;background:#000;" src="'+entry._uploadUrl+'"></video>';
+    const localVid=document.getElementById('localVideoEl');
+    if(localVid)localVid.addEventListener('ended',()=>_playNextVideo());
     const ytLink=document.getElementById('vYtExtLink');
     if(ytLink){ytLink.style.opacity='.3';ytLink.style.pointerEvents='none';}
+    const popYt=document.getElementById('vPopYtLink');
+    if(popYt){popYt.style.opacity='.4';popYt.style.pointerEvents='none';}
     _setPlayerText(entry.title||'Uploaded Video');
     _setInfoBox({title:entry.title||'Uploaded Video',description:entry._uploadDesc||''});
 
-  } else if(entry._direct&&entry._directUrl){
+  }else if(entry._direct&&entry._directUrl){
     const ratio=document.getElementById('videoEmbedRatio');if(!ratio)return;
-    ratio.innerHTML='<video controls autoplay style="position:absolute;inset:0;width:100%;height:100%;background:#000;" src="'+entry._directUrl+'"></video>';
+    ratio.innerHTML='<video id="localVideoEl" controls autoplay style="position:absolute;inset:0;width:100%;height:100%;background:#000;" src="'+entry._directUrl+'"></video>';
+    const localVid=document.getElementById('localVideoEl');
+    if(localVid)localVid.addEventListener('ended',()=>_playNextVideo());
     const ytLink=document.getElementById('vYtExtLink');
     if(ytLink){ytLink.dataset.href=entry._directUrl;ytLink.style.opacity='1';ytLink.style.pointerEvents='auto';}
     _setPlayerText(entry.title||entry.id);
     _setInfoBox({title:entry.title||entry.id,description:''});
 
   }else{
-    // Load embed immediately so video starts playing
     _loadYT(entry.id,true);
-    // Show what we know instantly
     _setPlayerText(entry.title||entry.id);
-    // Now await full meta (Invidious gives all: avatar, likes, views, desc, date)
+    // Show title immediately, then enrich with full meta async
     const meta=await _fetchMeta(entry.id);
-    // Only update if user hasn't switched videos
     if(_vCurId===entry.id&&meta){
       _updateInfoPanel(entry.id,meta);
     }
   }
+
   _updateVoteUI(entry.id);
   document.querySelectorAll('.vg-entry').forEach(el=>el.classList.toggle('active-entry',el.dataset.vid===entry.id));
   window.scrollTo({top:0,behavior:'smooth'});
@@ -887,9 +912,7 @@ function _setPlayerText(title){
 }
 
 function _setInfoBox({title,author,authorUrl,channelAvatar,subscriberCount,publishedText,likes,views,description}={}){
-  // Title
   if(title){const t=document.getElementById('vInfoTitle');if(t)t.textContent=title;}
-  // Channel
   const chRow=document.getElementById('vChannelRow');
   const chName=document.getElementById('vChannelName');
   const chSubs=document.getElementById('vChannelSubs');
@@ -902,7 +925,6 @@ function _setInfoBox({title,author,authorUrl,channelAvatar,subscriberCount,publi
     if(chDate)chDate.textContent=publishedText||'';
     if(chAvatar){if(channelAvatar){chAvatar.src=channelAvatar;chAvatar.style.display='block';}else chAvatar.style.display='none';}
   }else{if(chRow)chRow.classList.remove('vis');}
-  // Stats
   const statsRow=document.getElementById('vStatsRow');
   const likesEl=document.getElementById('vYtLikes');
   const viewsEl=document.getElementById('vYtViews');
@@ -911,11 +933,9 @@ function _setInfoBox({title,author,authorUrl,channelAvatar,subscriberCount,publi
     if(likesEl)likesEl.textContent=likes||'—';
     if(viewsEl)viewsEl.textContent=views||'—';
   }else{if(statsRow)statsRow.classList.remove('vis');}
-  // Description
   const descBox=document.getElementById('vDescBox');
   if(descBox){
     if(description&&description.trim()){
-      // Convert URLs in description to clickable spans
       const safe=description.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       const linked=safe.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1">$1</a>');
       descBox.innerHTML=linked;
@@ -962,19 +982,22 @@ function _updateVoteUI(videoId){
 }
 
 /* ══════════════════════════════════════════════
-   CARD
+   CARD — FIX: removed undefined `isUnavail` reference
+   Unavailable videos are filtered OUT before reaching _makeCard
 ══════════════════════════════════════════════ */
 function _esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
 function _makeCard(entry){
-  // Unavailable videos are already filtered before this point by _filterEntries
   const div=document.createElement('div');
   div.className='vg-entry';
   div.dataset.vid=entry.id;
   if(entry.id===_vCurId)div.classList.add('active-entry');
+
   let thumb;
   if(entry._upload&&entry._customThumb)thumb=entry._customThumb;
   else if(entry._upload||entry._direct)thumb='https://cdn-icons-png.flaticon.com/128/1179/1179120.png';
   else thumb=entry.thumb||'https://img.youtube.com/vi/'+entry.id+'/mqdefault.jpg';
+
   const score=VidVotes.score(entry.id);
   const stats=VidVotes.get(entry.id);
   const hasVotes=stats.up>0||stats.down>0;
@@ -983,6 +1006,7 @@ function _makeCard(entry){
   const displayTitle=entry.title||(cached?cached.title:null);
   const isLoading=!displayTitle&&!entry._direct&&!entry._upload;
   const cardTitle=displayTitle||entry.id;
+
   div.innerHTML=
     '<div class="vg-thumb-wrap">'
     +'<img src="'+_esc(thumb)+'" alt="" loading="lazy" onerror="this.src=\'https://img.youtube.com/vi/'+_esc(entry.id)+'/default.jpg\'">'
@@ -993,17 +1017,14 @@ function _makeCard(entry){
     +'<div class="vg-info">'
     +'<div class="vg-info-title'+(isLoading?' loading':'')+'" title="'+_esc(cardTitle)+'">'+_esc(isLoading?'Loading…':cardTitle)+'</div>'
     +'</div>';
-  if(!isUnavail){
-    div.addEventListener('click',()=>_playVideo(entry));
-  }else{
-    div.title='This video is unavailable on YouTube';
-    div.style.cursor='not-allowed';
-  }
+
+  // Always clickable — unavailable videos are already filtered out upstream
+  div.addEventListener('click',()=>_playVideo(entry));
   return div;
 }
 
 /* ══════════════════════════════════════════════
-   PRE-FETCH TITLES (also silently detects unavailable)
+   PRE-FETCH TITLES — silently detects unavailable and rebuilds
 ══════════════════════════════════════════════ */
 async function _prefetchAllTitles(){
   const cards=[...document.querySelectorAll('.vg-entry[data-vid]')];
@@ -1016,7 +1037,7 @@ async function _prefetchAllTitles(){
     const batch=todo.slice(i,i+4);
     await Promise.all(batch.map(async id=>{
       const prevUnavail=_vhGetUnavail().includes(id);
-      const meta=await _fetchMeta(id); // this also updates unavail list via _fetchInvidiousMeta
+      const meta=await _fetchMeta(id);
       const nowUnavail=_vhGetUnavail().includes(id);
       if(meta)_updateCardTitle(id,meta.title);
       if(prevUnavail!==nowUnavail)needRebuild=true;
@@ -1053,14 +1074,13 @@ function _buildGrid(gridEl,entries,parentEl){
 }
 
 /* ══════════════════════════════════════════════
-   REBUILD ALL GRIDS
+   REBUILD ALL GRIDS — FIX: builds _vCurrentPlaylist for autoplay
 ══════════════════════════════════════════════ */
 function _rebuildAllGrids(){
   const deleted=_vhGetDeleted(),added=_vhGetAdded();
   const unavail=_vhGetUnavail();
   const catMeta=_vhGetCatMeta();
 
-  // Group host-added (non-deleted) by category
   const hostByCat={};
   added.forEach(v=>{
     if(deleted.includes(v.id))return;
@@ -1069,7 +1089,6 @@ function _rebuildAllGrids(){
     hostByCat[cat].push(_normalizeEntry(v));
   });
 
-  // Filter helper — removes deleted AND unavailable YT videos
   function _filterEntries(arr){
     return arr.filter(e=>{
       if(deleted.includes(e.id))return false;
@@ -1078,7 +1097,9 @@ function _rebuildAllGrids(){
     });
   }
 
-  // Build base sections (static + any host-added in same label)
+  // Reset global playlist
+  _vCurrentPlaylist=[];
+
   const labelMap={animes:'Animes',nostalg:'Internet Nostalgia',awesome:'Awesome Internet Videos'};
   BASE_SECTIONS.forEach(({key,gridId,emptyId})=>{
     const grid=document.getElementById(gridId),emptyEl=document.getElementById(emptyId);if(!grid)return;
@@ -1088,15 +1109,15 @@ function _rebuildAllGrids(){
     if(!all.length){
       if(emptyEl)emptyEl.style.display='';
       grid.innerHTML='';
-      // Remove any stale pager
       const pp=grid.parentNode&&grid.parentNode.querySelector('.vg-pager');if(pp)pp.remove();
     }else{
       if(emptyEl)emptyEl.style.display='none';
       _buildGrid(grid,all,grid.parentNode);
+      // Add to global playlist
+      _sortEntries(all).forEach(e=>_vCurrentPlaylist.push(e));
     }
   });
 
-  // Build custom category sections
   const allCustomCats=[..._vhGetCats(),...Object.keys(hostByCat)]
     .filter((c,i,a)=>a.indexOf(c)===i&&!BASE_LABELS.has(c));
 
@@ -1105,7 +1126,7 @@ function _rebuildAllGrids(){
     container.innerHTML='';
     allCustomCats.forEach(cat=>{
       const entries=_filterEntries(hostByCat[cat]||[]);
-      if(!entries.length)return; // hide empty custom cats from public view
+      if(!entries.length)return;
       const box=document.createElement('div');box.className='glass-box';
       const bar=document.createElement('span');bar.className='section-bar';bar.textContent=cat;
       const inner=document.createElement('div');inner.className='aero-inner';
@@ -1114,8 +1135,15 @@ function _rebuildAllGrids(){
       const grid=document.createElement('div');grid.className='vg-grid';
       inner.appendChild(grid);box.appendChild(bar);box.appendChild(inner);container.appendChild(box);
       _buildGrid(grid,entries,inner);
+      // Add to global playlist
+      _sortEntries(entries).forEach(e=>_vCurrentPlaylist.push(e));
     });
   }
+
+  // Deduplicate playlist by id (preserving order)
+  const seen=new Set();
+  _vCurrentPlaylist=_vCurrentPlaylist.filter(e=>{if(seen.has(e.id))return false;seen.add(e.id);return true;});
+
   setTimeout(_prefetchAllTitles,200);
 }
 
@@ -1141,9 +1169,11 @@ function _closePlusPopup(){
 function _syncAutoplayDot(){
   const dot=document.getElementById('vPopAutoplayDot');if(dot)dot.classList.toggle('dot-on',_vAutoplay);
   const row=document.getElementById('vPopAutoplay');
-  if(row){const sd=dot?dot.outerHTML:'<span id="vPopAutoplayDot"></span>';
+  if(row){
+    const sd=dot?dot.outerHTML:'<span id="vPopAutoplayDot"></span>';
     row.innerHTML=sd+'Autoplay: '+(_vAutoplay?'ON':'OFF');
-    const fresh=document.getElementById('vPopAutoplayDot');if(fresh)fresh.classList.toggle('dot-on',_vAutoplay);}
+    const fresh=document.getElementById('vPopAutoplayDot');if(fresh)fresh.classList.toggle('dot-on',_vAutoplay);
+  }
 }
 
 /* ══════════════════════════════════════════════
@@ -1264,12 +1294,9 @@ function _uploadDrop(e){
 function _uploadFileSelected(file){
   if(!file)return;
   _uploadedFileName=file.name;
-  // Create object URL for local playback (valid only this session)
   if(_uploadedFileUrl)URL.revokeObjectURL(_uploadedFileUrl);
   _uploadedFileUrl=URL.createObjectURL(file);
-  // Extract name without extension as default title
   const defaultTitle=file.name.replace(/\.[^.]+$/,'');
-  // Try to get video thumbnail from first frame
   _getVideoThumbnail(_uploadedFileUrl).then(thumb=>{
     _uploadedThumbUrl=thumb;
     document.getElementById('uploadThumbPreview').src=thumb||'https://cdn-icons-png.flaticon.com/128/1179/1179120.png';
@@ -1293,9 +1320,7 @@ function _getVideoThumbnail(url){
   return new Promise(resolve=>{
     const video=document.createElement('video');
     video.src=url;video.muted=true;video.crossOrigin='anonymous';
-    video.addEventListener('loadeddata',()=>{
-      video.currentTime=0.5;
-    });
+    video.addEventListener('loadeddata',()=>{video.currentTime=0.5;});
     video.addEventListener('seeked',()=>{
       try{
         const canvas=document.createElement('canvas');
@@ -1334,7 +1359,6 @@ function _vHostAddUpload(){
   if(!BASE_LABELS.has(cat)){const cats=_vhGetCats();if(!cats.includes(cat)){cats.push(cat);_vhSaveCats(cats);}}
   _vHostStatus('Uploaded: '+title+' → '+cat,'ok');
   _rebuildAllGrids();_vRenderCatManager();_vRefreshCatPicker();
-  // Reset upload UI
   document.getElementById('uploadPreviewArea').style.display='none';
   document.getElementById('uploadFileInput').value='';
   _uploadedFileUrl=null;_uploadedThumbUrl=null;_uploadedFileName='';
@@ -1345,7 +1369,9 @@ function _vHostAddUpload(){
 ══════════════════════════════════════════════ */
 function _vHostStatus(msg,type){
   const el=document.getElementById('vHostStatus');
-  el.innerHTML=type?'<span class="'+type+'">'+msg+'</span>':msg;el.classList.add('visible');
+  if(!el)return;
+  el.innerHTML=type?'<span class="'+type+'">'+msg+'</span>':msg;
+  el.classList.add('visible');
 }
 function _vGetAllCats(){
   const s=new Set(['Animes','Internet Nostalgia','Awesome Internet Videos']);
@@ -1353,10 +1379,8 @@ function _vGetAllCats(){
 }
 function _vRefreshCatPicker(){
   const cats=_vGetAllCats();
-  ['vCatDatalist'].forEach(dlId=>{
-    const dl=document.getElementById(dlId);
-    if(dl){dl.innerHTML='';cats.forEach(c=>{const o=document.createElement('option');o.value=c;dl.appendChild(o);});}
-  });
+  const dl=document.getElementById('vCatDatalist');
+  if(dl){dl.innerHTML='';cats.forEach(c=>{const o=document.createElement('option');o.value=c;dl.appendChild(o);});}
   const pills=document.getElementById('vCatPills');const inp=document.getElementById('hostVidCat');
   if(pills&&inp){pills.innerHTML='';cats.forEach(c=>{
     const p=document.createElement('span');p.className='album-pill';p.textContent=c;
@@ -1366,11 +1390,25 @@ function _vRefreshCatPicker(){
 /* ══════════════════════════════════════════════
    RESET
 ══════════════════════════════════════════════ */
-function _vResetRatings(){if(!confirm('Reset ALL video ratings?'))return;VidVotes.reset();if(_vCurId)_updateVoteUI(_vCurId);_rebuildAllGrids();_vHostStatus('All ratings reset.','ok');}
-function _vResetAllAdded(){if(!confirm('Clear ALL host-added videos?'))return;localStorage.removeItem(VH_ADDED);localStorage.removeItem(VH_DELETED);_rebuildAllGrids();_vRenderCatManager();_vRefreshCatPicker();_vHostStatus('All added videos cleared.','ok');}
+function _vResetRatings(){
+  if(!confirm('Reset ALL video ratings?'))return;
+  VidVotes.reset();
+  if(_vCurId)_updateVoteUI(_vCurId);
+  _rebuildAllGrids();
+  _vHostStatus('All ratings reset.','ok');
+}
+function _vResetAllAdded(){
+  if(!confirm('Clear ALL host-added videos?'))return;
+  localStorage.removeItem(VH_ADDED);
+  localStorage.removeItem(VH_DELETED);
+  _rebuildAllGrids();
+  _vRenderCatManager();
+  _vRefreshCatPicker();
+  _vHostStatus('All added videos cleared.','ok');
+}
 
 /* ══════════════════════════════════════════════
-   CATEGORY MANAGER — with rename, desc, drag
+   CATEGORY MANAGER
 ══════════════════════════════════════════════ */
 function _vCreateCat(){
   const inp=document.getElementById('_vNewAlbumName');const name=(inp.value||'').trim();
@@ -1383,11 +1421,13 @@ function _vCreateCat(){
   _rebuildAllGrids();_vRenderCatManager();_vRefreshCatPicker();_vHostStatus('Category "'+name+'" created.','ok');
 }
 
-function _vDeleteCat(catName){if(!confirm('Delete category "'+catName+'"? Videos move to Uncategorized.'))return;
+function _vDeleteCat(catName){
+  if(!confirm('Delete category "'+catName+'"? Videos move to Uncategorized.'))return;
   const added=_vhGetAdded();added.forEach(v=>{if(v.category===catName)v.category='Uncategorized';});_vhSaveAdded(added);
   const cats=_vhGetCats().filter(c=>c!==catName);_vhSaveCats(cats);
   const meta=_vhGetCatMeta();delete meta[catName];_vhSaveCatMeta(meta);
-  _rebuildAllGrids();_vRenderCatManager();_vRefreshCatPicker();}
+  _rebuildAllGrids();_vRenderCatManager();_vRefreshCatPicker();
+}
 
 function _vRenameCat(oldName){
   const newName=prompt('Rename category "'+oldName+'" to:',oldName);
@@ -1410,21 +1450,26 @@ function _vEditCatDesc(catName){
   _rebuildAllGrids();_vRenderCatManager();_vHostStatus('Description updated.','ok');
 }
 
-function _vMoveVideo(id,newCat){if(!id||!newCat)return;const added=_vhGetAdded();let changed=false;
-  added.forEach(v=>{if(v.id===id){v.category=newCat;changed=true;}});if(!changed)return;
-  _vhSaveAdded(added);_rebuildAllGrids();_vRenderCatManager();}
+function _vMoveVideo(id,newCat){
+  if(!id||!newCat)return;
+  const added=_vhGetAdded();let changed=false;
+  added.forEach(v=>{if(v.id===id){v.category=newCat;changed=true;}});
+  if(!changed)return;
+  _vhSaveAdded(added);_rebuildAllGrids();_vRenderCatManager();
+}
 
-function _vDeleteVideo(id){if(!confirm('Delete this video?'))return;
+function _vDeleteVideo(id){
+  if(!confirm('Delete this video?'))return;
   const del=_vhGetDeleted();if(!del.includes(id)){del.push(id);_vhSaveDeleted(del);}
   const added=_vhGetAdded().filter(v=>v.id!==id);_vhSaveAdded(added);
-  _rebuildAllGrids();_vRenderCatManager();_vHostStatus('Video deleted.','ok');}
+  _rebuildAllGrids();_vRenderCatManager();_vHostStatus('Video deleted.','ok');
+}
 
 function _vRenameVideo(id){
   const added=_vhGetAdded();const vid=added.find(v=>v.id===id);if(!vid)return;
   const newName=prompt('Rename video:',vid.title||'');
   if(!newName||newName===vid.title)return;
   vid.title=newName;_vhSaveAdded(added);
-  // Update cached title
   if(_oCache[id])_oCache[id].title=newName;
   _updateCardTitle(id,newName);
   if(_vCurId===id)_setPlayerText(newName);
@@ -1439,12 +1484,15 @@ function _vRenderCatManager(){
   const deleted=_vhGetDeleted(),added=_vhGetAdded();
   const catMeta=_vhGetCatMeta();
 
-  // Map host-added videos by category
   const catMap={};ordered.forEach(c=>catMap[c]=[]);
-  added.forEach(v=>{if(deleted.includes(v.id))return;const c=v.category||'Uncategorized';
-    if(!catMap[c])catMap[c]=[];catMap[c].push({...v,_isHostAdded:true});});
+  added.forEach(v=>{
+    if(deleted.includes(v.id))return;
+    const c=v.category||'Uncategorized';
+    if(!catMap[c])catMap[c]=[];
+    catMap[c].push({...v,_isHostAdded:true});
+  });
 
-  // Also add base static videos into their buckets (read-only entries)
+  // Also show static base videos inside their buckets
   const baseKeyMap={'Animes':'animes','Internet Nostalgia':'nostalg','Awesome Internet Videos':'awesome'};
   Object.entries(baseKeyMap).forEach(([label,key])=>{
     const baseVids=_baseDataForKey(key);
@@ -1462,23 +1510,26 @@ function _vRenderCatManager(){
     const nameSpan=document.createElement('span');nameSpan.className='ab-name';nameSpan.textContent='▼ '+catName;
     const countSpan=document.createElement('span');countSpan.className='ab-count';countSpan.textContent=items.length+' video'+(items.length!==1?'s':'');
     header.appendChild(nameSpan);header.appendChild(countSpan);
+
     if(!BASE_LABELS.has(catName)){
-      // Rename btn
       const renBtn=document.createElement('button');renBtn.className='ab-rename-album';renBtn.textContent='Rename';
       renBtn.addEventListener('click',e=>{e.stopPropagation();_vRenameCat(catName);});header.appendChild(renBtn);
-      // Description btn
       const descBtn=document.createElement('button');descBtn.className='ab-desc-album';descBtn.textContent='Desc';
       descBtn.title='Edit category description';
       descBtn.addEventListener('click',e=>{e.stopPropagation();_vEditCatDesc(catName);});header.appendChild(descBtn);
-      // Delete btn
       const delBtn=document.createElement('button');delBtn.className='ab-del-album';delBtn.textContent='×';delBtn.title='Delete category';
       delBtn.addEventListener('click',e=>{e.stopPropagation();_vDeleteCat(catName);});header.appendChild(delBtn);
     }
-    // Show category desc if any
+
     const catDesc=(catMeta[catName]&&catMeta[catName].description)||'';
     const descDiv=document.createElement('div');descDiv.className='album-bucket-desc'+(catDesc?' show':'');descDiv.textContent=catDesc;
     const body=document.createElement('div');body.className='album-bucket-body';body.dataset.cat=catName;
-    header.addEventListener('click',()=>{const col=body.style.display==='none';body.style.display=col?'':'none';nameSpan.textContent=(col?'▼ ':'▶ ')+catName;});
+
+    header.addEventListener('click',()=>{
+      const col=body.style.display==='none';
+      body.style.display=col?'':'none';
+      nameSpan.textContent=(col?'▼ ':'▶ ')+catName;
+    });
     body.addEventListener('dragover',e=>{e.preventDefault();body.classList.add('drag-over');});
     body.addEventListener('dragleave',()=>body.classList.remove('drag-over'));
     body.addEventListener('drop',e=>{e.preventDefault();body.classList.remove('drag-over');const vid=e.dataTransfer.getData('text/plain');if(vid)_vMoveVideo(vid,catName);});
@@ -1496,10 +1547,8 @@ function _vRenderCatManager(){
       item.appendChild(thumb);item.appendChild(nm);
 
       if(v._isHostAdded){
-        // Rename video btn (only host-added)
         const renBtn=document.createElement('button');renBtn.className='abt-rename';renBtn.textContent='Rename';
         renBtn.addEventListener('click',()=>_vRenameVideo(v.id));
-        // Move select
         const moveSelect=document.createElement('select');moveSelect.className='abt-move-select';
         const defOpt=document.createElement('option');defOpt.value='';defOpt.textContent='Move…';moveSelect.appendChild(defOpt);
         ordered.forEach(cn=>{if(cn===catName)return;const o=document.createElement('option');o.value=cn;o.textContent=cn;moveSelect.appendChild(o);});
@@ -1507,13 +1556,13 @@ function _vRenderCatManager(){
         item.appendChild(renBtn);item.appendChild(moveSelect);
       }
 
-      // Delete button — works for both static and host-added (adds to deleted list)
       const delBtn=document.createElement('button');delBtn.className='abt-del';delBtn.textContent='×';
       delBtn.title=v._isBase?'Hide from site (adds to deleted list)':'Delete video';
       delBtn.addEventListener('click',()=>_vDeleteVideo(v.id));
       item.appendChild(delBtn);
       body.appendChild(item);
     });
+
     bucket.appendChild(header);bucket.appendChild(descDiv);bucket.appendChild(body);container.appendChild(bucket);
   });
 }
@@ -1526,14 +1575,19 @@ window.stopVideos=function(){
   if(ratio)ratio.innerHTML='<div id="videoEmbedPlaceholder">Select a video below to begin</div>';
   _vCurId=null;_vCurEntry=null;
   _setPlayerText('—');
-  document.getElementById('vChannelRow').classList.remove('vis');
-  document.getElementById('vStatsRow').classList.remove('vis');
-  document.getElementById('vDescBox').classList.remove('vis');
+  const chRow=document.getElementById('vChannelRow');if(chRow)chRow.classList.remove('vis');
+  const stRow=document.getElementById('vStatsRow');if(stRow)stRow.classList.remove('vis');
+  const dBox=document.getElementById('vDescBox');if(dBox)dBox.classList.remove('vis');
   const ytLink=document.getElementById('vYtExtLink');
   if(ytLink){ytLink.dataset.href='';ytLink.style.opacity='.3';ytLink.style.pointerEvents='none';}
   document.querySelectorAll('.vg-entry').forEach(el=>el.classList.remove('active-entry'));
 };
-Object.defineProperty(window,'videoAutoPlay',{get:()=>_vAutoplay,set:(v)=>{_vAutoplay=!!v;_syncAutoplayDot();},configurable:true});
+
+Object.defineProperty(window,'videoAutoPlay',{
+  get:()=>_vAutoplay,
+  set:(v)=>{_vAutoplay=!!v;_syncAutoplayDot();},
+  configurable:true
+});
 
 /* ══════════════════════════════════════════════
    INIT
@@ -1542,34 +1596,75 @@ function _initHostPanel(){
   const params=new URLSearchParams(window.location.search);
   if(params.get('host')==='1'||localStorage.getItem('hostMode')==='1'){
     document.getElementById('hostPanel').classList.add('visible');
-    localStorage.setItem('hostMode','1');_vRenderCatManager();_vRefreshCatPicker();
+    localStorage.setItem('hostMode','1');
+    _vRenderCatManager();
+    _vRefreshCatPicker();
   }
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
   VidVotes.init();
-  if(sessionStorage.getItem('_soundsOn')==='false'){_vSoundsOn=false;const b=document.getElementById('soundToggle');if(b)b.textContent='Sounds: Off';}
-  if(!sessionStorage.getItem('_siteStartPlayed')){sessionStorage.setItem('_siteStartPlayed','1');setTimeout(()=>_vPlaySound('start'),700);}
-  document.getElementById('vLikeBtn').addEventListener('click',()=>{if(!_vCurId)return;VidVotes.vote(_vCurId,1);_updateVoteUI(_vCurId);_rebuildAllGrids();_vPlaySound('like');});
-  document.getElementById('vDislikeBtn').addEventListener('click',()=>{if(!_vCurId)return;VidVotes.vote(_vCurId,-1);_updateVoteUI(_vCurId);_rebuildAllGrids();});
+  if(sessionStorage.getItem('_soundsOn')==='false'){
+    _vSoundsOn=false;
+    const b=document.getElementById('soundToggle');if(b)b.textContent='Sounds: Off';
+  }
+  if(!sessionStorage.getItem('_siteStartPlayed')){
+    sessionStorage.setItem('_siteStartPlayed','1');
+    setTimeout(()=>_vPlaySound('start'),700);
+  }
+
+  document.getElementById('vLikeBtn').addEventListener('click',()=>{
+    if(!_vCurId)return;
+    VidVotes.vote(_vCurId,1);_updateVoteUI(_vCurId);_rebuildAllGrids();_vPlaySound('like');
+  });
+  document.getElementById('vDislikeBtn').addEventListener('click',()=>{
+    if(!_vCurId)return;
+    VidVotes.vote(_vCurId,-1);_updateVoteUI(_vCurId);_rebuildAllGrids();
+  });
+
   const plusBtn=document.getElementById('vPlusBtn'),plusPopup=document.getElementById('vPlusPopup');
   if(plusBtn&&plusPopup){
-    plusBtn.addEventListener('click',e=>{e.stopPropagation();if(_vPlusOpen){_closePlusPopup();return;}_buildSortSubmenu();_syncAutoplayDot();plusPopup.style.display='block';_vPlusOpen=true;});
+    plusBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      if(_vPlusOpen){_closePlusPopup();return;}
+      _buildSortSubmenu();_syncAutoplayDot();plusPopup.style.display='block';_vPlusOpen=true;
+    });
     plusPopup.addEventListener('click',e=>e.stopPropagation());
     document.addEventListener('click',()=>{if(_vPlusOpen)_closePlusPopup();});
-    document.getElementById('vPopAutoplay').addEventListener('click',e=>{e.stopPropagation();_vAutoplay=!_vAutoplay;_syncAutoplayDot();});
-    document.getElementById('vPopSortToggle').addEventListener('click',e=>{e.stopPropagation();_vSortSubOpen=!_vSortSubOpen;
+    document.getElementById('vPopAutoplay').addEventListener('click',e=>{
+      e.stopPropagation();_vAutoplay=!_vAutoplay;_syncAutoplayDot();
+    });
+    document.getElementById('vPopSortToggle').addEventListener('click',e=>{
+      e.stopPropagation();_vSortSubOpen=!_vSortSubOpen;
       const sub=document.getElementById('vSortSubmenu');if(sub)sub.style.display=_vSortSubOpen?'block':'none';
-      const arrow=document.getElementById('vSortArrow');if(arrow){arrow.style.transform=_vSortSubOpen?'rotate(90deg)':'';arrow.textContent='▶';}});
+      const arrow=document.getElementById('vSortArrow');
+      if(arrow){arrow.style.transform=_vSortSubOpen?'rotate(90deg)':'';arrow.textContent='▶';}
+    });
   }
-  document.addEventListener('mouseover',e=>{if(e.target.id==='soundToggle')return;if(!_vIsInteractive(e.target))return;
-    const n=Date.now();if(n-_vHT<120)return;_vHT=n;_vPlaySound('hover');},{passive:true});
-  document.addEventListener('click',e=>{if(e.target.id==='soundToggle')return;if(_vIsInteractive(e.target))_vPlaySound('button');},true);
-  _initHostPanel();_rebuildAllGrids();
+
+  document.addEventListener('mouseover',e=>{
+    if(e.target.id==='soundToggle')return;
+    if(!_vIsInteractive(e.target))return;
+    const n=Date.now();if(n-_vHT<120)return;_vHT=n;_vPlaySound('hover');
+  },{passive:true});
+  document.addEventListener('click',e=>{
+    if(e.target.id==='soundToggle')return;
+    if(_vIsInteractive(e.target))_vPlaySound('button');
+  },true);
+
+  _initHostPanel();
+  _rebuildAllGrids();
 });
-(function(){let c=0;const poll=setInterval(()=>{c++;
-  const has=typeof ANIME_VIDEOS!=='undefined'||typeof NOSTALGIA_VIDEOS!=='undefined'||typeof AWESOME_VIDEOS!=='undefined';
-  if(has||c>60){clearInterval(poll);if(has)_rebuildAllGrids();}},300);})();
+
+// Poll for video.js base data loading after DOMContentLoaded
+(function(){
+  let c=0;
+  const poll=setInterval(()=>{
+    c++;
+    const has=typeof ANIME_VIDEOS!=='undefined'||typeof NOSTALGIA_VIDEOS!=='undefined'||typeof AWESOME_VIDEOS!=='undefined';
+    if(has||c>60){clearInterval(poll);if(has)_rebuildAllGrids();}
+  },300);
+})();
 </script>
 
 <script src="../scripts/js/video.js"  onerror="console.warn('video.js not found')"></script>
