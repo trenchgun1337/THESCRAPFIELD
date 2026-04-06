@@ -169,36 +169,107 @@ h5 {
             <p>Tools, media &amp; everything else on this archive.</p>
           </div>
           <div class="rights-bar" style="margin-top:5px">Pages</div>
-          <div class="aero-borders" style="background:#ffffff;">
+          <div class="aero-borders" style="background:#000000;">
             <ul class="contact-links">
-              <li><a href="pages/musicplayer.html"><img src="https://frutigeraeroarchive.org/images/music.png" alt="" draggable="false"><span class="link-label"><strong style="color:#000000">Music Player</strong></span><span class="link-note">listen to handpicked tracks</span></a></li>
-              <li><a href="pages/videos.html"><img src="https://frutigeraeroarchive.org/images/videos.png" alt="" draggable="false"><span class="link-label"><strong style="color:#000000">Video Player</strong></span><span class="link-note">anime OPs, nostalgia &amp; more</span></a></li>
-              <li><a href="#sketchbook" onclick="return navClick(event,'sketchbook')"><img src="https://frutigeraeroarchive.org/images/sketchbook.png" alt="" draggable="false"><span class="link-label">Sketchbook</span><span class="link-note">gallery &amp; JS Paint</span></a></li>
-              <li><a href="#community" onclick="return navClick(event,'community')"><img src="https://frutigeraeroarchive.org/images/forum.png" alt="" draggable="false"><span class="link-label">Community</span><span class="link-note">chat &amp; blog</span></a></li>
-              <li><a href="#preferences" onclick="return navClick(event,'preferences')"><img src="https://frutigeraeroarchive.org/images/site_info.png" alt="" draggable="false"><span class="link-label">Preferences</span><span class="link-note">site settings</span></a></li>
-            </ul>
-          </div>
-          <div class="rights-bar" style="margin-top:5px">Tools &amp; Projects</div>
-          <div class="aero-borders" style="background:#ffffff;">
-            <ul class="contact-links" id="resourcesList">
-              <li><a href="pages/downloader.html" target="_blank"><img src="https://img1.picmix.com/output/stamp/thumb/2/4/9/3/2663942_6e48f.png" alt="" draggable="false"><span class="link-label"><strong style="color:#000000">Ultimate Downloader Converter</strong></span><span class="link-note">Spotify/YouTube/SoundCloud &rarr; ZIP &mdash; IN DEV</span></a></li>
-              <li><a href="#" style="pointer-events:none;opacity:.45;"><img src="https://img1.picmix.com/output/stamp/thumb/0/3/8/1/2841830_50b26.png" alt="" draggable="false"><span class="link-label">File Dumpster</span><span class="link-note">coming soon</span></a></li>
-              <li><a href="#" style="pointer-events:none;opacity:.45;"><img src="https://img1.picmix.com/output/stamp/thumb/5/5/9/3/2663955_e356e.png" alt="" draggable="false"><span class="link-label">RabbitHoles / WeirdSites / RandomSites</span><span class="link-note">coming soon</span></a></li>
-              <li><a href="#" style="pointer-events:none;opacity:.45;"><img src="https://img1.picmix.com/output/stamp/thumb/7/0/4/3/2653407_2a8c5.png" alt="" draggable="false"><span class="link-label">Projects</span><span class="link-note">coming soon</span></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+             <li>
+  <a href="pages/musicplayer.html"
+     onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
+     onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
 
-      <!-- ══ PREFERENCES ══ -->
-      <div id="pg-preferences" class="page">
-        <div class="glass-borders">
-          <div class="styled-containers aero-borders" style="padding:12px 14px;">
-            <!-- Apenas perms de Rika e Sort são exibidas aqui -->
-            <div id="_prefBar"></div>
-          </div>
+    <img src="https://frutigeraeroarchive.org/images/music.png" alt="" draggable="false">
+    <span class="link-label" style="color:#ffffff">Music Player</span>
+    <span class="link-note" style="color:#ffffff">listen to handpicked tracks</span>
+  </a>
+</li>
+
+<li>
+  <a href="pages/videos.html"
+     onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
+     onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
+
+    <img src="https://frutigeraeroarchive.org/images/videos.png" alt="" draggable="false">
+    <span class="link-label" style="color:#ffffff">Video Player</span>
+    <span class="link-note" style="color:#ffffff">anime OPs, nostalgia & more</span>
+  </a>
+</li>
+
+<li>
+  <a href="#sketchbook" onclick="return navClick(event,'sketchbook')"
+     onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
+     onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
+
+    <img src="https://frutigeraeroarchive.org/images/sketchbook.png" alt="" draggable="false">
+    <span class="link-label" style="color:#ffffff">Sketchbook</span>
+    <span class="link-note" style="color:#ffffff">gallery & JS Paint</span>
+  </a>
+</li>
+
+<li>
+  <a href="#community" onclick="return navClick(event,'community')"
+     onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
+     onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
+
+    <img src="https://frutigeraeroarchive.org/images/forum.png" alt="" draggable="false">
+    <span class="link-label" style="color:#ffffff">Community</span>
+    <span class="link-note" style="color:#ffffff">chat & blog</span>
+  </a>
+</li>
+
+            </ul>
         </div>
-      </div>
+<div class="rights-bar" style="margin-top:5px">Tools & Projects</div>
+
+<div class="aero-borders" style="background:#000000;">
+  <ul class="contact-links" id="resourcesList">
+
+    <li>
+      <a href="pages/downloader.html" target="_blank"
+         onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
+         onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
+
+        <img src="https://img1.picmix.com/output/stamp/thumb/2/4/9/3/2663942_6e48f.png" alt="" draggable="false">
+        <span class="link-label" style="color:#ffffff">Ultimate Downloader Converter</span>
+        <span class="link-note" style="color:#ffffff">Spotify/YouTube/SoundCloud → ZIP — IN DEV</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#" style="pointer-events:none;opacity:.45;"
+         onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
+         onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
+
+        <img src="https://img1.picmix.com/output/stamp/thumb/0/3/8/1/2841830_50b26.png" alt="" draggable="false">
+        <span class="link-label" style="color:#ffffff">File Dumpster</span>
+        <span class="link-note" style="color:#ffffff">coming soon</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#" style="pointer-events:none;opacity:.45;"
+         onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
+         onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
+
+        <img src="https://img1.picmix.com/output/stamp/thumb/5/5/9/3/2663955_e356e.png" alt="" draggable="false">
+        <span class="link-label" style="color:#ffffff">RabbitHoles / WeirdSites / RandomSites</span>
+        <span class="link-note" style="color:#ffffff">coming soon</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#" style="pointer-events:none;opacity:.45;"
+         onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
+         onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
+
+        <img src="https://img1.picmix.com/output/stamp/thumb/7/0/4/3/2653407_2a8c5.png" alt="" draggable="false">
+        <span class="link-label" style="color:#ffffff">Projects</span>
+        <span class="link-note" style="color:#ffffff">coming soon</span>
+      </a>
+    </li>
+
+  </ul>
+</div>
+</div>
+</div>
 
 <div id="visitor-counter-wrap">
           <a href="https://www.freecounterstat.com" title="Visitor counter">
@@ -210,7 +281,8 @@ h5 {
         <h1>Listen to Music</h1>
         <div class="glass-borders">
           <div class="styled-containers aero-borders" style="display:flex;align-items:flex-start;gap:10px">
-            <img src="assets/images/MUSICPLAYERNOTESYMBOL.png" alt="Music" class="music-header-img" draggable="false">
+                <img src="https://frutigeraeroarchive.org/images/site_info.png" alt="" draggable="false">
+
             <div><p>Enjoy listening to some bangers below &mdash; based on personal picks :-)</p></div>
           </div>
         </div>

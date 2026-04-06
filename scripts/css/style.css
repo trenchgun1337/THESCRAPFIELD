@@ -474,7 +474,7 @@ h1 { font-size:12px; }
 .contact-links li { border-bottom:1px solid rgba(0,0,0,.08); }
 .contact-links li:last-child { border-bottom:none; }
 .contact-links a { display:flex; align-items:center; gap:10px; padding:7px 12px; color:var(--text); font-size:12.5px; text-decoration:none; }
-.contact-links a:hover { background:var(--grad-nav-hov); color:var(--accent); }
+.contact-links a:hover {color:red; }
 .contact-links a img { width:28px; height:28px; object-fit:cover; flex-shrink:0; pointer-events:none; }
 .contact-links a .link-label { flex:1; }
 .contact-links a .link-note  { color:var(--text-dim); font-size:11px; }
