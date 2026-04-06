@@ -65,7 +65,7 @@ strong        { color:var(--accent); font-weight:400; }
 /* ── Page wrapper ── */
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; gap:0; }
 
-/* ── Aero topbar (back link + title) — same grad-bar as index ── */
+/* ── Aero topbar ── */
 .aero-bar {
   background: var(--grad-bar);
   border:2px ridge #727272;
@@ -80,11 +80,8 @@ strong        { color:var(--accent); font-weight:400; }
   z-index:1; flex-shrink:0; padding:2px 3px;
   display:flex; align-items:center; line-height:0; text-decoration:none;
 }
-.aero-bar .back-link img {
-  height:28px; width:auto; object-fit:contain; display:block;
-  pointer-events:auto !important;
-}
-.aero-bar .back-link:hover img { filter:brightness(.85); }
+.aero-bar .back-link svg { height:28px; width:auto; display:block; }
+.aero-bar .back-link:hover svg { opacity:.7; }
 .aero-bar .bar-title { flex:1; text-align:center; z-index:1; font-size:12px; letter-spacing:.5px; }
 
 /* ── Server Banner ── */
@@ -98,9 +95,14 @@ strong        { color:var(--accent); font-weight:400; }
   color:var(--text); font-size:11.5px;
 }
 #serverBanner.visible { display:flex; }
-#serverBanner img { height:18px; width:18px; flex-shrink:0; }
+#serverBanner .spin-icon {
+  width:18px; height:18px; flex-shrink:0;
+  border:2px solid #aaa; border-top-color:#333;
+  border-radius:50%; animation:spinIcon .7s linear infinite;
+}
+@keyframes spinIcon { to { transform:rotate(360deg); } }
 
-/* ── Glass / aero boxes — same as index ── */
+/* ── Glass / aero boxes ── */
 .glass-box {
   background:#ebebeb;
   box-shadow: 0 2px 5px rgba(0,0,0,.15);
@@ -110,7 +112,7 @@ strong        { color:var(--accent); font-weight:400; }
 .aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
 .aero-pad   { padding:10px 12px; }
 
-/* ── Section headers — same black strip as index h1/h2 ── */
+/* ── Section headers ── */
 .section-bar {
   display:block; background:#000;
   padding:5px 8px; margin:0; line-height:1.6;
@@ -118,7 +120,7 @@ strong        { color:var(--accent); font-weight:400; }
   text-transform:uppercase; color:#fff;
 }
 
-/* ── Description box — styled-containers-headers ── */
+/* ── Description box ── */
 .desc-box {
   background:#fff;
   padding:8px 10px; margin-bottom:0;
@@ -150,9 +152,10 @@ strong        { color:var(--accent); font-weight:400; }
   border-left:1px solid rgba(140,140,140,.44);
 }
 #urlIconWrap.visible { display:flex; }
-#urlIcon { width:18px; height:18px; object-fit:contain; pointer-events:none; display:block; }
+/* inline SVG checkmark for valid URL */
+#urlIconWrap svg { width:16px; height:16px; }
 
-/* ── Format Select — same light aero style ── */
+/* ── Format Select ── */
 .fmt-select {
   appearance:none; -webkit-appearance:none;
   background-color:#f0f0f0;
@@ -199,15 +202,14 @@ strong        { color:var(--accent); font-weight:400; }
   background:var(--grad-bar); border-color:rgba(140,140,140,.50);
   color:#555; box-shadow:none;
 }
-#dlBtnLabel { position:relative; z-index:1; flex:1; text-align:center; padding-left:26px; }
-#dlBtnIcon {
-  height:26px; width:26px; object-fit:contain; flex-shrink:0;
-  position:relative; z-index:1; pointer-events:none;
-  opacity:0; transition:opacity .3s; margin-left:auto;
-  filter:grayscale(1) brightness(.55);
+#dlBtnLabel { position:relative; z-index:1; flex:1; text-align:center; }
+/* inline download arrow icon */
+#dlBtnSvgIcon {
+  height:22px; width:22px; flex-shrink:0;
+  position:relative; z-index:1;
+  margin-left:auto; opacity:.85;
 }
-#dlBtnIcon.loaded { opacity:1; }
-.main-dl-btn.init-done #dlBtnIcon { filter:none; }
+.main-dl-btn:disabled #dlBtnSvgIcon { opacity:.3; }
 
 /* ── Status Box ── */
 #statusBox {
@@ -240,7 +242,7 @@ strong        { color:var(--accent); font-weight:400; }
 #dlInfo.visible { display:block; }
 #dlInfo .info-val { color:var(--accent); }
 
-/* ── Progress bar — light aero ── */
+/* ── Progress bar ── */
 #statusBox [role=progressbar] {
   width:100%; margin:0;
   border:1px solid rgba(140,140,140,.55) !important;
@@ -258,8 +260,6 @@ strong        { color:var(--accent); font-weight:400; }
 #statusBox [role=progressbar].error > div {
   background:linear-gradient(to bottom,#e84040 0%,#a01515 50%,#700808 50%,#901818 100%) !important;
 }
-
-/* ── Marquee fallback ── */
 #statusBox [role=progressbar].marquee {
   background:repeating-linear-gradient(
     -45deg, #d0d0d0 0px, #d0d0d0 10px, #e8e8e8 10px, #e8e8e8 20px
@@ -270,7 +270,7 @@ strong        { color:var(--accent); font-weight:400; }
 #statusBox [role=progressbar].marquee > div { display:none; }
 @keyframes marcheAero { from{background-position:0 0} to{background-position:28px 0} }
 
-/* ── Source Row tags — light aero tiles ── */
+/* ── Source Row tags ── */
 .src-row {
   display:flex; gap:5px; flex-wrap:wrap;
   margin-top:8px; padding-top:7px;
@@ -285,19 +285,26 @@ strong        { color:var(--accent); font-weight:400; }
   border:1px solid rgba(150,150,150,.50);
   color:#aaa;
 }
-.src-tag img { height:16px; width:16px; object-fit:contain; flex-shrink:0; filter:grayscale(1) brightness(.5); transition:filter .22s; }
-.src-tag span { }
+/* SVG icons in tags */
+.src-tag svg { height:16px; width:16px; flex-shrink:0; opacity:.35; transition:opacity .22s; }
 .src-tag.initializing { animation:tagPulse 1.8s infinite ease-in-out; }
 @keyframes tagPulse { 0%,100%{opacity:.35} 50%{opacity:.75} }
 
-.src-tag.available {
-  color:var(--text-dim);
-  border-color:rgba(130,130,130,.55);
-}
-.src-tag.available img { filter:none; }
+.src-tag.available { color:var(--text-dim); border-color:rgba(130,130,130,.55); }
+.src-tag.available svg { opacity:1; }
 .src-tag.sp.available  { color:#1a7a38; border-left:2px solid #1a7a38; }
 .src-tag.yt.available  { color:#a01515; border-left:2px solid #a01515; }
 .src-tag.sc.available  { color:#a04010; border-left:2px solid #a04010; }
+
+/* ── yt-disabled notice ── */
+#ytDisabledNote {
+  display:none; font-size:10.5px; color:#888;
+  background:#f5f5f5; border:1px solid rgba(0,0,0,.18);
+  border-left:3px solid #cc1a1a;
+  padding:5px 9px; margin-top:5px; line-height:1.55;
+  text-align:center;
+}
+#ytDisabledNote.visible { display:block; }
 
 /* ── Note ── */
 .note {
@@ -320,8 +327,7 @@ strong        { color:var(--accent); font-weight:400; }
   color:var(--text);
   display:flex; align-items:center; gap:6px;
 }
-.preview-header img  { height:14px; width:14px; object-fit:contain; flex-shrink:0; }
-.preview-header span { }
+.preview-header svg  { height:14px; width:14px; flex-shrink:0; }
 .preview-body { border:1px solid rgba(0,0,0,.44); border-top:none; background:#fff; }
 .sp-embed-wrap  { width:100%; overflow:hidden; background:#fff; }
 .sp-embed-wrap iframe { width:100%; border:none; display:block; }
@@ -333,7 +339,7 @@ strong        { color:var(--accent); font-weight:400; }
   display:flex; align-items:center; gap:10px; padding:7px 10px;
   border-top:1px solid rgba(160,160,160,.30); background:#f5f5f5; flex-wrap:wrap;
 }
-.preview-meta-icon   { width:32px; height:32px; flex-shrink:0; object-fit:contain; }
+.preview-meta-icon   { width:32px; height:32px; flex-shrink:0; }
 .preview-meta-info   { flex:1; min-width:0; }
 .preview-meta-title  { font-size:12px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
 .preview-meta-sub    { font-size:10.5px; color:var(--text-dim); }
@@ -345,35 +351,24 @@ strong        { color:var(--accent); font-weight:400; }
 #soundToggle {
   position:fixed; bottom:8px; left:10px; z-index:9999;
   font-family:'Sawarabi Gothic',Tahoma,sans-serif;
-  font-size:10px; color:rgb(255, 255, 255); cursor:pointer;
+  font-size:10px; color:#fff; cursor:pointer;
   user-select:none; padding:2px 0; background:none; border:none; outline:none;
 }
-#soundToggle:hover { color:rgb(255, 255, 255); }
-#soundToggle.off   { color:rgb(255, 255, 255); }
-
-/* ── Aero glass overlay texture ── */
-.aero-glass-overlay { position:relative; overflow:hidden; }
-.aero-glass-overlay::after {
-  content:''; position:absolute; inset:0;
-  background-image:url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/187f5a85-67cd-4efe-a6cd-961434a82910/d1sd0t3-af1fc87a-6fbf-431b-9f33-6e3044ad93ae.jpg/v1/fill/w_1131,h_707,q_70,strp/aero_glass_texture_by_optimusprimm_d1sd0t3-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTIwMCIsInBhdGgiOiIvZi8xODdmNWE4NS02N2NkLTRlZmUtYTZjZC05NjE0MzRhODI5MTAvZDFzZDB0My1hZjFmYzg3YS02ZmJmLTQzMWItOWYzMy02ZTMwNDRhZDkzYWUuanBnIiwid2lkdGgiOiI8PTE5MjAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.X3lWfRlCucWwaIUiClPHTfKLlXxCzWbZNN2n0TlQP54');
-  background-size:contain; background-position:center;
-  opacity:.05; pointer-events:none; mix-blend-mode:multiply; z-index:0;
-}
-.aero-glass-overlay > * { position:relative; z-index:1; }
+#soundToggle:hover { color:#fff; }
+#soundToggle.off   { color:#fff; }
 
 /* ── Mobile ── */
 @media (max-width:600px) {
   body { padding:8px 4px 24px; background-size:cover; background-attachment:scroll; }
   #pageWrap { width:100%; }
   .aero-bar { font-size:12px; }
-  .aero-bar .back-link img { height:24px; }
   .url-input { font-size:16px; padding:9px 8px; }
   .fmt-select { font-size:13px; min-width:80px; }
   .main-dl-btn { font-size:14px; min-height:50px; padding:10px 0 12px; }
   #statusText { white-space:normal; font-size:11px; }
   .src-row { flex-direction:column; gap:4px; }
   .src-tag { font-size:11px; padding:7px 10px 7px 8px; width:100%; min-width:0; }
-  .src-tag img { height:17px; width:17px; }
+  .src-tag svg { height:17px; width:17px; }
   .note { font-size:10.5px; }
   .glass-box { padding:4px; }
   #dlInfo { white-space:normal; line-height:1.7; }
@@ -390,15 +385,17 @@ strong        { color:var(--accent); font-weight:400; }
   <!-- ── Top bar ── -->
   <div class="aero-bar">
     <a class="back-link" href="../index.html#resources" title="Back to Resources">
-      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&lsaquo;"
-        onerror="this.outerHTML='<span style=\'color:#333;font-size:22px;line-height:1;z-index:1;\'>&#8249;</span>'">
+      <!-- inline arrow SVG — never breaks -->
+      <svg viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 8 L8 20 L18 32" stroke="#444" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </a>
     <span class="bar-title">ULTIMATE DOWNLOADER CONVERTER</span>
   </div>
 
   <!-- ── Server initializing banner ── -->
   <div id="serverBanner">
-    <img src="https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif" alt="">
+    <div class="spin-icon"></div>
     <span>Server is initializing, please wait&hellip;</span>
   </div>
 
@@ -423,7 +420,13 @@ strong        { color:var(--accent); font-weight:400; }
               placeholder="Paste your link here..."
               autocomplete="off" spellcheck="false" inputmode="url">
           </div>
-          <div id="urlIconWrap"><img id="urlIcon" src="" alt=""></div>
+          <div id="urlIconWrap">
+            <!-- green checkmark SVG -->
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="8" cy="8" r="7" fill="#1a9c2a" opacity=".15"/>
+              <path d="M4 8.5l2.5 2.5 5-5" stroke="#1a9c2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <select id="fmtSelect" class="fmt-select">
             <option value="mp3">MP3</option>
             <option value="flac">FLAC</option>
@@ -438,10 +441,17 @@ strong        { color:var(--accent); font-weight:400; }
 
         <button class="main-dl-btn" id="dlBtn" disabled>
           <span id="dlBtnLabel">DOWNLOAD</span>
-          <img id="dlBtnIcon"
-            src="https://img1.picmix.com/output/stamp/thumb/3/3/8/9/2799833_954c8.png"
-            alt="">
+          <!-- inline download arrow icon -->
+          <svg id="dlBtnSvgIcon" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 3v11m0 0l-4-4m4 4l4-4" stroke="#e8ffe6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 16v1a2 2 0 002 2h10a2 2 0 002-2v-1" stroke="#e8ffe6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </button>
+
+        <!-- YouTube not available notice — shown when YT link pasted but not enabled -->
+        <div id="ytDisabledNote">
+          YouTube is not currently available — server cookies may not be configured. Try again in a moment or use Spotify / SoundCloud.
+        </div>
 
         <div id="statusBox">
           <div class="status-row">
@@ -458,15 +468,24 @@ strong        { color:var(--accent); font-weight:400; }
 
         <div class="src-row">
           <span class="src-tag sp initializing" id="tagSp">
-            <img src="assets/images/SPOTIFYAERO.jpeg" alt="spotify">
+            <!-- Spotify inline SVG -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+              <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 01-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 01.207.857zm1.223-2.722a.78.78 0 01-1.072.257C14.15 12.328 10.71 11.95 8.013 12.73a.78.78 0 01-.453-1.49c3.074-.937 6.892-.483 9.492 1.19a.78.78 0 01.257 1.072zm.105-2.835C15.29 9.15 11.01 9.017 8.432 9.8a.937.937 0 11-.543-1.793c2.979-.905 7.932-.73 11.059 1.273a.937.937 0 01-1.034 1.587z"/>
+            </svg>
             <span>Spotify &mdash; albums, tracks &amp; playlists</span>
           </span>
           <span class="src-tag yt initializing" id="tagYt">
-            <img src="assets/images/YOUTUBEAERO.png" alt="youtube">
+            <!-- YouTube inline SVG -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+              <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
             <span>YouTube &mdash; videos &amp; playlists</span>
           </span>
           <span class="src-tag sc initializing" id="tagSc">
-            <img src="assets/images/SOUNDCLOUDAERO.png" alt="soundcloud">
+            <!-- SoundCloud inline SVG -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+              <path d="M1.175 12.225c-.017 0-.034.002-.05.006L.5 14.25l.625 1.994c.016.004.033.006.05.006.276 0 .5-.224.5-.5v-3c0-.276-.224-.5-.5-.5zm2.15-.5c-.098 0-.193.027-.276.076L2.5 14.25l.549 2.46c.083.05.178.076.276.076.304 0 .55-.246.55-.55v-3.96c0-.304-.246-.55-.55-.55zm2.175-.475c-.134 0-.264.047-.368.132L4.5 14.25l.632 2.625c.104.085.234.132.368.132.36 0 .65-.29.65-.65v-4.107c0-.36-.29-.65-.65-.65zm14.8-3.6c-.214 0-.426.034-.628.1C19.486 5.596 17.18 4 14.5 4c-.644 0-1.268.112-1.85.32-.213.076-.27.155-.272.232v15.398c.002.08.065.148.148.15H21.3c1.492 0 2.7-1.208 2.7-2.7 0-1.492-1.208-2.7-2.7-2.7z"/>
+            </svg>
             <span>SoundCloud &mdash; tracks &amp; sets</span>
           </span>
         </div>
@@ -483,7 +502,7 @@ strong        { color:var(--accent); font-weight:400; }
   <!-- ── Preview panel ── -->
   <div id="previewPanel" class="glass-box" style="padding:0;">
     <div class="preview-header">
-      <img id="previewHeaderIcon" src="" alt="" style="display:none;">
+      <svg id="previewHeaderSvg" viewBox="0 0 14 14" style="display:none;"></svg>
       <span id="previewHeaderTitle">LINK PREVIEW</span>
     </div>
     <div class="preview-body" id="previewBody">
@@ -498,16 +517,17 @@ strong        { color:var(--accent); font-weight:400; }
     onerror="this.style.display='none'">
 </a>
 
+<button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
+
 <script>
 
 const API_URL = "https://watanagashi-api.onrender.com";
 
-/* ── Icons ── */
-const ICON_VALID = 'https://img1.picmix.com/output/stamp/thumb/6/4/0/6/2466046_12382.png';
-const SRC_ICONS = {
-  spotify:'assets/images/SPOTIFYAERO.jpeg',
-  youtube:'assets/images/YOUTUBEAERO.png',
-  soundcloud:'assets/images/SOUNDCLOUDAERO.png',
+/* ── SVG icon strings for preview header ── */
+const HEADER_SVGS = {
+  spotify:    `<path d="M7 1C3.686 1 1 3.686 1 7s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6zm2.752 8.654a.374.374 0 01-.515.124c-1.41-.861-3.182-1.056-5.272-.578a.374.374 0 01-.166-.73c2.285-.521 4.247-.297 5.828.669a.374.374 0 01.125.515zm.734-1.634a.468.468 0 01-.644.155c-1.61-.99-4.065-1.277-5.967-.699a.468.468 0 01-.272-.895c2.175-.661 4.877-.341 6.728.842a.468.468 0 01.155.597zm.063-1.7C8.95 5.49 6.406 5.41 5.059 5.82a.562.562 0 01-.326-.076.562.562 0 01.326-1.075c1.787-.543 4.759-.438 6.635.764a.562.562 0 01-.621.952z" fill="currentColor"/>`,
+  youtube:    `<path d="M13.7 3.71a1.81 1.81 0 00-1.273-1.282C11.348 2.127 7 2.127 7 2.127s-4.348 0-5.427.301A1.81 1.81 0 00.3 3.71C0 4.792 0 7 0 7s0 2.208.3 3.29a1.81 1.81 0 001.273 1.281C2.652 11.873 7 11.873 7 11.873s4.348 0 5.427-.302a1.81 1.81 0 001.273-1.281C14 9.208 14 7 14 7s0-2.208-.3-3.29zM5.727 9.341V4.659L9.273 7l-3.546 2.341z" fill="currentColor"/>`,
+  soundcloud: `<path d="M1 7.635c0 .165.134.3.3.3s.3-.135.3-.3V6.365c0-.165-.134-.3-.3-.3s-.3.135-.3.3v1.27zm1.5.473c0 .18.15.327.334.327s.334-.147.334-.327V5.892c0-.18-.15-.327-.334-.327s-.334.147-.334.327v2.216zm1.5.237c0 .2.163.363.363.363s.363-.163.363-.363V5.655c0-.2-.163-.363-.363-.363s-.363.163-.363.363v2.69zm8.9-2.16a1.62 1.62 0 00-.377.06C12.29 4.757 10.908 3.8 9.3 3.8a3.499 3.499 0 00-1.11.192c-.128.046-.162.093-.164.14v9.238c.002.048.04.089.09.09H12.9c.895 0 1.62-.725 1.62-1.62s-.725-1.62-1.62-1.62z" fill="currentColor"/>`,
 };
 
 const EST_MB = { mp3:5, flac:30, ogg:4, opus:3.5, aac:6, mp4:80, webm:55, mkv:70 };
@@ -531,15 +551,14 @@ const tagSp       = $('tagSp');
 const tagYt       = $('tagYt');
 const tagSc       = $('tagSc');
 const prevPanel   = $('previewPanel');
-const prevHIcon   = $('previewHeaderIcon');
+const prevHSvg    = $('previewHeaderSvg');
 const prevHTitle  = $('previewHeaderTitle');
 const prevBody    = $('previewBody');
 const srvBanner   = $('serverBanner');
-const urlIcon     = $('urlIcon');
+const ytNote      = $('ytDisabledNote');
 
 let ytEnabled    = false;
 let initDone     = false;
-let dlIconLoaded = false;
 let previewTimer = null;
 let wakeInterval = null;
 let wakeSeconds  = 0;
@@ -547,24 +566,25 @@ let iconTimer    = null;
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-const dlBtnIcon = $('dlBtnIcon');
-if (dlBtnIcon) {
-  dlBtnIcon.addEventListener('load',  () => { dlBtnIcon.classList.add('loaded'); dlIconLoaded = true; tryEnableButton(); });
-  dlBtnIcon.addEventListener('error', () => { dlBtnIcon.style.display='none';   dlIconLoaded = true; tryEnableButton(); });
-  if (dlBtnIcon.complete && dlBtnIcon.naturalWidth > 0) {
-    dlBtnIcon.classList.add('loaded'); dlIconLoaded = true;
-  } else if (dlBtnIcon.complete) {
-    dlBtnIcon.style.display = 'none'; dlIconLoaded = true;
-  }
-}
-
 function tryEnableButton() {
-  if (!initDone || !dlIconLoaded) { dlBtn.disabled = true; return; }
-  dlBtn.classList.add('init-done');
   const url = urlInput.value.trim();
   const src = detectSource(url);
+
+  // hide yt disabled note by default
+  ytNote.classList.remove('visible');
+
+  if (!initDone) { dlBtn.disabled = true; return; }
+  dlBtn.classList.add('init-done');
+
   if (!src || !isValidUrl(url, src)) { dlBtn.disabled = true; return; }
-  if (src === 'youtube' && !ytEnabled) { dlBtn.disabled = true; return; }
+
+  // FIX: show helpful note instead of silently disabling for YT
+  if (src === 'youtube' && !ytEnabled) {
+    dlBtn.disabled = true;
+    ytNote.classList.add('visible');
+    return;
+  }
+
   if (VIDEO_FMTS.has(fmtSelect.value) && src !== 'youtube') { dlBtn.disabled = true; return; }
   dlBtn.disabled = false;
 }
@@ -633,8 +653,8 @@ function stopWakeTimer() {
 }
 
 function setUrlIcon(state) {
-  if (state==='valid') { urlIcon.src=ICON_VALID; urlIconWrap.classList.add('visible'); }
-  else { urlIconWrap.classList.remove('visible'); urlIcon.src=''; }
+  if (state==='valid') urlIconWrap.classList.add('visible');
+  else urlIconWrap.classList.remove('visible');
 }
 
 function showEstimate(url, src) {
@@ -661,13 +681,14 @@ function stopEmbedAudio() {
 
 function onUrlChange() {
   const raw = urlInput.value;
+  ytNote.classList.remove('visible');
   if (!raw.trim()) {
     setUrlIcon('none'); dlBtnLabel.textContent='DOWNLOAD';
     dlInfo.classList.remove('visible'); statusBox.classList.remove('visible');
     updateVideoOpts(null);
     prevPanel.classList.remove('visible'); stopEmbedAudio();
     prevBody.innerHTML='<div class="preview-checking">Paste a link above to see a preview.</div>';
-    prevHIcon.style.display='none'; prevHTitle.textContent='LINK PREVIEW';
+    prevHSvg.style.display='none'; prevHTitle.textContent='LINK PREVIEW';
     tryEnableButton(); return;
   }
   clearTimeout(iconTimer);
@@ -697,161 +718,230 @@ fmtSelect.addEventListener('change', () => {
   tryEnableButton();
 });
 
+/* ── FIX: initCheck now retries YT status until it gets a definitive answer ── */
 async function initCheck() {
   urlInput.disabled = true; fmtSelect.disabled = true;
   srvBanner.classList.add('visible');
-  const MAX_MS=90_000, INTERVAL=3_000, deadline=Date.now()+MAX_MS;
-  let got=false;
-  while (Date.now()<deadline) {
+
+  const MAX_MS = 90_000, INTERVAL = 3_000, deadline = Date.now() + MAX_MS;
+  let got = false;
+
+  while (Date.now() < deadline) {
     try {
-      const ctrl=new AbortController(), tid=setTimeout(()=>ctrl.abort(),5000);
-      const r=await fetch(`${API_URL}/yt-status`,{signal:ctrl.signal});
+      const ctrl = new AbortController();
+      const tid  = setTimeout(() => ctrl.abort(), 5000);
+      const r    = await fetch(`${API_URL}/yt-status`, { signal: ctrl.signal });
       clearTimeout(tid);
-      if (r.ok) { const d=await r.json(); ytEnabled=d.youtube_enabled; got=true; break; }
+      if (r.ok) {
+        const d = await r.json();
+        ytEnabled = d.youtube_enabled;
+        got = true;
+        break;
+      }
     } catch(_) {}
-    if (Date.now()<deadline) await sleep(INTERVAL);
+    if (Date.now() < deadline) await sleep(INTERVAL);
   }
-  [tagSp,tagYt,tagSc].forEach(t=>t.classList.remove('initializing'));
-  tagSp.classList.add('available'); tagSc.classList.add('available');
-  if (ytEnabled) tagYt.classList.add('available');
-  initDone=true; srvBanner.classList.remove('visible');
-  urlInput.disabled=false; fmtSelect.disabled=false;
+
+  [tagSp, tagYt, tagSc].forEach(t => t.classList.remove('initializing'));
+  tagSp.classList.add('available');
+  tagSc.classList.add('available');
+
+  if (ytEnabled) {
+    tagYt.classList.add('available');
+  }
+  // If yt still false after timeout, tag stays greyed — user sees the note when they paste a YT link
+
+  initDone = true;
+  srvBanner.classList.remove('visible');
+  urlInput.disabled  = false;
+  fmtSelect.disabled = false;
   tryEnableButton();
+
+  // FIX: after init, if YT wasn't enabled, poll once more in the background
+  // (server might have just been slow to decode cookies)
+  if (!ytEnabled) {
+    setTimeout(async () => {
+      try {
+        const r = await fetch(`${API_URL}/yt-status`);
+        if (r.ok) {
+          const d = await r.json();
+          if (d.youtube_enabled) {
+            ytEnabled = true;
+            tagYt.classList.add('available');
+            tryEnableButton(); // re-enable button if YT URL is in input
+          }
+        }
+      } catch(_) {}
+    }, 8000);
+  }
 }
 initCheck();
 
 dlBtn.addEventListener('click', startDownload);
-urlInput.addEventListener('keydown', e=>{ if(e.key==='Enter'&&!dlBtn.disabled) startDownload(); });
+urlInput.addEventListener('keydown', e => { if(e.key==='Enter' && !dlBtn.disabled) startDownload(); });
 
 async function startDownload() {
   const url = urlInput.value.trim();
-  if (!url||dlBtn.disabled) return;
+  if (!url || dlBtn.disabled) return;
   playSound('button');
-  dlBtn.disabled=true; statusBox.classList.add('visible');
+  dlBtn.disabled = true; statusBox.classList.add('visible');
   dlInfo.classList.remove('visible'); setProgMarquee(); startWakeTimer();
-  const msgs=['Connecting to server…','Server waking up — may take up to 60s…','Still starting, please wait…','Almost ready…','Nearly there…'];
-  let progInterval=null;
+  const msgs = ['Connecting to server…','Server waking up — may take up to 60s…','Still starting, please wait…','Almost ready…','Nearly there…'];
+  let progInterval = null;
   try {
-    let alive=false;
-    for (let i=0;i<20;i++) {
-      setStatus(msgs[Math.min(Math.floor(i/4),msgs.length-1)]);
+    let alive = false;
+    for (let i = 0; i < 20; i++) {
+      setStatus(msgs[Math.min(Math.floor(i/4), msgs.length-1)]);
       try {
-        const ctrl=new AbortController(), tid=setTimeout(()=>ctrl.abort(),5000);
-        const r=await fetch(`${API_URL}/`,{method:'GET',signal:ctrl.signal});
+        const ctrl = new AbortController(), tid = setTimeout(() => ctrl.abort(), 5000);
+        const r = await fetch(`${API_URL}/`, { method:'GET', signal:ctrl.signal });
         clearTimeout(tid);
-        if (r.ok) { alive=true; break; }
+        if (r.ok) { alive = true; break; }
       } catch(_) {}
       await sleep(3000);
     }
     if (!alive) throw new Error('Server did not respond after 60s. Try again in a moment.');
     stopWakeTimer();
     setStatus('Processing — this may take several minutes…'); setProgValue(10);
-    let progVal=10;
-    progInterval=setInterval(()=>{ if(progVal<75){progVal+=Math.random()*2;setProgValue(Math.min(progVal,75));} },1500);
-    let resp=null;
-    for (let attempt=0;attempt<3;attempt++) {
+    let progVal = 10;
+    progInterval = setInterval(() => { if(progVal<75){progVal+=Math.random()*2;setProgValue(Math.min(progVal,75));} }, 1500);
+    let resp = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const ctrl=new AbortController();
-        resp=await fetch(`${API_URL}/download`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,format:fmtSelect.value}),signal:ctrl.signal});
-        if (resp.ok||(resp.status!==503&&resp.status!==502)) break;
+        const ctrl = new AbortController();
+        resp = await fetch(`${API_URL}/download`, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({url, format:fmtSelect.value}),
+          signal:ctrl.signal
+        });
+        if (resp.ok || (resp.status !== 503 && resp.status !== 502)) break;
         setStatus('Server restarting, retrying…'); await sleep(5000);
       } catch(netErr) {
-        if (attempt===2) throw netErr;
+        if (attempt === 2) throw netErr;
         setStatus('Connection lost, retrying…'); await sleep(5000);
-        for (let i=0;i<10;i++) { try { const r=await fetch(`${API_URL}/`,{method:'GET'}); if(r.ok) break; } catch(_){} await sleep(3000); }
+        for (let i = 0; i < 10; i++) {
+          try { const r = await fetch(`${API_URL}/`, {method:'GET'}); if(r.ok) break; } catch(_){}
+          await sleep(3000);
+        }
       }
     }
-    clearInterval(progInterval); progInterval=null;
-    if (!resp||!resp.ok) {
-      const err=await resp.json().catch(()=>({detail:`HTTP ${resp?.status||'error'}`}));
-      throw new Error(err.detail||`HTTP ${resp?.status}`);
+    clearInterval(progInterval); progInterval = null;
+    if (!resp || !resp.ok) {
+      const err = await resp.json().catch(() => ({detail:`HTTP ${resp?.status||'error'}`}));
+      throw new Error(err.detail || `HTTP ${resp?.status}`);
     }
-    const dlStart=Date.now();
-    const cl=parseInt(resp.headers.get('Content-Length')||'0',10);
-    if (cl>0) { dlSize.textContent=fmtBytes(cl); dlEta.textContent='downloading…'; dlInfo.classList.add('visible'); }
+    const dlStart = Date.now();
+    const cl = parseInt(resp.headers.get('Content-Length')||'0', 10);
+    if (cl > 0) { dlSize.textContent = fmtBytes(cl); dlEta.textContent = 'downloading…'; dlInfo.classList.add('visible'); }
     setStatus('Packaging…'); setProgValue(80);
-    const blob=await resp.blob();
-    const blobUrl=URL.createObjectURL(blob);
-    const disp=resp.headers.get('Content-Disposition')||'';
-    const nm=disp.match(/filename="?([^"]+)"?/);
-    const filename=nm?nm[1]:'download.zip';
-    if (cl===0&&blob.size>0) {
-      dlSize.textContent=fmtBytes(blob.size);
-      const elapsed=(Date.now()-dlStart)/1000;
-      dlEta.textContent='done in '+(elapsed<60?Math.ceil(elapsed)+'s':Math.floor(elapsed/60)+'m '+Math.ceil(elapsed%60)+'s');
+    const blob = await resp.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const disp = resp.headers.get('Content-Disposition') || '';
+    const nm = disp.match(/filename="?([^"]+)"?/);
+    const filename = nm ? nm[1] : 'download.zip';
+    if (cl === 0 && blob.size > 0) {
+      dlSize.textContent = fmtBytes(blob.size);
+      const elapsed = (Date.now()-dlStart)/1000;
+      dlEta.textContent = 'done in '+(elapsed<60?Math.ceil(elapsed)+'s':Math.floor(elapsed/60)+'m '+Math.ceil(elapsed%60)+'s');
       dlInfo.classList.add('visible');
     }
-    const a=document.createElement('a'); a.href=blobUrl; a.download=filename;
+    const a = document.createElement('a'); a.href = blobUrl; a.download = filename;
     document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(blobUrl);
-    setProgValue(100); setStatus('Download started — check your downloads folder.','ok');
+    setProgValue(100); setStatus('Download started — check your downloads folder.', 'ok');
     playSound('like');
   } catch(err) {
     stopWakeTimer();
-    if (progInterval) { clearInterval(progInterval); progInterval=null; }
+    if (progInterval) { clearInterval(progInterval); progInterval = null; }
     setProgError();
-    const raw=err.message||'';
-    const msg=(raw==='Failed to fetch'||err.name==='TypeError')
+    const raw = err.message || '';
+    const msg = (raw === 'Failed to fetch' || err.name === 'TypeError')
       ? 'Could not reach server. Wait a moment and try again.' : raw;
-    setStatus('Error: '+msg,'err');
+    setStatus('Error: '+msg, 'err');
     playSound('alert');
   } finally { tryEnableButton(); }
 }
 
 /* ── Preview ── */
+function setPreviewHeader(src) {
+  if (src && HEADER_SVGS[src]) {
+    prevHSvg.innerHTML = HEADER_SVGS[src];
+    prevHSvg.setAttribute('viewBox','0 0 14 14');
+    prevHSvg.style.display = '';
+    prevHSvg.style.color = src==='spotify'?'#1DB954':src==='youtube'?'#FF0000':'#FF5500';
+  } else {
+    prevHSvg.style.display = 'none';
+  }
+}
+
 function buildSpotifyEmbed(url) {
-  const clean=url.replace(/spotify\.com\/intl-[a-z-]+\//i,'spotify.com/');
-  const m=clean.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
+  const clean = url.replace(/spotify\.com\/intl-[a-z-]+\//i,'spotify.com/');
+  const m = clean.match(/spotify\.com\/(album|playlist|track|artist|episode)\/([A-Za-z0-9]+)/i);
   if (!m) return null;
-  const [,type,id]=m, h=(type==='track'||type==='episode')?152:352;
-  const lbl=type.charAt(0).toUpperCase()+type.slice(1);
-  prevHIcon.src=SRC_ICONS.spotify; prevHIcon.style.display='';
-  prevHTitle.textContent=`SPOTIFY — ${lbl.toUpperCase()} PREVIEW`;
+  const [,type,id] = m, h = (type==='track'||type==='episode')?152:352;
+  const lbl = type.charAt(0).toUpperCase()+type.slice(1);
+  setPreviewHeader('spotify');
+  prevHTitle.textContent = `SPOTIFY — ${lbl.toUpperCase()} PREVIEW`;
   return `<div class="sp-embed-wrap"><iframe src="https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0" height="${h}" frameborder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe></div>
-<div class="preview-meta"><img class="preview-meta-icon" src="${SRC_ICONS.spotify}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">Spotify ${lbl}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div></div>`;
+<div class="preview-meta"><svg class="preview-meta-icon" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 01-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 01-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 01.207.857zm1.223-2.722a.78.78 0 01-1.072.257C14.15 12.328 10.71 11.95 8.013 12.73a.78.78 0 01-.453-1.49c3.074-.937 6.892-.483 9.492 1.19a.78.78 0 01.257 1.072zm.105-2.835C15.29 9.15 11.01 9.017 8.432 9.8a.937.937 0 11-.543-1.793c2.979-.905 7.932-.73 11.059 1.273a.937.937 0 01-1.034 1.587z"/></svg><div class="preview-meta-info"><div class="preview-meta-title">Spotify ${lbl}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div></div>`;
 }
+
 function buildYouTubeEmbed(url) {
-  const pl=url.match(/[?&]list=([^&]+)/), v=url.match(/[?&]v=([^&]+)/)||url.match(/youtu\.be\/([^?&#]+)/);
-  if (!pl&&!v) return null;
-  const type=pl?'Playlist':'Video';
-  const src=pl?`https://www.youtube.com/embed/videoseries?list=${pl[1]}`:`https://www.youtube.com/embed/${v[1]}`;
-  prevHIcon.src=SRC_ICONS.youtube; prevHIcon.style.display='';
-  prevHTitle.textContent=`YOUTUBE — ${type.toUpperCase()} PREVIEW`;
+  const pl = url.match(/[?&]list=([^&]+)/), v = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
+  if (!pl && !v) return null;
+  const type = pl ? 'Playlist' : 'Video';
+  const src  = pl ? `https://www.youtube.com/embed/videoseries?list=${pl[1]}` : `https://www.youtube.com/embed/${v[1]}`;
+  setPreviewHeader('youtube');
+  prevHTitle.textContent = `YOUTUBE — ${type.toUpperCase()} PREVIEW`;
   return `<div class="yt-embed-wrap"><iframe src="${src}" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-<div class="preview-meta"><img class="preview-meta-icon" src="${SRC_ICONS.youtube}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">YouTube ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div></div>`;
+<div class="preview-meta"><svg class="preview-meta-icon" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg><div class="preview-meta-info"><div class="preview-meta-title">YouTube ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div></div>`;
 }
+
 function buildSoundCloudEmbed(url) {
-  const isSet=/\/sets\//i.test(url), type=isSet?'Set':'Track', h=isSet?450:166;
-  const emb=`https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
-  prevHIcon.src=SRC_ICONS.soundcloud; prevHIcon.style.display='';
-  prevHTitle.textContent=`SOUNDCLOUD — ${type.toUpperCase()} PREVIEW`;
+  const isSet = /\/sets\//i.test(url), type = isSet ? 'Set' : 'Track', h = isSet ? 450 : 166;
+  const emb = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23cc1a1a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
+  setPreviewHeader('soundcloud');
+  prevHTitle.textContent = `SOUNDCLOUD — ${type.toUpperCase()} PREVIEW`;
   return `<div class="sc-embed-wrap"><iframe scrolling="no" frameborder="no" allow="autoplay" src="${emb}" height="${h}" loading="lazy"></iframe></div>
-<div class="preview-meta"><img class="preview-meta-icon" src="${SRC_ICONS.soundcloud}" alt=""><div class="preview-meta-info"><div class="preview-meta-title">SoundCloud ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div></div>`;
+<div class="preview-meta"><svg class="preview-meta-icon" viewBox="0 0 24 24" fill="#FF5500"><path d="M1.175 12.225c-.017 0-.034.002-.05.006L.5 14.25l.625 1.994c.016.004.033.006.05.006.276 0 .5-.224.5-.5v-3c0-.276-.224-.5-.5-.5zm2.15-.5c-.098 0-.193.027-.276.076L2.5 14.25l.549 2.46c.083.05.178.076.276.076.304 0 .55-.246.55-.55v-3.96c0-.304-.246-.55-.55-.55zm2.175-.475c-.134 0-.264.047-.368.132L4.5 14.25l.632 2.625c.104.085.234.132.368.132.36 0 .65-.29.65-.65v-4.107c0-.36-.29-.65-.65-.65zm14.8-3.6c-.214 0-.426.034-.628.1C19.486 5.596 17.18 4 14.5 4c-.644 0-1.268.112-1.85.32-.213.076-.27.155-.272.232v15.398c.002.08.065.148.148.15H21.3c1.492 0 2.7-1.208 2.7-2.7 0-1.492-1.208-2.7-2.7-2.7z"/></svg><div class="preview-meta-info"><div class="preview-meta-title">SoundCloud ${type}</div><div class="preview-meta-sub">Verify content, then click Download.</div></div></div>`;
 }
+
 function renderPreview(raw) {
-  const url=raw.trim();
-  if (!url) { prevPanel.classList.remove('visible'); stopEmbedAudio(); prevBody.innerHTML='<div class="preview-checking">Paste a link above to see a preview.</div>'; prevHIcon.style.display='none'; prevHTitle.textContent='LINK PREVIEW'; return; }
-  const src=detectSource(url);
-  prevPanel.classList.add('visible'); prevHIcon.style.display='none'; prevHTitle.textContent='LINK PREVIEW';
-  if (!src) { prevBody.innerHTML='<div class="preview-invalid">Unrecognized URL — paste a valid Spotify, YouTube or SoundCloud link.</div>'; return; }
-  prevBody.innerHTML='<div class="preview-checking">Loading preview…</div>';
-  let html=null;
-  if (src==='spotify')    html=buildSpotifyEmbed(url);
-  if (src==='youtube')    html=buildYouTubeEmbed(url);
-  if (src==='soundcloud') html=buildSoundCloudEmbed(url);
-  prevBody.innerHTML=html||'<div class="preview-invalid">Could not generate preview. Check the URL.</div>';
+  const url = raw.trim();
+  if (!url) {
+    prevPanel.classList.remove('visible'); stopEmbedAudio();
+    prevBody.innerHTML = '<div class="preview-checking">Paste a link above to see a preview.</div>';
+    prevHSvg.style.display = 'none'; prevHTitle.textContent = 'LINK PREVIEW'; return;
+  }
+  const src = detectSource(url);
+  prevPanel.classList.add('visible'); prevHSvg.style.display = 'none'; prevHTitle.textContent = 'LINK PREVIEW';
+  if (!src) { prevBody.innerHTML = '<div class="preview-invalid">Unrecognized URL — paste a valid Spotify, YouTube or SoundCloud link.</div>'; return; }
+  prevBody.innerHTML = '<div class="preview-checking">Loading preview…</div>';
+  let html = null;
+  if (src === 'spotify')    html = buildSpotifyEmbed(url);
+  if (src === 'youtube')    html = buildYouTubeEmbed(url);
+  if (src === 'soundcloud') html = buildSoundCloudEmbed(url);
+  prevBody.innerHTML = html || '<div class="preview-invalid">Could not generate preview. Check the URL.</div>';
 }
+
 urlInput.addEventListener('input', () => {
   clearTimeout(previewTimer);
-  if (!urlInput.value.trim()) { prevPanel.classList.remove('visible'); stopEmbedAudio(); prevBody.innerHTML='<div class="preview-checking">Paste a link above to see a preview.</div>'; prevHIcon.style.display='none'; prevHTitle.textContent='LINK PREVIEW'; return; }
-  previewTimer=setTimeout(()=>renderPreview(urlInput.value),500);
+  if (!urlInput.value.trim()) {
+    prevPanel.classList.remove('visible'); stopEmbedAudio();
+    prevBody.innerHTML = '<div class="preview-checking">Paste a link above to see a preview.</div>';
+    prevHSvg.style.display = 'none'; prevHTitle.textContent = 'LINK PREVIEW'; return;
+  }
+  previewTimer = setTimeout(() => renderPreview(urlInput.value), 500);
 });
-urlInput.addEventListener('paste', ()=>{ clearTimeout(previewTimer); previewTimer=setTimeout(()=>renderPreview(urlInput.value),250); });
+urlInput.addEventListener('paste', () => {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(() => renderPreview(urlInput.value), 250);
+});
 </script>
 
 <script>
-
 /* ════════════════════════════════════════════════════════════════
-   SOUNDS — sem delay no hover, sincronizado entre páginas
+   SOUNDS
    ════════════════════════════════════════════════════════════════ */
 var _SB='../assets/audio/';
 var _SND={start:_SB+'sitestart.mp3',alert:_SB+'sitealert.mp3',dislike:_SB+'sitedislikeclick.mp3',like:_SB+'sitelikeclick.mp3',sort:_SB+'sitesortclick.mp3',button:_SB+'sitebuttonclick.mp3',hover:_SB+'text.mp3'};
@@ -878,7 +968,6 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 document.addEventListener('pointerdown',function(){Object.keys(_SND).forEach(function(k){_gA(k);});},{once:true,passive:true});
 function _iI(el){if(!el||el===document.body||el===document.documentElement)return false;var t=el.tagName;if(t==='BUTTON'||t==='A'||t==='SELECT'||t==='TEXTAREA')return true;if(t==='INPUT'&&el.type!=='range')return true;var cs=window.getComputedStyle(el);return cs&&cs.cursor==='pointer';}
-/* hover sem delay — throttle mínimo de 120ms */
 document.addEventListener('mouseover',function(e){if(e.target.id==='soundToggle')return;if(!_iI(e.target))return;var n=Date.now();if(n-_ht<120)return;_ht=n;playSound('hover');},{passive:true});
 document.addEventListener('click',function(e){if(e.target.id==='soundToggle')return;if(_iI(e.target))playSound('button');},true);
 
@@ -888,8 +977,6 @@ document.addEventListener('click',function(e){if(e.target.id==='soundToggle')ret
   var pl=document.getElementById('playlistLeft');
   if(pl)new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===3)fix(n.parentElement);else if(n.querySelectorAll){n.querySelectorAll('p,span,div').forEach(fix);fix(n);}});});}).observe(pl,{childList:true,subtree:true});
 })();
-
-
 </script>
 </body>
 </html>
