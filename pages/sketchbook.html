@@ -449,7 +449,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
   <!-- Host login (sempre visível, discreta) -->
   <div id="hostLoginBanner" class="glass-box" style="padding:6px 10px;">
     <span style="font-size:10px;color:#888;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;">Host access:</span>
-    <input type="password" id="hostPwInput" placeholder="Password…" style="max-width:150px;" onkeydown="if(event.key==='Enter')tryHostLogin()">
+    <input type="password" id="hostPwInput" placeholder="Password…" style="max-width:150px;" >
     <button class="admin-btn" onclick="tryHostLogin()">Enter</button>
     <span id="hostLoginMsg" style="font-size:10px;color:#c33;display:none;">Incorrect password.</span>
   </div>
