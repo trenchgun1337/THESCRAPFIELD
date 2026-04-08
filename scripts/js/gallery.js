@@ -26,52 +26,52 @@ const GALLERY_ITEMS = [
     description: 'aliennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn',
   },
   {
-    src: 'assets/images/rikafurude.png',
+    src: IMG_BASE + 'rikafurude.png',
     title: 'Neko Rika',
     description: 'nipah~',
   },
   {
-    src: 'assets/images/dante2.png',
+    src: IMG_BASE + 'dante2.png',
     title: 'Sketch Dante 2',
     description: 'kewl sworddd',
   },
   {
-    src: 'assets/images/dante3.png',
+    src: IMG_BASE + 'dante3.png',
     title: 'Sketch Dante 1',
     description: 'boooooriiinggg',
   },
   {
-    src: 'assets/images/coelho5.png',
+    src: IMG_BASE + 'coelho5.png',
     title: 'Do NOT let em in',
     description: 'Army of violent flesh-eating bunnies outside',
   },
   {
-    src: 'assets/images/coelho4.png',
+    src: IMG_BASE + 'coelho4.png',
     title: 'You Against They',
     description: "Kill all 'They'",
   },
   {
-    src: 'assets/images/coelho3.png',
+    src: IMG_BASE + 'coelho3.png',
     title: 'Bunny MF & MF Bunny',
     description: 'It\'s heavily inspired by <a href="https://x.com/sometimes317/status/1861971961259184166" target="_blank" class="gi-link">THAT</a> one blue &amp; yellow paint art',
   },
   {
-    src: 'assets/images/coelho2.png',
+    src: IMG_BASE + 'coelho2.png',
     title: 'MF Bunny',
     description: 'Lock the doors and close the blinds',
   },
   {
-    src: 'assets/images/coelho1.png',
+    src: IMG_BASE + 'coelho1.png',
     title: 'MF Bunny rig',
     description: "A fail rig i made using my cat's fur texture.",
   },
   {
-    src: 'assets/images/nowyouknowhowitfeelslike.png',
+    src: IMG_BASE + 'nowyouknowhowitfeelslike.png',
     title: 'Now You know how it feels like',
     description: 'Never pet This.',
   },
   {
-    src: 'assets/images/princess-unicorn.png', // ← recomendo RENOMEAR o arquivo
+    src: IMG_BASE + 'princess-unicorn.png', // ← recomendo RENOMEAR o arquivo
     title: 'Princess Unicorn Bunny Kitten Angel the most beautifulest in the whole wide world',
     description: 'Love laugh bunnies 4ever.',
   }
@@ -594,7 +594,7 @@ const GallerySystem = {
         <div class="gi-lb-box">
           <div class="gi-lb-titlebar">
             <span id="giLbTitle"></span>
-            <button class="gi-lb-close" onclick="GallerySystem.closeLightbox()">X Close</button>
+            <button class="gi-lb-close" onclick="GallerySystem.closeLightbox()">X</button>
           </div>
           <div class="gi-lb-imgarea" id="giLbImgArea">
             <button class="gi-lb-arrow gi-lb-prev" onclick="GallerySystem.lbNav(-1)">&#9664;</button>
