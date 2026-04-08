@@ -195,7 +195,6 @@ strong{color:var(--accent);font-weight:400}
   background:#fff;border:1px solid rgba(0,0,0,.20);
   box-shadow:0 1px 3px rgba(0,0,0,.12);
   overflow:hidden;display:flex;flex-direction:column;
-  transition:box-shadow .15s, transform .15s, border-color .15s;
 }
 .gi-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.25);transform:translateY(-1px);border-color:rgba(100,100,100,.45)}
 .gi-card-awarded{border-color: #000000 !important;}
@@ -207,7 +206,6 @@ strong{color:var(--accent);font-weight:400}
 }
 .gi-card-imgwrap img{
   width:100%;height:100%;object-fit:cover;display:block;
-  pointer-events:none;transition:filter .2s;
 }
 .gi-card:hover .gi-card-imgwrap img{filter:brightness(1.06) contrast(1.03)}
 
@@ -216,7 +214,6 @@ strong{color:var(--accent);font-weight:400}
   background:linear-gradient(to bottom,rgba(0,0,0,.0) 60%,rgba(0,0,0,.60) 100%);
   display:flex;align-items:flex-end;justify-content:center;
   padding-bottom:8px;
-  opacity:0;transition:opacity .15s;pointer-events:none;
 }
 .gi-card-imgwrap:hover .gi-card-overlay{opacity:1}
 .gi-card-overlay span{
@@ -317,7 +314,6 @@ strong{color:var(--accent);font-weight:400}
   background:rgba(0,0,0,.60);border:none;border-left:1px solid rgba(255,255,255,.08);
   color:#bbb;font-size:20px;padding:0 10px;cursor:pointer;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  transition:background .15s;
 }
 .gi-lb-arrow:first-child{border-left:none;border-right:1px solid rgba(255,255,255,.08)}
 .gi-lb-arrow:hover{background:rgba(60,80,110,.75);color:#fff}
