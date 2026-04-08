@@ -71,7 +71,7 @@ const GALLERY_ITEMS = [
     description: 'Never pet This.',
   },
   {
-    src: IMG_BASE + 'princess-unicorn.png', // ← recomendo RENOMEAR o arquivo
+    src: IMG_BASE + 'princessunicorn.png', // ← recomendo RENOMEAR o arquivo
     title: 'Princess Unicorn Bunny Kitten Angel the most beautifulest in the whole wide world',
     description: 'Love laugh bunnies 4ever.',
   }
