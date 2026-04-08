@@ -1052,7 +1052,7 @@ function buildStarRow(itemId, interactive) {
 function handleDropOnCat(cat, e) {
   const id = e.dataTransfer.getData('text/plain');
   if (!id) return;
-  update(dbRef(db,'sketchbook/items/'+id), { category: cat });
+  update(dbRef(db,'gallery/'+id), { category: cat });
 }
 
 /* ════════ UPLOAD ════════ */
@@ -1073,7 +1073,7 @@ window.uploadPending = async function() {
       const storageRef = sRef(storage, path);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
-      await push(dbRef(db,'sketchbook/items'), {
+      await push(dbRef(db,'gallery'), {
         src:         url,
         storagePath: path,
         title:       title ? (pendingFiles.length>1 ? title+' '+(i+1) : title) : file.name.replace(/\.[^.]+$/,''),
@@ -1131,7 +1131,7 @@ window.uploadCharacter = async function() {
     const storageRef = sRef(storage, path);
     await uploadBytes(storageRef, file);
     const url = await getDownloadURL(storageRef);
-    await push(dbRef(db,'sketchbook/characters'),{ src:url, storagePath:path, name, desc, tags, addedAt:Date.now() });
+    await push(dbRef(db,'gallery'),{ src:url, storagePath:path, name, desc, tags, addedAt:Date.now() });
     ['charName','charDesc','charTags'].forEach(id => { document.getElementById(id).value=''; });
     document.getElementById('charFileInput').value='';
     document.getElementById('charPreview').style.display='none';
@@ -1485,6 +1485,11 @@ document.addEventListener('DOMContentLoaded',function(){
   document.addEventListener('mouseover',function(e){if(e.target.id==='soundToggle')return;if(!_iI(e.target))return;var n=Date.now();if(n-_ht<120)return;_ht=n;_playSound('hover');},{passive:true});
   document.addEventListener('click',function(e){if(e.target.id==='soundToggle')return;if(_iI(e.target))_playSound('button');},true);
 });
+
+initHostMode();
+_userId = getUserId();
+loadAll();
+
 </script>
 </body>
 </html>
