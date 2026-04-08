@@ -752,7 +752,7 @@ function setRating(itemId, stars) {
 /* ═══ FIREBASE LOAD ═══ */
 function loadAll() {
   /* Gallery items */
-  onValue(dbRef(db, 'gallery/items'), snap => {
+  onValue(dbRef(db, 'gallery/ratings'), snap => {
     const val = snap.val() || {};
     galleryItems = Object.entries(val).map(([id, v]) => ({ id, ...v }))
       .sort((a,b) => (b.addedAt||0) - (a.addedAt||0));
@@ -1024,7 +1024,7 @@ function buildStarRow(itemId, interactive) {
 function handleDropOnCat(cat, e) {
   const id = e.dataTransfer.getData('text/plain');
   if (!id) return;
-  update(dbRef(db,'gallery/items/'+id), { category: cat });
+  update(dbRef(db,'gallery/ratings/'+id), { category: cat });
 }
 
 /* ═══ UPLOAD ═══ */
@@ -1045,7 +1045,7 @@ window.uploadPending = async function() {
       const storageRef = sRef(storage, path);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
-      await push(dbRef(db,'gallery/items'), {
+      await push(dbRef(db,'gallery/ratings'), {
         src:         url,
         storagePath: path,
         title:       title ? (pendingFiles.length>1 ? title+' '+(i+1) : title) : file.name.replace(/\.[^.]+$/,''),
@@ -1112,7 +1112,7 @@ window.uploadCharacter = async function() {
 /* ═══ DELETE ═══ */
 window.deleteItem = async function(id, storagePath) {
   if (!confirm('Delete this artwork? Cannot be undone.')) return;
-  await remove(dbRef(db,'gallery/items/'+id));
+  await remove(dbRef(db,'gallery/ratings/'+id));
   if (storagePath) { try { await deleteObject(sRef(storage,storagePath)); } catch(_){} }
 };
 
