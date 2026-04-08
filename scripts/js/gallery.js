@@ -77,7 +77,7 @@ const GALLERY_ITEMS = [
   }
 ];
 
-const STAR_IMG = 'assets/images/starrating.png';
+const STAR_IMG = IMG_BASE +'starrating.png';
 
 const PAGE_SIZE = 12;
 
