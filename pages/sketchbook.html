@@ -744,7 +744,7 @@ function setRating(itemId, stars) {
   if (!allRatings[itemId]) allRatings[itemId] = {};
   allRatings[itemId][_userId] = stars;
   // Save to Firebase
-  set(dbRef(db, 'sketchbook/ratings/' + itemId + '/' + _userId.replace(/[.#$[\]]/g,'_')), stars).catch(()=>{});
+  set(dbRef(db, 'gallery/ratings/' + itemId + '/' + _userId.replace(/[.#$[\]]/g,'_')), stars).catch(()=>{});
 }
 
 /* ════════ FIREBASE LOAD ════════ */
@@ -762,18 +762,18 @@ function loadAll() {
   updateLastAddedInfo();
   renderGallery();
 });
-  onValue(dbRef(db, 'sketchbook/characters'), snap => {
+  onValue(dbRef(db, 'gallery'), snap => {
     const val = snap.val() || {};
     characters = Object.entries(val).map(([id, v]) => ({ id, ...v }))
       .sort((a,b) => b.addedAt - a.addedAt);
     renderCharacters();
   });
-  onValue(dbRef(db, 'sketchbook/categories'), snap => {
+  onValue(dbRef(db, 'gallery'), snap => {
     const val = snap.val();
     if (val && Array.isArray(val)) categories = val;
     renderCatTabs(); renderCatSelects();
   });
-  onValue(dbRef(db, 'sketchbook/ratings'), snap => {
+  onValue(dbRef(db, 'gallery/ratings'), snap => {
     const val = snap.val() || {};
     allRatings = {};
     Object.entries(val).forEach(([itemId, users]) => {
