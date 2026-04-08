@@ -5,6 +5,8 @@
              path: gallery/ratings/{index}/users/{userId} = stars
    ================================================================ */
 
+   const IMG_BASE = '/assets/images/';
+
 const FIREBASE_CONFIG = {
   apiKey:            "AIzaSyBBr6zPaWgGNcGHz9iiNTO8O4EgAzsUMOk",
   authDomain:        "scrapfielddatabase.firebaseapp.com",
@@ -19,7 +21,7 @@ const FIREBASE_CONFIG = {
 /* ── Static artwork list – newest first ── */
 const GALLERY_ITEMS = [
   {
-    src: 'assets/images/alienmaldito.png',
+    src: IMG_BASE + 'alienmaldito.png',
     title: 'Sketch Alien Hominid',
     description: 'aliennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn',
   },
