@@ -498,7 +498,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
             <input class="form-input" id="descInput" placeholder="Short description (optional)" style="flex:3">
           </div>
           <button id="uploadBtn" onclick="uploadPending()">&#x2191; Upload to Archive</button>
-          <p style="font-size:10px;color:#888;margin-top:5px">Images stored in Firebase. File size, format &amp; date saved automatically.</p>
+          <p style="font-size:10px;color:#888;margin-top:5px">Imagens comprimidas e salvas direto no banco de dados. Recomendado: até ~2MB por imagem antes da compressão. Formatos: JPG, PNG, GIF, WEBP.</p>
         </div>
       </div>
     </div>
@@ -644,8 +644,6 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 <!-- Firebase + App -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
-import { getStorage, ref as sRef, uploadBytes, getDownloadURL, deleteObject }
-  from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-storage.js';
 import { getDatabase, ref as dbRef, push, set, remove, onValue, update }
   from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js';
 
@@ -661,9 +659,8 @@ const FIREBASE_CONFIG = {
 
 const ADMIN_PASSWORD = "watanagashi2025";
 
-const app     = initializeApp(FIREBASE_CONFIG);
-const storage = getStorage(app);
-const db      = getDatabase(app);
+const app = initializeApp(FIREBASE_CONFIG);
+const db  = getDatabase(app);
 
 /* ═══ STATE ═══ */
 let isHost       = false;
@@ -995,7 +992,7 @@ function buildCard(item, allFiltered) {
     del.className = 'gi-card-act'; del.title='Delete'; del.textContent='✕';
     del.addEventListener('click', e => {
       e.stopPropagation();
-      deleteItem(item.id, item.storagePath);
+      deleteItem(item.id);
     });
     acts.appendChild(del);
     card.appendChild(acts);
@@ -1068,13 +1065,37 @@ function handleDropOnCat(cat, e) {
   update(dbRef(db,'gallery/items/'+id), { category: cat });
 }
 
-/* ═══ UPLOAD ═══
-   Saves to gallery/items/{pushId} — correct path
+/* ═══ IMAGE COMPRESS → base64 ═══
+   Reduz para max 900px e qualidade 0.82 (JPEG).
+   Firebase Realtime DB free tier: 1 GB data, mas cada nó tem limite de ~10 MB.
+   Para imagens normais (sketch, fanart) isso é mais que suficiente.
 */
+function compressToBase64(file, maxPx, quality) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let w = img.naturalWidth, h = img.naturalHeight;
+      if (w > maxPx || h > maxPx) {
+        if (w >= h) { h = Math.round(h * maxPx / w); w = maxPx; }
+        else        { w = Math.round(w * maxPx / h); h = maxPx; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => reject(new Error('Failed to load image'));
+    img.src = url;
+  });
+}
+
+/* ═══ UPLOAD — base64 direto no Realtime DB (sem Storage) ═══ */
 window.uploadPending = async function() {
   if (!isHost || !pendingFiles.length) return;
   const btn = document.getElementById('uploadBtn');
-  btn.disabled = true; btn.textContent = 'Uploading…';
+  btn.disabled = true;
   const title    = (document.getElementById('titleInput').value||'').trim();
   const category = document.getElementById('categorySelect').value;
   const desc     = (document.getElementById('descInput').value||'').trim();
@@ -1082,21 +1103,18 @@ window.uploadPending = async function() {
 
   for (let i=0; i<pendingFiles.length; i++) {
     const file = pendingFiles[i];
+    btn.textContent = 'Compressing '+(i+1)+'/'+pendingFiles.length+'…';
     try {
-      btn.textContent = 'Uploading '+(i+1)+'/'+pendingFiles.length+'…';
-      const path = 'sketchbook/gallery/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-      const storageRef = sRef(storage, path);
-      await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(storageRef);
-      /* Save metadata to gallery/items (not gallery/ratings!) */
+      /* Comprime para max 900px, qualidade 0.82 */
+      const base64 = await compressToBase64(file, 900, 0.82);
+      btn.textContent = 'Saving '+(i+1)+'/'+pendingFiles.length+'…';
       await push(dbRef(db,'gallery/items'), {
-        src:         url,
-        storagePath: path,
-        title:       title ? (pendingFiles.length>1 ? title+' '+(i+1) : title) : file.name.replace(/\.[^.]+$/,''),
-        category:    category || '',
-        desc:        desc || '',
-        author:      author || '',
-        addedAt:     Date.now(),
+        src:      base64,   /* data:image/jpeg;base64,... */
+        title:    title ? (pendingFiles.length>1 ? title+' '+(i+1) : title) : file.name.replace(/\.[^.]+$/,''),
+        category: category || '',
+        desc:     desc || '',
+        author:   author || '',
+        addedAt:  Date.now(),
       });
     } catch(err) { alert('Upload error: '+err.message); }
   }
@@ -1143,14 +1161,12 @@ window.uploadCharacter = async function() {
   if (!name) { alert('Please enter a character name.'); return; }
   if (!file) { alert('Please select character art.'); return; }
   const btn = document.querySelector('#charUploadSection .admin-btn.primary');
-  btn.disabled=true; btn.textContent='Saving…';
+  btn.disabled=true; btn.textContent='Compressing…';
   try {
-    const path = 'sketchbook/characters/'+Date.now()+'_'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-    const storageRef = sRef(storage, path);
-    await uploadBytes(storageRef, file);
-    const url = await getDownloadURL(storageRef);
+    const base64 = await compressToBase64(file, 900, 0.85);
+    btn.textContent='Saving…';
     await push(dbRef(db,'gallery/characters'),{
-      src:url, storagePath:path, name, desc, tags, addedAt:Date.now()
+      src: base64, name, desc, tags, addedAt: Date.now()
     });
     ['charName','charDesc','charTags'].forEach(id => { document.getElementById(id).value=''; });
     document.getElementById('charFileInput').value='';
@@ -1161,12 +1177,10 @@ window.uploadCharacter = async function() {
 };
 
 /* ═══ DELETE ═══ */
-window.deleteItem = async function(id, storagePath) {
+window.deleteItem = async function(id) {
   if (!confirm('Delete this artwork? Cannot be undone.')) return;
   await remove(dbRef(db,'gallery/items/'+id));
-  /* Also remove ratings for this item */
   await remove(dbRef(db,'gallery/ratings/'+id)).catch(()=>{});
-  if (storagePath) { try { await deleteObject(sRef(storage,storagePath)); } catch(_){} }
 };
 
 /* ═══ LIGHTBOX ═══ */
@@ -1346,7 +1360,7 @@ document.getElementById('ctxDel').addEventListener('click', () => {
   if (!ctxTarget) return closeCtxMenu();
   const {id,type} = ctxTarget; closeCtxMenu();
   const item = type==='gallery' ? galleryItems.find(i=>i.id===id) : characters.find(c=>c.id===id);
-  if (type==='gallery') deleteItem(id, item?.storagePath);
+  if (type==='gallery') deleteItem(id);
 });
 document.addEventListener('click', closeCtxMenu);
 document.getElementById('ctxMenu').addEventListener('click', e => e.stopPropagation());
