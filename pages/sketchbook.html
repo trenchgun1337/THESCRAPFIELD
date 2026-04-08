@@ -102,10 +102,13 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
   font-size:10.5px;padding:3px 9px;cursor:pointer;letter-spacing:.3px;white-space:nowrap;
 }
 .admin-btn:hover{filter:brightness(1.3)}
+/* PRIMARY: branco para forçar legibilidade sobre fundo escuro */
 .admin-btn.primary{
-  background:linear-gradient(to bottom,#4a7fa5,#2a5f85 50%,#1a4f75 50%,#2a6090 100%);
-  border-color:rgba(0,60,120,.55);color:#fff;
+  background:linear-gradient(to bottom,#555,#333 50%,#222 50%,#2e2e2e 100%);
+  border:1px solid rgba(255,255,255,.18);
+  color:#fff;
 }
+.admin-btn.primary:hover{filter:brightness(1.4)}
 
 /* ── HOST LOGIN BANNER ── */
 #hostLoginBanner{
@@ -149,10 +152,10 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 }
 #uploadBtn{
   margin-top:7px;width:100%;padding:6px;font-size:12px;letter-spacing:.5px;
-  background:linear-gradient(to bottom,#4a7fa5,#2a5f85 50%,#1a4f75 50%,#2a6090 100%);
-  border:1px solid rgba(0,60,120,.55);color:#fff;font-family:inherit;cursor:pointer;
+  background:var(--grad-dark);
+  border:1px solid rgba(255,255,255,.15);color:#fff;font-family:inherit;cursor:pointer;
 }
-#uploadBtn:hover{filter:brightness(1.12)}
+#uploadBtn:hover{filter:brightness(1.35)}
 #uploadBtn:disabled{filter:brightness(.55);cursor:not-allowed}
 
 /* Category manager */
@@ -199,8 +202,8 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 }
 .ctrl-btn:hover{filter:brightness(1.25)}
 .ctrl-btn.active{
-  background:linear-gradient(to bottom,#4a7fa5,#2a5f85 50%,#1a4f75 50%,#2a6090 100%);
-  border-color:rgba(0,60,120,.55);color:#fff;
+  background:linear-gradient(to bottom,#333,#111 50%,#000 50%,#1a1a1a 100%);
+  border-color:rgba(255,255,255,.18);color:#fff;
 }
 .ctrl-spacer{flex:1}
 .last-added-info{font-size:10px;color:#666;white-space:nowrap;font-style:italic}
@@ -340,7 +343,6 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 #lb-next{right:6px}
 #lb-prev:hover,#lb-next:hover{background:rgba(60,80,110,.75)}
 
-/* Bottom info — simples, sem monoespaçado */
 #lb-info-bar{
   width:100%;background:#0d0d0d;border-top:1px solid rgba(255,255,255,.08);
   padding:7px 14px;font-size:11px;color:#999;flex-shrink:0;
@@ -351,7 +353,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 #lb-info-bar .li-author{color:#7ec8a0;}
 #lb-dl{
   background:var(--grad-dark);
-  border:1px solid rgba(0,0,0,.55);color:#eee;
+  border:1px solid rgba(255,255,255,.15);color:#eee;
   font-family:inherit;font-size:10px;padding:3px 9px;cursor:pointer;
   text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
   margin-left:auto;
@@ -373,7 +375,6 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 .char-card-tag{font-size:9px;background:#e0e0e0;border:1px solid rgba(0,0,0,.12);color:#555;padding:1px 6px;letter-spacing:.3px;text-transform:uppercase;}
 .char-empty{grid-column:1/-1;padding:40px 20px;text-align:center;color:#aaa;font-size:12px;}
 
-/* char admin form */
 #charUploadSection{display:none;margin-top:7px}
 .char-upload-grid{display:grid;grid-template-columns:180px 1fr;gap:8px;align-items:start}
 .char-art-zone{border:2px dashed rgba(140,140,140,.55);background:#fafafa;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px;cursor:pointer;font-size:10.5px;color:#888;text-align:center;min-height:180px;}
@@ -446,10 +447,10 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
     <span id="hostBadge">HOST</span>
   </div>
 
-  <!-- Host login (sempre visível, discreta) -->
+  <!-- Host login (visível apenas quando não é host) -->
   <div id="hostLoginBanner" class="glass-box" style="padding:6px 10px;">
     <span style="font-size:10px;color:#888;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;">Host access:</span>
-    <input type="password" id="hostPwInput" placeholder="Password…" style="max-width:150px;" >
+    <input type="password" id="hostPwInput" placeholder="Password…" style="max-width:150px;" onkeydown="if(event.key==='Enter')tryHostLogin()">
     <button class="admin-btn" onclick="tryHostLogin()">Enter</button>
     <span id="hostLoginMsg" style="font-size:10px;color:#c33;display:none;">Incorrect password.</span>
   </div>
@@ -472,10 +473,10 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
       </div>
       <div class="aero-inner">
         <div class="aero-pad">
-          <div id="catManagerWrap">
+          <div id="catManagerWrap" style="display:none;background:#111;border:1px solid rgba(100,130,180,.3);padding:8px 10px;margin-bottom:8px;">
             <div class="cat-manage-row">
-              <span class="ctrl-label">New category:</span>
-              <input class="form-input" id="newCatInput" placeholder="Category name…" style="max-width:160px" onkeydown="if(event.key==='Enter')addCategory()">
+              <span class="ctrl-label" style="color:#aaa;">New category:</span>
+              <input class="form-input" id="newCatInput" placeholder="Category name…" style="max-width:160px;background:#222;border-color:#444;color:#eee;" onkeydown="if(event.key==='Enter')addCategory()">
               <button class="admin-btn" onclick="addCategory()">Add</button>
               <span style="font-size:10px;color:#999;margin-left:6px">Existing: </span>
               <span id="catListDisplay" style="font-size:10px;color:#bbb"></span>
@@ -595,9 +596,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
       </div>
       <div class="aero-inner" style="padding:5px">
         <div id="paintEmbedWrap"></div>
-        <div class="paint-hint">
-        
-        </div>
+        <div class="paint-hint"></div>
       </div>
     </div>
   </div>
@@ -626,7 +625,6 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
     </div>
   </div>
 
-  <!-- Info bar: simples, sem monoespaçado -->
   <div id="lb-info-bar">
     <span class="li-title" id="lbfi-title">—</span>
     <span class="li-meta" id="lbfi-date"></span>
@@ -661,7 +659,6 @@ const FIREBASE_CONFIG = {
   appId:             "1:489751764776:web:22255a1e9bf05a538bfa1d",
 };
 
-/* ── MUDAR A SENHA AQUI ── */
 const ADMIN_PASSWORD = "watanagashi2025";
 
 const app     = initializeApp(FIREBASE_CONFIG);
@@ -670,16 +667,16 @@ const db      = getDatabase(app);
 
 /* ═══ STATE ═══ */
 let isHost       = false;
-let galleryItems = [];
+let galleryItems = [];  // items from gallery/items
 let characters   = [];
-let categories   = ['Sketches','Finished','Fanart','Misc'];
+let categories   = ['Sketches','Idk'];
 let currentCat   = 'all';
 let currentSort  = 'rated';
 let currentView  = 'grid';
 let pendingFiles = [];
 let lbIdx        = -1;
 let ctxTarget    = null;
-let allRatings   = {};
+let allRatings   = {};  // { itemId: { userId: stars } } from gallery/ratings
 const USERID_KEY = '_skUserId';
 const PAGE_SIZE  = 12;
 let currentPage  = 0;
@@ -688,8 +685,23 @@ let _userId      = '';
 /* ═══ USER ID ═══ */
 function getUserId() {
   let uid = localStorage.getItem(USERID_KEY);
-  if (!uid) { uid = 'u_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem(USERID_KEY, uid); }
+  if (!uid) {
+    uid = 'u_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem(USERID_KEY, uid);
+  }
   return uid;
+}
+
+/* ═══ HOST UI TOGGLE ═══ */
+function activateHostUI() {
+  isHost = true;
+  sessionStorage.setItem('_skHost','1');
+  document.getElementById('hostBadge').style.display = '';
+  document.getElementById('uploadSection').style.display = '';
+  document.getElementById('charUploadSection').style.display = '';
+  document.getElementById('hostLoginBanner').style.display = 'none';
+  renderGallery();
+  renderCatTabs();
 }
 
 /* ═══ HOST LOGIN (senha digitada) ═══ */
@@ -697,35 +709,28 @@ window.tryHostLogin = function() {
   const inp = document.getElementById('hostPwInput');
   const msg = document.getElementById('hostLoginMsg');
   if ((inp.value || '').trim() === ADMIN_PASSWORD) {
-    isHost = true;
-    sessionStorage.setItem('_skHost','1');
-    document.getElementById('hostBadge').style.display = '';
-    document.getElementById('uploadSection').style.display = '';
-    document.getElementById('charUploadSection').style.display = '';
-    document.getElementById('hostLoginBanner').style.display = 'none';
     inp.value = '';
-    renderGallery();
+    activateHostUI();
   } else {
     if (msg) { msg.style.display=''; setTimeout(()=>msg.style.display='none', 2500); }
     inp.value = '';
   }
 };
 
-/* Restore host mode from session */
+/* ═══ RESTORE HOST FROM SESSION / URL ═══ */
 function initHostMode() {
-  /* URL param mantido por compatibilidade */
   const params = new URLSearchParams(window.location.search);
-  if (params.get('host') === '1' || sessionStorage.getItem('_skHost') === '1') {
-    isHost = true;
-    document.getElementById('hostBadge').style.display = '';
-    document.getElementById('uploadSection').style.display = '';
-    document.getElementById('charUploadSection').style.display = '';
-    document.getElementById('hostLoginBanner').style.display = 'none';
-    sessionStorage.setItem('_skHost','1');
+  const byUrl  = params.get('host') === '1';
+  const bySess = sessionStorage.getItem('_skHost') === '1';
+  if (byUrl || bySess) {
+    activateHostUI();
   }
 }
 
-/* ═══ RATINGS ═══ */
+/* ═══ RATINGS HELPERS ═══
+   Structure in Firebase:
+     gallery/ratings/{itemId}/{safeUserId} = stars (number 1-5)
+*/
 function getRatingAvg(itemId) {
   const r = allRatings[itemId];
   if (!r || typeof r !== 'object') return 0;
@@ -741,18 +746,27 @@ function getRatingCount(itemId) {
 function getMyRating(itemId) {
   const r = allRatings[itemId];
   if (!r) return 0;
-  return r[_userId] || 0;
+  return r[safeUid(_userId)] || 0;
 }
 function setRating(itemId, stars) {
+  const safe = safeUid(_userId);
   if (!allRatings[itemId]) allRatings[itemId] = {};
-  allRatings[itemId][_userId] = stars;
-  set(dbRef(db, 'gallery/ratings/' + itemId + '/' + _userId.replace(/[.#$[\]]/g,'_')), stars).catch(()=>{});
+  allRatings[itemId][safe] = stars;
+  set(dbRef(db, 'gallery/ratings/' + itemId + '/' + safe), stars).catch(()=>{});
+}
+function safeUid(uid) {
+  return uid.replace(/[.#$[\]]/g,'_');
 }
 
-/* ═══ FIREBASE LOAD ═══ */
+/* ═══ FIREBASE LOAD ═══
+   gallery/items/{id}  — artwork metadata
+   gallery/ratings/{itemId}/{userId} — star ratings
+   gallery/characters/{id}  — characters
+   gallery/categories  — array of category names
+*/
 function loadAll() {
   /* Gallery items */
-  onValue(dbRef(db, 'gallery/ratings'), snap => {
+  onValue(dbRef(db, 'gallery/items'), snap => {
     const val = snap.val() || {};
     galleryItems = Object.entries(val).map(([id, v]) => ({ id, ...v }))
       .sort((a,b) => (b.addedAt||0) - (a.addedAt||0));
@@ -772,14 +786,19 @@ function loadAll() {
   onValue(dbRef(db, 'gallery/categories'), snap => {
     const val = snap.val();
     if (val && Array.isArray(val)) categories = val;
-    renderCatTabs(); renderCatSelects();
+    renderCatTabs();
+    renderCatSelects();
   });
 
-  /* Ratings */
+  /* Ratings — structure: { itemId: { safeUserId: stars } } */
   onValue(dbRef(db, 'gallery/ratings'), snap => {
     const val = snap.val() || {};
     allRatings = {};
-    Object.entries(val).forEach(([itemId, users]) => { allRatings[itemId] = users; });
+    Object.entries(val).forEach(([itemId, users]) => {
+      if (users && typeof users === 'object') {
+        allRatings[itemId] = users;
+      }
+    });
     renderGallery();
   });
 }
@@ -824,7 +843,11 @@ function renderCatSelects() {
   if (!sel) return;
   const cur = sel.value;
   sel.innerHTML = '<option value="">Uncategorized</option>';
-  categories.forEach(c => { const o = document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
+  categories.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    sel.appendChild(o);
+  });
   if (cur) sel.value = cur;
 }
 
@@ -854,7 +877,11 @@ window.toggleCatManager = function() {
 function getFiltered() {
   let items = [...galleryItems];
   const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
-  if (q) items = items.filter(i => (i.title||'').toLowerCase().includes(q) || (i.author||'').toLowerCase().includes(q) || (i.category||'').toLowerCase().includes(q));
+  if (q) items = items.filter(i =>
+    (i.title||'').toLowerCase().includes(q) ||
+    (i.author||'').toLowerCase().includes(q) ||
+    (i.category||'').toLowerCase().includes(q)
+  );
   if (currentCat !== 'all') items = items.filter(i => (i.category||'') === currentCat);
 
   if (currentSort === 'rated') {
@@ -878,7 +905,8 @@ window.renderGallery = function() {
   const grid = document.getElementById('galleryGrid');
   const items = getFiltered();
   grid.className = 'gi-grid' + (currentView === 'list' ? ' list-view' : '');
-  document.getElementById('galleryCount').textContent = galleryItems.length + ' piece' + (galleryItems.length!==1?'s':'');
+  document.getElementById('galleryCount').textContent =
+    galleryItems.length + ' piece' + (galleryItems.length!==1?'s':'');
 
   if (!items.length) {
     grid.innerHTML = '<div class="gi-empty"><span class="gi-empty-icon">&#x1F5BC;</span><span>' +
@@ -929,7 +957,10 @@ function buildCard(item, allFiltered) {
 
   if (isHost) {
     card.draggable = true;
-    card.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', item.id); card.classList.add('dragging'); });
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', item.id);
+      card.classList.add('dragging');
+    });
     card.addEventListener('dragend', () => card.classList.remove('dragging'));
   }
 
@@ -954,17 +985,18 @@ function buildCard(item, allFiltered) {
     '</div>';
   card.appendChild(info);
 
-  /* Stars */
   const starsRow = buildStarRow(item.id, true);
   card.appendChild(starsRow);
 
-  /* Admin delete */
   if (isHost) {
     const acts = document.createElement('div');
     acts.className = 'gi-card-actions';
     const del = document.createElement('div');
     del.className = 'gi-card-act'; del.title='Delete'; del.textContent='✕';
-    del.addEventListener('click', e => { e.stopPropagation(); deleteItem(item.id, item.storagePath); });
+    del.addEventListener('click', e => {
+      e.stopPropagation();
+      deleteItem(item.id, item.storagePath);
+    });
     acts.appendChild(del);
     card.appendChild(acts);
   }
@@ -975,7 +1007,10 @@ function buildCard(item, allFiltered) {
     lbIdx = allFilt.findIndex(i => i.id === item.id);
     openLightbox();
   });
-  card.addEventListener('contextmenu', e => { e.preventDefault(); openCtxMenu(e, item.id, 'gallery'); });
+  card.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    openCtxMenu(e, item.id, 'gallery');
+  });
   return card;
 }
 
@@ -1007,7 +1042,10 @@ function buildStarRow(itemId, interactive) {
         setRating(itemId, s);
         row.querySelectorAll('.gi-star').forEach((st,i) => st.classList.toggle('on', i < s));
         const avgEl = row.querySelector('.gi-star-avg');
-        if (avgEl) { const na = getRatingAvg(itemId); avgEl.textContent = na > 0 ? '(' + na.toFixed(1) + ')' : ''; }
+        if (avgEl) {
+          const na = getRatingAvg(itemId);
+          avgEl.textContent = na > 0 ? '(' + na.toFixed(1) + ')' : '';
+        }
         if (currentSort === 'rated') setTimeout(() => renderGallery(), 500);
       });
     }
@@ -1016,7 +1054,9 @@ function buildStarRow(itemId, interactive) {
 
   const avgEl = document.createElement('span');
   avgEl.className = 'gi-star-avg';
-  avgEl.textContent = avg > 0 ? '(' + avg.toFixed(1) + (getRatingCount(itemId)>1?' · '+getRatingCount(itemId):'') + ')' : '';
+  avgEl.textContent = avg > 0
+    ? '(' + avg.toFixed(1) + (getRatingCount(itemId)>1?' · '+getRatingCount(itemId):'') + ')'
+    : '';
   row.appendChild(avgEl);
   return row;
 }
@@ -1024,10 +1064,13 @@ function buildStarRow(itemId, interactive) {
 function handleDropOnCat(cat, e) {
   const id = e.dataTransfer.getData('text/plain');
   if (!id) return;
-  update(dbRef(db,'gallery/ratings/'+id), { category: cat });
+  /* Update category in gallery/items */
+  update(dbRef(db,'gallery/items/'+id), { category: cat });
 }
 
-/* ═══ UPLOAD ═══ */
+/* ═══ UPLOAD ═══
+   Saves to gallery/items/{pushId} — correct path
+*/
 window.uploadPending = async function() {
   if (!isHost || !pendingFiles.length) return;
   const btn = document.getElementById('uploadBtn');
@@ -1040,12 +1083,13 @@ window.uploadPending = async function() {
   for (let i=0; i<pendingFiles.length; i++) {
     const file = pendingFiles[i];
     try {
-      btn.textContent = 'Uploading '+i+'/'+pendingFiles.length+'…';
+      btn.textContent = 'Uploading '+(i+1)+'/'+pendingFiles.length+'…';
       const path = 'sketchbook/gallery/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
       const storageRef = sRef(storage, path);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
-      await push(dbRef(db,'gallery/ratings'), {
+      /* Save metadata to gallery/items (not gallery/ratings!) */
+      await push(dbRef(db,'gallery/items'), {
         src:         url,
         storagePath: path,
         title:       title ? (pendingFiles.length>1 ? title+' '+(i+1) : title) : file.name.replace(/\.[^.]+$/,''),
@@ -1059,14 +1103,19 @@ window.uploadPending = async function() {
 
   pendingFiles = [];
   document.getElementById('uploadPreviewStrip').innerHTML = '';
-  ['titleInput','descInput','authorInput'].forEach(id => { const el=document.getElementById(id); if(el)el.value=''; });
+  ['titleInput','descInput','authorInput'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value='';
+  });
   btn.disabled = false; btn.textContent = '↑ Upload to Archive';
 };
 
 /* ═══ CHARACTERS ═══ */
 window.renderCharacters = function() {
   const grid = document.getElementById('charGrid');
-  if (!characters.length) { grid.innerHTML='<div class="char-empty">No characters added yet.</div>'; return; }
+  if (!characters.length) {
+    grid.innerHTML='<div class="char-empty">No characters added yet.</div>';
+    return;
+  }
   grid.innerHTML = '';
   characters.forEach(ch => grid.appendChild(buildCharCard(ch)));
 };
@@ -1100,7 +1149,9 @@ window.uploadCharacter = async function() {
     const storageRef = sRef(storage, path);
     await uploadBytes(storageRef, file);
     const url = await getDownloadURL(storageRef);
-    await push(dbRef(db,'gallery/characters'),{ src:url, storagePath:path, name, desc, tags, addedAt:Date.now() });
+    await push(dbRef(db,'gallery/characters'),{
+      src:url, storagePath:path, name, desc, tags, addedAt:Date.now()
+    });
     ['charName','charDesc','charTags'].forEach(id => { document.getElementById(id).value=''; });
     document.getElementById('charFileInput').value='';
     document.getElementById('charPreview').style.display='none';
@@ -1112,7 +1163,9 @@ window.uploadCharacter = async function() {
 /* ═══ DELETE ═══ */
 window.deleteItem = async function(id, storagePath) {
   if (!confirm('Delete this artwork? Cannot be undone.')) return;
-  await remove(dbRef(db,'gallery/ratings/'+id));
+  await remove(dbRef(db,'gallery/items/'+id));
+  /* Also remove ratings for this item */
+  await remove(dbRef(db,'gallery/ratings/'+id)).catch(()=>{});
   if (storagePath) { try { await deleteObject(sRef(storage,storagePath)); } catch(_){} }
 };
 
@@ -1137,9 +1190,9 @@ function updateLightboxContent(item) {
   const area = document.getElementById('lb-scroll-area');
   area.scrollLeft = 0; area.scrollTop = 0;
 
-  document.getElementById('lb-toolbar-title').textContent = (item.title||'Untitled') + (item.category ? ' — '+item.category : '');
+  document.getElementById('lb-toolbar-title').textContent =
+    (item.title||'Untitled') + (item.category ? ' — '+item.category : '');
 
-  /* Info bar — simples */
   document.getElementById('lbfi-title').textContent  = item.title || 'Untitled';
   document.getElementById('lbfi-date').textContent   = item.addedAt ? fmtDateFull(item.addedAt) : '';
   document.getElementById('lbfi-author').textContent = item.author ? 'by ' + item.author : '';
@@ -1269,7 +1322,10 @@ function openCtxMenu(e, id, type) {
   const ctxDl  = document.getElementById('ctxDl');
   const ctxDel = document.getElementById('ctxDel');
   const ctxSep = document.getElementById('ctxAdminSep');
-  if (item) { ctxDl.dataset.src=item.src; ctxDl.dataset.name=(item.title||item.name||'download'); }
+  if (item) {
+    ctxDl.dataset.src  = item.src;
+    ctxDl.dataset.name = item.title || item.name || 'download';
+  }
   ctxDel.style.display = isHost ? '' : 'none';
   ctxSep.style.display = isHost ? '' : 'none';
   const menu = document.getElementById('ctxMenu');
@@ -1281,7 +1337,9 @@ function closeCtxMenu() { document.getElementById('ctxMenu').style.display='none
 
 document.getElementById('ctxDl').addEventListener('click', () => {
   const dl = document.getElementById('ctxDl');
-  if (dl.dataset.src) { const a=document.createElement('a'); a.href=dl.dataset.src; a.download=(dl.dataset.name||'artwork'); a.click(); }
+  if (dl.dataset.src) {
+    const a=document.createElement('a'); a.href=dl.dataset.src; a.download=(dl.dataset.name||'artwork'); a.click();
+  }
   closeCtxMenu();
 });
 document.getElementById('ctxDel').addEventListener('click', () => {
@@ -1299,7 +1357,8 @@ window.setSort = function(s, btn) {
   currentPage = 0;
   ['sortRated','sortNewest','sortOldest','sortAlpha'].forEach(id => {
     const b = document.getElementById(id);
-    if (b) b.classList.toggle('active', b.id === 'sort'+s.charAt(0).toUpperCase()+s.slice(1));
+    if (b) b.classList.toggle('active',
+      b.id === 'sort'+s.charAt(0).toUpperCase()+s.slice(1));
   });
   renderGallery();
 };
@@ -1318,7 +1377,10 @@ document.getElementById('fileInput').addEventListener('change', function() {
 const dz = document.getElementById('uploadZone');
 dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
 dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); addPendingFiles(Array.from(e.dataTransfer.files)); });
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag-over');
+  addPendingFiles(Array.from(e.dataTransfer.files));
+});
 
 function addPendingFiles(files) {
   const imgs = files.filter(f => f.type.match(/^image\//));
@@ -1363,10 +1425,10 @@ charZone.addEventListener('drop', e => {
 
 /* ═══ TAB SWITCH ═══ */
 window.switchMainTab = function(tab) {
-  document.querySelectorAll('.main-tab').forEach((b,i) => b.classList.toggle('active', ['gallery','characters','paint'][i]===tab));
+  document.querySelectorAll('.main-tab').forEach((b,i) =>
+    b.classList.toggle('active', ['gallery','characters','paint'][i]===tab));
   document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-'+tab).classList.add('active');
-  /* Init paint embed on first visit */
   if (tab === 'paint') initPaint();
 };
 
@@ -1388,23 +1450,29 @@ function initPaint() {
 function fmtDate(ts) {
   if (!ts) return '';
   const d = new Date(ts);
-  return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+  return String(d.getDate()).padStart(2,'0')+'/'+
+    String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
 }
 function fmtDateFull(ts) {
   if (!ts) return '';
   const d = new Date(ts);
-  return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()+
-    ' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  return String(d.getDate()).padStart(2,'0')+'/'+
+    String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()+
+    ' '+String(d.getHours()).padStart(2,'0')+':'+
+    String(d.getMinutes()).padStart(2,'0');
 }
 function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  return String(s||'')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
 /* ═══ INIT ═══ */
+_userId = getUserId();
+initHostMode();   /* ← runs immediately, before DOMContentLoaded, so URL param works */
+loadAll();
+
 document.addEventListener('DOMContentLoaded', () => {
-  _userId = getUserId();
-  initHostMode();
-  loadAll();
   document.getElementById('sortRated').classList.add('active');
   document.getElementById('viewGrid').classList.add('active');
 });
