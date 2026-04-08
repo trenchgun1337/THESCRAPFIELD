@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sketchbook — Watanagashi Archive</title>
+<link rel="icon" type="image/x-icon" href="../assets/images/rikaico.ico">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+*{-webkit-tap-highlight-color:transparent}
+::selection{background:rgba(80,80,80,.45);color:#fff}
+*:focus{outline:none!important}
+button:active,button:focus,button:focus-visible{outline:none!important;box-shadow:none!important}
+
+:root{
+  --accent:#cc1a1a;
+  --text:#111;
+  --text-dim:#2c2c2c;
+  --grad-bar:linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
+  --shadow-bar:0 2px 5px rgba(0,0,0,.15);
+}
+
+html{scrollbar-width:thin;scrollbar-color:rgba(120,120,120,.50) transparent}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(120,120,120,.50);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(54,54,54,.8)}
+
+body{
+  font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
+  font-size:12px;
+  background:#000 center/50% fixed no-repeat;
+  background-image:url('../assets/images/whitebg.jpeg');
+  color:var(--text);
+  padding:12px 6px 60px;
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100vh;
+}
+
+img{-webkit-user-drag:none;user-select:none}
+a{color:#000;text-decoration:none}
+a:hover{color:var(--accent);text-decoration:underline}
+p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
+
+#_pageShell{width:800px;max-width:100%;display:flex;flex-direction:column;gap:7px}
+
+/* ── corner logo ── */
+#cornerLogo{position:fixed;top:10px;right:14px;z-index:9998;line-height:0;text-decoration:none}
+#cornerLogo img{height:36px;width:auto;object-fit:contain;display:block;opacity:.82}
+#cornerLogo:hover img{opacity:1}
+
+/* ── aero top bar ── */
+.aero-bar{
+  background:var(--grad-bar);border:2px ridge #727272;
+  box-shadow:var(--shadow-bar);color:var(--text);font-size:13px;
+  padding:4px 8px;display:flex;align-items:center;gap:6px;
+}
+.aero-bar .back-link{flex-shrink:0;padding:2px 3px;display:flex;align-items:center;line-height:0;text-decoration:none}
+.aero-bar .back-link img{height:28px;width:auto;object-fit:contain;display:block}
+.aero-bar .back-link:hover img{filter:brightness(.85)}
+.aero-bar .bar-title{flex:1;text-align:center;font-size:12px;letter-spacing:.5px}
+
+/* ── glass box ── */
+.glass-box{background:#ebebeb;box-shadow:var(--shadow-bar);border:2px ridge #727272;padding:5px}
+.aero-inner{border:1px solid rgba(0,0,0,.30);background:#f2f2f2}
+.aero-pad{padding:10px 12px}
+
+/* ── section bar (black label) ── */
+.section-bar{
+  display:block;background:#000;padding:5px 8px;margin:0;line-height:1.6;
+  font-size:11px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:#fff;
+}
+
+/* ══════════════════════════════
+   UPLOAD ZONE
+══════════════════════════════ */
+.upload-zone{
+  border:2px dashed rgba(140,140,140,.55);
+  background:#fafafa;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;padding:28px 20px;cursor:pointer;
+  font-size:11.5px;color:#888;text-align:center;
+  transition:border-color .15s,background .15s;
+  margin:5px 0;
+}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:#fff5f5}
+.upload-zone .uz-icon{font-size:28px;line-height:1}
+
+/* ══════════════════════════════
+   FILTER / CONTROLS BAR
+══════════════════════════════ */
+.controls-row{
+  background:var(--grad-bar);border:1px solid rgba(140,140,140,.40);
+  padding:5px 8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  box-shadow:var(--shadow-bar);
+}
+.ctrl-label{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.ctrl-input{
+  background:#fff;border:1px solid rgba(140,140,140,.55);outline:none;
+  font-family:inherit;font-size:11px;color:#111;padding:3px 7px;
+}
+.ctrl-input::placeholder{color:#aaa}
+.ctrl-btn{
+  background:linear-gradient(to bottom,#555 0%,#333 50%,#222 50%,#2e2e2e 100%);
+  border:1px solid rgba(0,0,0,.55);color:#eee;
+  font-family:inherit;font-size:10.5px;padding:3px 9px;cursor:pointer;white-space:nowrap;
+  letter-spacing:.3px;
+}
+.ctrl-btn:hover{filter:brightness(1.25)}
+.ctrl-btn.active{background:linear-gradient(to bottom,#cc1a1a,#8a1111 50%,#6a0c0c 50%,#7d1010 100%);border-color:rgba(120,0,0,.55);color:#fff}
+.ctrl-spacer{flex:1}
+.ctrl-count{font-size:10px;color:#888;white-space:nowrap}
+
+/* ══════════════════════════════
+   GALLERY GRID
+══════════════════════════════ */
+.gi-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+  gap:6px;padding:6px;
+  background:#e8e8e8;
+  border:1px solid rgba(0,0,0,.20);
+  min-height:200px;
+}
+.gi-grid.view-list{
+  grid-template-columns:1fr;
+  gap:4px;
+}
+
+/* ── card (grid view) ── */
+.gi-card{
+  position:relative;background:#fff;
+  border:1px solid rgba(0,0,0,.20);
+  box-shadow:0 1px 3px rgba(0,0,0,.12);
+  cursor:pointer;overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:box-shadow .12s,transform .12s;
+}
+.gi-card:hover{
+  box-shadow:0 3px 10px rgba(0,0,0,.25);
+  transform:translateY(-1px);
+  border-color:rgba(100,100,100,.45);
+}
+.gi-card-thumb{
+  width:100%;aspect-ratio:1/1;
+  background:#d8d8d8 center/cover no-repeat;
+  border-bottom:1px solid rgba(0,0,0,.12);
+  flex-shrink:0;
+  transition:filter .15s;
+}
+.gi-card:hover .gi-card-thumb{filter:brightness(1.04) contrast(1.02)}
+.gi-card-info{padding:5px 7px 6px;flex:1;display:flex;flex-direction:column;gap:2px}
+.gi-card-title{
+  font-size:11.5px;color:#111;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;
+  font-weight:400;letter-spacing:.2px;
+}
+.gi-card-meta{font-size:9.5px;color:#aaa;display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.gi-card-tag{
+  font-size:9px;background:#e0e0e0;border:1px solid rgba(0,0,0,.12);
+  color:#555;padding:1px 5px;letter-spacing:.3px;text-transform:uppercase;
+}
+.gi-card-tag.award{background:linear-gradient(to bottom,#fff8dc,#ffe87c);border-color:rgba(160,120,0,.35);color:#7a5c00}
+.gi-card-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.65);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .15s;
+  pointer-events:none;
+}
+.gi-card:hover .gi-card-overlay{opacity:1}
+.gi-card-overlay span{color:#fff;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+
+/* ── card (list view) ── */
+.gi-grid.view-list .gi-card{
+  flex-direction:row;align-items:center;
+  aspect-ratio:unset;min-height:52px;
+}
+.gi-grid.view-list .gi-card-thumb{
+  width:52px;height:52px;flex-shrink:0;aspect-ratio:unset;
+  border-bottom:none;border-right:1px solid rgba(0,0,0,.12);
+}
+.gi-grid.view-list .gi-card-info{flex-direction:row;align-items:center;gap:8px;padding:6px 10px}
+.gi-grid.view-list .gi-card-title{flex:1;white-space:nowrap}
+.gi-grid.view-list .gi-card-overlay{display:none}
+
+/* ── empty state ── */
+.gi-empty{
+  grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:40px 20px;color:#aaa;font-size:12px;text-align:center;
+}
+.gi-empty-icon{font-size:36px;opacity:.35}
+
+/* ── badge / awarded strip ── */
+.awarded-strip{
+  display:flex;flex-wrap:wrap;gap:5px;padding:8px;
+  background:linear-gradient(to bottom,#fffbe6,#fff5c0);
+  border:1px solid rgba(180,150,0,.25);
+}
+.aw-item{
+  display:flex;align-items:center;gap:5px;
+  background:#fff;border:1px solid rgba(160,130,0,.30);
+  padding:3px 8px 3px 4px;cursor:pointer;
+  font-size:11px;transition:border-color .12s;
+}
+.aw-item:hover{border-color:var(--accent)}
+.aw-item img{width:36px;height:36px;object-fit:cover;border:1px solid rgba(0,0,0,.10);flex-shrink:0}
+.aw-item-text{display:flex;flex-direction:column;gap:1px}
+.aw-item-name{font-size:10.5px;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px}
+.aw-item-badge{font-size:9px;color:#9a7a00;letter-spacing:.3px}
+
+/* ══════════════════════════════
+   LIGHTBOX
+══════════════════════════════ */
+#lightbox{
+  display:none;position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,.88);
+  align-items:center;justify-content:center;
+  flex-direction:column;gap:0;
+}
+#lightbox.open{display:flex}
+#lb-img-wrap{
+  position:relative;max-width:90vw;max-height:80vh;
+  display:flex;align-items:center;justify-content:center;
+}
+#lb-img{
+  max-width:90vw;max-height:80vh;
+  border:2px ridge #727272;
+  box-shadow:0 8px 40px rgba(0,0,0,.8);
+  background:#111;display:block;
+}
+#lb-prev,#lb-next{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(0,0,0,.60);border:1px solid rgba(255,255,255,.15);
+  color:#fff;font-size:20px;width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;user-select:none;z-index:2;
+  transition:background .12s;
+}
+#lb-prev{left:-44px}
+#lb-next{right:-44px}
+#lb-prev:hover,#lb-next:hover{background:rgba(180,20,20,.75)}
+#lb-info{
+  background:linear-gradient(to bottom,#111,#0a0a0a);
+  border:1px solid rgba(100,100,100,.30);
+  padding:7px 14px;max-width:90vw;width:max-content;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  justify-content:center;margin-top:6px;
+}
+#lb-title{font-size:12.5px;color:#eee;letter-spacing:.4px}
+#lb-meta{font-size:10px;color:#888}
+#lb-close{
+  position:fixed;top:12px;right:14px;
+  background:none;border:1px solid rgba(200,200,200,.20);
+  color:#aaa;font-size:18px;width:30px;height:30px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:10001;
+}
+#lb-close:hover{background:rgba(180,20,20,.50);color:#fff;border-color:var(--accent)}
+#lb-dl{
+  background:linear-gradient(to bottom,#555,#333 50%,#222 50%,#2e2e2e 100%);
+  border:1px solid rgba(0,0,0,.55);color:#eee;
+  font-family:inherit;font-size:10px;padding:3px 9px;cursor:pointer;
+  text-decoration:none;display:inline-flex;align-items:center;gap:4px;
+}
+#lb-dl:hover{filter:brightness(1.25);color:#fff}
+
+/* ── delete btn on card ── */
+.gi-card-del{
+  position:absolute;top:3px;right:3px;
+  background:rgba(0,0,0,.55);border:1px solid rgba(200,0,0,.40);
+  color:#ff8888;font-size:10px;width:18px;height:18px;
+  display:none;align-items:center;justify-content:center;
+  cursor:pointer;z-index:5;
+}
+.gi-card:hover .gi-card-del{display:flex}
+.gi-card-del:hover{background:var(--accent);color:#fff}
+
+/* ── sound toggle ── */
+#soundToggle{
+  position:fixed;bottom:8px;left:10px;z-index:9999;
+  font-family:inherit;font-size:10px;
+  color:rgba(255,255,255,.5);cursor:pointer;padding:2px 0;background:none;border:none;
+}
+#soundToggle:hover{color:rgba(255,255,255,.85)}
+#soundToggle.off{color:rgba(255,255,255,.22)}
+
+/* ── mobile ── */
+@media(max-width:600px){
+  body{padding:8px 4px 40px}
+  #_pageShell{width:100%}
+  .gi-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  #lb-prev{left:-38px}#lb-next{right:-38px}
+}
+</style>
+</head>
+<body>
+
+<a id="cornerLogo" href="../index.html#introduction" title="Watanagashi Archive — Home">
+  <img src="../assets/images/watanagashilogo2.png" alt="Watanagashi Archive" onerror="this.style.display='none'">
+</a>
+
+<div id="_pageShell">
+
+  <!-- ── Top bar ── -->
+  <div class="aero-bar">
+    <a class="back-link" href="../index.html#resources" title="Back to Resources">
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#x2039;"
+        onerror="this.outerHTML='<span style=&quot;color:#333;font-size:22px;line-height:1;&quot;>&#x2039;</span>'">
+    </a>
+    <span class="bar-title">SKETCHBOOK &amp; GALLERY</span>
+  </div>
+
+  <!-- ── Awarded ── -->
+  <div class="glass-box" id="awardedSection">
+    <div class="section-bar">&#x2605; Awarded Art</div>
+    <div class="awarded-strip aero-inner" id="awardedStrip">
+      <span style="color:#bbb;font-size:11px;padding:4px 6px">No awarded pieces yet.</span>
+    </div>
+  </div>
+
+  <!-- ── Upload zone ── -->
+  <div class="glass-box">
+    <div class="section-bar">Upload Art</div>
+    <div class="aero-inner">
+      <div class="aero-pad">
+        <label class="upload-zone" id="uploadZone">
+          <span class="uz-icon">&#x266A;</span>
+          <strong style="color:#444;font-size:12px">Click or drag images here</strong>
+          <span style="font-size:10.5px">PNG, JPG, GIF, WEBP supported</span>
+          <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
+        </label>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap">
+          <input type="text" class="ctrl-input" id="tagInput" placeholder="Tag / category (optional)" style="flex:1;min-width:120px">
+          <input type="text" class="ctrl-input" id="titleInput" placeholder="Title for next upload (optional)" style="flex:1;min-width:120px">
+        </div>
+        <p style="font-size:10px;color:#aaa;margin-top:5px">Files are stored locally in your browser. To award a piece, right-click a card and select <em>Award</em>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Gallery ── -->
+  <div class="glass-box">
+    <div class="section-bar">Gallery</div>
+    <div class="aero-inner">
+      <!-- Controls -->
+      <div class="controls-row">
+        <span class="ctrl-label">Filter:</span>
+        <input type="text" class="ctrl-input" id="searchInput" placeholder="Search&#x2026;" style="width:130px">
+        <select class="ctrl-input" id="tagFilter" style="width:110px">
+          <option value="">All tags</option>
+        </select>
+        <div style="width:1px;height:18px;background:rgba(0,0,0,.18);flex-shrink:0"></div>
+        <span class="ctrl-label">Sort:</span>
+        <button class="ctrl-btn active" id="sortNewest" onclick="setSort('newest')">Newest</button>
+        <button class="ctrl-btn" id="sortOldest" onclick="setSort('oldest')">Oldest</button>
+        <button class="ctrl-btn" id="sortAlpha" onclick="setSort('alpha')">A–Z</button>
+        <div class="ctrl-spacer"></div>
+        <button class="ctrl-btn" id="viewGrid" onclick="setView('grid')" title="Grid view">&#9632;&#9632;</button>
+        <button class="ctrl-btn" id="viewList" onclick="setView('list')" title="List view">&#9776;</button>
+        <span class="ctrl-count" id="galleryCount">0 pieces</span>
+      </div>
+
+      <!-- Grid -->
+      <div class="gi-grid" id="galleryGrid">
+        <div class="gi-empty">
+          <span class="gi-empty-icon">&#x1F5BC;</span>
+          <span>No artwork uploaded yet.<br>Add some pieces above!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#_pageShell -->
+
+<!-- ── Lightbox ── -->
+<div id="lightbox" role="dialog" aria-modal="true">
+  <button id="lb-close" title="Close">&times;</button>
+  <div id="lb-img-wrap">
+    <button id="lb-prev">&#x2039;</button>
+    <img id="lb-img" src="" alt="">
+    <button id="lb-next">&#x203A;</button>
+  </div>
+  <div id="lb-info">
+    <span id="lb-title">&#x2014;</span>
+    <span id="lb-meta"></span>
+    <a id="lb-dl" download>&#x2193; Download</a>
+  </div>
+</div>
+
+<!-- Context menu -->
+<div id="ctxMenu" style="display:none;position:fixed;z-index:20000;background:#0a0202;border:1px solid rgba(180,20,20,.50);min-width:150px;font-size:12px;box-shadow:0 4px 16px rgba(0,0,0,.8);">
+  <div id="ctxAward" style="padding:8px 14px;cursor:pointer;color:#ccc">&#x2605; Award this piece</div>
+  <div id="ctxUnaward" style="padding:8px 14px;cursor:pointer;color:#ccc;display:none">&#x2606; Remove award</div>
+  <div style="border-top:1px solid rgba(255,255,255,.06);margin:2px 0"></div>
+  <div id="ctxDl" style="padding:8px 14px;cursor:pointer;color:#ccc">&#x2193; Download</div>
+  <div style="border-top:1px solid rgba(255,255,255,.06);margin:2px 0"></div>
+  <div id="ctxDel" style="padding:8px 14px;cursor:pointer;color:#ff6666">&#x2718; Delete</div>
+</div>
+
+<button id="soundToggle">Sounds: On</button>
+
+<script>
+/* ═══════════════════════
+   STORAGE
+═══════════════════════ */
+const HS_GAL = 'sketchbook_gallery_v2';
+
+function loadGallery() {
+  try { return JSON.parse(localStorage.getItem(HS_GAL) || '[]'); } catch(e) { return []; }
+}
+function saveGallery(arr) {
+  try { localStorage.setItem(HS_GAL, JSON.stringify(arr)); } catch(e) {
+    alert('Storage full! Try deleting some images.'); 
+  }
+}
+
+/* ═══════════════════════
+   STATE
+═══════════════════════ */
+let gallery = loadGallery();
+let currentSort = 'newest';
+let currentView = 'grid';
+let searchQuery = '';
+let tagFilter   = '';
+let lbIdx       = -1;
+let ctxTarget   = null;
+
+/* ═══════════════════════
+   DATE FORMAT
+═══════════════════════ */
+function fmtDate(ts) {
+  const d = new Date(ts);
+  return String(d.getDate()).padStart(2,'0') + '/' +
+         String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
+}
+
+/* ═══════════════════════
+   RENDER
+═══════════════════════ */
+function getFiltered() {
+  let items = [...gallery];
+  if (searchQuery) items = items.filter(i => (i.title||'').toLowerCase().includes(searchQuery) || (i.tag||'').toLowerCase().includes(searchQuery));
+  if (tagFilter)   items = items.filter(i => (i.tag||'') === tagFilter);
+  if (currentSort === 'newest') items.sort((a,b) => b.addedAt - a.addedAt);
+  else if (currentSort === 'oldest') items.sort((a,b) => a.addedAt - b.addedAt);
+  else if (currentSort === 'alpha') items.sort((a,b) => (a.title||'').localeCompare(b.title||''));
+  return items;
+}
+
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  const items = getFiltered();
+  grid.className = 'gi-grid' + (currentView === 'list' ? ' view-list' : '');
+
+  if (!items.length) {
+    grid.innerHTML = '<div class="gi-empty"><span class="gi-empty-icon">&#x1F5BC;</span><span>' +
+      (gallery.length === 0 ? 'No artwork uploaded yet.<br>Add some pieces above!' : 'No results match your search.') +
+      '</span></div>';
+    document.getElementById('galleryCount').textContent = '0 pieces';
+    return;
+  }
+
+  document.getElementById('galleryCount').textContent = items.length + ' piece' + (items.length !== 1 ? 's' : '');
+
+  grid.innerHTML = '';
+  items.forEach((item, _) => {
+    const realIdx = gallery.findIndex(g => g.id === item.id);
+    const card = document.createElement('div');
+    card.className = 'gi-card';
+    card.dataset.id = item.id;
+    card.innerHTML =
+      '<div class="gi-card-thumb" style="background-image:url(\''+item.src+'\')"></div>' +
+      '<div class="gi-card-overlay"><span>&#x1F50D; View</span></div>' +
+      '<div class="gi-card-info">' +
+        '<span class="gi-card-title">'+(item.title || 'Untitled')+'</span>' +
+        '<div class="gi-card-meta">' +
+          (item.awarded ? '<span class="gi-card-tag award">&#x2605; Awarded</span>' : '') +
+          (item.tag ? '<span class="gi-card-tag">'+esc(item.tag)+'</span>' : '') +
+          '<span>'+fmtDate(item.addedAt)+'</span>' +
+        '</div>' +
+      '</div>' +
+      '<button class="gi-card-del" title="Delete" data-id="'+item.id+'">&times;</button>';
+    card.addEventListener('click', (e) => {
+      if (e.target.classList.contains('gi-card-del')) return;
+      openLightbox(realIdx);
+    });
+    card.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      openCtxMenu(e, item.id);
+    });
+    card.querySelector('.gi-card-del').addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteItem(item.id);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function renderTagFilter() {
+  const sel = document.getElementById('tagFilter');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">All tags</option>';
+  const tags = [...new Set(gallery.map(i => i.tag).filter(Boolean))];
+  tags.forEach(t => {
+    const o = document.createElement('option');
+    o.value = t; o.textContent = t; sel.appendChild(o);
+  });
+  if (tags.includes(cur)) sel.value = cur;
+}
+
+function renderAwarded() {
+  const strip = document.getElementById('awardedStrip');
+  const awarded = gallery.filter(i => i.awarded);
+  if (!awarded.length) {
+    strip.innerHTML = '<span style="color:#bbb;font-size:11px;padding:4px 6px">No awarded pieces yet.</span>';
+    return;
+  }
+  strip.innerHTML = '';
+  awarded.forEach(item => {
+    const idx = gallery.findIndex(g => g.id === item.id);
+    const el = document.createElement('div');
+    el.className = 'aw-item';
+    el.innerHTML =
+      '<img src="'+item.src+'" alt="" draggable="false">' +
+      '<div class="aw-item-text">' +
+        '<span class="aw-item-name">'+(item.title||'Untitled')+'</span>' +
+        '<span class="aw-item-badge">&#x2605; '+fmtDate(item.addedAt)+'</span>' +
+      '</div>';
+    el.addEventListener('click', () => openLightbox(idx));
+    strip.appendChild(el);
+  });
+}
+
+function renderAll() {
+  renderGallery();
+  renderTagFilter();
+  renderAwarded();
+}
+
+/* ═══════════════════════
+   UPLOAD
+═══════════════════════ */
+function handleFiles(files) {
+  const tag   = (document.getElementById('tagInput').value  || '').trim();
+  const title = (document.getElementById('titleInput').value|| '').trim();
+  const readers = Array.from(files).filter(f => f.type.match(/^image\//));
+  if (!readers.length) return;
+  let done = 0;
+  readers.forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const id = 'sk_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+      gallery.unshift({
+        id, src: reader.result,
+        title: title ? (readers.length > 1 ? title + ' ' + (i+1) : title) : file.name.replace(/\.[^.]+$/,''),
+        tag: tag || '',
+        addedAt: Date.now(),
+        awarded: false
+      });
+      done++;
+      if (done === readers.length) { saveGallery(gallery); renderAll(); }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ═══════════════════════
+   LIGHTBOX
+═══════════════════════ */
+function openLightbox(idx) {
+  lbIdx = idx;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  lbIdx = -1;
+}
+function updateLightbox() {
+  if (lbIdx < 0 || lbIdx >= gallery.length) return;
+  const item = gallery[lbIdx];
+  const img  = document.getElementById('lb-img');
+  img.src  = item.src;
+  img.alt  = item.title || 'Artwork';
+  document.getElementById('lb-title').textContent = item.title || 'Untitled';
+  document.getElementById('lb-meta').textContent  = fmtDate(item.addedAt) + (item.tag ? ' · ' + item.tag : '') + (item.awarded ? ' · ★ Awarded' : '');
+  const dl = document.getElementById('lb-dl');
+  dl.href = item.src;
+  dl.download = (item.title || 'artwork') + '.png';
+}
+function lbPrev() {
+  if (lbIdx > 0) { lbIdx--; updateLightbox(); }
+  else { lbIdx = gallery.length - 1; updateLightbox(); }
+}
+function lbNext() {
+  if (lbIdx < gallery.length - 1) { lbIdx++; updateLightbox(); }
+  else { lbIdx = 0; updateLightbox(); }
+}
+
+/* ═══════════════════════
+   CONTEXT MENU
+═══════════════════════ */
+function openCtxMenu(e, id) {
+  ctxTarget = id;
+  const item = gallery.find(i => i.id === id);
+  const menu = document.getElementById('ctxMenu');
+  document.getElementById('ctxAward').style.display   = item.awarded ? 'none' : '';
+  document.getElementById('ctxUnaward').style.display = item.awarded ? '' : 'none';
+  const x = Math.min(e.clientX, window.innerWidth  - 160);
+  const y = Math.min(e.clientY, window.innerHeight - 140);
+  menu.style.left = x + 'px';
+  menu.style.top  = y + 'px';
+  menu.style.display = 'block';
+}
+function closeCtxMenu() {
+  document.getElementById('ctxMenu').style.display = 'none';
+  ctxTarget = null;
+}
+
+/* ═══════════════════════
+   ACTIONS
+═══════════════════════ */
+function deleteItem(id) {
+  if (!confirm('Delete this artwork? This cannot be undone.')) return;
+  gallery = gallery.filter(i => i.id !== id);
+  saveGallery(gallery);
+  renderAll();
+  if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
+}
+function awardItem(id, val) {
+  const item = gallery.find(i => i.id === id);
+  if (item) { item.awarded = val; saveGallery(gallery); renderAll(); }
+}
+
+/* ═══════════════════════
+   SORT / VIEW
+═══════════════════════ */
+function setSort(s) {
+  currentSort = s;
+  ['newest','oldest','alpha'].forEach(k => {
+    document.getElementById('sort'+k.charAt(0).toUpperCase()+k.slice(1)).classList.toggle('active', k===s);
+  });
+  renderGallery();
+}
+function setView(v) {
+  currentView = v;
+  document.getElementById('viewGrid').classList.toggle('active', v==='grid');
+  document.getElementById('viewList').classList.toggle('active', v==='list');
+  renderGallery();
+}
+
+/* ═══════════════════════
+   HELPERS
+═══════════════════════ */
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ═══════════════════════
+   SOUNDS
+═══════════════════════ */
+const _SB = '../assets/audio/';
+const _SND = { start: _SB+'sitestart.mp3', button: _SB+'sitebuttonclick.mp3', hover: _SB+'text.mp3' };
+let _soundsOn = true, _ht = 0;
+const _aC = {};
+function _gA(k){ if(!_aC[k]){const a=new Audio(_SND[k]);a.preload='auto';_aC[k]=a;}return _aC[k]; }
+function _playSound(k){ if(!_soundsOn)return;try{const c=_gA(k).cloneNode();c.volume=(k==='hover'?.30:.52);c.play().catch(()=>{});}catch(e){} }
+function _toggleSound(){ _soundsOn=!_soundsOn;const b=document.getElementById('soundToggle');if(b){b.textContent=_soundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_soundsOn);}if(_soundsOn)_playSound('button'); }
+function _iI(el){ if(!el||el===document.body)return false;const t=el.tagName;if(t==='BUTTON'||t==='A'||t==='SELECT')return true;if(t==='INPUT'&&el.type!=='range')return true;const cs=window.getComputedStyle(el);return cs&&cs.cursor==='pointer'; }
+
+/* ═══════════════════════
+   EVENTS
+═══════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('_soundsOn') === 'false') {
+    _soundsOn = false;
+    const b = document.getElementById('soundToggle');
+    if(b){ b.textContent='Sounds: Off'; b.classList.add('off'); }
+  }
+  if (!sessionStorage.getItem('_siteStartPlayed')) {
+    sessionStorage.setItem('_siteStartPlayed','1');
+    setTimeout(() => _playSound('start'), 700);
+  }
+
+  renderAll();
+
+  /* File input */
+  const fi = document.getElementById('fileInput');
+  if (fi) fi.addEventListener('change', function(){ handleFiles(this.files); this.value=''; });
+
+  /* Drag & drop */
+  const dz = document.getElementById('uploadZone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
+
+  /* Search */
+  document.getElementById('searchInput').addEventListener('input', function(){
+    searchQuery = this.value.toLowerCase().trim(); renderGallery();
+  });
+  document.getElementById('tagFilter').addEventListener('change', function(){
+    tagFilter = this.value; renderGallery();
+  });
+
+  /* Lightbox controls */
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', lbPrev);
+  document.getElementById('lb-next').addEventListener('click', lbNext);
+  document.getElementById('lightbox').addEventListener('click', e => {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft')  lbPrev();
+    if (e.key === 'ArrowRight') lbNext();
+  });
+
+  /* Context menu actions */
+  document.getElementById('ctxAward').addEventListener('click', () => {
+    if(ctxTarget){ awardItem(ctxTarget, true); _playSound('button'); } closeCtxMenu();
+  });
+  document.getElementById('ctxUnaward').addEventListener('click', () => {
+    if(ctxTarget){ awardItem(ctxTarget, false); _playSound('button'); } closeCtxMenu();
+  });
+  document.getElementById('ctxDl').addEventListener('click', () => {
+    if (ctxTarget) {
+      const item = gallery.find(i => i.id === ctxTarget);
+      if (item) { const a=document.createElement('a');a.href=item.src;a.download=(item.title||'artwork')+'.png';a.click(); }
+    }
+    closeCtxMenu();
+  });
+  document.getElementById('ctxDel').addEventListener('click', () => {
+    const id = ctxTarget; closeCtxMenu();
+    if (id) { _playSound('button'); deleteItem(id); }
+  });
+  document.addEventListener('click', () => closeCtxMenu());
+  document.getElementById('ctxMenu').addEventListener('click', e => e.stopPropagation());
+
+  /* Sounds */
+  document.getElementById('soundToggle').addEventListener('click', _toggleSound);
+  document.addEventListener('mouseover', e => {
+    if (e.target.id === 'soundToggle') return;
+    if (!_iI(e.target)) return;
+    const n = Date.now(); if(n-_ht<120)return; _ht=n; _playSound('hover');
+  }, { passive: true });
+  document.addEventListener('click', e => {
+    if (e.target.id === 'soundToggle') return;
+    if (_iI(e.target)) _playSound('button');
+  }, true);
+});
+</script>
+</body>
+</html>
