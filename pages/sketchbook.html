@@ -6,9 +6,6 @@
 <title>Sketchbook — Watanagashi Archive</title>
 <link rel="icon" type="image/x-icon" href="../assets/images/rikaico.ico">
 <style>
-/* ═══════════════════════════════════════
-   BASE RESET & ROOT
-═══════════════════════════════════════ */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 *{-webkit-tap-highlight-color:transparent}
 ::selection{background:rgba(80,80,80,.45);color:#fff}
@@ -52,17 +49,13 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 
 #_pageShell{width:800px;max-width:100%;display:flex;flex-direction:column;gap:7px}
 
-/* ── corner logo ── */
 #cornerLogo{position:fixed;top:10px;right:14px;z-index:9998;line-height:0;text-decoration:none}
 #cornerLogo img{height:36px;width:auto;object-fit:contain;display:block;opacity:.82}
 #cornerLogo:hover img{opacity:1}
 
-/* ── host badge ── */
 #hostBadge{display:none;font-size:9px;background:#2a4a6a;color:#fff;padding:2px 7px;letter-spacing:.5px}
 
-/* ═══════════════════════════════════════
-   AERO BARS & GLASS BOXES
-═══════════════════════════════════════ */
+/* ── AERO BARS ── */
 .aero-bar{
   background:var(--grad-bar);border:2px ridge #727272;
   box-shadow:var(--shadow-bar);color:var(--text);font-size:13px;
@@ -78,14 +71,12 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 .aero-pad{padding:10px 12px}
 
 .section-bar{
-  display:block;background:#000;padding:5px 8px;margin:0;line-height:1.6;
+  display:flex;background:#000;padding:5px 8px;margin:0;line-height:1.6;
   font-size:11px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:#fff;
-  display:flex;align-items:center;justify-content:space-between;
+  align-items:center;justify-content:space-between;
 }
 
-/* ═══════════════════════════════════════
-   MAIN TABS
-═══════════════════════════════════════ */
+/* ── MAIN TABS ── */
 .main-tab-bar{
   display:flex;background:var(--grad-bar);border:2px ridge #727272;
   box-shadow:var(--shadow-bar);gap:0;
@@ -104,9 +95,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 .main-panel{display:none}
 .main-panel.active{display:block}
 
-/* ═══════════════════════════════════════
-   BUTTONS
-═══════════════════════════════════════ */
+/* ── BUTTONS ── */
 .admin-btn{
   background:var(--grad-dark);
   border:1px solid rgba(0,0,0,.55);color:#eee;font-family:inherit;
@@ -118,9 +107,20 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
   border-color:rgba(0,60,120,.55);color:#fff;
 }
 
-/* ═══════════════════════════════════════
-   UPLOAD SECTION (host only)
-═══════════════════════════════════════ */
+/* ── HOST LOGIN BANNER ── */
+#hostLoginBanner{
+  background:var(--grad-bar);border:2px ridge #727272;
+  box-shadow:var(--shadow-bar);padding:7px 10px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+#hostLoginBanner input{
+  background:#fff;border:1px solid rgba(140,140,140,.55);
+  font-family:inherit;font-size:11px;color:#111;padding:3px 7px;
+  flex:1;min-width:120px;max-width:200px;
+}
+#hostLoginBanner input::placeholder{color:#aaa}
+
+/* ── UPLOAD SECTION ── */
 #uploadSection{display:none}
 .upload-zone{
   border:2px dashed rgba(140,140,140,.55);background:#fafafa;
@@ -155,13 +155,11 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 #uploadBtn:hover{filter:brightness(1.12)}
 #uploadBtn:disabled{filter:brightness(.55);cursor:not-allowed}
 
-/* ── Category Manager ── */
+/* Category manager */
 #catManagerWrap{display:none;background:#111;border:1px solid rgba(100,130,180,.3);padding:8px 10px;margin-top:5px}
 .cat-manage-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 
-/* ═══════════════════════════════════════
-   CATEGORY TABS
-═══════════════════════════════════════ */
+/* ── CATEGORY TABS ── */
 .cat-tab-bar{
   display:flex;flex-wrap:wrap;gap:2px;background:#e0e0e0;
   border:1px solid rgba(0,0,0,.20);padding:4px;
@@ -182,9 +180,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
   color:var(--accent)!important;
 }
 
-/* ═══════════════════════════════════════
-   CONTROLS BAR
-═══════════════════════════════════════ */
+/* ── CONTROLS ROW ── */
 .controls-row{
   background:var(--grad-bar);border:1px solid rgba(140,140,140,.40);
   padding:5px 8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;
@@ -209,9 +205,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 .ctrl-spacer{flex:1}
 .last-added-info{font-size:10px;color:#666;white-space:nowrap;font-style:italic}
 
-/* ═══════════════════════════════════════
-   GALLERY GRID
-═══════════════════════════════════════ */
+/* ── GALLERY GRID ── */
 .gi-grid{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
   gap:6px;padding:6px;background:#e8e8e8;
@@ -236,7 +230,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 }
 .gi-card:hover .gi-card-thumb{filter:brightness(1.04) contrast(1.02)}
 
-/* ── Star rating on card ── */
+/* Stars on card */
 .gi-card-stars{
   display:flex;align-items:center;gap:2px;padding:4px 7px 2px;
 }
@@ -245,17 +239,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 .gi-star:hover{transform:scale(1.2);}
 .gi-star-avg{font-size:9.5px;color:#888;margin-left:3px;}
 
-/* ── 4chan-style file info ── */
-.gi-file-info{
-  font-size:9.5px;color:#666;padding:2px 7px 1px;
-  font-family:'Courier New',Courier,monospace;
-  border-top:1px solid rgba(0,0,0,.06);
-  word-break:break-all;line-height:1.4;
-}
-.gi-file-info .fi-name{color:#4a7fa5;text-decoration:underline;cursor:pointer;}
-.gi-file-info .fi-meta{color:#888;}
-
-.gi-card-info{padding:3px 7px 5px;flex:1;display:flex;flex-direction:column;gap:2px}
+.gi-card-info{padding:3px 7px 7px;flex:1;display:flex;flex-direction:column;gap:2px}
 .gi-card-title{font-size:11.5px;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:400;letter-spacing:.2px}
 .gi-card-meta{font-size:9.5px;color:#aaa;display:flex;gap:5px;align-items:center;flex-wrap:wrap}
 .gi-card-cat{
@@ -270,7 +254,6 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 .gi-card:hover .gi-card-overlay{opacity:1}
 .gi-card-overlay span{color:#fff;font-size:11px;letter-spacing:1px;text-transform:uppercase}
 
-/* admin card actions */
 .gi-card-actions{position:absolute;top:3px;right:3px;display:none;gap:2px;}
 .gi-card:hover .gi-card-actions{display:flex}
 .gi-card-act{
@@ -287,7 +270,6 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 .gi-grid.list-view .gi-card-overlay{display:none}
 .gi-grid.list-view .gi-card-stars{padding:2px 0}
 
-/* empty state */
 .gi-empty{
   grid-column:1/-1;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:8px;
@@ -309,9 +291,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 }
 .gi-pager-btn.arrow{font-size:13px;font-weight:bold}
 
-/* ═══════════════════════════════════════
-   LIGHTBOX WITH ZOOM + SCROLL
-═══════════════════════════════════════ */
+/* ── LIGHTBOX ── */
 #lightbox{
   display:none;position:fixed;inset:0;z-index:10000;
   background:rgba(0,0,0,.92);flex-direction:column;
@@ -319,7 +299,6 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 }
 #lightbox.open{display:flex}
 
-/* toolbar at top */
 #lb-toolbar{
   width:100%;background:#111;border-bottom:1px solid rgba(255,255,255,.10);
   display:flex;align-items:center;gap:6px;padding:5px 10px;flex-shrink:0;flex-wrap:wrap;
@@ -338,7 +317,6 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 }
 #lb-close:hover{background:rgba(60,60,60,.60);color:#fff}
 
-/* scroll + zoom container */
 #lb-scroll-area{
   flex:1;width:100%;overflow:auto;display:flex;align-items:flex-start;justify-content:flex-start;
   cursor:grab;
@@ -348,15 +326,9 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 #lb-scroll-area::-webkit-scrollbar-track{background:rgba(30,30,30,.6)}
 #lb-scroll-area::-webkit-scrollbar-thumb{background:rgba(150,150,150,.4);border-radius:4px}
 #lb-scroll-area.grabbing{cursor:grabbing}
-#lb-img-inner{
-  display:inline-block;padding:20px;transform-origin:top left;
-}
-#lb-img{
-  display:block;max-width:none;border:2px ridge #555;
-  box-shadow:0 8px 40px rgba(0,0,0,.8);background:#111;
-}
+#lb-img-inner{display:inline-block;padding:20px;transform-origin:top left;}
+#lb-img{display:block;max-width:none;border:2px ridge #555;box-shadow:0 8px 40px rgba(0,0,0,.8);background:#111;}
 
-/* navigation arrows */
 #lb-prev,#lb-next{
   position:fixed;top:50%;transform:translateY(-50%);
   background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.15);
@@ -368,28 +340,25 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 #lb-next{right:6px}
 #lb-prev:hover,#lb-next:hover{background:rgba(60,80,110,.75)}
 
-/* 4chan-style file info in lightbox */
-#lb-file-info{
-  width:100%;background:#0d1117;border-top:1px solid rgba(255,255,255,.08);
-  padding:7px 14px;font-family:'Courier New',Courier,monospace;
-  font-size:10.5px;color:#8b949e;flex-shrink:0;
-  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+/* Bottom info — simples, sem monoespaçado */
+#lb-info-bar{
+  width:100%;background:#0d0d0d;border-top:1px solid rgba(255,255,255,.08);
+  padding:7px 14px;font-size:11px;color:#999;flex-shrink:0;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
 }
-#lb-file-info .fi-label{color:#58a6ff;font-weight:bold}
-#lb-file-info .fi-val{color:#c9d1d9}
-#lb-file-info .fi-sep{color:#444}
-#lb-file-info .fi-author{color:#3fb950}
+#lb-info-bar .li-title{color:#ddd;font-weight:500;}
+#lb-info-bar .li-meta{color:#666;font-size:10px;}
+#lb-info-bar .li-author{color:#7ec8a0;}
 #lb-dl{
   background:var(--grad-dark);
   border:1px solid rgba(0,0,0,.55);color:#eee;
   font-family:inherit;font-size:10px;padding:3px 9px;cursor:pointer;
   text-decoration:none;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
+  margin-left:auto;
 }
 #lb-dl:hover{filter:brightness(1.25);color:#fff}
 
-/* ═══════════════════════════════════════
-   CHARACTERS TAB
-═══════════════════════════════════════ */
+/* ── CHARACTERS TAB ── */
 .char-grid{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
   gap:8px;padding:6px;background:#e8e8e8;border:1px solid rgba(0,0,0,.20);
@@ -414,9 +383,12 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 .char-field-label{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1px}
 .char-textarea{background:#fff;border:1px solid rgba(140,140,140,.55);font-family:inherit;font-size:11px;color:#111;padding:4px 7px;resize:vertical;min-height:80px;}
 
-/* ═══════════════════════════════════════
-   CONTEXT MENU
-═══════════════════════════════════════ */
+/* ── PAINT TAB ── */
+#paintEmbedWrap{width:100%;height:500px;background:#e0e0e0;border:1px solid rgba(0,0,0,.20);overflow:hidden;}
+#paintEmbedWrap iframe{width:100%;height:100%;border:none;display:block;}
+.paint-hint{font-size:10.5px;color:#888;padding:5px 8px;background:#f9f9f9;border:1px solid rgba(0,0,0,.10);margin-top:4px;display:flex;align-items:center;gap:6px;}
+
+/* ── CONTEXT MENU ── */
 #ctxMenu{
   display:none;position:fixed;z-index:20000;
   background:#111;border:1px solid rgba(150,150,150,.35);
@@ -428,9 +400,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 .ctx-item.danger:hover{background:rgba(80,40,40,.80);color:#fff}
 .ctx-sep{border-top:1px solid rgba(255,255,255,.08);margin:2px 0}
 
-/* ═══════════════════════════════════════
-   SOUND TOGGLE
-═══════════════════════════════════════ */
+/* ── SOUND TOGGLE ── */
 #soundToggle{
   position:fixed;bottom:8px;left:10px;z-index:9999;
   font-family:inherit;font-size:10px;color:rgba(255,255,255,.5);
@@ -439,9 +409,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 #soundToggle:hover{color:rgba(255,255,255,.85)}
 #soundToggle.off{color:rgba(255,255,255,.22)}
 
-/* ═══════════════════════════════════════
-   MOBILE
-═══════════════════════════════════════ */
+/* ── MOBILE ── */
 @media(max-width:620px){
   body{padding:6px 3px 48px}
   #_pageShell{width:100%}
@@ -450,12 +418,9 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
   .char-upload-grid{grid-template-columns:1fr}
   .controls-row{gap:4px;padding:4px 5px}
   .ctrl-btn{padding:3px 6px;font-size:10px}
-  .form-row{gap:4px}
   #lb-prev{left:2px}
   #lb-next{right:2px}
-  #lb-toolbar{padding:4px 6px;gap:4px}
-  #lb-file-info{font-size:9.5px;gap:8px}
-  .lb-tool-btn{padding:2px 5px;font-size:9.5px}
+  #paintEmbedWrap{height:360px}
 }
 @media(max-width:400px){
   .gi-grid{grid-template-columns:1fr}
@@ -471,7 +436,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 
 <div id="_pageShell">
 
-  <!-- ── Top bar ── -->
+  <!-- Top bar -->
   <div class="aero-bar">
     <a class="back-link" href="../index.html#resources" title="Back">
       <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#x2039;"
@@ -481,16 +446,25 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
     <span id="hostBadge">HOST</span>
   </div>
 
-  <!-- ── Main tabs ── -->
+  <!-- Host login (sempre visível, discreta) -->
+  <div id="hostLoginBanner" class="glass-box" style="padding:6px 10px;">
+    <span style="font-size:10px;color:#888;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;">Host access:</span>
+    <input type="password" id="hostPwInput" placeholder="Password…" style="max-width:150px;" onkeydown="if(event.key==='Enter')tryHostLogin()">
+    <button class="admin-btn" onclick="tryHostLogin()">Enter</button>
+    <span id="hostLoginMsg" style="font-size:10px;color:#c33;display:none;">Incorrect password.</span>
+  </div>
+
+  <!-- Main tabs -->
   <div class="main-tab-bar">
     <button class="main-tab active" onclick="switchMainTab('gallery')">&#x1F5BC; Gallery</button>
     <button class="main-tab" onclick="switchMainTab('characters')">&#x2661; Characters</button>
+    <button class="main-tab" onclick="switchMainTab('paint')">&#x1F58C; Paint</button>
   </div>
 
-  <!-- ═══════════════ GALLERY PANEL ═══════════════ -->
+  <!-- ═══════ GALLERY PANEL ═══════ -->
   <div id="panel-gallery" class="main-panel active">
 
-    <!-- Upload section (host only) -->
+    <!-- Upload (host only) -->
     <div id="uploadSection" class="glass-box">
       <div class="section-bar">
         Upload Art
@@ -522,10 +496,8 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
           <div class="form-row" style="margin-top:4px">
             <input class="form-input" id="descInput" placeholder="Short description (optional)" style="flex:3">
           </div>
-          <button id="uploadBtn" onclick="uploadPending()">
-            &#x2191; Upload to Archive
-          </button>
-          <p style="font-size:10px;color:#888;margin-top:5px">Images stored in Firebase. File size, format &amp; date are saved automatically.</p>
+          <button id="uploadBtn" onclick="uploadPending()">&#x2191; Upload to Archive</button>
+          <p style="font-size:10px;color:#888;margin-top:5px">Images stored in Firebase. File size, format &amp; date saved automatically.</p>
         </div>
       </div>
     </div>
@@ -545,14 +517,14 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
           <input type="text" class="ctrl-input" id="searchInput" placeholder="Search…" style="width:110px" oninput="renderGallery()">
           <div style="width:1px;height:16px;background:rgba(0,0,0,.18);flex-shrink:0"></div>
           <span class="ctrl-label">Sort:</span>
-          <button class="ctrl-btn active" id="sortRated"   onclick="setSort('rated',this)"  >★ Top Rated</button>
+          <button class="ctrl-btn active" id="sortRated"   onclick="setSort('rated',this)"  >&#9733; Top Rated</button>
           <button class="ctrl-btn"        id="sortNewest"  onclick="setSort('newest',this)" >Newest</button>
           <button class="ctrl-btn"        id="sortOldest"  onclick="setSort('oldest',this)" >Oldest</button>
           <button class="ctrl-btn"        id="sortAlpha"   onclick="setSort('alpha',this)"  >A–Z</button>
           <div class="ctrl-spacer"></div>
           <span class="last-added-info" id="lastAddedInfo"></span>
-          <button class="ctrl-btn" id="viewGrid" onclick="setView('grid',this)" title="Grid">&#9632;&#9632;</button>
-          <button class="ctrl-btn" id="viewList" onclick="setView('list',this)"  title="List">&#9776;</button>
+          <button class="ctrl-btn active" id="viewGrid" onclick="setView('grid',this)" title="Grid">&#9632;&#9632;</button>
+          <button class="ctrl-btn"        id="viewList" onclick="setView('list',this)" title="List">&#9776;</button>
         </div>
         <div class="gi-grid" id="galleryGrid">
           <div class="gi-empty"><span class="gi-empty-icon">&#x1F5BC;</span><span>Loading gallery…</span></div>
@@ -562,7 +534,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
     </div>
   </div>
 
-  <!-- ═══════════════ CHARACTERS PANEL ═══════════════ -->
+  <!-- ═══════ CHARACTERS PANEL ═══════ -->
   <div id="panel-characters" class="main-panel">
 
     <div id="charUploadSection" class="glass-box">
@@ -610,11 +582,31 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
     </div>
   </div>
 
+  <!-- ═══════ PAINT PANEL ═══════ -->
+  <div id="panel-paint" class="main-panel">
+    <div class="glass-box">
+      <div class="section-bar">
+        JS Paint
+        <a href="https://jspaint.app" target="_blank" rel="noopener noreferrer"
+           style="font-size:9.5px;color:#aaa;letter-spacing:.5px;text-transform:uppercase;text-decoration:none;"
+           onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">
+          Open in new tab &#x2197;
+        </a>
+      </div>
+      <div class="aero-inner" style="padding:5px">
+        <div id="paintEmbedWrap"></div>
+        <div class="paint-hint">
+          <span>&#x1F4A1;</span>
+          <span>Use File &rarr; Save to download your drawing. Ctrl+Z to undo. Right-click to pick background color.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /#_pageShell -->
 
-<!-- ── Lightbox with zoom + scroll ── -->
+<!-- Lightbox -->
 <div id="lightbox" role="dialog" aria-modal="true">
-  <!-- toolbar -->
   <div id="lb-toolbar">
     <span id="lb-toolbar-title">—</span>
     <button class="lb-tool-btn" id="lb-zoom-out" title="Zoom Out">&#x2212;</button>
@@ -626,28 +618,20 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
     <button id="lb-close" title="Close (Esc)">&times;</button>
   </div>
 
-  <!-- nav arrows (outside scroll area) -->
   <button id="lb-prev">&#x2039;</button>
   <button id="lb-next">&#x203A;</button>
 
-  <!-- zoomable + scrollable image area -->
   <div id="lb-scroll-area">
     <div id="lb-img-inner">
       <img id="lb-img" src="" alt="">
     </div>
   </div>
 
-  <!-- 4chan-style file info bar -->
-  <div id="lb-file-info">
-    <span><span class="fi-label">File: </span><span id="lbfi-name" class="fi-val">—</span></span>
-    <span class="fi-sep">|</span>
-    <span><span class="fi-label">Size: </span><span id="lbfi-size" class="fi-val">—</span></span>
-    <span class="fi-sep">|</span>
-    <span><span class="fi-label">Format: </span><span id="lbfi-fmt" class="fi-val">—</span></span>
-    <span class="fi-sep">|</span>
-    <span><span class="fi-label">Posted: </span><span id="lbfi-date" class="fi-val">—</span></span>
-    <span class="fi-sep">|</span>
-    <span><span class="fi-label">By: </span><span id="lbfi-author" class="fi-author">—</span></span>
+  <!-- Info bar: simples, sem monoespaçado -->
+  <div id="lb-info-bar">
+    <span class="li-title" id="lbfi-title">—</span>
+    <span class="li-meta" id="lbfi-date"></span>
+    <span class="li-author" id="lbfi-author"></span>
   </div>
 </div>
 
@@ -660,7 +644,7 @@ p{font-size:12.5px;line-height:18px;color:var(--text);margin:0}
 
 <button id="soundToggle">Sounds: On</button>
 
-<!-- Firebase SDKs -->
+<!-- Firebase + App -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
 import { getStorage, ref as sRef, uploadBytes, getDownloadURL, deleteObject }
@@ -678,51 +662,71 @@ const FIREBASE_CONFIG = {
   appId:             "1:489751764776:web:22255a1e9bf05a538bfa1d",
 };
 
+/* ── MUDAR A SENHA AQUI ── */
 const ADMIN_PASSWORD = "watanagashi2025";
 
-const app      = initializeApp(FIREBASE_CONFIG);
-const storage  = getStorage(app);
-const db       = getDatabase(app);
+const app     = initializeApp(FIREBASE_CONFIG);
+const storage = getStorage(app);
+const db      = getDatabase(app);
 
-/* ════════ STATE ════════ */
-let isHost      = false;
+/* ═══ STATE ═══ */
+let isHost       = false;
 let galleryItems = [];
 let characters   = [];
 let categories   = ['Sketches','Finished','Fanart','Misc'];
 let currentCat   = 'all';
-let currentSort  = 'rated';   // default: highest rated first
+let currentSort  = 'rated';
 let currentView  = 'grid';
 let pendingFiles = [];
 let lbIdx        = -1;
 let ctxTarget    = null;
-let userRatings  = {};   // { itemId: 1-5 }
-let allRatings   = {};   // { itemId: { userId: 1-5, ... } }
+let allRatings   = {};
 const USERID_KEY = '_skUserId';
-const RATINGS_KEY= '_skRatingsLocal';
 const PAGE_SIZE  = 12;
 let currentPage  = 0;
 let _userId      = '';
 
-/* ════════ USER ID ════════ */
+/* ═══ USER ID ═══ */
 function getUserId() {
   let uid = localStorage.getItem(USERID_KEY);
   if (!uid) { uid = 'u_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem(USERID_KEY, uid); }
   return uid;
 }
 
-/* ════════ HOST MODE via URL param ════════ */
-function initHostMode() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('host') === '1' || sessionStorage.getItem('_skHost') === '1') {
+/* ═══ HOST LOGIN (senha digitada) ═══ */
+window.tryHostLogin = function() {
+  const inp = document.getElementById('hostPwInput');
+  const msg = document.getElementById('hostLoginMsg');
+  if ((inp.value || '').trim() === ADMIN_PASSWORD) {
     isHost = true;
-    sessionStorage.setItem('_skHost', '1');
+    sessionStorage.setItem('_skHost','1');
     document.getElementById('hostBadge').style.display = '';
     document.getElementById('uploadSection').style.display = '';
     document.getElementById('charUploadSection').style.display = '';
+    document.getElementById('hostLoginBanner').style.display = 'none';
+    inp.value = '';
+    renderGallery();
+  } else {
+    if (msg) { msg.style.display=''; setTimeout(()=>msg.style.display='none', 2500); }
+    inp.value = '';
+  }
+};
+
+/* Restore host mode from session */
+function initHostMode() {
+  /* URL param mantido por compatibilidade */
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('host') === '1' || sessionStorage.getItem('_skHost') === '1') {
+    isHost = true;
+    document.getElementById('hostBadge').style.display = '';
+    document.getElementById('uploadSection').style.display = '';
+    document.getElementById('charUploadSection').style.display = '';
+    document.getElementById('hostLoginBanner').style.display = 'none';
+    sessionStorage.setItem('_skHost','1');
   }
 }
 
-/* ════════ RATINGS (Firebase) ════════ */
+/* ═══ RATINGS ═══ */
 function getRatingAvg(itemId) {
   const r = allRatings[itemId];
   if (!r || typeof r !== 'object') return 0;
@@ -743,65 +747,57 @@ function getMyRating(itemId) {
 function setRating(itemId, stars) {
   if (!allRatings[itemId]) allRatings[itemId] = {};
   allRatings[itemId][_userId] = stars;
-  // Save to Firebase
   set(dbRef(db, 'gallery/ratings/' + itemId + '/' + _userId.replace(/[.#$[\]]/g,'_')), stars).catch(()=>{});
 }
 
-/* ════════ FIREBASE LOAD ════════ */
+/* ═══ FIREBASE LOAD ═══ */
 function loadAll() {
-  onValue(dbRef(db, 'gallery'), snap => {
-  console.log("SNAP:", snap.val()); //
+  /* Gallery items */
+  onValue(dbRef(db, 'gallery/items'), snap => {
+    const val = snap.val() || {};
+    galleryItems = Object.entries(val).map(([id, v]) => ({ id, ...v }))
+      .sort((a,b) => (b.addedAt||0) - (a.addedAt||0));
+    updateLastAddedInfo();
+    renderGallery();
+  });
 
-  const val = snap.val() || {};
-  galleryItems = Object.entries(val).map(([id, v]) => ({ id, ...v }));
-
-  window.galleryItems = galleryItems; // 
-
-  console.log("ARRAY:", galleryItems); // 
-
-  updateLastAddedInfo();
-  renderGallery();
-});
-  onValue(dbRef(db, 'gallery'), snap => {
+  /* Characters */
+  onValue(dbRef(db, 'gallery/characters'), snap => {
     const val = snap.val() || {};
     characters = Object.entries(val).map(([id, v]) => ({ id, ...v }))
-      .sort((a,b) => b.addedAt - a.addedAt);
+      .sort((a,b) => (b.addedAt||0) - (a.addedAt||0));
     renderCharacters();
   });
-  onValue(dbRef(db, 'gallery'), snap => {
+
+  /* Categories */
+  onValue(dbRef(db, 'gallery/categories'), snap => {
     const val = snap.val();
     if (val && Array.isArray(val)) categories = val;
     renderCatTabs(); renderCatSelects();
   });
+
+  /* Ratings */
   onValue(dbRef(db, 'gallery/ratings'), snap => {
     const val = snap.val() || {};
     allRatings = {};
-    Object.entries(val).forEach(([itemId, users]) => {
-      allRatings[itemId] = users;
-    });
+    Object.entries(val).forEach(([itemId, users]) => { allRatings[itemId] = users; });
     renderGallery();
   });
 }
 
-/* ════════ LAST ADDED INFO ════════ */
+/* ═══ LAST ADDED ═══ */
 function updateLastAddedInfo() {
   const el = document.getElementById('lastAddedInfo');
   if (!el || !galleryItems.length) return;
-  const latest = galleryItems.reduce((a,b) => ((b.addedAt||0) > (a.addedAt||0) ? b : a), galleryItems[0]);
+  const latest = galleryItems[0];
   if (latest && latest.addedAt) {
-    const diffMs = Date.now() - latest.addedAt;
-    const diffDays = Math.floor(diffMs / 86400000);
-    let ago;
-    if (diffDays === 0) ago = 'today';
-    else if (diffDays === 1) ago = 'yesterday';
-    else if (diffDays < 7) ago = diffDays + 'd ago';
-    else if (diffDays < 30) ago = Math.floor(diffDays/7) + 'w ago';
-    else ago = fmtDate(latest.addedAt);
+    const diffDays = Math.floor((Date.now() - latest.addedAt) / 86400000);
+    let ago = diffDays === 0 ? 'today' : diffDays === 1 ? 'yesterday' : diffDays < 7 ? diffDays+'d ago' : fmtDate(latest.addedAt);
     el.textContent = 'Last added: ' + ago;
   }
 }
 
-/* ════════ CATEGORIES ════════ */
+/* ═══ CATEGORIES ═══ */
 function renderCatTabs() {
   const bar = document.getElementById('catTabBar');
   bar.innerHTML = '';
@@ -846,7 +842,7 @@ window.addCategory = function() {
   const name = (inp.value||'').trim();
   if (!name || categories.includes(name)) { inp.value=''; return; }
   categories.push(name);
-  set(dbRef(db,'sketchbook/categories'), categories);
+  set(dbRef(db,'gallery/categories'), categories);
   inp.value = '';
 };
 
@@ -855,7 +851,7 @@ window.toggleCatManager = function() {
   w.style.display = w.style.display === 'none' ? 'block' : 'none';
 };
 
-/* ════════ GALLERY SORT & FILTER ════════ */
+/* ═══ SORT & FILTER ═══ */
 function getFiltered() {
   let items = [...galleryItems];
   const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
@@ -878,7 +874,7 @@ function getFiltered() {
   return items;
 }
 
-/* ════════ GALLERY RENDER ════════ */
+/* ═══ GALLERY RENDER ═══ */
 window.renderGallery = function() {
   const grid = document.getElementById('galleryGrid');
   const items = getFiltered();
@@ -887,7 +883,7 @@ window.renderGallery = function() {
 
   if (!items.length) {
     grid.innerHTML = '<div class="gi-empty"><span class="gi-empty-icon">&#x1F5BC;</span><span>' +
-      (galleryItems.length===0 ? 'No artwork yet.' : 'No results match your filter.') + '</span></div>';
+      (galleryItems.length===0 ? 'No artwork yet.' : 'No results.') + '</span></div>';
     document.getElementById('galleryPager').style.display = 'none';
     return;
   }
@@ -899,11 +895,10 @@ window.renderGallery = function() {
 
   grid.innerHTML = '';
   pageItems.forEach(item => grid.appendChild(buildCard(item, items)));
-
-  renderPager(totalPages, items);
+  renderPager(totalPages);
 };
 
-function renderPager(totalPages, items) {
+function renderPager(totalPages) {
   const pager = document.getElementById('galleryPager');
   if (totalPages <= 1) { pager.style.display='none'; return; }
   pager.style.display = 'flex';
@@ -939,48 +934,32 @@ function buildCard(item, allFiltered) {
     card.addEventListener('dragend', () => card.classList.remove('dragging'));
   }
 
-  // Thumb
   const thumb = document.createElement('div');
   thumb.className = 'gi-card-thumb';
   thumb.style.backgroundImage = "url('" + esc(item.src) + "')";
   card.appendChild(thumb);
 
-  // Overlay
   const ov = document.createElement('div');
   ov.className = 'gi-card-overlay';
   ov.innerHTML = '<span>&#x1F50D; View</span>';
   card.appendChild(ov);
 
-  // Info
   const info = document.createElement('div');
   info.className = 'gi-card-info';
   info.innerHTML =
     '<span class="gi-card-title">' + esc(item.title||'Untitled') + '</span>' +
     '<div class="gi-card-meta">' +
       (item.category ? '<span class="gi-card-cat">'+esc(item.category)+'</span>' : '') +
+      (item.author   ? '<span>'+esc(item.author)+'</span>' : '') +
       '<span>' + fmtDate(item.addedAt) + '</span>' +
     '</div>';
   card.appendChild(info);
 
-  // Stars
+  /* Stars */
   const starsRow = buildStarRow(item.id, true);
   card.appendChild(starsRow);
 
-  // 4chan file info
-  if (item.fileName || item.fileSize || item.fileType) {
-    const fi = document.createElement('div');
-    fi.className = 'gi-file-info';
-    const sizeStr = item.fileSize ? fmtSize(item.fileSize) : '?';
-    const ext     = item.fileType ? item.fileType.split('/').pop().toUpperCase() : (item.fileName ? item.fileName.split('.').pop().toUpperCase() : '?');
-    const author  = item.author || 'anonymous';
-    fi.innerHTML  =
-      '<span class="fi-name">' + esc(item.fileName||item.title||'file') + '</span> ' +
-      '<span class="fi-meta">('+sizeStr+', '+ext+')</span><br>' +
-      '<span class="fi-meta">by <b>'+esc(author)+'</b> — '+fmtDate(item.addedAt)+'</span>';
-    card.appendChild(fi);
-  }
-
-  // Admin delete btn
+  /* Admin delete */
   if (isHost) {
     const acts = document.createElement('div');
     acts.className = 'gi-card-actions';
@@ -1001,16 +980,15 @@ function buildCard(item, allFiltered) {
   return card;
 }
 
-/* ════════ STAR RATING UI ════════ */
+/* ═══ STARS ═══ */
 function buildStarRow(itemId, interactive) {
   const row = document.createElement('div');
   row.className = 'gi-card-stars';
   row.addEventListener('click', e => e.stopPropagation());
 
-  const avg    = getRatingAvg(itemId);
-  const count  = getRatingCount(itemId);
-  const myRat  = getMyRating(itemId);
-  const display= myRat > 0 ? myRat : Math.round(avg);
+  const avg   = getRatingAvg(itemId);
+  const myRat = getMyRating(itemId);
+  const display = myRat > 0 ? myRat : Math.round(avg);
 
   for (let s=1; s<=5; s++) {
     const star = document.createElement('span');
@@ -1030,11 +1008,7 @@ function buildStarRow(itemId, interactive) {
         setRating(itemId, s);
         row.querySelectorAll('.gi-star').forEach((st,i) => st.classList.toggle('on', i < s));
         const avgEl = row.querySelector('.gi-star-avg');
-        if (avgEl) {
-          const newAvg = getRatingAvg(itemId);
-          avgEl.textContent = newAvg > 0 ? '(' + newAvg.toFixed(1) + ')' : '';
-        }
-        // Re-sort if currently sorted by rating
+        if (avgEl) { const na = getRatingAvg(itemId); avgEl.textContent = na > 0 ? '(' + na.toFixed(1) + ')' : ''; }
         if (currentSort === 'rated') setTimeout(() => renderGallery(), 500);
       });
     }
@@ -1043,19 +1017,18 @@ function buildStarRow(itemId, interactive) {
 
   const avgEl = document.createElement('span');
   avgEl.className = 'gi-star-avg';
-  avgEl.textContent = avg > 0 ? '(' + avg.toFixed(1) + (count>1?' · '+count:'') + ')' : '';
+  avgEl.textContent = avg > 0 ? '(' + avg.toFixed(1) + (getRatingCount(itemId)>1?' · '+getRatingCount(itemId):'') + ')' : '';
   row.appendChild(avgEl);
-
   return row;
 }
 
 function handleDropOnCat(cat, e) {
   const id = e.dataTransfer.getData('text/plain');
   if (!id) return;
-  update(dbRef(db,'gallery/'+id), { category: cat });
+  update(dbRef(db,'gallery/items/'+id), { category: cat });
 }
 
-/* ════════ UPLOAD ════════ */
+/* ═══ UPLOAD ═══ */
 window.uploadPending = async function() {
   if (!isHost || !pendingFiles.length) return;
   const btn = document.getElementById('uploadBtn');
@@ -1073,16 +1046,13 @@ window.uploadPending = async function() {
       const storageRef = sRef(storage, path);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
-      await push(dbRef(db,'gallery'), {
+      await push(dbRef(db,'gallery/items'), {
         src:         url,
         storagePath: path,
         title:       title ? (pendingFiles.length>1 ? title+' '+(i+1) : title) : file.name.replace(/\.[^.]+$/,''),
         category:    category || '',
         desc:        desc || '',
         author:      author || '',
-        fileName:    file.name,
-        fileSize:    file.size,
-        fileType:    file.type,
         addedAt:     Date.now(),
       });
     } catch(err) { alert('Upload error: '+err.message); }
@@ -1094,7 +1064,7 @@ window.uploadPending = async function() {
   btn.disabled = false; btn.textContent = '↑ Upload to Archive';
 };
 
-/* ════════ CHARACTERS ════════ */
+/* ═══ CHARACTERS ═══ */
 window.renderCharacters = function() {
   const grid = document.getElementById('charGrid');
   if (!characters.length) { grid.innerHTML='<div class="char-empty">No characters added yet.</div>'; return; }
@@ -1131,7 +1101,7 @@ window.uploadCharacter = async function() {
     const storageRef = sRef(storage, path);
     await uploadBytes(storageRef, file);
     const url = await getDownloadURL(storageRef);
-    await push(dbRef(db,'gallery'),{ src:url, storagePath:path, name, desc, tags, addedAt:Date.now() });
+    await push(dbRef(db,'gallery/characters'),{ src:url, storagePath:path, name, desc, tags, addedAt:Date.now() });
     ['charName','charDesc','charTags'].forEach(id => { document.getElementById(id).value=''; });
     document.getElementById('charFileInput').value='';
     document.getElementById('charPreview').style.display='none';
@@ -1140,22 +1110,15 @@ window.uploadCharacter = async function() {
   btn.disabled=false; btn.textContent='♡ Save Character';
 };
 
-/* ════════ DELETE ════════ */
+/* ═══ DELETE ═══ */
 window.deleteItem = async function(id, storagePath) {
   if (!confirm('Delete this artwork? Cannot be undone.')) return;
-  await remove(dbRef(db,'sketchbook/items/'+id));
+  await remove(dbRef(db,'gallery/items/'+id));
   if (storagePath) { try { await deleteObject(sRef(storage,storagePath)); } catch(_){} }
 };
 
-/* ════════ LIGHTBOX with ZOOM + SCROLL ════════ */
-let lbZoom     = 1;
-let lbNatW     = 0;
-let lbNatH     = 0;
-let lbDragging = false;
-let lbDragX    = 0;
-let lbDragY    = 0;
-let lbScrollX  = 0;
-let lbScrollY  = 0;
+/* ═══ LIGHTBOX ═══ */
+let lbZoom=1, lbNatW=0, lbNatH=0, lbDragging=false, lbDragX=0, lbDragY=0;
 
 function openLightbox() {
   const filtered = getFiltered();
@@ -1172,44 +1135,31 @@ function updateLightboxContent(item) {
   img.src = item.src;
   img.alt = item.title || 'Artwork';
 
-  // Reset scroll
   const area = document.getElementById('lb-scroll-area');
   area.scrollLeft = 0; area.scrollTop = 0;
 
-  // Title
   document.getElementById('lb-toolbar-title').textContent = (item.title||'Untitled') + (item.category ? ' — '+item.category : '');
 
-  // File info (4chan style)
-  document.getElementById('lbfi-name').textContent   = item.fileName || (item.title||'artwork');
-  document.getElementById('lbfi-size').textContent   = item.fileSize ? fmtSize(item.fileSize) : '?';
-  document.getElementById('lbfi-fmt').textContent    = item.fileType ? item.fileType.split('/').pop().toUpperCase() : (item.fileName ? item.fileName.split('.').pop().toUpperCase() : '?');
-  document.getElementById('lbfi-date').textContent   = fmtDateFull(item.addedAt);
-  document.getElementById('lbfi-author').textContent = item.author || 'anonymous';
+  /* Info bar — simples */
+  document.getElementById('lbfi-title').textContent  = item.title || 'Untitled';
+  document.getElementById('lbfi-date').textContent   = item.addedAt ? fmtDateFull(item.addedAt) : '';
+  document.getElementById('lbfi-author').textContent = item.author ? 'by ' + item.author : '';
 
-  // Download
   const dl = document.getElementById('lb-dl');
   dl.href = item.src;
   dl.download = (item.title||'artwork');
 
-  // Natural size for zoom calc
-  img.onload = () => {
-    lbNatW = img.naturalWidth;
-    lbNatH = img.naturalHeight;
-    fitImage();
-  };
+  img.onload = () => { lbNatW=img.naturalWidth; lbNatH=img.naturalHeight; fitImage(); };
   setZoom(1);
 }
 
 function fitImage() {
-  const area   = document.getElementById('lb-scroll-area');
-  const w      = area.clientWidth  - 40;
-  const h      = area.clientHeight - 40;
+  const area = document.getElementById('lb-scroll-area');
+  const w = area.clientWidth - 40, h = area.clientHeight - 40;
   if (!lbNatW || !lbNatH) { setZoom(1); return; }
-  const scale  = Math.min(w/lbNatW, h/lbNatH, 1);
-  setZoom(scale);
-  // Center after fit
+  setZoom(Math.min(w/lbNatW, h/lbNatH, 1));
   setTimeout(() => {
-    area.scrollLeft = (area.scrollWidth  - area.clientWidth)  / 2;
+    area.scrollLeft = (area.scrollWidth - area.clientWidth) / 2;
     area.scrollTop  = (area.scrollHeight - area.clientHeight) / 2;
   }, 50);
 }
@@ -1233,11 +1183,9 @@ window.openCharLb = function(id) {
   const img = document.getElementById('lb-img');
   img.src = ch.src; img.alt = ch.name;
   document.getElementById('lb-toolbar-title').textContent = ch.name;
-  document.getElementById('lbfi-name').textContent   = ch.name;
-  document.getElementById('lbfi-size').textContent   = '—';
-  document.getElementById('lbfi-fmt').textContent    = '—';
-  document.getElementById('lbfi-date').textContent   = fmtDateFull(ch.addedAt);
-  document.getElementById('lbfi-author').textContent = '—';
+  document.getElementById('lbfi-title').textContent  = ch.name;
+  document.getElementById('lbfi-date').textContent   = ch.addedAt ? fmtDateFull(ch.addedAt) : '';
+  document.getElementById('lbfi-author').textContent = '';
   const dl = document.getElementById('lb-dl');
   dl.href = ch.src; dl.download = ch.name || 'character';
   document.getElementById('lb-prev').style.display = 'none';
@@ -1248,7 +1196,7 @@ window.openCharLb = function(id) {
   img.onload = () => { lbNatW=img.naturalWidth; lbNatH=img.naturalHeight; fitImage(); };
 };
 
-/* ── Lightbox controls ── */
+/* Lightbox controls */
 document.getElementById('lb-close').addEventListener('click', closeLightbox);
 document.getElementById('lb-zoom-in').addEventListener('click',  () => setZoom(lbZoom * 1.25));
 document.getElementById('lb-zoom-out').addEventListener('click', () => setZoom(lbZoom * 0.8));
@@ -1256,27 +1204,18 @@ document.getElementById('lb-zoom-fit').addEventListener('click', fitImage);
 document.getElementById('lb-zoom-1').addEventListener('click',   () => setZoom(1));
 
 document.getElementById('lb-prev').addEventListener('click', () => {
-  const f = getFiltered(); lbIdx = (lbIdx-1+f.length)%f.length;
-  updateLightboxContent(f[lbIdx]);
+  const f = getFiltered(); lbIdx = (lbIdx-1+f.length)%f.length; updateLightboxContent(f[lbIdx]);
 });
 document.getElementById('lb-next').addEventListener('click', () => {
-  const f = getFiltered(); lbIdx = (lbIdx+1)%f.length;
-  updateLightboxContent(f[lbIdx]);
+  const f = getFiltered(); lbIdx = (lbIdx+1)%f.length; updateLightboxContent(f[lbIdx]);
 });
 
-// Mouse wheel zoom
-document.getElementById('lb-scroll-area').addEventListener('wheel', e => {
-  if (e.ctrlKey || e.metaKey || !e.shiftKey) {
-    // shift+wheel = zoom, ctrl+wheel = zoom, plain wheel = scroll (native)
-    if (e.ctrlKey || e.metaKey) {
-      e.preventDefault();
-      setZoom(lbZoom * (e.deltaY < 0 ? 1.12 : 0.89));
-    }
-  }
+/* Scroll-area zoom & pan */
+const scrollArea = document.getElementById('lb-scroll-area');
+scrollArea.addEventListener('wheel', e => {
+  if (e.ctrlKey || e.metaKey) { e.preventDefault(); setZoom(lbZoom * (e.deltaY < 0 ? 1.12 : 0.89)); }
 }, { passive: false });
 
-// Drag to pan
-const scrollArea = document.getElementById('lb-scroll-area');
 scrollArea.addEventListener('mousedown', e => {
   if (e.button !== 0) return;
   lbDragging = true;
@@ -1289,12 +1228,9 @@ window.addEventListener('mousemove', e => {
   scrollArea.scrollLeft = lbDragX - e.clientX;
   scrollArea.scrollTop  = lbDragY - e.clientY;
 });
-window.addEventListener('mouseup', () => {
-  lbDragging = false;
-  scrollArea.classList.remove('grabbing');
-});
+window.addEventListener('mouseup', () => { lbDragging=false; scrollArea.classList.remove('grabbing'); });
 
-// Touch pinch zoom
+/* Touch pinch zoom */
 let lbTouchDist = 0;
 scrollArea.addEventListener('touchstart', e => {
   if (e.touches.length === 2) {
@@ -1314,23 +1250,20 @@ scrollArea.addEventListener('touchmove', e => {
   }
 }, { passive:false });
 
-// Click outside to close
 document.getElementById('lightbox').addEventListener('click', e => {
   if (e.target === document.getElementById('lightbox') || e.target === scrollArea) closeLightbox();
 });
-
-// Keyboard
 document.addEventListener('keydown', e => {
   if (!document.getElementById('lightbox').classList.contains('open')) return;
-  if (e.key === 'Escape')      closeLightbox();
-  if (e.key === 'ArrowLeft')   document.getElementById('lb-prev').click();
-  if (e.key === 'ArrowRight')  document.getElementById('lb-next').click();
+  if (e.key === 'Escape')     closeLightbox();
+  if (e.key === 'ArrowLeft')  document.getElementById('lb-prev').click();
+  if (e.key === 'ArrowRight') document.getElementById('lb-next').click();
   if (e.key === '+' || e.key === '=') setZoom(lbZoom * 1.2);
-  if (e.key === '-')           setZoom(lbZoom * 0.83);
-  if (e.key === '0')           fitImage();
+  if (e.key === '-')          setZoom(lbZoom * 0.83);
+  if (e.key === '0')          fitImage();
 });
 
-/* ════════ CONTEXT MENU ════════ */
+/* ═══ CONTEXT MENU ═══ */
 function openCtxMenu(e, id, type) {
   ctxTarget = { id, type };
   const item = type==='gallery' ? galleryItems.find(i=>i.id===id) : characters.find(c=>c.id===id);
@@ -1361,7 +1294,7 @@ document.getElementById('ctxDel').addEventListener('click', () => {
 document.addEventListener('click', closeCtxMenu);
 document.getElementById('ctxMenu').addEventListener('click', e => e.stopPropagation());
 
-/* ════════ SORT / VIEW ════════ */
+/* ═══ SORT / VIEW ═══ */
 window.setSort = function(s, btn) {
   currentSort = s;
   currentPage = 0;
@@ -1379,7 +1312,7 @@ window.setView = function(v) {
   renderGallery();
 };
 
-/* ════════ FILE INPUT HANDLERS ════════ */
+/* ═══ FILE INPUT ═══ */
 document.getElementById('fileInput').addEventListener('change', function() {
   addPendingFiles(Array.from(this.files)); this.value='';
 });
@@ -1406,7 +1339,7 @@ function renderPendingPreviews() {
   });
 }
 
-/* character file */
+/* Character file */
 document.getElementById('charFileInput').addEventListener('change', function() {
   const file = this.files[0]; if (!file) return;
   const reader = new FileReader();
@@ -1429,48 +1362,57 @@ charZone.addEventListener('drop', e => {
   }
 });
 
-/* ════════ TAB SWITCH ════════ */
+/* ═══ TAB SWITCH ═══ */
 window.switchMainTab = function(tab) {
-  document.querySelectorAll('.main-tab').forEach((b,i) => b.classList.toggle('active', ['gallery','characters'][i]===tab));
+  document.querySelectorAll('.main-tab').forEach((b,i) => b.classList.toggle('active', ['gallery','characters','paint'][i]===tab));
   document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-'+tab).classList.add('active');
+  /* Init paint embed on first visit */
+  if (tab === 'paint') initPaint();
 };
 
-/* ════════ HELPERS ════════ */
+/* ═══ PAINT ═══ */
+let paintInited = false;
+function initPaint() {
+  if (paintInited) return;
+  paintInited = true;
+  const wrap = document.getElementById('paintEmbedWrap');
+  if (!wrap) return;
+  const iframe = document.createElement('iframe');
+  iframe.src = 'https://jspaint.app';
+  iframe.setAttribute('allowfullscreen','');
+  iframe.setAttribute('allow','clipboard-read; clipboard-write; display-capture');
+  wrap.appendChild(iframe);
+}
+
+/* ═══ HELPERS ═══ */
 function fmtDate(ts) {
   if (!ts) return '';
   const d = new Date(ts);
   return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
 }
 function fmtDateFull(ts) {
-  if (!ts) return '—';
+  if (!ts) return '';
   const d = new Date(ts);
   return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()+
     ' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
-}
-function fmtSize(bytes) {
-  if (!bytes) return '?';
-  if (bytes < 1024)     return bytes+'B';
-  if (bytes < 1048576)  return (bytes/1024).toFixed(1)+' KB';
-  return (bytes/1048576).toFixed(2)+' MB';
 }
 function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-/* ════════ INIT ════════ */
+/* ═══ INIT ═══ */
 document.addEventListener('DOMContentLoaded', () => {
   _userId = getUserId();
   initHostMode();
   loadAll();
-  // default sort button active
   document.getElementById('sortRated').classList.add('active');
   document.getElementById('viewGrid').classList.add('active');
 });
 </script>
 
+<!-- Sounds -->
 <script>
-/* ════════ SOUNDS ════════ */
 var _SB='../assets/audio/';
 var _SND={start:_SB+'sitestart.mp3',button:_SB+'sitebuttonclick.mp3',hover:_SB+'text.mp3'};
 var _soundsOn=true,_aC={},_ht=0;
@@ -1485,11 +1427,7 @@ document.addEventListener('DOMContentLoaded',function(){
   document.addEventListener('mouseover',function(e){if(e.target.id==='soundToggle')return;if(!_iI(e.target))return;var n=Date.now();if(n-_ht<120)return;_ht=n;_playSound('hover');},{passive:true});
   document.addEventListener('click',function(e){if(e.target.id==='soundToggle')return;if(_iI(e.target))_playSound('button');},true);
 });
-
-initHostMode();
-_userId = getUserId();
-loadAll();
-
 </script>
+
 </body>
 </html>
