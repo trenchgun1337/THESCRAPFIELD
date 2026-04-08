@@ -77,7 +77,7 @@ const GALLERY_ITEMS = [
   }
 ];
 
-const STAR_IMG = 'assets/images/ratestar.png';
+const STAR_IMG = 'assets/images/starrating.png';
 
 const PAGE_SIZE = 12;
 
