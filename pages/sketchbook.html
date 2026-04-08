@@ -749,15 +749,15 @@ function setRating(itemId, stars) {
 
 /* ════════ FIREBASE LOAD ════════ */
 function loadAll() {
-  onValue(dbRef(db, 'sketchbook/items'), snap => {
-  console.log("SNAP:", snap.val()); // 👈 ADICIONA ISSO
+  onValue(dbRef(db, 'gallery'), snap => {
+  console.log("SNAP:", snap.val()); //
 
   const val = snap.val() || {};
   galleryItems = Object.entries(val).map(([id, v]) => ({ id, ...v }));
 
-  window.galleryItems = galleryItems; // 👈 ADICIONA ISSO
+  window.galleryItems = galleryItems; // 
 
-  console.log("ARRAY:", galleryItems); // 👈 ADICIONA ISSO
+  console.log("ARRAY:", galleryItems); // 
 
   updateLastAddedInfo();
   renderGallery();
