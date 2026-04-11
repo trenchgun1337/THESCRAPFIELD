@@ -382,21 +382,17 @@ strong        { color:var(--accent); font-weight:400; }
 <body>
 <div id="pageWrap">
 
-  <!-- ── Top bar ── -->
-  <div class="aero-bar">
+ <div class="aero-bar">
     <a class="back-link" href="../index.html#resources" title="Back to Resources">
-      <!-- inline arrow SVG — never breaks -->
-      <svg viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg">
-        <path d="M18 8 L8 20 L18 32" stroke="#444" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#x2039;"
+        onerror="this.outerHTML='<span style=&quot;color:#333;font-size:22px;line-height:1;&quot;>&#x2039;</span>'">
     </a>
-    <span class="bar-title">ULTIMATE DOWNLOADER CONVERTER</span>
+    <span class="bar-title">MUSIC PLAYER</span>
   </div>
 
-  <!-- ── Server initializing banner ── -->
   <div id="serverBanner">
-    <div class="spin-icon"></div>
-    <span>Server is initializing, please wait&hellip;</span>
+    <img src="https://img1.picmix.com/output/stamp/thumb/9/4/8/1/2841849_403b7.gif" alt="" style="height:18px;width:18px;flex-shrink:0;" onerror="this.style.display='none'">
+    <span id="trackLoadMsg">Initializing&#x2026;</span>
   </div>
 
   <!-- ── Main card ── -->
