@@ -4,131 +4,200 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — Watanagashi Archive</title>
-<link rel="icon" id="sitefavicon" type="image/x-icon" href="/assets/images/satokoico.ico">
+<link rel="icon" type="image/x-icon" href="/assets/images/satokoico.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 * { -webkit-tap-highlight-color:transparent; }
 ::selection { background:rgba(80,80,80,.45); color:#fff; }
-::-moz-selection { background:rgba(80,80,80,.45); color:#fff; }
 *:focus { outline:none !important; }
 
 :root {
-  --accent:    #cc1a1a;
-  --text:      #111;
-  --text-dim:  #2c2c2c;
-  --grad-bar:  linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
+  --accent: #cc1a1a;
+  --text: #111;
+  --text-dim: #2c2c2c;
+  --grad-bar: linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
   --shadow-bar: 0 2px 5px rgba(0,0,0,.15);
 }
 
-html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.50) transparent; }
+html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.5) transparent; }
 ::-webkit-scrollbar { width:6px; }
-::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:rgba(120,120,120,.50); border-radius:3px; }
-::-webkit-scrollbar-thumb:hover { background:rgba(54,54,54,.8); }
+::-webkit-scrollbar-thumb { background:rgba(120,120,120,.5); border-radius:3px; }
 
 body {
   font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
   font-size:12px;
-  background:#000 url('../assets/images/CONTACTBANNER.png') center center / cover fixed no-repeat;
+  background-color:#000;
+  background-image: url('../assets/images/whitebg.jpeg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
   color:var(--text);
   min-height:100vh;
-  padding:12px 6px 30px;
+  padding:18px 6px 40px;
   display:flex; flex-direction:column; align-items:center;
 }
 
 img { -webkit-user-drag:none; user-select:none; }
-a             { color:#000; text-decoration:none; }
-a:hover       { color:var(--accent); text-decoration:underline; }
-p             { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
-p + p         { margin-top:5px; }
-strong        { color:var(--accent); font-weight:400; }
+a { color:#000; text-decoration:none; }
+a:hover { color:var(--accent); text-decoration:underline; }
+p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
+strong { color:var(--accent); font-weight:400; }
 
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; }
 
-/* ── Corner logo ── */
-#cornerLogo {
-  position:fixed; top:10px; right:14px; z-index:9998; line-height:0; text-decoration:none;
-}
-#cornerLogo img {
-  height:36px; width:auto; object-fit:contain; display:block;
-  opacity:.82; pointer-events:auto;
-}
-#cornerLogo:hover img { opacity:1; }
-
-/* ── Topbar ── */
+/* ── Topbar (matches index aero-bar style) ── */
 .aero-bar {
-  background:var(--grad-bar);
-  border:2px ridge #727272;
-  box-shadow:var(--shadow-bar);
-  color:var(--text);
+  background: var(--grad-bar);
+  border: 2px ridge #727272;
+  box-shadow: var(--shadow-bar);
+  color: var(--text);
   font-size:13px; font-weight:400;
-  padding:4px 8px;
-  display:flex; align-items:center; gap:6px;
+  padding:4px 10px;
+  display:flex; align-items:center; gap:8px;
   margin-bottom:7px;
 }
-.aero-bar .back-link {
-  flex-shrink:0; padding:2px 3px;
-  display:flex; align-items:center; line-height:0; text-decoration:none;
+.back-link {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  flex-shrink: 0;
+  padding: 2px 4px;
+  border: 1px solid rgba(204,26,26,.35);
+  background: rgba(204,26,26,.06);
+  transition: background .15s;
 }
-.aero-bar .back-link img {
-  height:28px; width:auto; object-fit:contain; display:block; pointer-events:auto !important;
-}
-.aero-bar .back-link:hover img { filter:brightness(.85); }
-.aero-bar .bar-title { flex:1; text-align:center; font-size:12px; letter-spacing:.5px; }
+.back-link:hover { background:rgba(204,26,26,.14); text-decoration:none; color:var(--accent); }
+.bar-title { flex:1; text-align:center; font-size:11px; letter-spacing:2px; text-transform:uppercase; }
 
-/* ── Glass / aero boxes ── */
-.glass-box {
-  background:#ebebeb;
-  box-shadow:var(--shadow-bar);
-  border:2px ridge #727272;
-  padding:5px; margin-bottom:7px;
-}
-.aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
-.aero-pad   { padding:10px 12px; }
-
-/* ── Section header strip ── */
-.section-bar {
-  display:block; background:#000;
-  padding:5px 8px; line-height:1.6;
-  font-size:11px; font-weight:400; letter-spacing:1.5px;
-  text-transform:uppercase; color:#fff;
+/* ── Main container ── */
+#mainContent {
+  background: #f2f2f2;
+  border: 2px ridge #727272;
+  box-shadow: #595959 1px 1px 12px 1px;
+  width: 100%;
+  padding: 0;
 }
 
-/* ── Section divider label ── */
+/* ── Black header strip (same as index h1/.bar-row) ── */
+.bar-row {
+  display: block;
+  background: #000;
+  padding: 5px 8px;
+  margin: 0;
+  line-height: 1.6;
+}
+.bar-row span {
+  display: inline;
+  background: #000;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+}
+
+/* ── rights-bar (matches index) ── */
+.rights-bar {
+  display: block;
+  background: #000;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 8px;
+  width: 100%;
+}
+
+/* ── Section label ── */
 .contact-section-label {
-  font-size:10px; color:#888;
-  text-transform:uppercase; letter-spacing:1.2px;
-  padding:5px 12px 3px;
-  background:#e0e0e0;
-  border-bottom:1px solid rgba(0,0,0,.12);
-  border-top:1px solid rgba(255,255,255,.60);
+  font-size: 10px; color: #888;
+  text-transform: uppercase; letter-spacing: 1.2px;
+  padding: 5px 12px 3px;
+  background: #e0e0e0;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+  border-top: 1px solid rgba(255,255,255,.60);
 }
 
-/* ── Contact Links ── */
+/* ── Glass box (matches index .glass-borders) ── */
+.glass-box {
+  background: #ebebeb;
+  box-shadow: var(--shadow-bar);
+  border: 1px solid rgba(0,0,0,.20);
+  padding: 5px;
+  margin: 6px 6px;
+}
+.aero-inner { border: 1px solid rgba(0,0,0,.30); background: #f2f2f2; }
+.aero-pad   { padding: 10px 12px; }
+
+/* ── Contact links (matches index .contact-links exactly) ── */
 .contact-links { list-style:none; margin:0; padding:0; }
 .contact-links li { border-bottom:1px solid rgba(0,0,0,.10); }
 .contact-links li:last-child { border-bottom:none; }
-
 .contact-links a {
   display:flex; align-items:center; gap:12px;
   padding:8px 12px;
   color:var(--text); font-size:12.5px; text-decoration:none;
 }
-.contact-links a:hover {
-  background:var(--grad-bar);
-  color:var(--accent); text-decoration:none;
-}
+.contact-links a:hover { background:var(--grad-bar); color:var(--accent); text-decoration:none; }
 .contact-links a:hover .link-note { color:var(--text-dim); }
-
 .contact-links a img.link-icon {
   width:26px; height:26px; object-fit:contain; flex-shrink:0;
-  pointer-events:none; filter:none !important; -webkit-filter:none !important;
-  border-radius:6px;
+  pointer-events:none; border-radius:6px;
 }
 .contact-links a .link-label { flex:1; font-size:12.5px; }
 .contact-links a .link-note  { color:#888; font-size:11px; white-space:nowrap; }
+
+/* ── Email row (no icon) ── */
+.email-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(0,0,0,.10);
+}
+.email-row .email-label {
+  font-size: 12.5px;
+  color: var(--text);
+  letter-spacing: .3px;
+}
+.email-row .email-note {
+  font-size: 11px;
+  color: #888;
+}
+.email-input {
+  width: 100%;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.28);
+  border-top-color: rgba(0,0,0,.40);
+  padding: 5px 8px;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--text);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.10);
+}
+.email-input:focus { border-color: rgba(204,26,26,.55); }
+.email-send-btn {
+  align-self: flex-start;
+  background: var(--grad-bar);
+  border: 1px solid rgba(0,0,0,.28);
+  border-bottom-color: rgba(0,0,0,.38);
+  box-shadow: 0 1px 3px rgba(0,0,0,.12);
+  padding: 4px 14px;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text);
+  cursor: pointer;
+}
+.email-send-btn:hover { background: linear-gradient(to bottom,#fff 0%,#e4e4e4 52%,#d0d0d0 52%,#dcdcdc 100%); }
 
 /* ── Note ── */
 .note {
@@ -152,208 +221,193 @@ strong        { color:var(--accent); font-weight:400; }
 #soundToggle.off   { color:rgba(0,0,0,.22); }
 
 /* ── Mobile ── */
+@media (max-width:800px) { #pageWrap { width:100%; } }
 @media (max-width:600px) {
-  body { padding:8px 4px 24px; background-size:cover; background-attachment:scroll; }
-  #pageWrap { width:100%; }
-  .aero-bar { font-size:12px; }
-  .aero-bar .back-link img { height:24px; }
+  body { padding:8px 4px 24px; background-attachment:scroll; }
   .contact-links a { padding:10px 10px; gap:10px; font-size:12px; }
   .contact-links a img.link-icon { width:28px; height:28px; }
-  #cornerLogo img { height:28px; }
-  .glass-box { padding:4px; }
-}
-@media (max-width:380px) {
-  .aero-bar .bar-title { font-size:11px; }
 }
 </style>
 </head>
 <body>
 
-<a id="cornerLogo" href="../index.html#introduction" title="Watanagashi Archive — Home">
-  <img src="../assets/images/watanagashilogo.png" alt="Watanagashi Archive"
-    onerror="this.style.display='none'">
-</a>
-
 <div id="pageWrap">
 
+  <!-- Topbar -->
   <div class="aero-bar">
-    <a class="back-link" href="../index.html" title="Back to Archive">
-      <img src="https://img1.picmix.com/output/stamp/thumb/9/6/4/8/2608469_0fb9f.png" alt="&#8249;"
-        onerror="this.outerHTML='<span style=&quot;color:#333;font-size:22px;line-height:1;&quot;>&#8249;</span>'">
-    </a>
-    <span class="bar-title">CONTACT ME</span>
+    <a class="back-link" href="../index.html" title="Back to Archive">back</a>
+    <span class="bar-title">contact me</span>
   </div>
 
-  <div class="glass-box">
-    <div class="aero-inner">
-      <div class="aero-pad">
-        <p>Feel free to reach out through any of my social links below.</p>
+  <!-- Main box -->
+  <div id="mainContent">
+
+    <!-- Header strip -->
+    <div class="bar-row"><span>Get in Touch</span></div>
+
+    <div class="glass-box">
+      <div class="aero-inner">
+        <div class="aero-pad">
+          <p>Feel free to reach out through any of the links below.</p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="glass-box">
-    <div class="section-bar">Get in Touch</div>
-    <div class="aero-inner">
-
-      <div class="contact-section-label">Social &amp; Video</div>
+    <!-- Social & Video -->
+    <div class="rights-bar" style="margin-top:5px">Social &amp; Video</div>
+    <div class="glass-box" style="padding:0; background:#000;">
       <ul class="contact-links">
         <li>
-          <a href="https://www.youtube.com/@trenchgun1337" target="_blank" rel="noopener">
+          <a href="https://www.youtube.com/@trenchgun1337" target="_blank" rel="noopener"
+             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
             <img class="link-icon" src="../assets/images/YOUTUBEAERO.png" alt="YouTube" onerror="this.style.display='none'">
             <span class="link-label">YouTube</span>
           </a>
         </li>
         <li>
-          <a href="https://www.tiktok.com/@trenchgun1337" target="_blank" rel="noopener">
+          <a href="https://www.tiktok.com/@trenchgun1337" target="_blank" rel="noopener"
+             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
             <img class="link-icon" src="../assets/images/TIKTOKAERO.png" alt="TikTok" onerror="this.style.display='none'">
             <span class="link-label">TikTok</span>
           </a>
         </li>
         <li>
-          <a href="https://x.com/trenchgun1337" target="_blank" rel="noopener">
+          <a href="https://x.com/trenchgun1337" target="_blank" rel="noopener"
+             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
             <img class="link-icon" src="../assets/images/TWITTERAERO.png" alt="Twitter / X" onerror="this.style.display='none'">
             <span class="link-label">Twitter / X</span>
           </a>
         </li>
         <li>
-          <a href="https://www.instagram.com/trenchgun1337" target="_blank" rel="noopener">
+          <a href="https://www.instagram.com/trenchgun1337" target="_blank" rel="noopener"
+             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
             <img class="link-icon" src="../assets/images/INSTAGRAM%20AERO.png" alt="Instagram" onerror="this.style.display='none'">
             <span class="link-label">Instagram</span>
           </a>
         </li>
         <li>
-          <a href="https://br.pinterest.com/fxckmazl/" target="_blank" rel="noopener">
+          <a href="https://br.pinterest.com/fxckmazl/" target="_blank" rel="noopener"
+             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
             <img class="link-icon" src="../assets/images/PINTERESTAERO.png" alt="Pinterest" onerror="this.style.display='none'">
             <span class="link-label">Pinterest</span>
           </a>
         </li>
       </ul>
+    </div>
 
-      <div class="contact-section-label">Music</div>
+    <!-- Music -->
+    <div class="rights-bar" style="margin-top:5px">Music</div>
+    <div class="glass-box" style="padding:0; background:#000;">
       <ul class="contact-links">
         <li>
-          <a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank" rel="noopener">
+          <a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank" rel="noopener"
+             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
             <img class="link-icon" src="../assets/images/SPOTIFYAERO.jpeg" alt="Spotify" onerror="this.style.display='none'">
             <span class="link-label">Spotify</span>
           </a>
         </li>
         <li>
-          <a href="https://soundcloud.com/trenchgun1337" target="_blank" rel="noopener">
+          <a href="https://soundcloud.com/trenchgun1337" target="_blank" rel="noopener"
+             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
             <img class="link-icon" src="../assets/images/SOUNDCLOUDAERO.png" alt="SoundCloud" onerror="this.style.display='none'">
             <span class="link-label">SoundCloud</span>
           </a>
         </li>
       </ul>
+    </div>
 
-      <div class="contact-section-label">Gaming</div>
+    <!-- Gaming -->
+    <div class="rights-bar" style="margin-top:5px">Gaming</div>
+    <div class="glass-box" style="padding:0; background:#000;">
       <ul class="contact-links">
         <li>
-          <a href="https://steamcommunity.com/id/fxckmazl" target="_blank" rel="noopener">
+          <a href="https://steamcommunity.com/id/fxckmazl" target="_blank" rel="noopener"
+             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
             <img class="link-icon" src="../assets/images/STEAMAERO.png" alt="Steam" onerror="this.style.display='none'">
             <span class="link-label">Steam</span>
           </a>
         </li>
         <li>
-          <a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank" rel="noopener">
+          <a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank" rel="noopener"
+             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
             <img class="link-icon" src="../assets/images/ROBLOXAERO.png" alt="Roblox" onerror="this.style.display='none'">
             <span class="link-label">Roblox</span>
           </a>
         </li>
       </ul>
+    </div>
 
-      <div class="contact-section-label">Other</div>
-      <ul class="contact-links">
-        <li>
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank" rel="noopener">
-            <img class="link-icon" src="../assets/images/GMAILAERO.png" alt="Email" onerror="this.style.display='none'">
-            <span class="link-label">Email</span>
-            <span class="link-note">(faster response)</span>
-          </a>
-        </li>
-      </ul>
-
-      <div class="aero-pad" style="padding-top:6px;">
-        <div class="note">
-          All external links open in a new tab.<br>
-          All content on this website is for archiving, educational, or informational purposes and is not for profit.<br>
-          If you own any content here and would like it removed or credited, please reach out via email.
+    <!-- Email (no icon, input field) -->
+    <div class="rights-bar" style="margin-top:5px">Email</div>
+    <div class="glass-box" style="background:#f2f2f2;">
+      <div class="aero-inner">
+        <div class="email-row">
+          <span class="email-label">trenchgun1337@gmail.com</span>
+          <span class="email-note">faster response — write your email address below and send a message</span>
+          <input class="email-input" type="email" placeholder="your email address" id="emailInput">
+          <textarea class="email-input" rows="4" placeholder="your message..." id="emailMsg" style="resize:vertical; margin-top:4px;"></textarea>
+          <button class="email-send-btn" onclick="sendEmail()">Send</button>
+        </div>
+        <div class="aero-pad" style="padding-top:4px;">
+          <div class="note">
+            All external links open in a new tab.<br>
+            All content here is for archiving / educational purposes and is not for profit.<br>
+            If you own content here and want it removed or credited, reach out via email.
+          </div>
         </div>
       </div>
-
     </div>
-  </div>
 
-</div>
+  </div><!-- /mainContent -->
+</div><!-- /pageWrap -->
 
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 
 <script>
+function sendEmail() {
+  var addr = document.getElementById('emailInput').value.trim();
+  var msg  = document.getElementById('emailMsg').value.trim();
+  if (!addr) { alert('Please enter your email address.'); return; }
+  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com'
+    + '&su=Contact%20from%20Website'
+    + (addr ? '&cc=' + encodeURIComponent(addr) : '')
+    + (msg  ? '&body=' + encodeURIComponent(msg) : '');
+  window.open(url, '_blank');
+}
+
 const SOUND_BASE = '../assets/audio/';
-const SOUNDS = {
-  start:   SOUND_BASE + 'sitestart.mp3',
-  alert:   SOUND_BASE + 'sitealert.mp3',
-  dislike: SOUND_BASE + 'sitedislikeclick.mp3',
-  like:    SOUND_BASE + 'sitelikeclick.mp3',
-  sort:    SOUND_BASE + 'sitesortclick.mp3',
-  button:  SOUND_BASE + 'sitebuttonclick.mp3',
-  hover:   SOUND_BASE + 'text.mp3',
-};
+const SOUNDS = { start:'sitestart.mp3', alert:'sitealert.mp3', dislike:'sitedislikeclick.mp3', like:'sitelikeclick.mp3', sort:'sitesortclick.mp3', button:'sitebuttonclick.mp3', hover:'text.mp3' };
 let _soundsOn = true;
 const _audioCache = {};
-function _getAudio(key) {
-  if (!_audioCache[key]) { const a = new Audio(SOUNDS[key]); a.preload='auto'; _audioCache[key]=a; }
-  return _audioCache[key];
-}
-function playSound(key) {
-  if (!_soundsOn) return;
-  try { const c = _getAudio(key).cloneNode(); c.volume = key==='hover'?.30:.52; c.play().catch(()=>{}); } catch(e) {}
-}
+function _getAudio(k) { if (!_audioCache[k]) { const a=new Audio(SOUND_BASE+SOUNDS[k]); a.preload='auto'; _audioCache[k]=a; } return _audioCache[k]; }
+function playSound(k) { if (!_soundsOn) return; try { const c=_getAudio(k).cloneNode(); c.volume=k==='hover'?.30:.52; c.play().catch(()=>{}); } catch(e){} }
 function toggleSound() {
-  _soundsOn = !_soundsOn;
-  const btn = document.getElementById('soundToggle');
-  if (btn) { btn.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off'; btn.classList.toggle('off', !_soundsOn); }
+  _soundsOn=!_soundsOn;
+  const btn=document.getElementById('soundToggle');
+  if (btn) { btn.textContent=_soundsOn?'Sounds: On':'Sounds: Off'; btn.classList.toggle('off',!_soundsOn); }
   if (_soundsOn) playSound('button');
-  sessionStorage.setItem('_soundsOn', String(_soundsOn));
+  sessionStorage.setItem('_soundsOn',String(_soundsOn));
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const stored = sessionStorage.getItem('_soundsOn');
-  if (stored === 'false') {
-    _soundsOn = false;
-    const btn = document.getElementById('soundToggle');
-    if (btn) { btn.textContent = 'Sounds: Off'; btn.classList.add('off'); }
-  }
-  if (!sessionStorage.getItem('_siteStartPlayed')) {
-    sessionStorage.setItem('_siteStartPlayed','1');
-    setTimeout(()=>playSound('start'), 700);
-  }
+document.addEventListener('DOMContentLoaded',()=>{
+  const s=sessionStorage.getItem('_soundsOn');
+  if (s==='false') { _soundsOn=false; const b=document.getElementById('soundToggle'); if(b){b.textContent='Sounds: Off';b.classList.add('off');} }
+  if (!sessionStorage.getItem('_siteStartPlayed')) { sessionStorage.setItem('_siteStartPlayed','1'); setTimeout(()=>playSound('start'),700); }
 });
-
-document.addEventListener('pointerdown', ()=>Object.keys(SOUNDS).forEach(k=>_getAudio(k)), {once:true,passive:true});
-
-let _hoverThrottle = 0, _hoverTimer = null;
-function _isInteractive(el) {
-  if (!el||el===document.body||el===document.documentElement) return false;
-  const tag = el.tagName;
-  if (tag==='BUTTON'||tag==='A'||tag==='SELECT') return true;
-  if (tag==='INPUT'&&el.type!=='range') return true;
-  const cs = window.getComputedStyle(el);
-  if (cs&&cs.cursor==='pointer') return true;
-  return false;
-}
-document.addEventListener('mouseover', e=>{
-  if (e.target.id==='soundToggle') return;
-  if (!_isInteractive(e.target)) return;
-  clearTimeout(_hoverTimer);
-  _hoverTimer = setTimeout(()=>{
-    const now = Date.now();
-    if (now-_hoverThrottle<400) return;
-    _hoverThrottle = now; playSound('hover');
-  }, 400);
-},{passive:true});
-document.addEventListener('mouseout', e=>{ if (_isInteractive(e.target)) clearTimeout(_hoverTimer); },{passive:true});
-document.addEventListener('click', e=>{ if (e.target.id==='soundToggle') return; if (_isInteractive(e.target)) playSound('button'); },true);
+document.addEventListener('pointerdown',()=>Object.keys(SOUNDS).forEach(k=>_getAudio(k)),{once:true,passive:true});
+let _ht=0,_htm=null;
+function _isI(el){if(!el||el===document.body||el===document.documentElement)return false;const t=el.tagName;if(t==='BUTTON'||t==='A'||t==='SELECT')return true;if(t==='INPUT'&&el.type!=='range')return true;const cs=window.getComputedStyle(el);return cs&&cs.cursor==='pointer';}
+document.addEventListener('mouseover',e=>{if(e.target.id==='soundToggle')return;if(!_isI(e.target))return;clearTimeout(_htm);_htm=setTimeout(()=>{const n=Date.now();if(n-_ht<400)return;_ht=n;playSound('hover');},400);},{passive:true});
+document.addEventListener('mouseout',e=>{if(_isI(e.target))clearTimeout(_htm);},{passive:true});
+document.addEventListener('click',e=>{if(e.target.id==='soundToggle')return;if(_isI(e.target))playSound('button');},true);
 </script>
 </body>
 </html>
