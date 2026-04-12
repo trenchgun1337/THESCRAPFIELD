@@ -7,18 +7,18 @@
 <link rel="icon" type="image/x-icon" href="/assets/images/satokoico.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-* { -webkit-tap-highlight-color:transparent; }
-::selection { background:rgba(80,80,80,.45); color:#fff; }
 *:focus { outline:none !important; }
+::selection { background:rgba(80,80,80,.45); color:#fff; }
 
 :root {
   --accent: #cc1a1a;
   --text: #111;
   --text-dim: #2c2c2c;
   --grad-bar: linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
-  --shadow-bar: 0 2px 5px rgba(0,0,0,.15);
+  --shadow: 0 2px 5px rgba(0,0,0,.15);
 }
 
 html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.5) transparent; }
@@ -41,102 +41,66 @@ body {
 
 img { -webkit-user-drag:none; user-select:none; }
 a { color:#000; text-decoration:none; }
-a:hover { color:var(--accent); text-decoration:underline; }
-p { font-size:12.5px; line-height:18px; color:var(--text); margin:0; }
-strong { color:var(--accent); font-weight:400; }
 
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; }
 
-/* ── Topbar (matches index aero-bar style) ── */
+/* ── topbar ── */
 .aero-bar {
   background: var(--grad-bar);
   border: 2px ridge #727272;
-  box-shadow: var(--shadow-bar);
-  color: var(--text);
-  font-size:13px; font-weight:400;
-  padding:4px 10px;
-  display:flex; align-items:center; gap:8px;
-  margin-bottom:7px;
+  box-shadow: var(--shadow);
+  padding: 4px 10px;
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 7px;
 }
 .back-link {
   color: var(--accent);
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 11px;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
-  flex-shrink: 0;
-  padding: 2px 4px;
-  border: 1px solid rgba(204,26,26,.35);
-  background: rgba(204,26,26,.06);
-  transition: background .15s;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
-.back-link:hover { background:rgba(204,26,26,.14); text-decoration:none; color:var(--accent); }
-.bar-title { flex:1; text-align:center; font-size:11px; letter-spacing:2px; text-transform:uppercase; }
+.back-link:hover { text-decoration: underline; }
+.bar-title {
+  flex:1; text-align:center;
+  font-size:11px; letter-spacing:2px; text-transform:uppercase;
+  color: var(--text);
+}
 
-/* ── Main container ── */
+/* ── main box ── */
 #mainContent {
   background: #f2f2f2;
   border: 2px ridge #727272;
   box-shadow: #595959 1px 1px 12px 1px;
   width: 100%;
-  padding: 0;
 }
 
-/* ── Black header strip (same as index h1/.bar-row) ── */
-.bar-row {
-  display: block;
-  background: #000;
-  padding: 5px 8px;
-  margin: 0;
-  line-height: 1.6;
-}
-.bar-row span {
-  display: inline;
-  background: #000;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 2px 6px;
-}
-
-/* ── rights-bar (matches index) ── */
+/* ── rights-bar ── */
 .rights-bar {
   display: block;
   background: #000;
   color: #fff;
   font-size: 11px;
-  font-weight: 400;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   padding: 5px 8px;
   width: 100%;
 }
 
-/* ── Section label ── */
-.contact-section-label {
-  font-size: 10px; color: #888;
-  text-transform: uppercase; letter-spacing: 1.2px;
-  padding: 5px 12px 3px;
-  background: #e0e0e0;
-  border-bottom: 1px solid rgba(0,0,0,.12);
-  border-top: 1px solid rgba(255,255,255,.60);
-}
-
-/* ── Glass box (matches index .glass-borders) ── */
+/* ── social links ── */
 .glass-box {
   background: #ebebeb;
-  box-shadow: var(--shadow-bar);
   border: 1px solid rgba(0,0,0,.20);
   padding: 5px;
-  margin: 6px 6px;
+  margin: 6px;
 }
-.aero-inner { border: 1px solid rgba(0,0,0,.30); background: #f2f2f2; }
-.aero-pad   { padding: 10px 12px; }
+.aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
+.aero-pad   { padding:10px 12px; }
 
-/* ── Contact links (matches index .contact-links exactly) ── */
 .contact-links { list-style:none; margin:0; padding:0; }
 .contact-links li { border-bottom:1px solid rgba(0,0,0,.10); }
 .contact-links li:last-child { border-bottom:none; }
@@ -145,33 +109,36 @@ strong { color:var(--accent); font-weight:400; }
   padding:8px 12px;
   color:var(--text); font-size:12.5px; text-decoration:none;
 }
-.contact-links a:hover { background:var(--grad-bar); color:var(--accent); text-decoration:none; }
-.contact-links a:hover .link-note { color:var(--text-dim); }
+.contact-links a:hover { background:var(--grad-bar); color:var(--accent); }
 .contact-links a img.link-icon {
-  width:26px; height:26px; object-fit:contain; flex-shrink:0;
-  pointer-events:none; border-radius:6px;
+  width:26px; height:26px; object-fit:contain; flex-shrink:0; border-radius:6px;
 }
 .contact-links a .link-label { flex:1; font-size:12.5px; }
 .contact-links a .link-note  { color:#888; font-size:11px; white-space:nowrap; }
 
-/* ── Email row (no icon) ── */
-.email-row {
+/* ── email form ── */
+.email-form-wrap {
+  padding: 12px 14px 14px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 10px 12px;
-  border-bottom: 1px solid rgba(0,0,0,.10);
+  gap: 8px;
 }
-.email-row .email-label {
-  font-size: 12.5px;
-  color: var(--text);
-  letter-spacing: .3px;
+.field-label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 2px;
+  display: block;
 }
-.email-row .email-note {
-  font-size: 11px;
-  color: #888;
+.field-optional {
+  font-size: 10px;
+  color: #aaa;
+  margin-left: 4px;
+  text-transform: none;
+  letter-spacing: 0;
 }
-.email-input {
+.form-input, .form-textarea {
   width: 100%;
   background: #fff;
   border: 1px solid rgba(0,0,0,.28);
@@ -182,14 +149,27 @@ strong { color:var(--accent); font-weight:400; }
   color: var(--text);
   box-shadow: inset 0 1px 3px rgba(0,0,0,.10);
 }
-.email-input:focus { border-color: rgba(204,26,26,.55); }
-.email-send-btn {
+.form-input:focus, .form-textarea:focus { border-color: rgba(204,26,26,.55); }
+.form-textarea { resize: vertical; min-height: 90px; }
+
+.anon-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 11.5px;
+  color: #555;
+}
+.anon-toggle input[type=checkbox] { cursor: pointer; accent-color: var(--accent); }
+
+.send-btn {
   align-self: flex-start;
   background: var(--grad-bar);
   border: 1px solid rgba(0,0,0,.28);
   border-bottom-color: rgba(0,0,0,.38);
   box-shadow: 0 1px 3px rgba(0,0,0,.12);
-  padding: 4px 14px;
+  padding: 5px 18px;
   font-family: inherit;
   font-size: 11px;
   letter-spacing: 1px;
@@ -197,215 +177,217 @@ strong { color:var(--accent); font-weight:400; }
   color: var(--text);
   cursor: pointer;
 }
-.email-send-btn:hover { background: linear-gradient(to bottom,#fff 0%,#e4e4e4 52%,#d0d0d0 52%,#dcdcdc 100%); }
+.send-btn:hover { background: linear-gradient(to bottom,#fff 0%,#e4e4e4 52%,#d0d0d0 52%,#dcdcdc 100%); }
+.send-btn:disabled { opacity:.5; cursor:default; }
 
-/* ── Note ── */
+#statusMsg {
+  font-size: 11.5px;
+  min-height: 16px;
+  color: #555;
+}
+#statusMsg.ok  { color: #2a7a2a; }
+#statusMsg.err { color: var(--accent); }
+
 .note {
   background:#f5f5f5;
   border:1px solid rgba(0,0,0,.25);
   border-left:3px solid rgba(120,120,120,.50);
-  padding:7px 10px; margin-top:6px;
+  padding:7px 10px;
   font-size:11px; color:var(--text-dim); line-height:1.65;
   text-align:center;
 }
 
-/* ── Sound toggle ── */
+/* ── sound toggle ── */
 #soundToggle {
   position:fixed; bottom:8px; left:10px; z-index:9999;
-  font-family:'Sawarabi Gothic',Tahoma,sans-serif;
-  font-size:10px; color:rgba(0,0,0,.40); cursor:pointer;
-  user-select:none; letter-spacing:.2px; padding:2px 0;
-  background:none; border:none; outline:none;
+  font-family:inherit; font-size:10px; color:rgba(0,0,0,.40);
+  cursor:pointer; user-select:none; background:none; border:none;
 }
 #soundToggle:hover { color:rgba(0,0,0,.70); }
 #soundToggle.off   { color:rgba(0,0,0,.22); }
 
-/* ── Mobile ── */
 @media (max-width:800px) { #pageWrap { width:100%; } }
-@media (max-width:600px) {
-  body { padding:8px 4px 24px; background-attachment:scroll; }
-  .contact-links a { padding:10px 10px; gap:10px; font-size:12px; }
-  .contact-links a img.link-icon { width:28px; height:28px; }
-}
+@media (max-width:600px) { body { padding:8px 4px 24px; background-attachment:scroll; } }
 </style>
 </head>
 <body>
 
 <div id="pageWrap">
 
-  <!-- Topbar -->
   <div class="aero-bar">
-    <a class="back-link" href="../index.html" title="Back to Archive">back</a>
+    <a class="back-link" href="../index.html">back</a>
     <span class="bar-title">contact me</span>
   </div>
 
-  <!-- Main box -->
   <div id="mainContent">
 
-    <!-- Header strip -->
-    <div class="bar-row"><span>Get in Touch</span></div>
-
-    <div class="glass-box">
-      <div class="aero-inner">
-        <div class="aero-pad">
-          <p>Feel free to reach out through any of the links below.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Social & Video -->
-    <div class="rights-bar" style="margin-top:5px">Social &amp; Video</div>
-    <div class="glass-box" style="padding:0; background:#000;">
+    <div class="rights-bar">Social &amp; Video</div>
+    <div class="glass-box" style="padding:0;background:#000;margin-bottom:0;">
       <ul class="contact-links">
-        <li>
-          <a href="https://www.youtube.com/@trenchgun1337" target="_blank" rel="noopener"
-             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-            <img class="link-icon" src="../assets/images/YOUTUBEAERO.png" alt="YouTube" onerror="this.style.display='none'">
-            <span class="link-label">YouTube</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.tiktok.com/@trenchgun1337" target="_blank" rel="noopener"
-             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-            <img class="link-icon" src="../assets/images/TIKTOKAERO.png" alt="TikTok" onerror="this.style.display='none'">
-            <span class="link-label">TikTok</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://x.com/trenchgun1337" target="_blank" rel="noopener"
-             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-            <img class="link-icon" src="../assets/images/TWITTERAERO.png" alt="Twitter / X" onerror="this.style.display='none'">
-            <span class="link-label">Twitter / X</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.instagram.com/trenchgun1337" target="_blank" rel="noopener"
-             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-            <img class="link-icon" src="../assets/images/INSTAGRAM%20AERO.png" alt="Instagram" onerror="this.style.display='none'">
-            <span class="link-label">Instagram</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://br.pinterest.com/fxckmazl/" target="_blank" rel="noopener"
-             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-            <img class="link-icon" src="../assets/images/PINTERESTAERO.png" alt="Pinterest" onerror="this.style.display='none'">
-            <span class="link-label">Pinterest</span>
-          </a>
-        </li>
+        <li><a href="https://www.youtube.com/@trenchgun1337" target="_blank" rel="noopener">
+          <img class="link-icon" src="../assets/images/YOUTUBEAERO.png" alt="" onerror="this.style.display='none'">
+          <span class="link-label">YouTube</span></a></li>
+        <li><a href="https://www.tiktok.com/@trenchgun1337" target="_blank" rel="noopener">
+          <img class="link-icon" src="../assets/images/TIKTOKAERO.png" alt="" onerror="this.style.display='none'">
+          <span class="link-label">TikTok</span></a></li>
+        <li><a href="https://x.com/trenchgun1337" target="_blank" rel="noopener">
+          <img class="link-icon" src="../assets/images/TWITTERAERO.png" alt="" onerror="this.style.display='none'">
+          <span class="link-label">Twitter / X</span></a></li>
+        <li><a href="https://www.instagram.com/trenchgun1337" target="_blank" rel="noopener">
+          <img class="link-icon" src="../assets/images/INSTAGRAM%20AERO.png" alt="" onerror="this.style.display='none'">
+          <span class="link-label">Instagram</span></a></li>
+        <li><a href="https://br.pinterest.com/fxckmazl/" target="_blank" rel="noopener">
+          <img class="link-icon" src="../assets/images/PINTERESTAERO.png" alt="" onerror="this.style.display='none'">
+          <span class="link-label">Pinterest</span></a></li>
       </ul>
     </div>
 
-    <!-- Music -->
     <div class="rights-bar" style="margin-top:5px">Music</div>
-    <div class="glass-box" style="padding:0; background:#000;">
+    <div class="glass-box" style="padding:0;background:#000;margin-bottom:0;">
       <ul class="contact-links">
-        <li>
-          <a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank" rel="noopener"
-             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-            <img class="link-icon" src="../assets/images/SPOTIFYAERO.jpeg" alt="Spotify" onerror="this.style.display='none'">
-            <span class="link-label">Spotify</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://soundcloud.com/trenchgun1337" target="_blank" rel="noopener"
-             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-            <img class="link-icon" src="../assets/images/SOUNDCLOUDAERO.png" alt="SoundCloud" onerror="this.style.display='none'">
-            <span class="link-label">SoundCloud</span>
-          </a>
-        </li>
+        <li><a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank" rel="noopener">
+          <img class="link-icon" src="../assets/images/SPOTIFYAERO.jpeg" alt="" onerror="this.style.display='none'">
+          <span class="link-label">Spotify</span></a></li>
+        <li><a href="https://soundcloud.com/trenchgun1337" target="_blank" rel="noopener">
+          <img class="link-icon" src="../assets/images/SOUNDCLOUDAERO.png" alt="" onerror="this.style.display='none'">
+          <span class="link-label">SoundCloud</span></a></li>
       </ul>
     </div>
 
-    <!-- Gaming -->
     <div class="rights-bar" style="margin-top:5px">Gaming</div>
-    <div class="glass-box" style="padding:0; background:#000;">
+    <div class="glass-box" style="padding:0;background:#000;margin-bottom:0;">
       <ul class="contact-links">
-        <li>
-          <a href="https://steamcommunity.com/id/fxckmazl" target="_blank" rel="noopener"
-             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-            <img class="link-icon" src="../assets/images/STEAMAERO.png" alt="Steam" onerror="this.style.display='none'">
-            <span class="link-label">Steam</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank" rel="noopener"
-             onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-             onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-            <img class="link-icon" src="../assets/images/ROBLOXAERO.png" alt="Roblox" onerror="this.style.display='none'">
-            <span class="link-label">Roblox</span>
-          </a>
-        </li>
+        <li><a href="https://steamcommunity.com/id/fxckmazl" target="_blank" rel="noopener">
+          <img class="link-icon" src="../assets/images/STEAMAERO.png" alt="" onerror="this.style.display='none'">
+          <span class="link-label">Steam</span></a></li>
+        <li><a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank" rel="noopener">
+          <img class="link-icon" src="../assets/images/ROBLOXAERO.png" alt="" onerror="this.style.display='none'">
+          <span class="link-label">Roblox</span></a></li>
       </ul>
     </div>
 
-    <!-- Email (no icon, input field) -->
-    <div class="rights-bar" style="margin-top:5px">Email</div>
-    <div class="glass-box" style="background:#f2f2f2;">
+    <!-- Email form -->
+    <div class="rights-bar" style="margin-top:5px">Send a Message</div>
+    <div class="glass-box" style="margin-top:0;">
       <div class="aero-inner">
-        <div class="email-row">
-          <span class="email-label">trenchgun1337@gmail.com</span>
-          <span class="email-note">faster response — write your email address below and send a message</span>
-          <input class="email-input" type="email" placeholder="your email address" id="emailInput">
-          <textarea class="email-input" rows="4" placeholder="your message..." id="emailMsg" style="resize:vertical; margin-top:4px;"></textarea>
-          <button class="email-send-btn" onclick="sendEmail()">Send</button>
-        </div>
-        <div class="aero-pad" style="padding-top:4px;">
-          <div class="note">
-            All external links open in a new tab.<br>
-            All content here is for archiving / educational purposes and is not for profit.<br>
-            If you own content here and want it removed or credited, reach out via email.
+        <div class="email-form-wrap">
+
+          <label class="anon-toggle">
+            <input type="checkbox" id="anonCheck" onchange="toggleAnon()">
+            send anonymously
+          </label>
+
+          <div id="nameField">
+            <label class="field-label" for="senderName">Name <span class="field-optional">— optional</span></label>
+            <input class="form-input" type="text" id="senderName" placeholder="your name (or leave blank)">
           </div>
+
+          <div id="emailField">
+            <label class="field-label" for="senderEmail">Your email <span class="field-optional">— optional, for reply</span></label>
+            <input class="form-input" type="email" id="senderEmail" placeholder="your email address">
+          </div>
+
+          <div>
+            <label class="field-label" for="msgBody">Message</label>
+            <textarea class="form-textarea" id="msgBody" placeholder="write your message here..."></textarea>
+          </div>
+
+          <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send</button>
+          <div id="statusMsg"></div>
+
+          <div class="note">
+            name and email are optional — you can send anonymously.<br>
+            all content here is for archiving / educational purposes and not for profit.<br>
+            if you own content here and want it removed, reach out above.
+          </div>
+
         </div>
       </div>
     </div>
 
-  </div><!-- /mainContent -->
-</div><!-- /pageWrap -->
+  </div>
+</div>
 
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 
 <script>
-function sendEmail() {
-  var addr = document.getElementById('emailInput').value.trim();
-  var msg  = document.getElementById('emailMsg').value.trim();
-  if (!addr) { alert('Please enter your email address.'); return; }
-  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com'
-    + '&su=Contact%20from%20Website'
-    + (addr ? '&cc=' + encodeURIComponent(addr) : '')
-    + (msg  ? '&body=' + encodeURIComponent(msg) : '');
-  window.open(url, '_blank');
+/* ── EmailJS ──────────────────────────────────────────────
+   Setup (free, ~200 emails/month):
+   1. https://www.emailjs.com/ → create account
+   2. Email Services → Add Service (Gmail) → copy Service ID
+   3. Email Templates → Create Template
+      Add these variables in the body:
+        From: {{from_name}} <{{from_email}}>
+        Message: {{message}}
+      Set "To email" = trenchgun1337@gmail.com
+      Copy Template ID
+   4. Account → API Keys → copy Public Key
+   5. Replace the 3 values below
+───────────────────────────────────────────────────────── */
+const EJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // ← replace
+const EJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // ← replace
+const EJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // ← replace
+
+emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+
+function toggleAnon() {
+  const hide = document.getElementById('anonCheck').checked;
+  document.getElementById('nameField').style.display  = hide ? 'none' : '';
+  document.getElementById('emailField').style.display = hide ? 'none' : '';
 }
 
-const SOUND_BASE = '../assets/audio/';
-const SOUNDS = { start:'sitestart.mp3', alert:'sitealert.mp3', dislike:'sitedislikeclick.mp3', like:'sitelikeclick.mp3', sort:'sitesortclick.mp3', button:'sitebuttonclick.mp3', hover:'text.mp3' };
-let _soundsOn = true;
-const _audioCache = {};
-function _getAudio(k) { if (!_audioCache[k]) { const a=new Audio(SOUND_BASE+SOUNDS[k]); a.preload='auto'; _audioCache[k]=a; } return _audioCache[k]; }
-function playSound(k) { if (!_soundsOn) return; try { const c=_getAudio(k).cloneNode(); c.volume=k==='hover'?.30:.52; c.play().catch(()=>{}); } catch(e){} }
-function toggleSound() {
-  _soundsOn=!_soundsOn;
-  const btn=document.getElementById('soundToggle');
-  if (btn) { btn.textContent=_soundsOn?'Sounds: On':'Sounds: Off'; btn.classList.toggle('off',!_soundsOn); }
-  if (_soundsOn) playSound('button');
-  sessionStorage.setItem('_soundsOn',String(_soundsOn));
+async function sendMsg() {
+  const anon   = document.getElementById('anonCheck').checked;
+  const name   = anon ? 'Anonymous' : (document.getElementById('senderName').value.trim() || 'Anonymous');
+  const email  = anon ? 'anonymous@noreply.com' : (document.getElementById('senderEmail').value.trim() || 'anonymous@noreply.com');
+  const msg    = document.getElementById('msgBody').value.trim();
+  const status = document.getElementById('statusMsg');
+  const btn    = document.getElementById('sendBtn');
+
+  if (!msg) { status.textContent = 'please write a message first.'; status.className = 'err'; return; }
+
+  btn.disabled = true;
+  status.className = '';
+  status.textContent = 'sending...';
+
+  try {
+    await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+      from_name:  name,
+      from_email: email,
+      message:    msg,
+    });
+    status.textContent = 'message sent!';
+    status.className = 'ok';
+    document.getElementById('msgBody').value = '';
+    if (!anon) {
+      document.getElementById('senderName').value  = '';
+      document.getElementById('senderEmail').value = '';
+    }
+  } catch(e) {
+    status.textContent = 'failed. try again or email directly: trenchgun1337@gmail.com';
+    status.className = 'err';
+    console.error(e);
+  }
+  btn.disabled = false;
 }
+
+/* ── sounds ── */
+const SOUND_BASE = '../assets/audio/';
+const SOUNDS = { start:'sitestart.mp3', button:'sitebuttonclick.mp3', hover:'text.mp3' };
+let _soundsOn = true;
+const _ac = {};
+function _ga(k){if(!_ac[k]){const a=new Audio(SOUND_BASE+SOUNDS[k]);a.preload='auto';_ac[k]=a;}return _ac[k];}
+function playSound(k){if(!_soundsOn||!SOUNDS[k])return;try{const c=_ga(k).cloneNode();c.volume=k==='hover'?.30:.52;c.play().catch(()=>{});}catch(e){}}
+function toggleSound(){_soundsOn=!_soundsOn;const b=document.getElementById('soundToggle');if(b){b.textContent=_soundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_soundsOn);}if(_soundsOn)playSound('button');sessionStorage.setItem('_soundsOn',String(_soundsOn));}
 document.addEventListener('DOMContentLoaded',()=>{
   const s=sessionStorage.getItem('_soundsOn');
-  if (s==='false') { _soundsOn=false; const b=document.getElementById('soundToggle'); if(b){b.textContent='Sounds: Off';b.classList.add('off');} }
-  if (!sessionStorage.getItem('_siteStartPlayed')) { sessionStorage.setItem('_siteStartPlayed','1'); setTimeout(()=>playSound('start'),700); }
+  if(s==='false'){_soundsOn=false;const b=document.getElementById('soundToggle');if(b){b.textContent='Sounds: Off';b.classList.add('off');}}
+  if(!sessionStorage.getItem('_siteStartPlayed')){sessionStorage.setItem('_siteStartPlayed','1');setTimeout(()=>playSound('start'),700);}
 });
-document.addEventListener('pointerdown',()=>Object.keys(SOUNDS).forEach(k=>_getAudio(k)),{once:true,passive:true});
+document.addEventListener('pointerdown',()=>Object.keys(SOUNDS).forEach(k=>_ga(k)),{once:true,passive:true});
 let _ht=0,_htm=null;
-function _isI(el){if(!el||el===document.body||el===document.documentElement)return false;const t=el.tagName;if(t==='BUTTON'||t==='A'||t==='SELECT')return true;if(t==='INPUT'&&el.type!=='range')return true;const cs=window.getComputedStyle(el);return cs&&cs.cursor==='pointer';}
-document.addEventListener('mouseover',e=>{if(e.target.id==='soundToggle')return;if(!_isI(e.target))return;clearTimeout(_htm);_htm=setTimeout(()=>{const n=Date.now();if(n-_ht<400)return;_ht=n;playSound('hover');},400);},{passive:true});
+function _isI(el){if(!el||el===document.body)return false;const t=el.tagName;if(t==='BUTTON'||t==='A')return true;const cs=window.getComputedStyle(el);return cs&&cs.cursor==='pointer';}
+document.addEventListener('mouseover',e=>{if(e.target.id==='soundToggle'||!_isI(e.target))return;clearTimeout(_htm);_htm=setTimeout(()=>{const n=Date.now();if(n-_ht<400)return;_ht=n;playSound('hover');},400);},{passive:true});
 document.addEventListener('mouseout',e=>{if(_isI(e.target))clearTimeout(_htm);},{passive:true});
 document.addEventListener('click',e=>{if(e.target.id==='soundToggle')return;if(_isI(e.target))playSound('button');},true);
 </script>
