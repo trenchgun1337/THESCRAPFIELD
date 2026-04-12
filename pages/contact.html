@@ -44,6 +44,16 @@ a { color:#000; text-decoration:none; }
 
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; }
 
+/* ── corner logo ── */
+#cornerLogo {
+  position:fixed; top:10px; right:14px; z-index:9998; line-height:0; text-decoration:none;
+}
+#cornerLogo img {
+  height:36px; width:auto; object-fit:contain; display:block;
+  opacity:.82; pointer-events:auto;
+}
+#cornerLogo:hover img { opacity:1; }
+
 /* ── topbar ── */
 .aero-bar {
   background: var(--grad-bar);
@@ -79,7 +89,6 @@ a { color:#000; text-decoration:none; }
   width: 100%;
 }
 
-/* ── rights-bar ── */
 .rights-bar {
   display: block;
   background: #000;
@@ -91,7 +100,6 @@ a { color:#000; text-decoration:none; }
   width: 100%;
 }
 
-/* ── social links ── */
 .glass-box {
   background: #ebebeb;
   border: 1px solid rgba(0,0,0,.20);
@@ -99,46 +107,26 @@ a { color:#000; text-decoration:none; }
   margin: 6px;
 }
 .aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
-.aero-pad   { padding:10px 12px; }
 
-.contact-links { list-style:none; margin:0; padding:0; }
-.contact-links li { border-bottom:1px solid rgba(0,0,0,.10); }
-.contact-links li:last-child { border-bottom:none; }
-.contact-links a {
-  display:flex; align-items:center; gap:12px;
-  padding:8px 12px;
-  color:var(--text); font-size:12.5px; text-decoration:none;
-}
-.contact-links a:hover { background:var(--grad-bar); color:var(--accent); }
-.contact-links a img.link-icon {
-  width:26px; height:26px; object-fit:contain; flex-shrink:0; border-radius:6px;
-}
-.contact-links a .link-label { flex:1; font-size:12.5px; }
-.contact-links a .link-note  { color:#888; font-size:11px; white-space:nowrap; }
-
-/* ── email form ── */
+/* ── form layout ── */
 .email-form-wrap {
   padding: 12px 14px 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
+
 .field-label {
   font-size: 10px;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: #666;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
   display: block;
 }
-.field-optional {
-  font-size: 10px;
-  color: #aaa;
-  margin-left: 4px;
-  text-transform: none;
-  letter-spacing: 0;
-}
-.form-input, .form-textarea {
+.field-optional { font-size:10px; color:#aaa; margin-left:4px; text-transform:none; letter-spacing:0; }
+
+.form-input {
   width: 100%;
   background: #fff;
   border: 1px solid rgba(0,0,0,.28);
@@ -149,9 +137,96 @@ a { color:#000; text-decoration:none; }
   color: var(--text);
   box-shadow: inset 0 1px 3px rgba(0,0,0,.10);
 }
-.form-input:focus, .form-textarea:focus { border-color: rgba(204,26,26,.55); }
-.form-textarea { resize: vertical; min-height: 90px; }
+.form-input:focus { border-color: rgba(204,26,26,.55); }
 
+/* ── rich editor ── */
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px 6px;
+  background: #e4e4e4;
+  border: 1px solid rgba(0,0,0,.28);
+  border-bottom: none;
+}
+.tb-btn {
+  background: #f0f0f0;
+  border: 1px solid rgba(0,0,0,.22);
+  padding: 2px 7px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  color: #222;
+  min-width: 26px;
+  text-align: center;
+  line-height: 1.5;
+}
+.tb-btn:hover { background:#fff; border-color:rgba(0,0,0,.38); }
+.tb-btn.active { background:#d0d0d0; }
+.tb-sep { width:1px; background:rgba(0,0,0,.18); margin:2px 3px; }
+
+.tb-color-wrap { display:flex; align-items:center; gap:3px; font-size:10px; color:#555; }
+.tb-color-wrap input[type=color] { width:22px; height:22px; border:1px solid rgba(0,0,0,.25); padding:1px; cursor:pointer; background:none; }
+
+.tb-size-wrap { display:flex; align-items:center; gap:3px; font-size:10px; color:#555; }
+.tb-size-wrap select {
+  font-family:inherit; font-size:11px; background:#f0f0f0;
+  border:1px solid rgba(0,0,0,.22); padding:1px 3px; cursor:pointer; color:#222;
+}
+
+#msgEditor {
+  width: 100%;
+  min-height: 140px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.28);
+  border-top: none;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--text);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.10);
+  overflow-y: auto;
+  line-height: 1.6;
+}
+#msgEditor:empty::before {
+  content: attr(data-placeholder);
+  color: #aaa;
+  pointer-events: none;
+}
+#msgEditor:focus { border-color: rgba(204,26,26,.55); outline:none !important; }
+
+/* attachment area */
+.attach-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.attach-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  color: #555;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+.attach-btn:hover { color: var(--accent); }
+#attachList { display:flex; flex-wrap:wrap; gap:5px; }
+.attach-tag {
+  background: #e0e0e0;
+  border: 1px solid rgba(0,0,0,.18);
+  padding: 2px 6px;
+  font-size: 10px;
+  display: flex; align-items:center; gap:4px;
+  max-width: 180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.attach-tag .rm { cursor:pointer; color:#999; font-size:12px; line-height:1; flex-shrink:0; }
+.attach-tag .rm:hover { color:var(--accent); }
+
+/* anon toggle */
 .anon-toggle {
   display: flex;
   align-items: center;
@@ -161,15 +236,14 @@ a { color:#000; text-decoration:none; }
   font-size: 11.5px;
   color: #555;
 }
-.anon-toggle input[type=checkbox] { cursor: pointer; accent-color: var(--accent); }
+.anon-toggle input[type=checkbox] { cursor:pointer; accent-color:var(--accent); }
 
+/* send btn — flat, no gloss */
 .send-btn {
   align-self: flex-start;
-  background: var(--grad-bar);
-  border: 1px solid rgba(0,0,0,.28);
-  border-bottom-color: rgba(0,0,0,.38);
-  box-shadow: 0 1px 3px rgba(0,0,0,.12);
-  padding: 5px 18px;
+  background: #d6d6d6;
+  border: 1px solid rgba(0,0,0,.32);
+  padding: 5px 20px;
   font-family: inherit;
   font-size: 11px;
   letter-spacing: 1px;
@@ -177,16 +251,12 @@ a { color:#000; text-decoration:none; }
   color: var(--text);
   cursor: pointer;
 }
-.send-btn:hover { background: linear-gradient(to bottom,#fff 0%,#e4e4e4 52%,#d0d0d0 52%,#dcdcdc 100%); }
+.send-btn:hover { background: #c8c8c8; }
 .send-btn:disabled { opacity:.5; cursor:default; }
 
-#statusMsg {
-  font-size: 11.5px;
-  min-height: 16px;
-  color: #555;
-}
-#statusMsg.ok  { color: #2a7a2a; }
-#statusMsg.err { color: var(--accent); }
+#statusMsg { font-size:11.5px; min-height:16px; color:#555; }
+#statusMsg.ok  { color:#2a7a2a; }
+#statusMsg.err { color:var(--accent); }
 
 .note {
   background:#f5f5f5;
@@ -197,7 +267,7 @@ a { color:#000; text-decoration:none; }
   text-align:center;
 }
 
-/* ── sound toggle ── */
+/* sound toggle */
 #soundToggle {
   position:fixed; bottom:8px; left:10px; z-index:9999;
   font-family:inherit; font-size:10px; color:rgba(0,0,0,.40);
@@ -212,6 +282,10 @@ a { color:#000; text-decoration:none; }
 </head>
 <body>
 
+<a id="cornerLogo" href="../index.html" title="Watanagashi Archive — Home">
+  <img src="../assets/images/watanagashilogo.png" alt="Watanagashi Archive" onerror="this.style.display='none'">
+</a>
+
 <div id="pageWrap">
 
   <div class="aero-bar">
@@ -221,75 +295,90 @@ a { color:#000; text-decoration:none; }
 
   <div id="mainContent">
 
-    <div class="rights-bar">Social &amp; Video</div>
-    <div class="glass-box" style="padding:0;background:#000;margin-bottom:0;">
-      <ul class="contact-links">
-        <li><a href="https://www.youtube.com/@trenchgun1337" target="_blank" rel="noopener">
-          <img class="link-icon" src="../assets/images/YOUTUBEAERO.png" alt="" onerror="this.style.display='none'">
-          <span class="link-label">YouTube</span></a></li>
-        <li><a href="https://www.tiktok.com/@trenchgun1337" target="_blank" rel="noopener">
-          <img class="link-icon" src="../assets/images/TIKTOKAERO.png" alt="" onerror="this.style.display='none'">
-          <span class="link-label">TikTok</span></a></li>
-        <li><a href="https://x.com/trenchgun1337" target="_blank" rel="noopener">
-          <img class="link-icon" src="../assets/images/TWITTERAERO.png" alt="" onerror="this.style.display='none'">
-          <span class="link-label">Twitter / X</span></a></li>
-        <li><a href="https://www.instagram.com/trenchgun1337" target="_blank" rel="noopener">
-          <img class="link-icon" src="../assets/images/INSTAGRAM%20AERO.png" alt="" onerror="this.style.display='none'">
-          <span class="link-label">Instagram</span></a></li>
-        <li><a href="https://br.pinterest.com/fxckmazl/" target="_blank" rel="noopener">
-          <img class="link-icon" src="../assets/images/PINTERESTAERO.png" alt="" onerror="this.style.display='none'">
-          <span class="link-label">Pinterest</span></a></li>
-      </ul>
-    </div>
-
-    <div class="rights-bar" style="margin-top:5px">Music</div>
-    <div class="glass-box" style="padding:0;background:#000;margin-bottom:0;">
-      <ul class="contact-links">
-        <li><a href="https://open.spotify.com/user/316xexdxgmhlbujm6e33pru75w4m" target="_blank" rel="noopener">
-          <img class="link-icon" src="../assets/images/SPOTIFYAERO.jpeg" alt="" onerror="this.style.display='none'">
-          <span class="link-label">Spotify</span></a></li>
-        <li><a href="https://soundcloud.com/trenchgun1337" target="_blank" rel="noopener">
-          <img class="link-icon" src="../assets/images/SOUNDCLOUDAERO.png" alt="" onerror="this.style.display='none'">
-          <span class="link-label">SoundCloud</span></a></li>
-      </ul>
-    </div>
-
-    <div class="rights-bar" style="margin-top:5px">Gaming</div>
-    <div class="glass-box" style="padding:0;background:#000;margin-bottom:0;">
-      <ul class="contact-links">
-        <li><a href="https://steamcommunity.com/id/fxckmazl" target="_blank" rel="noopener">
-          <img class="link-icon" src="../assets/images/STEAMAERO.png" alt="" onerror="this.style.display='none'">
-          <span class="link-label">Steam</span></a></li>
-        <li><a href="https://www.roblox.com/pt/users/2581303522/profile" target="_blank" rel="noopener">
-          <img class="link-icon" src="../assets/images/ROBLOXAERO.png" alt="" onerror="this.style.display='none'">
-          <span class="link-label">Roblox</span></a></li>
-      </ul>
-    </div>
-
-    <!-- Email form -->
-    <div class="rights-bar" style="margin-top:5px">Send a Message</div>
-    <div class="glass-box" style="margin-top:0;">
+    <div class="rights-bar">Send a Message</div>
+    <div class="glass-box">
       <div class="aero-inner">
         <div class="email-form-wrap">
 
+          <!-- anon -->
           <label class="anon-toggle">
             <input type="checkbox" id="anonCheck" onchange="toggleAnon()">
             send anonymously
           </label>
 
+          <!-- name -->
           <div id="nameField">
             <label class="field-label" for="senderName">Name <span class="field-optional">— optional</span></label>
             <input class="form-input" type="text" id="senderName" placeholder="your name (or leave blank)">
           </div>
 
+          <!-- email -->
           <div id="emailField">
             <label class="field-label" for="senderEmail">Your email <span class="field-optional">— optional, for reply</span></label>
             <input class="form-input" type="email" id="senderEmail" placeholder="your email address">
           </div>
 
+          <!-- subject -->
           <div>
-            <label class="field-label" for="msgBody">Message</label>
-            <textarea class="form-textarea" id="msgBody" placeholder="write your message here..."></textarea>
+            <label class="field-label" for="msgSubject">Subject <span class="field-optional">— optional</span></label>
+            <input class="form-input" type="text" id="msgSubject" placeholder="subject">
+          </div>
+
+          <!-- rich editor -->
+          <div>
+            <label class="field-label">Message</label>
+
+            <div class="editor-toolbar" id="editorToolbar">
+              <button class="tb-btn" title="Bold" onmousedown="event.preventDefault();fmt('bold')"><b>B</b></button>
+              <button class="tb-btn" title="Italic" onmousedown="event.preventDefault();fmt('italic')"><i>I</i></button>
+              <button class="tb-btn" title="Underline" onmousedown="event.preventDefault();fmt('underline')"><u>U</u></button>
+              <button class="tb-btn" title="Strikethrough" onmousedown="event.preventDefault();fmt('strikeThrough')"><s>S</s></button>
+              <div class="tb-sep"></div>
+              <button class="tb-btn" title="Align Left" onmousedown="event.preventDefault();fmt('justifyLeft')">&#8676;</button>
+              <button class="tb-btn" title="Align Center" onmousedown="event.preventDefault();fmt('justifyCenter')">&#8660;</button>
+              <button class="tb-btn" title="Align Right" onmousedown="event.preventDefault();fmt('justifyRight')">&#8677;</button>
+              <div class="tb-sep"></div>
+              <button class="tb-btn" title="Bullet list" onmousedown="event.preventDefault();fmt('insertUnorderedList')">&#8226; list</button>
+              <button class="tb-btn" title="Numbered list" onmousedown="event.preventDefault();fmt('insertOrderedList')">1. list</button>
+              <div class="tb-sep"></div>
+              <button class="tb-btn" title="Insert link" onmousedown="event.preventDefault();insertLink()">link</button>
+              <button class="tb-btn" title="Insert image URL" onmousedown="event.preventDefault();insertImage()">img</button>
+              <div class="tb-sep"></div>
+              <div class="tb-color-wrap">
+                <span>color</span>
+                <input type="color" id="txtColor" value="#111111" onchange="fmt('foreColor',this.value)" title="Text color">
+              </div>
+              <div class="tb-sep"></div>
+              <div class="tb-size-wrap">
+                <span>size</span>
+                <select onchange="fmt('fontSize',this.value)" title="Font size">
+                  <option value="1">xs</option>
+                  <option value="2">sm</option>
+                  <option value="3" selected>md</option>
+                  <option value="4">lg</option>
+                  <option value="5">xl</option>
+                  <option value="6">2xl</option>
+                </select>
+              </div>
+              <div class="tb-sep"></div>
+              <button class="tb-btn" title="Clear formatting" onmousedown="event.preventDefault();fmt('removeFormat')">clear</button>
+            </div>
+
+            <div id="msgEditor"
+              contenteditable="true"
+              data-placeholder="write your message here..."
+              spellcheck="true">
+            </div>
+          </div>
+
+          <!-- attachments -->
+          <div>
+            <label class="field-label">Attachments <span class="field-optional">— files will be listed in the email body</span></label>
+            <div class="attach-row">
+              <button class="attach-btn" type="button" onclick="document.getElementById('fileInput').click()">+ attach file</button>
+              <input type="file" id="fileInput" multiple style="display:none" onchange="handleFiles(this.files)">
+              <div id="attachList"></div>
+            </div>
           </div>
 
           <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send</button>
@@ -297,8 +386,8 @@ a { color:#000; text-decoration:none; }
 
           <div class="note">
             name and email are optional — you can send anonymously.<br>
-            all content here is for archiving / educational purposes and not for profit.<br>
-            if you own content here and want it removed, reach out above.
+            attached files will be listed by name (content not transmitted via email).<br>
+            for file transfers, mention it in the message and i'll get back to you.
           </div>
 
         </div>
@@ -311,60 +400,97 @@ a { color:#000; text-decoration:none; }
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 
 <script>
-/* ── EmailJS ──────────────────────────────────────────────
-   Setup (free, ~200 emails/month):
-   1. https://www.emailjs.com/ → create account
-   2. Email Services → Add Service (Gmail) → copy Service ID
-   3. Email Templates → Create Template
-      Add these variables in the body:
-        From: {{from_name}} <{{from_email}}>
-        Message: {{message}}
-      Set "To email" = trenchgun1337@gmail.com
-      Copy Template ID
-   4. Account → API Keys → copy Public Key
-   5. Replace the 3 values below
-───────────────────────────────────────────────────────── */
-const EJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // ← replace
-const EJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // ← replace
-const EJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // ← replace
+emailjs.init({ publicKey: 'iww-r-sgJVyoRmokf' });
 
-emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+const SERVICE_ID  = 'service_ina2cb8';
+const TEMPLATE_ID = 'template_g7owumb';
 
+/* ── anon toggle ── */
 function toggleAnon() {
   const hide = document.getElementById('anonCheck').checked;
   document.getElementById('nameField').style.display  = hide ? 'none' : '';
   document.getElementById('emailField').style.display = hide ? 'none' : '';
 }
 
+/* ── rich text ── */
+function fmt(cmd, val) {
+  document.getElementById('msgEditor').focus();
+  document.execCommand(cmd, false, val || null);
+}
+function insertLink() {
+  const url = prompt('Enter URL:');
+  if (url) { document.getElementById('msgEditor').focus(); document.execCommand('createLink', false, url); }
+}
+function insertImage() {
+  const url = prompt('Enter image URL:');
+  if (url) { document.getElementById('msgEditor').focus(); document.execCommand('insertImage', false, url); }
+}
+
+/* ── attachments ── */
+const attachedFiles = [];
+function handleFiles(files) {
+  Array.from(files).forEach(f => {
+    if (attachedFiles.find(x => x.name === f.name && x.size === f.size)) return;
+    attachedFiles.push(f);
+    renderAttachList();
+  });
+  document.getElementById('fileInput').value = '';
+}
+function removeAttach(idx) {
+  attachedFiles.splice(idx, 1);
+  renderAttachList();
+}
+function renderAttachList() {
+  const el = document.getElementById('attachList');
+  el.innerHTML = attachedFiles.map((f,i) =>
+    `<span class="attach-tag" title="${f.name}">${f.name} <span class="rm" onclick="removeAttach(${i})">×</span></span>`
+  ).join('');
+}
+
+/* ── send ── */
 async function sendMsg() {
-  const anon   = document.getElementById('anonCheck').checked;
-  const name   = anon ? 'Anonymous' : (document.getElementById('senderName').value.trim() || 'Anonymous');
-  const email  = anon ? 'anonymous@noreply.com' : (document.getElementById('senderEmail').value.trim() || 'anonymous@noreply.com');
-  const msg    = document.getElementById('msgBody').value.trim();
+  const anon    = document.getElementById('anonCheck').checked;
+  const name    = anon ? 'Anonymous' : (document.getElementById('senderName').value.trim() || 'Anonymous');
+  const email   = anon ? 'anonymous@noreply.com' : (document.getElementById('senderEmail').value.trim() || 'anonymous@noreply.com');
+  const subject = document.getElementById('msgSubject').value.trim() || '(no subject)';
+  const editor  = document.getElementById('msgEditor');
+  const msgHTML = editor.innerHTML.trim();
+  const msgText = editor.innerText.trim();
+
   const status = document.getElementById('statusMsg');
   const btn    = document.getElementById('sendBtn');
 
-  if (!msg) { status.textContent = 'please write a message first.'; status.className = 'err'; return; }
+  if (!msgText) { status.textContent = 'please write a message first.'; status.className = 'err'; return; }
+
+  let attachNote = '';
+  if (attachedFiles.length) {
+    attachNote = '\n\n--- Attached files ---\n' + attachedFiles.map(f => `• ${f.name} (${(f.size/1024).toFixed(1)} KB)`).join('\n');
+  }
 
   btn.disabled = true;
   status.className = '';
   status.textContent = 'sending...';
 
   try {
-    await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
       from_name:  name,
       from_email: email,
-      message:    msg,
+      subject:    subject,
+      message:    msgText + attachNote,
+      message_html: msgHTML + (attachNote ? '<pre style="font-size:11px;color:#666;">'+attachNote+'</pre>' : ''),
     });
     status.textContent = 'message sent!';
     status.className = 'ok';
-    document.getElementById('msgBody').value = '';
+    editor.innerHTML = '';
+    document.getElementById('msgSubject').value = '';
+    attachedFiles.length = 0;
+    renderAttachList();
     if (!anon) {
       document.getElementById('senderName').value  = '';
       document.getElementById('senderEmail').value = '';
     }
   } catch(e) {
-    status.textContent = 'failed. try again or email directly: trenchgun1337@gmail.com';
+    status.textContent = 'failed to send. email directly: trenchgun1337@gmail.com';
     status.className = 'err';
     console.error(e);
   }
@@ -373,23 +499,18 @@ async function sendMsg() {
 
 /* ── sounds ── */
 const SOUND_BASE = '../assets/audio/';
-const SOUNDS = { start:'sitestart.mp3', button:'sitebuttonclick.mp3', hover:'text.mp3' };
+const SOUNDS = { start:'sitestart.mp3', button:'sitebuttonclick.mp3' };
 let _soundsOn = true;
 const _ac = {};
 function _ga(k){if(!_ac[k]){const a=new Audio(SOUND_BASE+SOUNDS[k]);a.preload='auto';_ac[k]=a;}return _ac[k];}
-function playSound(k){if(!_soundsOn||!SOUNDS[k])return;try{const c=_ga(k).cloneNode();c.volume=k==='hover'?.30:.52;c.play().catch(()=>{});}catch(e){}}
+function playSound(k){if(!_soundsOn||!SOUNDS[k])return;try{const c=_ga(k).cloneNode();c.volume=.52;c.play().catch(()=>{});}catch(e){}}
 function toggleSound(){_soundsOn=!_soundsOn;const b=document.getElementById('soundToggle');if(b){b.textContent=_soundsOn?'Sounds: On':'Sounds: Off';b.classList.toggle('off',!_soundsOn);}if(_soundsOn)playSound('button');sessionStorage.setItem('_soundsOn',String(_soundsOn));}
 document.addEventListener('DOMContentLoaded',()=>{
   const s=sessionStorage.getItem('_soundsOn');
   if(s==='false'){_soundsOn=false;const b=document.getElementById('soundToggle');if(b){b.textContent='Sounds: Off';b.classList.add('off');}}
   if(!sessionStorage.getItem('_siteStartPlayed')){sessionStorage.setItem('_siteStartPlayed','1');setTimeout(()=>playSound('start'),700);}
 });
-document.addEventListener('pointerdown',()=>Object.keys(SOUNDS).forEach(k=>_ga(k)),{once:true,passive:true});
-let _ht=0,_htm=null;
-function _isI(el){if(!el||el===document.body)return false;const t=el.tagName;if(t==='BUTTON'||t==='A')return true;const cs=window.getComputedStyle(el);return cs&&cs.cursor==='pointer';}
-document.addEventListener('mouseover',e=>{if(e.target.id==='soundToggle'||!_isI(e.target))return;clearTimeout(_htm);_htm=setTimeout(()=>{const n=Date.now();if(n-_ht<400)return;_ht=n;playSound('hover');},400);},{passive:true});
-document.addEventListener('mouseout',e=>{if(_isI(e.target))clearTimeout(_htm);},{passive:true});
-document.addEventListener('click',e=>{if(e.target.id==='soundToggle')return;if(_isI(e.target))playSound('button');},true);
+document.addEventListener('click',e=>{if(e.target.id==='soundToggle')return;const t=e.target.tagName;if(t==='BUTTON'||t==='A')playSound('button');},true);
 </script>
 </body>
 </html>
