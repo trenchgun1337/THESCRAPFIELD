@@ -16,9 +16,10 @@
 :root {
   --accent: #cc1a1a;
   --text: #111;
-  --text-dim: #2c2c2c;
+  --text-dim: #444;
   --grad-bar: linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
   --shadow: 0 2px 5px rgba(0,0,0,.15);
+  --border: rgba(0,0,0,.22);
 }
 
 html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.5) transparent; }
@@ -42,208 +43,176 @@ body {
 img { -webkit-user-drag:none; user-select:none; }
 a { color:#000; text-decoration:none; }
 
-#pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; }
+#pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; gap:7px; }
 
-/* ── corner logo ── */
+/* corner logo */
 #cornerLogo {
-  position:fixed; top:10px; right:14px; z-index:9998; line-height:0; text-decoration:none;
+  position:fixed; top:10px; right:14px; z-index:9998; line-height:0;
 }
-#cornerLogo img {
-  height:36px; width:auto; object-fit:contain; display:block;
-  opacity:.82; pointer-events:auto;
-}
+#cornerLogo img { height:36px; width:auto; opacity:.82; display:block; }
 #cornerLogo:hover img { opacity:1; }
 
-/* ── topbar ── */
+/* topbar */
 .aero-bar {
   background: var(--grad-bar);
   border: 2px ridge #727272;
   box-shadow: var(--shadow);
   padding: 4px 10px;
   display: flex; align-items: center; gap: 8px;
-  margin-bottom: 7px;
 }
 .back-link {
-  color: var(--accent);
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  text-decoration: none;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
+  color: var(--accent); font-size:11px; letter-spacing:1px;
+  text-transform:uppercase; background:none; border:none; padding:0; cursor:pointer;
 }
-.back-link:hover { text-decoration: underline; }
-.bar-title {
-  flex:1; text-align:center;
-  font-size:11px; letter-spacing:2px; text-transform:uppercase;
-  color: var(--text);
-}
+.back-link:hover { text-decoration:underline; }
+.bar-title { flex:1; text-align:center; font-size:11px; letter-spacing:2px; text-transform:uppercase; }
 
-/* ── main box ── */
-#mainContent {
-  background: #f2f2f2;
+/* ══ COMPOSE WINDOW ══ */
+#composeWin {
+  background: #f0f0f0;
   border: 2px ridge #727272;
   box-shadow: #595959 1px 1px 12px 1px;
-  width: 100%;
-}
-
-.rights-bar {
-  display: block;
-  background: #000;
-  color: #fff;
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 5px 8px;
-  width: 100%;
-}
-
-.glass-box {
-  background: #ebebeb;
-  border: 1px solid rgba(0,0,0,.20);
-  padding: 5px;
-  margin: 6px;
-}
-.aero-inner { border:1px solid rgba(0,0,0,.30); background:#f2f2f2; }
-
-/* ── form layout ── */
-.email-form-wrap {
-  padding: 12px 14px 14px;
   display: flex;
   flex-direction: column;
-  gap: 9px;
 }
 
-.field-label {
-  font-size: 10px;
+/* title bar of compose window */
+#composeTitle {
+  background: linear-gradient(to bottom, #5a5a5a, #3a3a3a);
+  color: #fff;
+  font-size: 11px;
   letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #666;
-  margin-bottom: 3px;
-  display: block;
-}
-.field-optional { font-size:10px; color:#aaa; margin-left:4px; text-transform:none; letter-spacing:0; }
-
-.form-input {
-  width: 100%;
-  background: #fff;
-  border: 1px solid rgba(0,0,0,.28);
-  border-top-color: rgba(0,0,0,.40);
-  padding: 5px 8px;
-  font-family: inherit;
-  font-size: 12px;
-  color: var(--text);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,.10);
-}
-.form-input:focus { border-color: rgba(204,26,26,.55); }
-
-/* ── rich editor ── */
-.editor-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 4px 6px;
-  background: #e4e4e4;
-  border: 1px solid rgba(0,0,0,.28);
-  border-bottom: none;
-}
-.tb-btn {
-  background: #f0f0f0;
-  border: 1px solid rgba(0,0,0,.22);
-  padding: 2px 7px;
-  font-family: inherit;
-  font-size: 11px;
-  cursor: pointer;
-  color: #222;
-  min-width: 26px;
-  text-align: center;
-  line-height: 1.5;
-}
-.tb-btn:hover { background:#fff; border-color:rgba(0,0,0,.38); }
-.tb-btn.active { background:#d0d0d0; }
-.tb-sep { width:1px; background:rgba(0,0,0,.18); margin:2px 3px; }
-
-.tb-color-wrap { display:flex; align-items:center; gap:3px; font-size:10px; color:#555; }
-.tb-color-wrap input[type=color] { width:22px; height:22px; border:1px solid rgba(0,0,0,.25); padding:1px; cursor:pointer; background:none; }
-
-.tb-size-wrap { display:flex; align-items:center; gap:3px; font-size:10px; color:#555; }
-.tb-size-wrap select {
-  font-family:inherit; font-size:11px; background:#f0f0f0;
-  border:1px solid rgba(0,0,0,.22); padding:1px 3px; cursor:pointer; color:#222;
-}
-
-#msgEditor {
-  width: 100%;
-  min-height: 140px;
-  background: #fff;
-  border: 1px solid rgba(0,0,0,.28);
-  border-top: none;
-  padding: 8px 10px;
-  font-family: inherit;
-  font-size: 12px;
-  color: var(--text);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,.10);
-  overflow-y: auto;
-  line-height: 1.6;
-}
-#msgEditor:empty::before {
-  content: attr(data-placeholder);
-  color: #aaa;
-  pointer-events: none;
-}
-#msgEditor:focus { border-color: rgba(204,26,26,.55); outline:none !important; }
-
-/* attachment area */
-.attach-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.attach-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 11px;
-  color: #555;
-  padding: 0;
-  text-decoration: underline;
-  text-decoration-style: dotted;
-}
-.attach-btn:hover { color: var(--accent); }
-#attachList { display:flex; flex-wrap:wrap; gap:5px; }
-.attach-tag {
-  background: #e0e0e0;
-  border: 1px solid rgba(0,0,0,.18);
-  padding: 2px 6px;
-  font-size: 10px;
-  display: flex; align-items:center; gap:4px;
-  max-width: 180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-}
-.attach-tag .rm { cursor:pointer; color:#999; font-size:12px; line-height:1; flex-shrink:0; }
-.attach-tag .rm:hover { color:var(--accent); }
-
-/* anon toggle */
-.anon-toggle {
+  padding: 5px 10px;
   display: flex;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
   user-select: none;
-  font-size: 11.5px;
-  color: #555;
 }
-.anon-toggle input[type=checkbox] { cursor:pointer; accent-color:var(--accent); }
+#composeTitle span { flex:1; }
+.win-dot {
+  width:10px; height:10px; border-radius:50%; display:inline-block; flex-shrink:0;
+}
 
-/* send btn — flat, no gloss */
+/* header fields (To / From / Subject) */
+.compose-fields {
+  background: #f8f8f8;
+  border-bottom: 1px solid var(--border);
+}
+.compose-field-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  padding: 0 10px;
+}
+.compose-field-row:last-child { border-bottom: none; }
+.field-key {
+  font-size: 11px;
+  color: #666;
+  width: 58px;
+  flex-shrink: 0;
+  letter-spacing: .3px;
+}
+.field-val {
+  flex: 1;
+  font-size: 12px;
+  padding: 6px 0;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: inherit;
+}
+.field-val::placeholder { color:#bbb; }
+
+/* anon row */
+.anon-row {
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #666;
+}
+.anon-row input[type=checkbox] { accent-color: var(--accent); cursor:pointer; }
+.anon-row label { cursor:pointer; }
+
+/* toolbar */
+.compose-toolbar {
+  background: #e8e8e8;
+  border-bottom: 1px solid var(--border);
+  padding: 4px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+}
+.tb-btn {
+  background: none;
+  border: 1px solid transparent;
+  padding: 2px 6px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  color: #333;
+  border-radius: 2px;
+  min-width: 24px;
+  text-align: center;
+  line-height: 1.5;
+}
+.tb-btn:hover { background:#fff; border-color:rgba(0,0,0,.25); }
+.tb-sep { width:1px; background:rgba(0,0,0,.15); margin:0 3px; height:18px; align-self:center; }
+
+.tb-color-wrap { display:flex; align-items:center; gap:3px; font-size:10px; color:#666; }
+.tb-color-wrap input[type=color] {
+  width:20px; height:20px; border:1px solid rgba(0,0,0,.22);
+  padding:1px; cursor:pointer; background:none;
+}
+.tb-size-wrap { display:flex; align-items:center; gap:3px; font-size:10px; color:#666; }
+.tb-size-wrap select {
+  font-family:inherit; font-size:11px; background:#fff;
+  border:1px solid rgba(0,0,0,.20); padding:1px 4px; cursor:pointer; color:#333;
+}
+.tb-font-wrap { display:flex; align-items:center; gap:3px; font-size:10px; color:#666; }
+.tb-font-wrap select {
+  font-family:inherit; font-size:11px; background:#fff;
+  border:1px solid rgba(0,0,0,.20); padding:1px 4px; cursor:pointer; color:#333;
+}
+
+/* body editor */
+#msgEditor {
+  background: #fff;
+  border: none;
+  min-height: 220px;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.7;
+  overflow-y: auto;
+  flex: 1;
+}
+#msgEditor:empty::before {
+  content: attr(data-placeholder);
+  color: #bbb;
+  pointer-events: none;
+}
+
+/* bottom bar */
+.compose-bottom {
+  background: #e8e8e8;
+  border-top: 1px solid var(--border);
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .send-btn {
-  align-self: flex-start;
-  background: #d6d6d6;
-  border: 1px solid rgba(0,0,0,.32);
-  padding: 5px 20px;
+  background: #d0d0d0;
+  border: 1px solid rgba(0,0,0,.30);
+  padding: 5px 22px;
   font-family: inherit;
   font-size: 11px;
   letter-spacing: 1px;
@@ -251,20 +220,19 @@ a { color:#000; text-decoration:none; }
   color: var(--text);
   cursor: pointer;
 }
-.send-btn:hover { background: #c8c8c8; }
+.send-btn:hover { background: #bfbfbf; }
 .send-btn:disabled { opacity:.5; cursor:default; }
 
-#statusMsg { font-size:11.5px; min-height:16px; color:#555; }
+#statusMsg { font-size:11px; color:#666; flex:1; }
 #statusMsg.ok  { color:#2a7a2a; }
 #statusMsg.err { color:var(--accent); }
 
-.note {
-  background:#f5f5f5;
-  border:1px solid rgba(0,0,0,.25);
-  border-left:3px solid rgba(120,120,120,.50);
-  padding:7px 10px;
-  font-size:11px; color:var(--text-dim); line-height:1.65;
-  text-align:center;
+.note-bar {
+  font-size:10.5px; color:#888; text-align:center;
+  padding: 5px 10px;
+  border-top: 1px solid rgba(0,0,0,.08);
+  background: #f8f8f8;
+  line-height: 1.6;
 }
 
 /* sound toggle */
@@ -293,161 +261,151 @@ a { color:#000; text-decoration:none; }
     <span class="bar-title">contact me</span>
   </div>
 
-  <div id="mainContent">
+  <!-- compose window -->
+  <div id="composeWin">
 
-    <div class="rights-bar">Send a Message</div>
-    <div class="glass-box">
-      <div class="aero-inner">
-        <div class="email-form-wrap">
+    <!-- title bar -->
+    <div id="composeTitle">
+      <span>New Message — Watanagashi Archive</span>
+    </div>
 
-          <!-- anon -->
-          <label class="anon-toggle">
-            <input type="checkbox" id="anonCheck" onchange="toggleAnon()">
-            send anonymously
-          </label>
+    <!-- anon toggle -->
+    <div class="anon-row">
+      <input type="checkbox" id="anonCheck" onchange="toggleAnon()">
+      <label for="anonCheck">send anonymously (hides your name &amp; email)</label>
+    </div>
 
-          <!-- name -->
-          <div id="nameField">
-            <label class="field-label" for="senderName">Name <span class="field-optional">— optional</span></label>
-            <input class="form-input" type="text" id="senderName" placeholder="your name (or leave blank)">
-          </div>
-
-          <!-- email -->
-          <div id="emailField">
-            <label class="field-label" for="senderEmail">Your email <span class="field-optional">— optional, for reply</span></label>
-            <input class="form-input" type="email" id="senderEmail" placeholder="your email address">
-          </div>
-
-          <!-- subject -->
-          <div>
-            <label class="field-label" for="msgSubject">Subject <span class="field-optional">— optional</span></label>
-            <input class="form-input" type="text" id="msgSubject" placeholder="subject">
-          </div>
-
-          <!-- rich editor -->
-          <div>
-            <label class="field-label">Message</label>
-
-            <div class="editor-toolbar" id="editorToolbar">
-              <button class="tb-btn" title="Bold" onmousedown="event.preventDefault();fmt('bold')"><b>B</b></button>
-              <button class="tb-btn" title="Italic" onmousedown="event.preventDefault();fmt('italic')"><i>I</i></button>
-              <button class="tb-btn" title="Underline" onmousedown="event.preventDefault();fmt('underline')"><u>U</u></button>
-              <button class="tb-btn" title="Strikethrough" onmousedown="event.preventDefault();fmt('strikeThrough')"><s>S</s></button>
-              <div class="tb-sep"></div>
-              <button class="tb-btn" title="Align Left" onmousedown="event.preventDefault();fmt('justifyLeft')">&#8676;</button>
-              <button class="tb-btn" title="Align Center" onmousedown="event.preventDefault();fmt('justifyCenter')">&#8660;</button>
-              <button class="tb-btn" title="Align Right" onmousedown="event.preventDefault();fmt('justifyRight')">&#8677;</button>
-              <div class="tb-sep"></div>
-              <button class="tb-btn" title="Bullet list" onmousedown="event.preventDefault();fmt('insertUnorderedList')">&#8226; list</button>
-              <button class="tb-btn" title="Numbered list" onmousedown="event.preventDefault();fmt('insertOrderedList')">1. list</button>
-              <div class="tb-sep"></div>
-              <button class="tb-btn" title="Insert link" onmousedown="event.preventDefault();insertLink()">link</button>
-              <button class="tb-btn" title="Insert image URL" onmousedown="event.preventDefault();insertImage()">img</button>
-              <div class="tb-sep"></div>
-              <div class="tb-color-wrap">
-                <span>color</span>
-                <input type="color" id="txtColor" value="#111111" onchange="fmt('foreColor',this.value)" title="Text color">
-              </div>
-              <div class="tb-sep"></div>
-              <div class="tb-size-wrap">
-                <span>size</span>
-                <select onchange="fmt('fontSize',this.value)" title="Font size">
-                  <option value="1">xs</option>
-                  <option value="2">sm</option>
-                  <option value="3" selected>md</option>
-                  <option value="4">lg</option>
-                  <option value="5">xl</option>
-                  <option value="6">2xl</option>
-                </select>
-              </div>
-              <div class="tb-sep"></div>
-              <button class="tb-btn" title="Clear formatting" onmousedown="event.preventDefault();fmt('removeFormat')">clear</button>
-            </div>
-
-            <div id="msgEditor"
-              contenteditable="true"
-              data-placeholder="write your message here..."
-              spellcheck="true">
-            </div>
-          </div>
-
-          <!-- attachments -->
-          <div>
-            <label class="field-label">Attachments <span class="field-optional">— files will be listed in the email body</span></label>
-            <div class="attach-row">
-              <button class="attach-btn" type="button" onclick="document.getElementById('fileInput').click()">+ attach file</button>
-              <input type="file" id="fileInput" multiple style="display:none" onchange="handleFiles(this.files)">
-              <div id="attachList"></div>
-            </div>
-          </div>
-
-          <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send</button>
-          <div id="statusMsg"></div>
-
-          <div class="note">
-            name and email are optional — you can send anonymously.<br>
-            attached files will be listed by name (content not transmitted via email).<br>
-            for file transfers, mention it in the message and i'll get back to you.
-          </div>
-
-        </div>
+    <!-- header fields -->
+    <div class="compose-fields">
+      <div class="compose-field-row">
+        <span class="field-key">To</span>
+        <span class="field-val" style="color:#555;">trenchgun1337@gmail.com</span>
+      </div>
+      <div class="compose-field-row" id="fromRow">
+        <span class="field-key">From</span>
+        <input class="field-val" type="email" id="senderEmail" placeholder="your email (optional — for reply)">
+      </div>
+      <div class="compose-field-row" id="nameRow">
+        <span class="field-key">Name</span>
+        <input class="field-val" type="text" id="senderName" placeholder="your name (optional)">
+      </div>
+      <div class="compose-field-row">
+        <span class="field-key">Subject</span>
+        <input class="field-val" type="text" id="msgSubject" placeholder="(no subject)">
       </div>
     </div>
 
-  </div>
-</div>
+    <!-- toolbar -->
+    <div class="compose-toolbar">
+      <div class="tb-font-wrap">
+        <select id="fontSelect" onchange="applyFont(this.value)" title="Font">
+          <option value="inherit">Default</option>
+          <option value="Arial, sans-serif">Arial</option>
+          <option value="'Times New Roman', serif">Times New Roman</option>
+          <option value="'Courier New', monospace">Courier New</option>
+          <option value="Georgia, serif">Georgia</option>
+          <option value="Tahoma, sans-serif">Tahoma</option>
+          <option value="Verdana, sans-serif">Verdana</option>
+        </select>
+      </div>
+      <div class="tb-size-wrap">
+        <select onchange="fmt('fontSize', this.value)" title="Size">
+          <option value="1">8pt</option>
+          <option value="2">10pt</option>
+          <option value="3" selected>12pt</option>
+          <option value="4">14pt</option>
+          <option value="5">18pt</option>
+          <option value="6">24pt</option>
+          <option value="7">36pt</option>
+        </select>
+      </div>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" title="Bold" onmousedown="event.preventDefault();fmt('bold')"><b>B</b></button>
+      <button class="tb-btn" title="Italic" onmousedown="event.preventDefault();fmt('italic')"><i>I</i></button>
+      <button class="tb-btn" title="Underline" onmousedown="event.preventDefault();fmt('underline')"><u>U</u></button>
+      <button class="tb-btn" title="Strikethrough" onmousedown="event.preventDefault();fmt('strikeThrough')"><s>S</s></button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" title="Align Left" onmousedown="event.preventDefault();fmt('justifyLeft')">&#8676;</button>
+      <button class="tb-btn" title="Center" onmousedown="event.preventDefault();fmt('justifyCenter')">&#8660;</button>
+      <button class="tb-btn" title="Align Right" onmousedown="event.preventDefault();fmt('justifyRight')">&#8677;</button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" title="Bullet list" onmousedown="event.preventDefault();fmt('insertUnorderedList')">&#8226; list</button>
+      <button class="tb-btn" title="Numbered list" onmousedown="event.preventDefault();fmt('insertOrderedList')">1. list</button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" title="Hyperlink" onmousedown="event.preventDefault();insertLink()">link</button>
+      <button class="tb-btn" title="Insert image by URL" onmousedown="event.preventDefault();insertImgURL()">img url</button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" title="Blockquote" onmousedown="event.preventDefault();fmt('formatBlock','blockquote')">&#10077;</button>
+      <button class="tb-btn" title="Indent" onmousedown="event.preventDefault();fmt('indent')">&#8594; indent</button>
+      <button class="tb-btn" title="Outdent" onmousedown="event.preventDefault();fmt('outdent')">&#8592; out</button>
+      <div class="tb-sep"></div>
+      <div class="tb-color-wrap">
+        <span>A</span>
+        <input type="color" id="txtColor" value="#111111" onchange="fmt('foreColor',this.value)" title="Text color">
+      </div>
+      <div class="tb-color-wrap" style="margin-left:4px;">
+        <span style="background:#ff0;padding:0 3px;">bg</span>
+        <input type="color" id="bgColor" value="#ffffff" onchange="fmt('hiliteColor',this.value)" title="Highlight color">
+      </div>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" title="Clear formatting" onmousedown="event.preventDefault();fmt('removeFormat')">clear fmt</button>
+    </div>
+
+    <!-- body -->
+    <div id="msgEditor"
+      contenteditable="true"
+      data-placeholder="write your message here..."
+      spellcheck="true">
+    </div>
+
+    <!-- bottom bar -->
+    <div class="compose-bottom">
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send</button>
+      <div id="statusMsg"></div>
+    </div>
+
+    <div class="note-bar">
+      name and email are optional — anonymous messages are welcome &nbsp;·&nbsp;
+      all content here is for archiving / educational purposes and not for profit
+    </div>
+
+  </div><!-- /composeWin -->
+
+</div><!-- /pageWrap -->
 
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 
 <script>
 emailjs.init({ publicKey: 'iww-r-sgJVyoRmokf' });
-
 const SERVICE_ID  = 'service_ina2cb8';
 const TEMPLATE_ID = 'template_g7owumb';
 
-/* ── anon toggle ── */
 function toggleAnon() {
   const hide = document.getElementById('anonCheck').checked;
-  document.getElementById('nameField').style.display  = hide ? 'none' : '';
-  document.getElementById('emailField').style.display = hide ? 'none' : '';
+  document.getElementById('fromRow').style.display  = hide ? 'none' : '';
+  document.getElementById('nameRow').style.display  = hide ? 'none' : '';
 }
 
-/* ── rich text ── */
 function fmt(cmd, val) {
   document.getElementById('msgEditor').focus();
   document.execCommand(cmd, false, val || null);
 }
+
+function applyFont(val) {
+  document.getElementById('msgEditor').focus();
+  document.execCommand('fontName', false, val);
+}
+
 function insertLink() {
-  const url = prompt('Enter URL:');
+  const url = prompt('URL:');
   if (url) { document.getElementById('msgEditor').focus(); document.execCommand('createLink', false, url); }
 }
-function insertImage() {
-  const url = prompt('Enter image URL:');
+
+function insertImgURL() {
+  const url = prompt('Image URL:');
   if (url) { document.getElementById('msgEditor').focus(); document.execCommand('insertImage', false, url); }
 }
 
-/* ── attachments ── */
-const attachedFiles = [];
-function handleFiles(files) {
-  Array.from(files).forEach(f => {
-    if (attachedFiles.find(x => x.name === f.name && x.size === f.size)) return;
-    attachedFiles.push(f);
-    renderAttachList();
-  });
-  document.getElementById('fileInput').value = '';
-}
-function removeAttach(idx) {
-  attachedFiles.splice(idx, 1);
-  renderAttachList();
-}
-function renderAttachList() {
-  const el = document.getElementById('attachList');
-  el.innerHTML = attachedFiles.map((f,i) =>
-    `<span class="attach-tag" title="${f.name}">${f.name} <span class="rm" onclick="removeAttach(${i})">×</span></span>`
-  ).join('');
-}
-
-/* ── send ── */
 async function sendMsg() {
   const anon    = document.getElementById('anonCheck').checked;
   const name    = anon ? 'Anonymous' : (document.getElementById('senderName').value.trim() || 'Anonymous');
@@ -460,12 +418,7 @@ async function sendMsg() {
   const status = document.getElementById('statusMsg');
   const btn    = document.getElementById('sendBtn');
 
-  if (!msgText) { status.textContent = 'please write a message first.'; status.className = 'err'; return; }
-
-  let attachNote = '';
-  if (attachedFiles.length) {
-    attachNote = '\n\n--- Attached files ---\n' + attachedFiles.map(f => `• ${f.name} (${(f.size/1024).toFixed(1)} KB)`).join('\n');
-  }
+  if (!msgText) { status.textContent = 'write something first.'; status.className = 'err'; return; }
 
   btn.disabled = true;
   status.className = '';
@@ -473,31 +426,29 @@ async function sendMsg() {
 
   try {
     await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-      from_name:  name,
-      from_email: email,
-      subject:    subject,
-      message:    msgText + attachNote,
-      message_html: msgHTML + (attachNote ? '<pre style="font-size:11px;color:#666;">'+attachNote+'</pre>' : ''),
+      from_name:    name,
+      from_email:   email,
+      subject:      subject,
+      message:      msgText,
+      message_html: msgHTML,
     });
-    status.textContent = 'message sent!';
+    status.textContent = 'sent!';
     status.className = 'ok';
     editor.innerHTML = '';
     document.getElementById('msgSubject').value = '';
-    attachedFiles.length = 0;
-    renderAttachList();
     if (!anon) {
       document.getElementById('senderName').value  = '';
       document.getElementById('senderEmail').value = '';
     }
   } catch(e) {
-    status.textContent = 'failed to send. email directly: trenchgun1337@gmail.com';
+    status.textContent = 'failed — trenchgun1337@gmail.com';
     status.className = 'err';
     console.error(e);
   }
   btn.disabled = false;
 }
 
-/* ── sounds ── */
+/* sounds */
 const SOUND_BASE = '../assets/audio/';
 const SOUNDS = { start:'sitestart.mp3', button:'sitebuttonclick.mp3' };
 let _soundsOn = true;
