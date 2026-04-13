@@ -77,16 +77,6 @@ a { color:#000; text-decoration:none; }
   user-select: none;
 }
 
-.anon-row {
-  padding: 5px 10px;
-  background: #ebebeb;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 6px;
-  font-size: 11px; color: #555;
-}
-.anon-row input[type=checkbox] { accent-color: var(--accent); cursor:pointer; }
-.anon-row label { cursor:pointer; }
-
 .compose-fields { background: #f8f8f8; border-bottom: 1px solid var(--border); }
 .compose-field-row {
   display: flex; align-items: center;
@@ -99,9 +89,7 @@ a { color:#000; text-decoration:none; }
   flex:1; font-size:12px; padding:6px 0;
   background:none; border:none; color:var(--text); font-family:inherit;
 }
-.field-val::placeholder { color:#bbb; }
 
-/* minimal toolbar */
 .compose-toolbar {
   background: #e4e4e4;
   border-bottom: 1px solid var(--border);
@@ -109,70 +97,27 @@ a { color:#000; text-decoration:none; }
   display: flex;
   align-items: center;
   gap: 4px;
+  font-size: 10.5px;
+  color: #888;
 }
-.tb-btn {
-  background: #d0d0d0;
-  border: 1px solid rgba(0,0,0,.20);
-  padding: 3px 9px;
-  font-family: inherit;
-  font-size: 11px;
-  cursor: pointer;
-  color: #222;
-  line-height: 1.5;
-}
-.tb-btn:hover { background: #bfbfbf; }
 
 #msgEditor {
-  background: #fff;
-  border: none;
+  background: #f1f1f1;
+  border: 5px ridge;
   min-height: 220px;
-  padding: 12px 14px;
+  padding: 20px 14px;
   font-family: inherit;
   font-size: 12.5px;
   color: var(--text);
   line-height: 1.7;
   overflow-y: auto;
 }
+
 #msgEditor:empty::before {
   content: attr(data-placeholder);
   color: #bbb;
   pointer-events: none;
 }
-
-/* link insert popup */
-#linkPopup {
-  display: none;
-  position: absolute;
-  background: #f2f2f2;
-  border: 1px solid rgba(0,0,0,.28);
-  box-shadow: 0 3px 10px rgba(0,0,0,.18);
-  padding: 8px 10px;
-  z-index: 100;
-  gap: 6px;
-  flex-direction: column;
-  min-width: 260px;
-}
-#linkPopup.open { display: flex; }
-#linkPopup input {
-  background: #fff;
-  border: 1px solid rgba(0,0,0,.28);
-  padding: 4px 7px;
-  font-family: inherit;
-  font-size: 12px;
-  color: var(--text);
-  width: 100%;
-}
-.popup-row { display:flex; gap:5px; }
-.popup-btn {
-  background: #d0d0d0;
-  border: 1px solid rgba(0,0,0,.22);
-  padding: 3px 12px;
-  font-family: inherit;
-  font-size: 11px;
-  cursor: pointer;
-  color: #222;
-}
-.popup-btn:hover { background: #bfbfbf; }
 
 .compose-bottom {
   background: #e4e4e4;
@@ -237,42 +182,19 @@ a { color:#000; text-decoration:none; }
 
     <div id="composeTitle">New Message — Watanagashi Archive</div>
 
-    <div class="anon-row">
-      <input type="checkbox" id="anonCheck" onchange="toggleAnon()">
-      <label for="anonCheck">send anonymously</label>
-    </div>
-
     <div class="compose-fields">
       <div class="compose-field-row">
         <span class="field-key">To</span>
         <span class="field-val" style="color:#555;">trenchgun1337@gmail.com</span>
       </div>
-      <div class="compose-field-row" id="fromRow">
-        <span class="field-key">From</span>
-        <input class="field-val" type="email" id="senderEmail" placeholder="your email (optional — for reply)">
-      </div>
-      <div class="compose-field-row" id="nameRow">
-        <span class="field-key">Name</span>
-        <input class="field-val" type="text" id="senderName" placeholder="your name (optional)">
-      </div>
       <div class="compose-field-row">
-        <span class="field-key">Subject</span>
-        <input class="field-val" type="text" id="msgSubject" placeholder="(no subject)">
+        <span class="field-key">From</span>
+        <span class="field-val" style="color:#aaa;">Anonymous</span>
       </div>
     </div>
 
-    <!-- toolbar: text only + insert link + insert img url -->
-    <div class="compose-toolbar" style="position:relative;">
-
-      <!-- link popup -->
-      <div id="linkPopup">
-        <input type="text" id="linkText" placeholder="display text (optional)">
-        <input type="url"  id="linkUrl"  placeholder="https://...">
-        <div class="popup-row">
-          <button class="popup-btn" onmousedown="event.preventDefault();confirmLink()">ok</button>
-          <button class="popup-btn" onmousedown="event.preventDefault();closeLinkPopup()">cancel</button>
-        </div>
-      </div>
+    <div class="compose-toolbar">
+      you can include your name, email, or other info in the message body if you'd like a reply
     </div>
 
     <div id="msgEditor"
@@ -287,7 +209,7 @@ a { color:#000; text-decoration:none; }
     </div>
 
     <div class="note-bar">
-      name and email are optional — anonymous messages welcome
+      all messages are sent anonymously
     </div>
 
   </div>
@@ -301,78 +223,14 @@ emailjs.init({ publicKey: 'iww-r-sgJVyoRmokf' });
 const SERVICE_ID  = 'service_ina2cb8';
 const TEMPLATE_ID = 'template_g7owumb';
 
-function toggleAnon() {
-  const hide = document.getElementById('anonCheck').checked;
-  document.getElementById('fromRow').style.display = hide ? 'none' : '';
-  document.getElementById('nameRow').style.display = hide ? 'none' : '';
+function getTime() {
+  return new Date().toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' });
 }
 
-function fmt(cmd) {
-  document.getElementById('msgEditor').focus();
-  document.execCommand(cmd, false, null);
-}
-
-/* ── link popup ── */
-let _savedRange = null;
-
-function toggleLinkPopup() {
-  const p = document.getElementById('linkPopup');
-  if (p.classList.contains('open')) { closeLinkPopup(); return; }
-  // save selection so we can restore it when inserting
-  const sel = window.getSelection();
-  if (sel && sel.rangeCount) {
-    _savedRange = sel.getRangeAt(0).cloneRange();
-    const selText = sel.toString();
-    if (selText) document.getElementById('linkText').value = selText;
-  }
-  p.classList.add('open');
-  setTimeout(() => document.getElementById('linkUrl').focus(), 50);
-}
-
-function closeLinkPopup() {
-  document.getElementById('linkPopup').classList.remove('open');
-  document.getElementById('linkText').value = '';
-  document.getElementById('linkUrl').value  = '';
-  _savedRange = null;
-}
-
-function confirmLink() {
-  const text = document.getElementById('linkText').value.trim();
-  const url  = document.getElementById('linkUrl').value.trim();
-  if (!url) { closeLinkPopup(); return; }
-
-  const editor = document.getElementById('msgEditor');
-  editor.focus();
-
-  const sel = window.getSelection();
-  if (_savedRange) {
-    sel.removeAllRanges();
-    sel.addRange(_savedRange);
-  }
-
-  if (text) {
-    // replace selection (or insert at cursor) with linked text
-    document.execCommand('insertHTML', false,
-      `<a href="${url}" target="_blank" rel="noopener">${text}</a>`);
-  } else {
-    document.execCommand('createLink', false, url);
-    // make new link open in new tab
-    const links = editor.querySelectorAll('a:not([target])');
-    links.forEach(l => l.setAttribute('target', '_blank'));
-  }
-  closeLinkPopup();
-}
-
-
-/* ── send ── */
 async function sendMsg() {
-  const anon    = document.getElementById('anonCheck').checked;
-  const name    = anon ? 'Anonymous' : (document.getElementById('senderName').value.trim() || 'Anonymous');
-  const email   = anon ? 'anonymous@noreply.com' : (document.getElementById('senderEmail').value.trim() || 'anonymous@noreply.com');
-  const subject = document.getElementById('msgSubject').value.trim() || '(no subject)';
   const editor  = document.getElementById('msgEditor');
-  const msgHTML = editor.innerHTML.trim();
   const msgText = editor.innerText.trim();
+  const msgHTML = editor.innerHTML.trim();
 
   const status = document.getElementById('statusMsg');
   const btn    = document.getElementById('sendBtn');
@@ -385,20 +243,16 @@ async function sendMsg() {
 
   try {
     await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-      from_name:    name,
-      from_email:   email,
-      subject:      subject,
+      from_name:    'Anonymous',
+      from_email:   'anonymous@noreply.com',
+      subject:      'anonymous message — watanagashi archive',
       message:      msgText,
       message_html: msgHTML,
+      time:         getTime(),
     });
     status.textContent = 'sent!';
     status.className = 'ok';
     editor.innerHTML = '';
-    document.getElementById('msgSubject').value = '';
-    if (!anon) {
-      document.getElementById('senderName').value  = '';
-      document.getElementById('senderEmail').value = '';
-    }
   } catch(e) {
     status.textContent = 'failed — trenchgun1337@gmail.com';
     status.className = 'err';
