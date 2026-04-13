@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- ANTI-FLASH: injeta background antes do DOM -->
+<script>
+(function(){
+  var s = document.createElement('style');
+  s.id = '_darkThemeBgStyle';
+  s.textContent = 'body{background-color:#000!important;background-image:url("assets/images/whitebg.jpeg")!important;background-size:cover!important;background-attachment:fixed!important;background-repeat:no-repeat!important;background-position:center center!important;}';
+  document.head.appendChild(s);
+})();
+</script>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Watanagashi Archive</title>
