@@ -2,578 +2,461 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- ANTI-FLASH: injeta background antes do DOM -->
-<script>
-(function(){
-  var s = document.createElement('style');
-  s.id = '_darkThemeBgStyle';
-  s.textContent = 'body{background-color:#000!important;background-image:url("assets/images/whitebg.jpeg")!important;background-size:74%!important;background-attachment:fixed!important;background-repeat:no-repeat!important;background-position:center center!important;}';
-  document.head.appendChild(s);
-})();
-</script>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Watanagashi Archive</title>
 <link rel="icon" id="sitefavicon" type="image/x-icon" href="assets/images/rikaico.ico">
-<link rel="stylesheet" href="scripts/css/style.css">
-<!-- Replace <style id="watanagashi-patch"> ... </style> with this: -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
 
-<style id="watanagashi-patch">
-/* ════════════════════════════════════════════
-   WATANAGASHI PATCH — layout overrides only
-   ════════════════════════════════════════════ */
+<style>
+/* ================================================================
+   INDEX.HTML — CSS exclusivo desta página
+   ================================================================ */
 
-/* ── Logo fixed at top ── */
-#siteLogoTop {
- position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    max-height: 302px;
-    max-width: 800px;
-    width: 100%;
-    object-fit: cover;
-    object-position: top center;
-    border-radius: 0 0 18px 18px;
-    z-index: 9990;
-    pointer-events: none;
-    display: block;
-    border: solid 1px rgb(135 133 133);
-    box-shadow: #595959 1px 1px 12px 1px;
-}
+/* ── Reset mínimo ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+img { -webkit-user-drag: none; user-select: none; pointer-events: none; }
 
-#websiteContainer { position:relative; margin:0 auto; }
-#websiteContainer::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:302px;
-  border-bottom:1px dotted rgba(0,0,0,.15);
-  border-radius:0 0 18px 18px; pointer-events:none; z-index:9989;
-}
+/* ── Selection ── */
+::selection      { background: rgba(80,80,80,.45); color: #fff; }
+::-moz-selection { background: rgba(80,80,80,.45); color: #fff; }
 
-/* ── Layout ── */
+/* ── Scrollbar ── */
+html { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(120,120,120,.50) transparent; }
+::-webkit-scrollbar             { width: 6px; height: 6px; }
+::-webkit-scrollbar-track       { background: transparent; }
+::-webkit-scrollbar-thumb       { background: rgba(120,120,120,.50); }
+::-webkit-scrollbar-thumb:hover { background: rgba(54,54,54,.8); }
+
+/* ── Body ── */
 body {
-  padding-top:310px !important;
-  justify-content:center !important;
-  align-items:flex-start !important;
-  background-color:#000000 !important;
-  background-image:url("assets/images/whitebg.jpeg") !important;
-  min-height:100vh;
+  font-family: 'Sawarabi Gothic', 'Sazanami Gothic', Tahoma, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  color: #111;
+  background-color: #000;
+  background-image: url("assets/images/whitebg.jpeg");
+  background-size: 74%;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 310px;
+  padding-bottom: 24px;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
-#websiteContainer { width:800px !important; --text-dimmax-width:100% !important; min-height:100vh; }
-#mainHeader { display:none !important; }
-#mainContent {
-  background:#f2f2f2 !important; border:2px ridge #727272 !important;
-  height:auto !important; min-height:500px !important;
-  overflow-y:visible !important; width:100% !important; box-sizing:border-box !important;
+
+/* ── Logo absolute (rola com a página) ── */
+#siteLogoTop {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  max-height: 302px; max-width: 800px; width: 100%;
+  object-fit: cover; object-position: top center;
+  border-radius: 0 0 18px 18px;
+  z-index: 9990; pointer-events: none; display: block;
+  border: solid 1px rgb(135 133 133);
   box-shadow: #595959 1px 1px 12px 1px;
 }
 
-/* ── h1/h2/h3 as inline black label inside a full-width black strip ── */
-h1,h2,h3 {
-  display:inline !important;
-  background:#000 !important; color:#fff !important;
-  font-size:11px !important; font-weight:400 !important;
-  letter-spacing:1.5px !important; text-transform:uppercase !important;
-  padding:2px 6px !important; border:none !important;
-  box-shadow:none !important; text-shadow:none !important;
-  width:auto !important; position:static !important;
+/* ── Container ── */
+#websiteContainer {
+  width: 800px; max-width: 100%;
+  display: flex; flex-direction: column;
+  position: relative;
 }
-h1 { font-size:12px !important; }
-/* h1/h2/h3 must live inside a .bar-row div for the full-width strip effect */
+
+/* ── Layout ── */
+#navAndContentContainer { display: flex; align-items: stretch; }
+
+#sidebarAside {
+  display: flex; flex-direction: column;
+  align-items: flex-start; flex-shrink: 0;
+}
+
+#navigationMenu {
+  background: linear-gradient(108deg, #f5f5f5 50%, #ececec 100%);
+  border: 2px ridge #727272;
+  width: 162px; flex-shrink: 0;
+  padding: 10px 8px 14px;
+  overflow-y: auto; height: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120,120,120,.60) rgba(220,220,220,.70);
+  box-shadow: #595959 1px 1px 12px 1px;
+}
+
+.nav-categories {
+  display: flex; flex-direction: column;
+  background: transparent; border: none;
+  padding: 0; margin-bottom: 6px;
+}
+
+.navbar-titles {
+  font-size: 12px; color: #888; text-transform: uppercase;
+  padding: 4px 2px 2px;
+  border-bottom: 1px solid rgba(0,0,0,.10);
+  margin-bottom: 3px;
+}
+
+.nav-link {
+  display: block; color: #111; font-size: 11.5px;
+  padding: 3px 4px; margin: 1px 0;
+  text-decoration: none; cursor: pointer;
+  position: relative; white-space: nowrap;
+}
+.nav-link + .nav-link::before {
+  content: '|'; color: #bbb;
+  position: absolute; left: -6px; top: 3px;
+  font-size: 10px; pointer-events: none;
+}
+.nav-link:hover  { color: red; text-decoration: underline; }
+.nav-link.active { color: red; font-weight: bold; text-decoration: underline; }
+
+/* ── Main content ── */
+#mainContent {
+  background: #f2f2f2;
+  border: 2px ridge #727272;
+  min-height: 500px; height: auto;
+  overflow-y: visible; width: 100%;
+  box-sizing: border-box;
+  box-shadow: #595959 1px 1px 12px 1px;
+  color: #111; flex: 1; min-width: 0;
+  padding-bottom: 44px;   /* espaço para o footer não tocar no chão */
+  position: relative;
+}
+
+/* ── Pages ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── Headings ── */
+h1, h2, h3 {
+  display: inline; background: #000; color: #fff;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 2px 6px;
+}
+h1 { font-size: 12px; }
+h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
+
 .bar-row {
-  display:block; background:#000;
-  padding:5px 8px; margin:0; line-height:1.6;
+  display: block; background: #000;
+  padding: 5px 8px; margin: 0; line-height: 1.6;
 }
 
-/* ── rights-bar: full-width black strip ── */
 .rights-bar {
-  display:block !important; background:#000 !important;
-  color:#fff !important; font-size:11px !important;
-  font-weight:400 !important; letter-spacing:1.5px !important;
-  text-transform:uppercase !important; padding:5px 8px !important;
-  border:none !important; box-shadow:none !important; text-shadow:none !important;
-  width:100% !important;
+  display: block; background: #000; color: #fff;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 5px 8px; margin-top: 5px; width: 100%;
 }
 
-/* h5: "NEVER REGRET" */
-h5 {
-  display:inline-block !important; background:#000 !important;
-  color:#fff !important; -webkit-text-stroke:1px #000 !important;
-  font-size:26px !important; padding:3px 16px !important;
-  border:none !important; box-shadow:none !important;
+/* ── Glass / aero ── */
+.glass-borders {
+  background-image: linear-gradient(rgba(255,255,255,.50), rgba(240,240,240,.28));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.90), 0 5px 6px rgba(0,0,0,.18);
+  border: 1px solid rgba(180,180,180,.52);
+  padding: 5px; margin: 7px;
+}
+.aero-borders { border: 1px solid rgba(0,0,0,.44); }
+
+.styled-containers         { background: #000; padding: 10px; }
+.styled-containers-headers { background: #fff; padding: 8px 10px; }
+
+/* ── Special Thanks ── */
+.rights-content {
+  background: #fff; padding: 8px 10px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.rights-content h2 {
+  display: inline; background: none; color: #111;
+  font-size: 12px; text-transform: none; letter-spacing: 0; padding: 0;
+}
+.rights-content a       { color: #ff0303; text-decoration: none; }
+.rights-content a:hover { color: #ff0303; text-decoration: underline; }
+
+/* ── Intro banner ── */
+#introBanner {
+  width: 100%; max-height: 375px; object-fit: cover;
+  display: block; border-bottom: 2px solid rgba(150,150,150,.50);
+  pointer-events: none; filter: none;
 }
 
-/* ── Sound toggle ── */
+/* ── Typography ── */
+a       { color: #000; text-decoration: none; }
+a:hover { text-decoration: underline; }
+p       { font-size: 12.5px; line-height: 18px; color: #111; margin: 0; }
+p + p   { margin-top: 5px; }
+
+/* ── Contact links (Resources) ── */
+.contact-links { list-style: none; margin: 0; padding: 0; }
+.contact-links li { border-bottom: 1px solid rgba(255,255,255,.08); }
+.contact-links li:last-child { border-bottom: none; }
+.contact-links a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 12px; color: #fff; font-size: 12.5px;
+  text-decoration: none; pointer-events: auto;
+}
+.contact-links a:hover { color: red; text-decoration: underline; }
+.link-label { flex: 1; }
+.link-note  { color: rgba(255,255,255,.45); font-size: 11px; }
+
+/* ── Footer dentro da box ── */
+#pageFooter {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 8px 0 10px;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(0,0,0,.38);
+  border-top: 1px dotted rgba(0,0,0,.12);
+  user-select: none;
+  background: transparent;
+}
+#pageFooter .footer-author {
+  color: rgba(0,0,0,.50);
+  cursor: default;
+  font-style: italic;
+  border-bottom: 1px dotted rgba(0,0,0,.22);
+}
+#pageFooter .footer-author:hover {
+  color: rgba(0,0,0,.80);
+  border-bottom-style: solid;
+}
+
+/* ── Tooltip ── */
+#wa-tooltip {
+  position: fixed;
+  z-index: 99999;
+  background: #fff;
+  border: 1px solid rgba(100,100,100,.45);
+  box-shadow: 2px 3px 10px rgba(0,0,0,.20);
+  padding: 8px 10px;
+  font-size: 11.5px;
+  color: #111;
+  font-family: 'Sawarabi Gothic', Tahoma, sans-serif;
+  pointer-events: none;
+  display: none;
+  max-width: 320px;
+  line-height: 1.5;
+}
+#wa-tooltip img { pointer-events: none; filter: none; display: block; }
+#wa-tooltip td  { vertical-align: middle; }
+#wa-tooltip td:last-child { padding-left: 10px; }
+#wa-tooltip a   { color: #cc1a1a; text-decoration: underline; }
+
+/* ── Sound toggle — só texto puro ── */
 #soundToggle {
-  position:fixed; bottom:8px; left:10px; z-index:9999;
-  font-size:10px; color:rgba(0,0,0,.40); cursor:pointer;
-  user-select:none; letter-spacing:.2px; padding:2px 0;
-  background:none; border:none; outline:none;
-  font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,sans-serif;
+  position: fixed;
+  bottom: 8px; left: 10px;
+  z-index: 9999;
+  font-size: 10px;
+  color: rgba(255,255,255,.50);
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: .3px;
+  padding: 2px 0;
+  font-family: 'Sawarabi Gothic', Tahoma, sans-serif;
 }
-#soundToggle:hover { color:rgba(0,0,0,.70); }
-#soundToggle.off   { color:rgba(0,0,0,.22); }
+#soundToggle:hover { color: rgba(255,255,255,.88); }
+#soundToggle.off   { color: rgba(255,255,255,.20); }
 
-/* ── Mobile ── */
-@media (max-width:800px) { body { padding-top:220px !important; } #siteLogoTop { max-height:210px; } #websiteContainer::before { height:210px; } #websiteContainer { width:100% !important; } }
-@media (max-width:600px) { body { padding-top:90px !important; } #siteLogoTop { max-height:75px; } #websiteContainer::before { height:75px; } }
+/* ── Responsive ── */
+@media (max-width: 800px) {
+  body { padding-top: 220px; }
+  #siteLogoTop { max-height: 210px; }
+  #websiteContainer { width: 100%; }
+  #navigationMenu { width: 118px; }
+}
+@media (max-width: 600px) {
+  body { padding-top: 90px; }
+  #siteLogoTop { max-height: 75px; }
+  #navAndContentContainer { flex-direction: column; }
+  #navigationMenu {
+    width: 100% !important; height: auto !important;
+    display: flex !important; flex-direction: row !important;
+    flex-wrap: wrap !important; padding: 6px !important;
+    align-items: center !important;
+  }
+  .nav-categories { flex-direction: row !important; flex-wrap: wrap !important; border: none !important; }
+  .navbar-titles { display: none !important; }
+  .nav-link { width: auto !important; padding: 4px 6px !important; font-size: 11px !important; margin: 1px !important; }
+}
 </style>
 </head>
 <body>
+
+<!-- Anti-flash bg -->
+<script>
+(function(){
+  var s = document.createElement('style');
+  s.textContent = 'body{background-color:#000!important;background-image:url("assets/images/whitebg.jpeg")!important;}';
+  document.head.appendChild(s);
+})();
+</script>
 
 <img id="siteLogoTop"
   src="assets/images/watanagashilogo.jpg"
   alt="Watanagashi Archive"
   onerror="this.style.display='none'">
 
+<!-- Tooltip global -->
+<div id="wa-tooltip"></div>
+
 <div id="websiteContainer">
   <div id="navAndContentContainer">
 
+    <!-- ══ SIDEBAR ══ -->
     <aside id="sidebarAside">
       <div id="navigationMenu">
         <nav class="nav-categories">
           <span class="navbar-titles">Navigation</span>
           <a class="nav-link" id="nbtn-introduction" href="#introduction" onclick="return navClick(event,'introduction')">Introduction</a>
-          <a class="nav-link" id="nbtn-contact" href="pages/contact.html">Contact</a>
-          <a class="nav-link" id="nbtn-resources" href="#resources" onclick="return navClick(event,'resources')">Resources</a>
+          <a class="nav-link" id="nbtn-resources"    href="#resources"    onclick="return navClick(event,'resources')">Resources</a>
+          <a class="nav-link" href="pages/contact.html">Contact</a>
         </nav>
-        <div id="_themesBtnWrap" style="display:none;padding:4px 5px 2px;margin-top:4px;">
-          <button id="_themesBtn" onclick="window._themesPanelToggle && window._themesPanelToggle(event)">Themes</button>
-        </div>
       </div>
     </aside>
 
+    <!-- ══ CONTEÚDO ══ -->
     <main id="mainContent">
 
-      <!-- ══ INTRODUCTION ══ -->
+      <!-- INTRODUCTION -->
       <div id="pg-introduction" class="page">
-        <h1>INTRODUCTION</h1>
+        <div class="bar-row"><h1>Introduction</h1></div>
         <div class="glass-borders">
-          <div class="aero-borders aero-glass-overlay" style="overflow:hidden">
+          <div class="aero-borders" style="overflow:hidden">
             <img id="introBanner" src="assets/images/bannerintroduction.jpg" alt="Banner" draggable="false">
           </div>
           <article class="styled-containers-headers aero-borders">
-            <p>Welcome to <h4 >The Watanagashi Archive</h4> &mdash; my personal site &amp; archive.</p>
+            <p>Welcome to <h4>The Watanagashi Archive</h4> &mdash; my personal site &amp; archive.</p>
             <p style="margin-top:7px">here i shall mantain stuff, projects, sketchy art, music &amp; general media. i'll try to keep updating it.</p>
           </article>
-         
-        
-          
-       
-      </div>
-      <h1>SPECIAL THANKS</h1>
-      <div class="rights-content aero-borders">
-            <h2>Honorable Mention: <a href="https://frutigeraeroarchive.org/" target="_blank" style="color:#ff0303;">frutigeraeroarchive.org</a></h2>
-            <h2>Honorable Mention: <a href="https://kaomoji.you/" target="_blank" style="color:#ff0303;">kaomoji.you</a></h2>
-          </div>
         </div>
 
-         
-      <!-- ══ RESOURCES ══ -->
+        <div class="bar-row"><h1>Special Thanks</h1></div>
+        <div class="rights-content aero-borders" style="margin:0 7px 7px">
+          <h2>Honorable Mention: <a href="https://frutigeraeroarchive.org/" target="_blank">frutigeraeroarchive.org</a></h2>
+          <h2>Honorable Mention: <a href="https://kaomoji.you/" target="_blank">kaomoji.you</a></h2>
+        </div>
+      </div>
+
+      <!-- RESOURCES -->
       <div id="pg-resources" class="page">
-        <h1>Resources</h1>
+        <div class="bar-row"><h1>Resources</h1></div>
         <div class="glass-borders">
           <div class="styled-containers-headers aero-borders">
             <p>Tools, media &amp; everything else on this archive.</p>
           </div>
-          <div class="rights-bar" style="margin-top:5px">Pages</div>
-          <div class="aero-borders" style="background:#000000;">
+
+          <div class="rights-bar">Pages</div>
+
+          <div class="aero-borders" style="background:#000">
             <ul class="contact-links">
-             <li>
-
               <li>
-<a href="pages/sketchbook.html"
-   onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
-   onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
-
-  <span class="link-label" style="color:#ffffff">Sketchbook</span>
-  <span class="link-note" style="color:#ffffff">gallery & JS Paint</span>
-</a>
-</li>
-
- <a href="pages/musicplayer.html"
-   style="pointer-events:none;opacity:.45;"
-   onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
-   onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
-
-  <span class="link-label" style="color:#ffffff">Music Player</span>
-  <span class="link-note" style="color:#ffffff">LOCKED / IN DEV</span>
-</a>
-</li>
-
-<li>
-<a href="pages/videos.html"
-   style="pointer-events:none;opacity:.45;"
-   onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
-   onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
-
-  <span class="link-label" style="color:#ffffff">Video Player</span>
-  <span class="link-note" style="color:#ffffff">LOCKED / IN DEV</span>
-</a>
-</li>
-
-
-
-<li>
-<a href="#community" onclick="return navClick(event,'community')"
-   style="pointer-events:none;opacity:.45;"
-   onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
-   onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
-
-  <span class="link-label" style="color:#ffffff">Community</span>
-  <span class="link-note" style="color:#ffffff">LOCKED / IN DEV</span>
-</a>
-</li>
-
-<li>
-<a href="pages/downloader.html" target="_blank"
-   style="pointer-events:none;opacity:.45;"
-   onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
-   onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
-
-  <span class="link-label" style="color:#ffffff">Ultimate Downloader Converter</span>
-  <span class="link-note" style="color:#ffffff">LOCKED / IN DEV</span>
-</a>
-</li>
-
-<li>
-<a href="#" style="pointer-events:none;opacity:.45;"
-   onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
-   onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
-
-  <span class="link-label" style="color:#ffffff">File Dumpster</span>
-  <span class="link-note" style="color:#ffffff">LOCKED / IN DEV</span>
-</a>
-</li>
-
-<li>
-<a href="#" style="pointer-events:none;opacity:.45;"
-   onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
-   onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
-
-  <span class="link-label" style="color:#ffffff">RabbitHoles / WeirdSites / RandomSites</span>
-  <span class="link-note" style="color:#ffffff">LOCKED / IN DEV</span>
-</a>
-</li>
-
-<li>
-<a href="#" style="pointer-events:none;opacity:.45;"
-   onmouseover="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='underline')"
-   onmouseout="this.querySelectorAll('.link-label, .link-note').forEach(el => el.style.textDecoration='none')">
-
-  <span class="link-label" style="color:#ffffff">Projects</span>
-  <span class="link-note" style="color:#ffffff">LOCKED / IN DEV</span>
-</a>
-</li>
-
-</div>
-</div>
-</div>
-
-<div id="visitor-counter-wrap">
-          <a href="https://www.freecounterstat.com" title="Visitor counter">
-            <img src="https://counter12.optistats.ovh/private/freecounterstat.php?c=kpapsmwpbskyh4gfxmmqdqb5y9bq14h8" border="0" title="visitor counter" alt="visitor counter" draggable="false">
-          </a>
-        </div>
-      <!-- ══ MUSIC ══ -->
-      <div id="pg-music" class="page">
-        <h1>Listen to Music</h1>
-        <div class="glass-borders">
-          <div class="styled-containers aero-borders" style="display:flex;align-items:flex-start;gap:10px">
-                <img src="https://frutigeraeroarchive.org/images/site_info.png" alt="" draggable="false">
-            <div><p>Enjoy listening to some bangers below &mdash; based on personal picks :-)</p></div>
-          </div>
-        </div>
-        <div class="glass-borders" id="playerGlassBox">
-          <div id="musicPlayerContainer" class="aero-glass-overlay">
-            <div class="mp-header-bar">Music Player &#9834;</div>
-            <div class="mp-controls-row">
-              <button class="mp-ctrl-btn" id="audioBack" title="Previous"><img class="player-img" src="https://frutigeraeroarchive.org/images/music_player/music_player_back.png" alt="Back" draggable="false"></button>
-              <button class="mp-ctrl-btn" id="audioPlayPause" title="Play/Pause"><img class="player-img" id="audioPlayPauseImage" src="https://frutigeraeroarchive.org/images/music_player/music_player_play.png" alt="Play" draggable="false"></button>
-              <button class="mp-ctrl-btn" id="audioForward" title="Next"><img class="player-img" src="https://frutigeraeroarchive.org/images/music_player/music_player_forward.png" alt="Forward" draggable="false"></button>
-            </div>
-            <div id="ytContainer" style="position:fixed;bottom:0;right:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;"><div id="_ytEl"></div></div>
-            <div id="musicBackground">
-              <div id="musicPlayerPlaylist">
-                <nav id="playlistLeft"></nav>
-                <div class="playlist-right" id="playlistRight">
-                  <canvas id="visualizerCanvas" width="175" height="96"></canvas>
-                  <img src="https://frutigeraeroarchive.org/images/music_player/cd.png" id="spinningDisk" alt="CD" draggable="false">
-                </div>
-              </div>
-            </div>
-            <div class="mp-status-bar" id="mpStatusBar" style="position:relative;display:flex;align-items:center;gap:6px;padding:4px 8px;">
-              <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
-                <button id="mpLikeBtn" title="Like" style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;opacity:0.3;"><img src="https://cdn-icons-png.flaticon.com/128/739/739231.png" style="width:16px;height:16px;pointer-events:none;filter:grayscale(80%) brightness(0.5);" draggable="false"></button>
-                <span id="mpLikeVal" style="font-size:11px;color:#ccc;min-width:12px;">0</span>
-                <button id="mpDislikeBtn" title="Dislike" style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;opacity:0.3;"><img src="https://cdn-icons-png.flaticon.com/128/880/880613.png" style="width:16px;height:16px;pointer-events:none;filter:grayscale(80%) brightness(0.5);" draggable="false"></button>
-                <span id="mpDislikeVal" style="font-size:11px;color:#ccc;min-width:12px;">0</span>
-              </div>
-              <span style="flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;">Currently playing: <span id="audioName">&mdash;</span></span>
-              <span id="mpPlusBtn" title="Options" style="cursor:pointer;font-size:15px;font-weight:bold;color:rgba(200,200,200,.55);padding:0 3px;user-select:none;flex-shrink:0;line-height:1;">+</span>
-              <div id="mpPlusPopup" style="display:none;position:absolute;right:0;bottom:calc(100% + 2px);z-index:500;background:#0a0202;border:1px solid rgba(180,20,20,.5);min-width:200px;font-size:12px;padding:4px 0;box-shadow:0 -4px 16px rgba(0,0,0,.8);" onclick="event.stopPropagation()">
-                <div id="mpPopRandom" style="padding:7px 16px;cursor:pointer;color:#ccc;">Random</div>
-                <div id="mpPopShuffle" style="padding:7px 16px;cursor:pointer;color:#ccc;">Shuffle: OFF</div>
-                <div style="border-top:1px solid rgba(255,255,255,.06);margin:3px 0;"></div>
-                <div id="mpPopSortToggle" style="padding:7px 16px;cursor:pointer;color:#ccc;display:flex;justify-content:space-between;align-items:center;">Sort <span style="opacity:.5;font-size:10px;">&#9654;</span></div>
-                <div id="mpSortSubmenu" style="display:none;background:rgba(8,2,2,.98);padding:3px 0;border-top:1px solid rgba(80,20,20,.3);"></div>
-                <div style="border-top:1px solid rgba(255,255,255,.06);margin:3px 0;"></div>
-                <a id="mpPopUrl" style="display:block;padding:7px 16px;cursor:pointer;color:#ccc;text-decoration:none;" target="_blank" rel="noopener noreferrer">URL</a>
-              </div>
-            </div>
-            <div class="mp-progress-row">
-              <span style="font-size:10px;color:#aaa;white-space:nowrap;">Time Left:</span>
-              <span id="timeLeft" class="mp-time-val">0:00</span>
-              <div class="mp-progress-track" style="flex:1 1 auto;">
-                <div id="progressFill" class="mp-progress-fill"></div>
-                <input type="range" id="progressBar" class="mp-range" value="0" max="100" step="0.01">
-              </div>
-              <button id="muteButton" class="mp-mute-btn" title="Mute"><img id="volumeImage" src="https://frutigeraeroarchive.org/images/music_player/volume_medium.png" alt="Vol" draggable="false"></button>
-              <div class="mp-vol-wrap" id="volWrap">
-                <div class="mp-vol-fill" id="volFill"></div>
-                <input type="range" id="volumeSlider" class="mp-vol-range" min="0" max="100" step="1" value="30">
-              </div>
-              <span style="font-size:10px;color:#aaa;white-space:nowrap;">Vol: <span id="volumeIndicator">30</span></span>
-              <button id="audioLoop" class="mp-loop-btn" title="Loop"><img id="audioLoopImage" src="https://frutigeraeroarchive.org/images/music_player/music_player_loop_off.png" alt="Loop" draggable="false"></button>
-            </div>
+                <a href="pages/sketchbook.html"
+                  onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+                  onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
+                  <span class="link-label">Sketchbook</span>
+                  <span class="link-note">gallery &amp; JS Paint</span>
+                </a>
+              </li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Music Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Video Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Ultimate Downloader Converter</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">File Dumpster</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">RabbitHoles / WeirdSites / RandomSites</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Projects</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+            </ul>
           </div>
         </div>
       </div>
 
-      <!-- ══ SKETCHBOOK ══ -->
-      <div id="pg-sketchbook" class="page">
-        <h1>Sketchbook</h1>
-        <div class="glass-borders">
-          <h2>JS Paint</h2>
-          <div class="aero-borders" style="overflow:hidden"><div id="paintEmbedWrap"></div></div>
-        </div>
-        <div class="glass-borders">
-          <div class="rights-bar" style="margin:0">Awarded Art</div>
-          <div class="aero-borders" style="background:#000;padding:6px"><div id="galleryAwarded"></div></div>
-        </div>
-        <div class="glass-borders">
-          <div class="section-header-row" style="position:relative;display:flex;align-items:center;justify-content:space-between;">
-            <h2>Gallery</h2>
-            <div style="position:relative;">
-              <span id="galPlusBtn" title="Sort Options" style="cursor:pointer;font-size:17px;font-weight:bold;color:rgba(200,200,200,.55);padding:2px 6px;user-select:none;line-height:1;display:inline-block;">+</span>
-              <div id="galPlusPopup" style="display:none;position:absolute;right:0;top:100%;z-index:300;background:#050505;border:1px solid rgba(180,20,20,.4);min-width:180px;font-size:12px;padding:4px 0;">
-                <div style="padding:4px 14px 2px;color:rgba(255,254,254);font-size:10px;letter-spacing:1px;text-transform:uppercase;">Sort</div>
-                <div id="galSortItems"></div>
-              </div>
-            </div>
-          </div>
-          <div class="styled-containers aero-borders"><div id="galleryGrid" class="gi-grid"></div></div>
-        </div>
-      </div>
-
-      <!-- ══ VIDEOS ══ -->
-      <div id="pg-videos" class="page">
-        <h1>Video Player</h1>
-        <div class="glass-borders">
-          <div class="aero-borders" style="overflow:hidden"><div class="video-embed-wrap"><div id="videoEmbed"></div></div></div>
-          <div id="videoInfoBox" class="video-info-box aero-borders"></div>
-        </div>
-        <div class="glass-borders"><h2>Animes</h2><div class="aero-borders styled-containers"><p class="section-desc">Openings, endings &amp; classic anime clips.</p><div id="videoListAnimes" class="video-list"></div><p id="animes-empty" class="empty-msg" style="display:none">No videos added yet.</p></div></div>
-        <div class="glass-borders"><h2>Internet Nostalgia</h2><div class="aero-borders styled-containers"><p class="section-desc">Old internet classics and nostalgia videos.</p><div id="videoListNostalg" class="video-list"></div><p id="nostalg-empty" class="empty-msg">No videos added yet.</p></div></div>
-        <div class="glass-borders"><h2>Awesome Internet Videos</h2><div class="aero-borders styled-containers"><div id="videoListAwesome" class="video-list"></div><p id="awesome-empty" class="empty-msg">No videos added yet.</p></div></div>
-        <div class="glass-borders">
-          <h2>Copyright Notice</h2>
-          <div class="copyright-notice aero-borders">
-            <p>All content on this website is for archiving, educational, or informational purposes and is not for profit. We believe its use qualifies as fair use. If you own any content here and would like it removed or properly credited, please contact me at <a href="https://mail.google.com/mail/?view=cm&fs=1&to=trenchgun1337@gmail.com&su=Contact%20from%20Website" target="_blank">trenchgun1337@gmail.com</a> and I will take action as soon as possible to fulfill your request.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ COMMUNITY ══ -->
-      <div id="pg-community" class="page">
-        <h1>Community</h1>
-        <div class="comm-tab-bar">
-          <button class="comm-tab active" id="commTabChat" onclick="switchCommTab('chat')">Chat</button>
-          <button class="comm-tab" id="commTabBlog" onclick="switchCommTab('blog')"><img src="https://frutigeraeroarchive.org/images/blog.png" style="height:23px;vertical-align:middle;margin-right:4px;" alt="" draggable="false">Blog</button>
-        </div>
-        <div id="commPanelChat" class="comm-panel">
-          <div class="glass-borders"><div class="aero-borders styled-containers-headers"><p style="margin-bottom:6px;">Welcome to the <span class="hl">Watanagashi Archive Community Chat</span>!</p><p>Feel free to talk about anime, music, nostalgia, or anything on your mind. Please be respectful and keep it civil.</p></div></div>
-          <div class="glass-borders"><div class="rights-bar" style="margin:0">Chat Rules</div><div class="aero-borders styled-containers" style="padding:10px 14px;"><p style="margin-bottom:5px;color:#aaa;font-size:11.5px;">By participating you agree to the following:</p><ul style="margin:0 0 0 18px;padding:0;color:#bbb;font-size:11.5px;line-height:1.8;"><li>Be respectful.</li><li>No hate speech or targeted harassment.</li><li>Keep links SFW &mdash; share or click at your own responsibility.</li><li>No impersonation of the site owner or other users.</li><li>The site owner reserves the right to moderate without notice.</li></ul></div></div>
-          <div class="glass-borders"><div class="rights-bar" style="margin:0">Live Chat</div><div class="aero-borders" style="background:#000;padding:8px;display:flex;justify-content:center;align-items:center;min-height:392px;"><div id="chatangoWrap" style="width:400px;height:350px;display:flex;align-items:center;justify-content:center;margin:0 auto;"><span style="color:#555;font-size:12px;">Chat will load when you open this tab&hellip;</span></div></div></div>
-        </div>
-        <div id="commPanelBlog" class="comm-panel" style="display:none;">
-          <div class="glass-borders"><div class="aero-borders styled-containers" style="text-align:center;padding:30px 20px;">
-            <p style="font-size:20px;color:#e8e8e8;margin-bottom:10px;">UH OH! (X_X)</p>
-            <p style="color:#aaa;font-size:12.5px;margin-bottom:6px;">The following tab is currently <span style="color:#e8e8e8;font-style:italic;">in development</span></p>
-            <p style="color:#666;font-size:11px;margin-bottom:16px;">Ehh, Still, you can visit the blog directly.</p>
-            <a href="https://www.blogger.com/blog/post/edit/preview/8859082952765475894/8042083562940805194" target="_blank" rel="noopener noreferrer" class="comm-ok-btn">Visit Blog</a>
-          </div></div>
-        </div>
-      </div>
-
-      <!-- ══ CONTACT stub ══ -->
-      <div id="pg-contact" class="page">
-        <h1>Contact</h1>
-        <div class="glass-borders"><div class="aero-borders styled-containers" style="text-align:center;padding:24px 18px;">
-          <p style="margin-bottom:14px;font-size:13px;">You're being redirected to the Contact page&hellip;</p>
-          <a href="pages/contact.html" class="comm-ok-btn">Go to Contact</a>
-        </div></div>
+      <!-- FOOTER dentro da box -->
+      <div id="pageFooter">
+        2026 | Watanagashi Archive &mdash; Created by
+        <span
+          class="footer-author"
+          onmouseover="WaTooltip.show(this,'<table><tr><td><img src=\'assets/images/rena.jpg\' alt=\'pfp\' width=\'80\' height=\'80\'></td><td style=\'padding-left:10px\'>If you have any questions,<br>use this email for feedback:<br><br><a href=\'mailto:trenchgun1337@gmail.com\'>trenchgun1337@gmail.com</a></td></tr></table>')"
+          onmouseout="WaTooltip.hide()">Settembre19th</span>
       </div>
 
     </main>
   </div>
 </div>
 
-<div id="rikaTransformFlash" style="display:none;position:fixed;bottom:0;right:-60px;width:420px;height:560px;background-image:url('https://img1.picmix.com/output/stamp/normal/2/4/1/7/2107142_5ce19.gif');background-size:cover;background-repeat:no-repeat;background-position:bottom right;z-index:10000;pointer-events:none;"></div>
+<!-- ══ SCRIPTS ══ -->
+<script src="scripts/js/soundnew.js"></script>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script src="scripts/js/music.js"></script>
-<script src="scripts/js/video.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
-<script src="scripts/js/script.js"></script>
-
-<script id="watanagashi-fixes">
+<!-- Navegação index -->
+<script>
 (function(){
   'use strict';
-  function _applyFixes(){
-    function _fixText(el){
-      if(!el)return;
-      var B='\u00e2\u20ac\u00a6';
-      if(el.textContent&&el.textContent.indexOf(B)!==-1)
-        el.textContent=el.textContent.split(B).join('\u2026');
-    }
-    var pl=document.getElementById('playlistLeft');
-    if(pl){new MutationObserver(function(muts){muts.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===3)_fixText(n.parentElement);else if(n.querySelectorAll){n.querySelectorAll('p,span,div').forEach(_fixText);_fixText(n);}});});}).observe(pl,{childList:true,subtree:true});}
+  var pages = ['introduction','resources'];
+
+  function gotoPage(name) {
+    if (pages.indexOf(name) === -1) name = 'introduction';
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.nav-link').forEach(function(b){ b.classList.remove('active'); });
+    var pg = document.getElementById('pg-' + name);
+    var btn = document.getElementById('nbtn-' + name);
+    if (pg)  pg.classList.add('active');
+    if (btn) btn.classList.add('active');
+    document.title = name[0].toUpperCase() + name.slice(1) + ' \u2014 The Watanagashi Archive';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',_applyFixes);
-  else _applyFixes();
-  setTimeout(_applyFixes,800);
-})();
-window._onGalleryRendered=function(count){if(typeof NavBadges!=='undefined')NavBadges.checkGallery(count);};
-</script>
 
-<script src="scripts/js/paint.js"></script>
-<script src="scripts/js/themes.js"></script>
-
-<div id="renaChan" style="visibility: hidden; position:fixed;bottom:0;right:0;width:250px;height:350px;background-image:url('assets/images/renaidle1.png');background-size:contain;background-repeat:no-repeat;background-position:bottom right;z-index:9999;cursor:pointer;"></div>
-
-<script src="scripts/js/codes.js"></script>
-
-<script>
-var _chatangoLoaded=false;
-function _loadChatango(){
-  if(_chatangoLoaded)return; _chatangoLoaded=true;
-  var wrap=document.getElementById('chatangoWrap');
-  if(!wrap)return;
-  wrap.innerHTML=''; wrap.style.cssText='width:400px;height:350px;display:block;margin:0 auto;';
-  var scr=document.createElement('script');
-  scr.id='cid0020000434097606183'; scr.setAttribute('data-cfasync','false'); scr.async=true;
-  scr.src='//st.chatango.com/js/gz/emb.js'; scr.style.cssText='width:400px;height:350px;';
-  scr.text='{"handle":"thewatanagashiarchiv","arch":"js","styles":{"a":"000000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"000000","l":"000000","m":"000000","n":"FFFFFF","p":"10","q":"000000","r":100,"cnrs":"0.35"}}';
-  wrap.appendChild(scr);
-}
-function switchCommTab(tab){
-  document.getElementById('commPanelChat').style.display=tab==='chat'?'block':'none';
-  document.getElementById('commPanelBlog').style.display=tab==='blog'?'block':'none';
-  document.getElementById('commTabChat').classList.toggle('active',tab==='chat');
-  document.getElementById('commTabBlog').classList.toggle('active',tab==='blog');
-  if(tab==='chat')setTimeout(_loadChatango,100);
-}
-document.addEventListener('DOMContentLoaded',function(){
-  var _origGoto=window.gotoPage;
-  window.gotoPage=function(name){
-    if(_origGoto)_origGoto(name);
-    if(name==='videos'&&typeof PREFS!=='undefined'&&PREFS.alwaysAutoplay){
-      setTimeout(function(){
-        var btn=document.getElementById('videoAutoPlayBtn');
-        if(btn){window.videoAutoPlay=PREFS.alwaysAutoplay;btn.textContent=window.videoAutoPlay?'Autoplay Enabled (Click to disable)':'Autoplay Disabled (Click to enable)';}
-      },100);
-    }
+  window.gotoPage = gotoPage;
+  window.navClick = function(e, name) {
+    e.preventDefault();
+    gotoPage(name);
+    history.pushState({ page: name }, '', '#' + name);
+    return false;
   };
-});
-</script>
-
-<script src="scripts/js/sounds.js"></script>
-
-<script>
-/* ══ Sounds — corrigido ══ */
-(function () {
-  /* Estado interno, independente de qualquer variável externa */
-  var _on = true;
-
-  function _syncBtn() {
-    var btn = document.getElementById('soundToggle');
-    if (!btn) return;
-    btn.textContent = _on ? 'Sounds: On' : 'Sounds: Off';
-    btn.classList.toggle('off', !_on);
-  }
-
-  /* Restaura preferência salva na sessão */
-  (function(){
-    var stored = sessionStorage.getItem('_soundsOn');
-    if (stored === 'false') _on = false;
-  })();
-
-  document.addEventListener('DOMContentLoaded', function () {
-    _syncBtn();
-
-    var btn = document.getElementById('soundToggle');
-    if (btn) {
-      btn.onclick = function () {
-        _on = !_on;
-        sessionStorage.setItem('_soundsOn', String(_on));
-        _syncBtn();
-        /* Tenta acionar o toggle nativo do site, se existir */
-        if (typeof window.toggleSound === 'function') {
-          /* Verifica se o estado do site bate com o nosso e corrige */
-          var siteOn = (typeof window._soundsOn !== 'undefined') ? window._soundsOn : true;
-          if (siteOn !== _on) window.toggleSound();
-        }
-      };
-    }
-
-    /* Sobrescreve toggleSound para manter sincronizado */
-    var _orig = window.toggleSound;
-    window.toggleSound = function () {
-      if (_orig) _orig();
-      var siteOn = (typeof window._soundsOn !== 'undefined') ? window._soundsOn : _on;
-      _on = siteOn;
-      sessionStorage.setItem('_soundsOn', String(_on));
-      _syncBtn();
-    };
+  window.addEventListener('hashchange', function(){
+    var hash = window.location.hash.replace(/^#/,'').toLowerCase().split('?')[0];
+    if (!hash || hash === 'index.html') hash = 'introduction';
+    gotoPage(pages.indexOf(hash) !== -1 ? hash : 'introduction');
+  });
+  document.addEventListener('DOMContentLoaded', function(){
+    var raw = window.location.hash.replace(/^#/,'').toLowerCase().split('?')[0];
+    if (!raw || raw === 'index.html') raw = 'introduction';
+    gotoPage(pages.indexOf(raw) !== -1 ? raw : 'introduction');
+    history.replaceState({ page: raw }, '', '#' + raw);
   });
 })();
+</script>
 
-/* ══ Theme: Dark / Light ══ */
-(function () {
-  /* Anti-flash — aplica antes do DOM carregar */
-  (function(){
-    var s = sessionStorage.getItem('_colorMode') || 'dark';
-    if (s === 'light') document.documentElement.setAttribute('data-color-mode', 'light');
-    else document.documentElement.removeAttribute('data-color-mode');
-  })();
-
-  function _applyTheme(mode) {
-    var root = document.documentElement;
-    var btn  = document.getElementById('themeToggle');
-    if (mode === 'light') {
-      root.setAttribute('data-color-mode', 'light');
-      if (btn) btn.textContent = 'Theme: Light';
-    } else {
-      root.removeAttribute('data-color-mode');
-      if (btn) btn.textContent = 'Theme: Dark';
-    }
-    sessionStorage.setItem('_colorMode', mode);
+<!-- Tooltip global — WaTooltip.show(anchorEl, htmlString) / WaTooltip.hide() -->
+<script>
+window.WaTooltip = (function(){
+  var el = document.getElementById('wa-tooltip');
+  function show(anchor, html) {
+    if (!el) return;
+    el.innerHTML = html;
+    el.style.display = 'block';
+    var r   = anchor.getBoundingClientRect();
+    var tw  = el.offsetWidth  || 240;
+    var th  = el.offsetHeight || 80;
+    var left = r.left + r.width / 2 - tw / 2;
+    var top  = r.top - th - 8;
+    if (top < 4)                        top  = r.bottom + 8;
+    if (left < 4)                       left = 4;
+    if (left + tw > window.innerWidth - 4) left = window.innerWidth - tw - 4;
+    el.style.left = left + 'px';
+    el.style.top  = top  + 'px';
   }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    var stored = sessionStorage.getItem('_colorMode') || 'dark';
-    _applyTheme(stored);
-  });
-
-  window.toggleThemeMode = function () {
-    var current = document.documentElement.getAttribute('data-color-mode');
-    _applyTheme(current === 'light' ? 'dark' : 'light');
-  };
+  function hide() { if (el) el.style.display = 'none'; }
+  return { show: show, hide: hide };
 })();
 </script>
 
-<button id="soundToggle" onclick="">Sounds: On</button>
-<!-- <button id="themeToggle" onclick="toggleThemeMode()">Theme: Dark</button> -->
+<button id="soundToggle">Sounds: On</button>
 
 </body>
 </html>
