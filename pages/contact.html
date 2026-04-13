@@ -16,9 +16,6 @@
 :root {
   --accent: #cc1a1a;
   --text: #111;
-  --text-dim: #444;
-  --grad-bar: linear-gradient(to bottom,#efefef 0%,#d8d8d8 52%,#c4c4c4 52%,#d0d0d0 100%);
-  --shadow: 0 2px 5px rgba(0,0,0,.15);
   --border: rgba(0,0,0,.22);
 }
 
@@ -46,17 +43,15 @@ a { color:#000; text-decoration:none; }
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; gap:7px; }
 
 /* corner logo */
-#cornerLogo {
-  position:fixed; top:10px; right:14px; z-index:9998; line-height:0;
-}
+#cornerLogo { position:fixed; top:10px; right:14px; z-index:9998; line-height:0; }
 #cornerLogo img { height:36px; width:auto; opacity:.82; display:block; }
 #cornerLogo:hover img { opacity:1; }
 
 /* topbar */
 .aero-bar {
-  background: var(--grad-bar);
+  background: #d8d8d8;
   border: 2px ridge #727272;
-  box-shadow: var(--shadow);
+  box-shadow: 0 2px 5px rgba(0,0,0,.15);
   padding: 4px 10px;
   display: flex; align-items: center; gap: 8px;
 }
@@ -67,79 +62,57 @@ a { color:#000; text-decoration:none; }
 .back-link:hover { text-decoration:underline; }
 .bar-title { flex:1; text-align:center; font-size:11px; letter-spacing:2px; text-transform:uppercase; }
 
-/* ══ COMPOSE WINDOW ══ */
+/* compose window */
 #composeWin {
-  background: #f0f0f0;
+  background: #f2f2f2;
   border: 2px ridge #727272;
   box-shadow: #595959 1px 1px 12px 1px;
   display: flex;
   flex-direction: column;
 }
 
-/* title bar of compose window */
+/* title bar */
 #composeTitle {
-  background: linear-gradient(to bottom, #5a5a5a, #3a3a3a);
-  color: #fff;
+  background: #3a3a3a;
+  color: #ddd;
   font-size: 11px;
   letter-spacing: 1px;
   padding: 5px 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
   user-select: none;
 }
-#composeTitle span { flex:1; }
-.win-dot {
-  width:10px; height:10px; border-radius:50%; display:inline-block; flex-shrink:0;
-}
-
-/* header fields (To / From / Subject) */
-.compose-fields {
-  background: #f8f8f8;
-  border-bottom: 1px solid var(--border);
-}
-.compose-field-row {
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-  padding: 0 10px;
-}
-.compose-field-row:last-child { border-bottom: none; }
-.field-key {
-  font-size: 11px;
-  color: #666;
-  width: 58px;
-  flex-shrink: 0;
-  letter-spacing: .3px;
-}
-.field-val {
-  flex: 1;
-  font-size: 12px;
-  padding: 6px 0;
-  background: none;
-  border: none;
-  color: var(--text);
-  font-family: inherit;
-}
-.field-val::placeholder { color:#bbb; }
 
 /* anon row */
 .anon-row {
   padding: 5px 10px;
-  background: #f0f0f0;
+  background: #ebebeb;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: #666;
+  color: #555;
 }
 .anon-row input[type=checkbox] { accent-color: var(--accent); cursor:pointer; }
 .anon-row label { cursor:pointer; }
 
+/* header fields */
+.compose-fields { background: #f8f8f8; border-bottom: 1px solid var(--border); }
+.compose-field-row {
+  display: flex; align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+  padding: 0 10px;
+}
+.compose-field-row:last-child { border-bottom: none; }
+.field-key { font-size:11px; color:#777; width:58px; flex-shrink:0; }
+.field-val {
+  flex:1; font-size:12px; padding:6px 0;
+  background:none; border:none; color:var(--text); font-family:inherit;
+}
+.field-val::placeholder { color:#bbb; }
+
 /* toolbar */
 .compose-toolbar {
-  background: #e8e8e8;
+  background: #e4e4e4;
   border-bottom: 1px solid var(--border);
   padding: 4px 8px;
   display: flex;
@@ -148,49 +121,40 @@ a { color:#000; text-decoration:none; }
   gap: 2px;
 }
 .tb-btn {
-  background: none;
-  border: 1px solid transparent;
-  padding: 2px 6px;
+  background: #d8d8d8;
+  border: 1px solid rgba(0,0,0,.20);
+  padding: 2px 7px;
   font-family: inherit;
   font-size: 11px;
   cursor: pointer;
-  color: #333;
-  border-radius: 2px;
+  color: #222;
   min-width: 24px;
   text-align: center;
   line-height: 1.5;
 }
-.tb-btn:hover { background:#fff; border-color:rgba(0,0,0,.25); }
-.tb-sep { width:1px; background:rgba(0,0,0,.15); margin:0 3px; height:18px; align-self:center; }
+.tb-btn:hover { background: #c8c8c8; }
+.tb-sep { width:1px; background:rgba(0,0,0,.15); margin:0 3px; height:16px; align-self:center; }
 
-.tb-color-wrap { display:flex; align-items:center; gap:3px; font-size:10px; color:#666; }
-.tb-color-wrap input[type=color] {
-  width:20px; height:20px; border:1px solid rgba(0,0,0,.22);
-  padding:1px; cursor:pointer; background:none;
+.tb-select {
+  font-family:inherit; font-size:11px; background:#d8d8d8;
+  border:1px solid rgba(0,0,0,.20); padding:2px 4px; cursor:pointer; color:#222;
 }
-.tb-size-wrap { display:flex; align-items:center; gap:3px; font-size:10px; color:#666; }
-.tb-size-wrap select {
-  font-family:inherit; font-size:11px; background:#fff;
-  border:1px solid rgba(0,0,0,.20); padding:1px 4px; cursor:pointer; color:#333;
-}
-.tb-font-wrap { display:flex; align-items:center; gap:3px; font-size:10px; color:#666; }
-.tb-font-wrap select {
-  font-family:inherit; font-size:11px; background:#fff;
-  border:1px solid rgba(0,0,0,.20); padding:1px 4px; cursor:pointer; color:#333;
-}
+
+.tb-label { font-size:10px; color:#666; }
+
+.tb-color { width:22px; height:22px; border:1px solid rgba(0,0,0,.22); padding:1px; cursor:pointer; background:#d8d8d8; }
 
 /* body editor */
 #msgEditor {
   background: #fff;
   border: none;
-  min-height: 220px;
+  min-height: 200px;
   padding: 12px 14px;
   font-family: inherit;
   font-size: 12.5px;
   color: var(--text);
   line-height: 1.7;
   overflow-y: auto;
-  flex: 1;
 }
 #msgEditor:empty::before {
   content: attr(data-placeholder);
@@ -198,9 +162,9 @@ a { color:#000; text-decoration:none; }
   pointer-events: none;
 }
 
-/* bottom bar */
+/* bottom */
 .compose-bottom {
-  background: #e8e8e8;
+  background: #e4e4e4;
   border-top: 1px solid var(--border);
   padding: 7px 10px;
   display: flex;
@@ -208,9 +172,8 @@ a { color:#000; text-decoration:none; }
   gap: 10px;
   flex-wrap: wrap;
 }
-
 .send-btn {
-  background: #d0d0d0;
+  background: #c8c8c8;
   border: 1px solid rgba(0,0,0,.30);
   padding: 5px 22px;
   font-family: inherit;
@@ -220,7 +183,7 @@ a { color:#000; text-decoration:none; }
   color: var(--text);
   cursor: pointer;
 }
-.send-btn:hover { background: #bfbfbf; }
+.send-btn:hover { background: #b8b8b8; }
 .send-btn:disabled { opacity:.5; cursor:default; }
 
 #statusMsg { font-size:11px; color:#666; flex:1; }
@@ -261,21 +224,15 @@ a { color:#000; text-decoration:none; }
     <span class="bar-title">contact me</span>
   </div>
 
-  <!-- compose window -->
   <div id="composeWin">
 
-    <!-- title bar -->
-    <div id="composeTitle">
-      <span>New Message — Watanagashi Archive</span>
-    </div>
+    <div id="composeTitle">New Message — Watanagashi Archive</div>
 
-    <!-- anon toggle -->
     <div class="anon-row">
       <input type="checkbox" id="anonCheck" onchange="toggleAnon()">
-      <label for="anonCheck">send anonymously (hides your name &amp; email)</label>
+      <label for="anonCheck">send anonymously</label>
     </div>
 
-    <!-- header fields -->
     <div class="compose-fields">
       <div class="compose-field-row">
         <span class="field-key">To</span>
@@ -295,83 +252,58 @@ a { color:#000; text-decoration:none; }
       </div>
     </div>
 
-    <!-- toolbar -->
+    <!-- toolbar — only what actually works through EmailJS HTML -->
     <div class="compose-toolbar">
-      <div class="tb-font-wrap">
-        <select id="fontSelect" onchange="applyFont(this.value)" title="Font">
-          <option value="inherit">Default</option>
-          <option value="Arial, sans-serif">Arial</option>
-          <option value="'Times New Roman', serif">Times New Roman</option>
-          <option value="'Courier New', monospace">Courier New</option>
-          <option value="Georgia, serif">Georgia</option>
-          <option value="Tahoma, sans-serif">Tahoma</option>
-          <option value="Verdana, sans-serif">Verdana</option>
-        </select>
-      </div>
-      <div class="tb-size-wrap">
-        <select onchange="fmt('fontSize', this.value)" title="Size">
-          <option value="1">8pt</option>
-          <option value="2">10pt</option>
-          <option value="3" selected>12pt</option>
-          <option value="4">14pt</option>
-          <option value="5">18pt</option>
-          <option value="6">24pt</option>
-          <option value="7">36pt</option>
-        </select>
-      </div>
+      <select class="tb-select" onchange="fmt('fontSize',this.value)" title="Size">
+        <option value="1">8pt</option>
+        <option value="2">10pt</option>
+        <option value="3" selected>12pt</option>
+        <option value="4">14pt</option>
+        <option value="5">18pt</option>
+        <option value="6">24pt</option>
+      </select>
       <div class="tb-sep"></div>
-      <button class="tb-btn" title="Bold" onmousedown="event.preventDefault();fmt('bold')"><b>B</b></button>
-      <button class="tb-btn" title="Italic" onmousedown="event.preventDefault();fmt('italic')"><i>I</i></button>
-      <button class="tb-btn" title="Underline" onmousedown="event.preventDefault();fmt('underline')"><u>U</u></button>
+      <button class="tb-btn" title="Bold"          onmousedown="event.preventDefault();fmt('bold')"><b>B</b></button>
+      <button class="tb-btn" title="Italic"        onmousedown="event.preventDefault();fmt('italic')"><i>I</i></button>
+      <button class="tb-btn" title="Underline"     onmousedown="event.preventDefault();fmt('underline')"><u>U</u></button>
       <button class="tb-btn" title="Strikethrough" onmousedown="event.preventDefault();fmt('strikeThrough')"><s>S</s></button>
       <div class="tb-sep"></div>
-      <button class="tb-btn" title="Align Left" onmousedown="event.preventDefault();fmt('justifyLeft')">&#8676;</button>
-      <button class="tb-btn" title="Center" onmousedown="event.preventDefault();fmt('justifyCenter')">&#8660;</button>
-      <button class="tb-btn" title="Align Right" onmousedown="event.preventDefault();fmt('justifyRight')">&#8677;</button>
+      <button class="tb-btn" title="Align left"   onmousedown="event.preventDefault();fmt('justifyLeft')">&#8676;</button>
+      <button class="tb-btn" title="Center"        onmousedown="event.preventDefault();fmt('justifyCenter')">&#8660;</button>
+      <button class="tb-btn" title="Align right"  onmousedown="event.preventDefault();fmt('justifyRight')">&#8677;</button>
       <div class="tb-sep"></div>
-      <button class="tb-btn" title="Bullet list" onmousedown="event.preventDefault();fmt('insertUnorderedList')">&#8226; list</button>
+      <button class="tb-btn" title="Bullet list"   onmousedown="event.preventDefault();fmt('insertUnorderedList')">• list</button>
       <button class="tb-btn" title="Numbered list" onmousedown="event.preventDefault();fmt('insertOrderedList')">1. list</button>
       <div class="tb-sep"></div>
-      <button class="tb-btn" title="Hyperlink" onmousedown="event.preventDefault();insertLink()">link</button>
-      <button class="tb-btn" title="Insert image by URL" onmousedown="event.preventDefault();insertImgURL()">img url</button>
+      <button class="tb-btn" title="Link"          onmousedown="event.preventDefault();insertLink()">link</button>
       <div class="tb-sep"></div>
-      <button class="tb-btn" title="Blockquote" onmousedown="event.preventDefault();fmt('formatBlock','blockquote')">&#10077;</button>
-      <button class="tb-btn" title="Indent" onmousedown="event.preventDefault();fmt('indent')">&#8594; indent</button>
-      <button class="tb-btn" title="Outdent" onmousedown="event.preventDefault();fmt('outdent')">&#8592; out</button>
+      <span class="tb-label">A</span>
+      <input type="color" class="tb-color" id="txtColor" value="#111111" onchange="fmt('foreColor',this.value)" title="Text color">
+      <span class="tb-label" style="margin-left:4px;">bg</span>
+      <input type="color" class="tb-color" id="bgColor" value="#ffffff" onchange="fmt('hiliteColor',this.value)" title="Highlight">
       <div class="tb-sep"></div>
-      <div class="tb-color-wrap">
-        <span>A</span>
-        <input type="color" id="txtColor" value="#111111" onchange="fmt('foreColor',this.value)" title="Text color">
-      </div>
-      <div class="tb-color-wrap" style="margin-left:4px;">
-        <span style="background:#ff0;padding:0 3px;">bg</span>
-        <input type="color" id="bgColor" value="#ffffff" onchange="fmt('hiliteColor',this.value)" title="Highlight color">
-      </div>
-      <div class="tb-sep"></div>
-      <button class="tb-btn" title="Clear formatting" onmousedown="event.preventDefault();fmt('removeFormat')">clear fmt</button>
+      <button class="tb-btn" title="Clear formatting" onmousedown="event.preventDefault();fmt('removeFormat')">clear</button>
     </div>
 
-    <!-- body -->
     <div id="msgEditor"
       contenteditable="true"
       data-placeholder="write your message here..."
       spellcheck="true">
     </div>
 
-    <!-- bottom bar -->
     <div class="compose-bottom">
       <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send</button>
       <div id="statusMsg"></div>
     </div>
 
     <div class="note-bar">
-      name and email are optional — anonymous messages are welcome &nbsp;·&nbsp;
-      all content here is for archiving / educational purposes and not for profit
+      name and email are optional — anonymous messages welcome &nbsp;·&nbsp;
+      formatting (bold, italic, color, lists, links) is preserved in the received email
     </div>
 
-  </div><!-- /composeWin -->
+  </div>
 
-</div><!-- /pageWrap -->
+</div>
 
 <button id="soundToggle" onclick="toggleSound()">Sounds: On</button>
 
@@ -382,8 +314,8 @@ const TEMPLATE_ID = 'template_g7owumb';
 
 function toggleAnon() {
   const hide = document.getElementById('anonCheck').checked;
-  document.getElementById('fromRow').style.display  = hide ? 'none' : '';
-  document.getElementById('nameRow').style.display  = hide ? 'none' : '';
+  document.getElementById('fromRow').style.display = hide ? 'none' : '';
+  document.getElementById('nameRow').style.display = hide ? 'none' : '';
 }
 
 function fmt(cmd, val) {
@@ -391,19 +323,9 @@ function fmt(cmd, val) {
   document.execCommand(cmd, false, val || null);
 }
 
-function applyFont(val) {
-  document.getElementById('msgEditor').focus();
-  document.execCommand('fontName', false, val);
-}
-
 function insertLink() {
   const url = prompt('URL:');
   if (url) { document.getElementById('msgEditor').focus(); document.execCommand('createLink', false, url); }
-}
-
-function insertImgURL() {
-  const url = prompt('Image URL:');
-  if (url) { document.getElementById('msgEditor').focus(); document.execCommand('insertImage', false, url); }
 }
 
 async function sendMsg() {
