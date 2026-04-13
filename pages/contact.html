@@ -77,7 +77,10 @@ a { color:#000; text-decoration:none; }
   user-select: none;
 }
 
-.compose-fields { background: #f8f8f8; border-bottom: 1px solid var(--border); }
+.compose-fields {
+  background: #f8f8f8;
+  border-bottom: 1px solid var(--border);
+}
 .compose-field-row {
   display: flex; align-items: center;
   border-bottom: 1px solid rgba(0,0,0,.07);
@@ -87,18 +90,7 @@ a { color:#000; text-decoration:none; }
 .field-key { font-size:11px; color:#777; width:58px; flex-shrink:0; }
 .field-val {
   flex:1; font-size:12px; padding:6px 0;
-  background:none; border:none; color:var(--text); font-family:inherit;
-}
-
-.compose-toolbar {
-  background: #e4e4e4;
-  border-bottom: 1px solid var(--border);
-  padding: 4px 8px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 10.5px;
-  color: #888;
+  background:none; border:none; color:#555; font-family:inherit;
 }
 
 #msgEditor {
@@ -111,6 +103,7 @@ a { color:#000; text-decoration:none; }
   color: var(--text);
   line-height: 1.7;
   overflow-y: auto;
+  white-space: pre-wrap;
 }
 
 #msgEditor:empty::before {
@@ -145,12 +138,28 @@ a { color:#000; text-decoration:none; }
 #statusMsg.ok  { color:#2a7a2a; }
 #statusMsg.err { color:var(--accent); }
 
-.note-bar {
-  font-size:10.5px; color:#888; text-align:center;
+/* preview */
+#previewSection {
+  border: 2px ridge #727272;
+  background: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+}
+
+#previewTitle {
+  background: #3a3a3a;
+  color: #ddd;
+  font-size: 11px;
+  letter-spacing: 1px;
   padding: 5px 10px;
-  border-top: 1px solid rgba(0,0,0,.08);
-  background: #f8f8f8;
-  line-height: 1.6;
+  user-select: none;
+}
+
+#previewBody {
+  padding: 18px 20px;
+  background: #fff;
+  font-family: system-ui, sans-serif, Arial;
+  font-size: 12px;
 }
 
 #soundToggle {
@@ -178,23 +187,19 @@ a { color:#000; text-decoration:none; }
     <span class="bar-title">contact me</span>
   </div>
 
+  <!-- COMPOSE -->
   <div id="composeWin">
-
     <div id="composeTitle">New Message — Watanagashi Archive</div>
 
     <div class="compose-fields">
       <div class="compose-field-row">
         <span class="field-key">To</span>
-        <span class="field-val" style="color:#555;">trenchgun1337@gmail.com</span>
+        <span class="field-val">trenchgun1337@gmail.com</span>
       </div>
       <div class="compose-field-row">
         <span class="field-key">From</span>
-        <span class="field-val" style="color:#aaa;">Anonymous</span>
+        <span class="field-val">Anonymous</span>
       </div>
-    </div>
-
-    <div class="compose-toolbar">
-      you can include your name, email, or other info in the message body if you'd like a reply
     </div>
 
     <div id="msgEditor"
@@ -207,11 +212,37 @@ a { color:#000; text-decoration:none; }
       <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send</button>
       <div id="statusMsg"></div>
     </div>
+  </div>
 
-    <div class="note-bar">
-      all messages are sent anonymously
+  <!-- PREVIEW -->
+  <div id="previewSection">
+    <div id="previewTitle">Preview — how the email will look</div>
+    <div id="previewBody">
+      <div style="height:4px;background:#b0b0b0;margin-bottom:10px;border-radius:2px;"></div>
+      <div>An anonymous message has been received. Kindly respond at your earliest convenience.</div>
+      <div style="margin-top:5px;color:#888888;font-size:13px;">Source: watanagashiarchive.vercel.app/contact</div>
+      <div style="margin-top:20px;padding:15px 0;border-width:1px 0;border-style:dashed;border-color:lightgrey;">
+        <table role="presentation" style="border-collapse:collapse;">
+          <tbody>
+            <tr>
+              <td style="width:4px;background:#b0b0b0;border-radius:2px;padding:0;">&nbsp;</td>
+              <td style="vertical-align:top;padding:0;">
+                <div style="padding:6px 10px;margin:0 10px;background-color:aliceblue;border-radius:8px;">
+                  <img src="https://img1.picmix.com/output/stamp/thumb/2/9/8/5/2895892_9ee1d.png"
+                       style="width:36px;height:46px;display:block;">
+                </div>
+              </td>
+              <td style="vertical-align:top;padding-left:8px;">
+                <div style="color:#2c3e50;font-size:16px;"><strong>Anonymous</strong></div>
+                <div style="color:#aaaaaa;font-size:13px;" id="previewTime"></div>
+                <p style="font-size:16px;margin-top:5px;white-space:pre-wrap;" id="previewMsg"><span style="color:#bbb;">your message will appear here...</span></p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height:3px;background:#b0b0b0;margin-top:10px;border-radius:2px;"></div>
     </div>
-
   </div>
 
 </div>
@@ -223,17 +254,34 @@ emailjs.init({ publicKey: 'iww-r-sgJVyoRmokf' });
 const SERVICE_ID  = 'service_ina2cb8';
 const TEMPLATE_ID = 'template_g7owumb';
 
-function getTime() {
+/* ── live preview ── */
+function getTimeStr() {
   return new Date().toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' });
 }
 
+const editor      = document.getElementById('msgEditor');
+const previewMsg  = document.getElementById('previewMsg');
+const previewTime = document.getElementById('previewTime');
+
+previewTime.textContent = getTimeStr();
+setInterval(() => { previewTime.textContent = getTimeStr(); }, 30000);
+
+editor.addEventListener('input', () => {
+  const txt = editor.innerText.trim();
+  if (txt) {
+    previewMsg.style.color = '';
+    previewMsg.textContent = txt;
+  } else {
+    previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
+  }
+});
+
+/* ── send ── */
 async function sendMsg() {
-  const editor  = document.getElementById('msgEditor');
   const msgText = editor.innerText.trim();
   const msgHTML = editor.innerHTML.trim();
-
-  const status = document.getElementById('statusMsg');
-  const btn    = document.getElementById('sendBtn');
+  const status  = document.getElementById('statusMsg');
+  const btn     = document.getElementById('sendBtn');
 
   if (!msgText) { status.textContent = 'write something first.'; status.className = 'err'; return; }
 
@@ -248,11 +296,13 @@ async function sendMsg() {
       subject:      'anonymous message — watanagashi archive',
       message:      msgText,
       message_html: msgHTML,
-      time:         getTime(),
+      time:         getTimeStr(),
+      name:         'Anonymous',
     });
     status.textContent = 'sent!';
     status.className = 'ok';
     editor.innerHTML = '';
+    previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
   } catch(e) {
     status.textContent = 'failed — trenchgun1337@gmail.com';
     status.className = 'err';
