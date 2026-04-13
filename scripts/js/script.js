@@ -118,7 +118,7 @@ function applyDarkThemeBg() {
   s.textContent = ` 
     body {
       background-image: url('${BG_DARK_URL}');
-      background-size: 60% !important;
+      background-size: 74% !important;
       background-attachment: fixed !important;
       background-repeat: no-repeat !important;
       background-position: center center !important;
