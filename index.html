@@ -293,11 +293,33 @@ p + p   { margin-top: 5px; }
 
 <!-- Anti-flash bg -->
 <script>
+  
 (function(){
   var s = document.createElement('style');
   s.textContent = 'body{background-color:#000!important;background-image:url("assets/images/whitebg.jpeg")!important;}';
   document.head.appendChild(s);
 })();
+</script>
+
+<script>
+  // Redireciona páginas bloqueadas se acessadas diretamente pela URL
+  (function () {
+    var blocked = ['musicplayer', 'videos', 'downloader', 'community', 'preferences', 'projects'];
+    var path = window.location.pathname.toLowerCase();
+    var hash = window.location.hash.replace(/^#/, '').toLowerCase();
+
+    // Checa se o pathname contém alguma página bloqueada (ex: /pages/music.html)
+    var pathBlocked = blocked.some(function (p) {
+      return path.indexOf(p) !== -1;
+    });
+
+    // Checa se o hash aponta para uma página bloqueada (ex: #music)
+    var hashBlocked = blocked.indexOf(hash) !== -1;
+
+    if (pathBlocked || hashBlocked) {
+      window.location.replace('pages/notfound.html');
+    }
+  })();
 </script>
 
 <img id="siteLogoTop"
@@ -390,8 +412,6 @@ p + p   { margin-top: 5px; }
   </div>
 </div>
 
-<!-- ══ SCRIPTS ══ -->
-<script src="scripts/js/soundsnew.js"></script>
 
 <!-- Navegação index -->
 <script>
@@ -456,7 +476,6 @@ window.WaTooltip = (function(){
 })();
 </script>
 
-<button id="soundToggle">Sounds: On</button>
 
 </body>
 </html>

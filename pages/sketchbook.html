@@ -456,7 +456,6 @@ strong{color:var(--accent);font-weight:400}
 
 </div><!-- /#_pageShell -->
 
-<button id="soundToggle">Sounds: On</button>
 
 <!-- gallery.js — static images + Firebase ratings -->
 <script src="../scripts/js/gallery.js"></script>
@@ -484,53 +483,6 @@ function initPaint () {
   wrap.appendChild(iframe);
 }
 
-/* ── Sounds — exact copy from musicplayer ── */
-var _SB  = '../assets/audio/';
-var _SND = { start:_SB+'sitestart.mp3', button:_SB+'sitebuttonclick.mp3', hover:_SB+'text.mp3' };
-var _soundsOn = true, _aC = {}, _ht = 0;
-function _gA(k) { if (!_aC[k]) { var a=new Audio(_SND[k]); a.preload='auto'; _aC[k]=a; } return _aC[k]; }
-function _playSound(k) {
-  if (!_soundsOn) return;
-  try { var c=_gA(k).cloneNode(); c.volume=(k==='hover'?.30:.52); c.play().catch(function(){}); } catch(e) {}
-}
-function _toggleSound () {
-  _soundsOn = !_soundsOn;
-  var b = document.getElementById('soundToggle');
-  if (b) { b.textContent = _soundsOn ? 'Sounds: On' : 'Sounds: Off'; b.classList.toggle('off', !_soundsOn); }
-  sessionStorage.setItem('_soundsOn', String(_soundsOn));
-}
-function _iI (el) {
-  if (!el || el === document.body) return false;
-  var t = el.tagName;
-  if (t==='BUTTON'||t==='A'||t==='SELECT') return true;
-  if (t==='INPUT' && el.type !== 'range') return true;
-  var cs = window.getComputedStyle(el);
-  return cs && cs.cursor === 'pointer';
-}
-document.addEventListener('DOMContentLoaded', function () {
-  if (sessionStorage.getItem('_soundsOn') === 'false') {
-    _soundsOn = false;
-    var b = document.getElementById('soundToggle');
-    if (b) { b.textContent = 'Sounds: Off'; b.classList.add('off'); }
-  }
-  if (!sessionStorage.getItem('_siteStartPlayed')) {
-    sessionStorage.setItem('_siteStartPlayed', '1');
-    setTimeout(function () { _playSound('start'); }, 700);
-  }
-  document.getElementById('soundToggle').addEventListener('click', _toggleSound);
-  document.addEventListener('mouseover', function (e) {
-    if (e.target.id === 'soundToggle') return;
-    if (!_iI(e.target)) return;
-    var n = Date.now();
-    if (n - _ht < 120) return;
-    _ht = n;
-    _playSound('hover');
-  }, { passive: true });
-  document.addEventListener('click', function (e) {
-    if (e.target.id === 'soundToggle') return;
-    if (_iI(e.target)) _playSound('button');
-  }, true);
-});
 </script>
 
 </body>
