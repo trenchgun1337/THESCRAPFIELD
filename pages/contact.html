@@ -369,23 +369,6 @@ function confirmLink() {
   closeLinkPopup();
 }
 
-/* img by URL — inserts inline in editor AND sends via HTML */
-function insertImgUrl() {
-  const url = prompt('Image URL:');
-  if (!url) return;
-  const editor = document.getElementById('msgEditor');
-  editor.focus();
-  document.execCommand('insertHTML', false,
-    `<img src="${url}" alt="image" style="max-width:100%;display:block;margin:4px 0;">`);
-}
-
-/* close link popup on outside click */
-document.addEventListener('mousedown', e => {
-  const p = document.getElementById('linkPopup');
-  if (p.classList.contains('open') && !p.contains(e.target) && e.target.id !== 'linkBtn') {
-    closeLinkPopup();
-  }
-});
 
 /* ── send ── */
 async function sendMsg() {
