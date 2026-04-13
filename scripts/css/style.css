@@ -147,7 +147,7 @@ h1 { font-size:12px; }
   padding:0; margin-bottom:6px;
 }
 .navbar-titles {
-  font-size:10px; color:#888; letter-spacing:1px;
+  font-size:12px; color:#888; letter-spacing:0px;
   text-transform:uppercase; padding:4px 2px 2px;
   border-bottom:1px solid rgba(0,0,0,.10); margin-bottom:3px;
   background:none; box-shadow:none; text-shadow:none;
@@ -223,7 +223,7 @@ h1 { font-size:12px; }
 .rights-content { background:#fff; padding:8px 10px; display:flex; align-items:center; gap:10px; }
 .faa-logo-img     { height:22px; flex-shrink:0; }
 .music-header-img { max-width:76px; flex-shrink:0; margin-right:2px; }
-#introBanner      { width:100%; max-height:175px; object-fit:fill; display:block; border-bottom:2px solid rgba(150,150,150,.50); }
+#introBanner      { width:600px; max-height:375px; object-fit:cover; display:block; border-bottom:2px solid rgba(150,150,150,.50); }
 
 /* ── Music Player ── */
 #playerGlassBox { position:relative; }
