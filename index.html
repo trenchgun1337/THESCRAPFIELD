@@ -9,26 +9,16 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
 
 <style>
-/* ================================================================
-   INDEX.HTML — CSS exclusivo desta página
-   ================================================================ */
-
-/* ── Reset mínimo ── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 img { -webkit-user-drag: none; user-select: none; pointer-events: none; }
-
-/* ── Selection ── */
 ::selection      { background: rgba(80,80,80,.45); color: #fff; }
 ::-moz-selection { background: rgba(80,80,80,.45); color: #fff; }
-
-/* ── Scrollbar ── */
 html { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(120,120,120,.50) transparent; }
 ::-webkit-scrollbar             { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track       { background: transparent; }
 ::-webkit-scrollbar-thumb       { background: rgba(120,120,120,.50); }
 ::-webkit-scrollbar-thumb:hover { background: rgba(54,54,54,.8); }
 
-/* ── Body ── */
 body {
   font-family: 'Sawarabi Gothic', 'Sazanami Gothic', Tahoma, 'Segoe UI', sans-serif;
   font-size: 12px;
@@ -48,7 +38,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Logo absolute (rola com a página) ── */
 #siteLogoTop {
   position: absolute;
   top: 0; left: 50%;
@@ -61,14 +50,12 @@ body {
   box-shadow: #595959 1px 1px 12px 1px;
 }
 
-/* ── Container ── */
 #websiteContainer {
   width: 800px; max-width: 100%;
   display: flex; flex-direction: column;
   position: relative;
 }
 
-/* ── Layout ── */
 #navAndContentContainer { display: flex; align-items: stretch; }
 
 #sidebarAside {
@@ -114,7 +101,6 @@ body {
 .nav-link:hover  { color: red; text-decoration: underline; }
 .nav-link.active { color: red; font-weight: bold; text-decoration: underline; }
 
-/* ── Main content ── */
 #mainContent {
   background: #f2f2f2;
   border: 2px ridge #727272;
@@ -123,15 +109,13 @@ body {
   box-sizing: border-box;
   box-shadow: #595959 1px 1px 12px 1px;
   color: #111; flex: 1; min-width: 0;
-  padding-bottom: 44px;   /* espaço para o footer não tocar no chão */
+  padding-bottom: 44px;
   position: relative;
 }
 
-/* ── Pages ── */
 .page { display: none; }
 .page.active { display: block; }
 
-/* ── Headings ── */
 h1, h2, h3 {
   display: inline; background: #000; color: #fff;
   font-size: 11px; font-weight: 400;
@@ -153,7 +137,6 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
   padding: 5px 8px; margin-top: 5px; width: 100%;
 }
 
-/* ── Glass / aero ── */
 .glass-borders {
   background-image: linear-gradient(rgba(255,255,255,.50), rgba(240,240,240,.28));
   box-shadow: inset 0 1px 0 rgba(255,255,255,.90), 0 5px 6px rgba(0,0,0,.18);
@@ -165,7 +148,6 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 .styled-containers         { background: #000; padding: 10px; }
 .styled-containers-headers { background: #fff; padding: 8px 10px; }
 
-/* ── Special Thanks ── */
 .rights-content {
   background: #fff; padding: 8px 10px;
   display: flex; flex-direction: column; gap: 4px;
@@ -177,20 +159,17 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 .rights-content a       { color: #ff0303; text-decoration: none; }
 .rights-content a:hover { color: #ff0303; text-decoration: underline; }
 
-/* ── Intro banner ── */
 #introBanner {
   width: 100%; max-height: 375px; object-fit: cover;
   display: block; border-bottom: 2px solid rgba(150,150,150,.50);
   pointer-events: none; filter: none;
 }
 
-/* ── Typography ── */
 a       { color: #000; text-decoration: none; }
 a:hover { text-decoration: underline; }
 p       { font-size: 12.5px; line-height: 18px; color: #111; margin: 0; }
 p + p   { margin-top: 5px; }
 
-/* ── Contact links (Resources) ── */
 .contact-links { list-style: none; margin: 0; padding: 0; }
 .contact-links li { border-bottom: 1px solid rgba(255,255,255,.08); }
 .contact-links li:last-child { border-bottom: none; }
@@ -203,7 +182,6 @@ p + p   { margin-top: 5px; }
 .link-label { flex: 1; }
 .link-note  { color: rgba(255,255,255,.45); font-size: 11px; }
 
-/* ── Footer dentro da box ── */
 #pageFooter {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -226,7 +204,6 @@ p + p   { margin-top: 5px; }
   border-bottom-style: solid;
 }
 
-/* ── Tooltip ── */
 #wa-tooltip {
   position: fixed;
   z-index: 99999;
@@ -247,7 +224,6 @@ p + p   { margin-top: 5px; }
 #wa-tooltip td:last-child { padding-left: 10px; }
 #wa-tooltip a   { color: #cc1a1a; text-decoration: underline; }
 
-/* ── Sound toggle — só texto puro ── */
 #soundToggle {
   position: fixed;
   bottom: 8px; left: 10px;
@@ -266,7 +242,13 @@ p + p   { margin-top: 5px; }
 #soundToggle:hover { color: rgba(255,255,255,.88); }
 #soundToggle.off   { color: rgba(255,255,255,.20); }
 
-/* ── Responsive ── */
+.first-letter-styled {
+  background: #000;
+  color: #fff;
+  padding: 0 3px;
+  font-weight: bold;
+}
+
 @media (max-width: 800px) {
   body { padding-top: 220px; }
   #siteLogoTop { max-height: 210px; }
@@ -291,9 +273,7 @@ p + p   { margin-top: 5px; }
 </head>
 <body>
 
-<!-- Anti-flash bg -->
 <script>
-  
 (function(){
   var s = document.createElement('style');
   s.textContent = 'body{background-color:#000!important;background-image:url("assets/images/whitebg.jpeg")!important;}';
@@ -302,24 +282,16 @@ p + p   { margin-top: 5px; }
 </script>
 
 <script>
-  // Redireciona páginas bloqueadas se acessadas diretamente pela URL
-  (function () {
-    var blocked = ['musicplayer', 'videos', 'downloader', 'community', 'preferences', 'projects'];
-    var path = window.location.pathname.toLowerCase();
-    var hash = window.location.hash.replace(/^#/, '').toLowerCase();
-
-    // Checa se o pathname contém alguma página bloqueada (ex: /pages/music.html)
-    var pathBlocked = blocked.some(function (p) {
-      return path.indexOf(p) !== -1;
-    });
-
-    // Checa se o hash aponta para uma página bloqueada (ex: #music)
-    var hashBlocked = blocked.indexOf(hash) !== -1;
-
-    if (pathBlocked || hashBlocked) {
-      window.location.replace('pages/notfound.html');
-    }
-  })();
+(function () {
+  var blocked = ['musicplayer', 'videos', 'downloader', 'community', 'preferences', 'projects'];
+  var path = window.location.pathname.toLowerCase();
+  var hash = window.location.hash.replace(/^#/, '').toLowerCase();
+  var pathBlocked = blocked.some(function (p) { return path.indexOf(p) !== -1; });
+  var hashBlocked = blocked.indexOf(hash) !== -1;
+  if (pathBlocked || hashBlocked) {
+    window.location.replace('pages/notfound.html');
+  }
+})();
 </script>
 
 <img id="siteLogoTop"
@@ -327,7 +299,6 @@ p + p   { margin-top: 5px; }
   alt="Watanagashi Archive"
   onerror="this.style.display='none'">
 
-<!-- Tooltip global -->
 <div id="wa-tooltip"></div>
 
 <div id="websiteContainer">
@@ -377,29 +348,35 @@ p + p   { margin-top: 5px; }
           </div>
 
           <div class="rights-bar">Pages</div>
-
           <div class="aero-borders" style="background:#000">
             <ul class="contact-links">
               <li>
                 <a href="pages/sketchbook.html"
                   onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
                   onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-                  <span class="link-label">Sketchbook</span>
+                  <span class="link-label"><span class="first-letter-styled">S</span>ketchbook</span>
                   <span class="link-note">gallery &amp; JS Paint</span>
                 </a>
               </li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Music Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Video Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Ultimate Downloader Converter</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">File Dumpster</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">RabbitHoles / WeirdSites / RandomSites</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Projects</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label"><span class="first-letter-styled">M</span>usic Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label"><span class="first-letter-styled">V</span>ideo Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label"><span class="first-letter-styled">U</span>ltimate Downloader Converter</span><span class="link-note">LOCKED / IN DEV</span></a></li>
             </ul>
           </div>
+
+          <div class="rights-bar">Coming Soon</div>
+          <div class="aero-borders" style="background:#000">
+            <ul class="contact-links">
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label"><span class="first-letter-styled">F</span>ile Dumpster</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label"><span class="first-letter-styled">R</span>abbitHoles / WeirdSites / RandomSites</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label"><span class="first-letter-styled">P</span>rojects</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+            </ul>
+          </div>
+
         </div>
       </div>
 
-      <!-- FOOTER dentro da box -->
+      <!-- FOOTER -->
       <div id="pageFooter">
         2026 | Watanagashi Archive &mdash; Created by
         <span
@@ -413,7 +390,6 @@ p + p   { margin-top: 5px; }
 </div>
 
 
-<!-- Navegação index -->
 <script>
 (function(){
   'use strict';
@@ -423,7 +399,7 @@ p + p   { margin-top: 5px; }
     if (pages.indexOf(name) === -1) name = 'introduction';
     document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
     document.querySelectorAll('.nav-link').forEach(function(b){ b.classList.remove('active'); });
-    var pg = document.getElementById('pg-' + name);
+    var pg  = document.getElementById('pg-'   + name);
     var btn = document.getElementById('nbtn-' + name);
     if (pg)  pg.classList.add('active');
     if (btn) btn.classList.add('active');
@@ -452,7 +428,6 @@ p + p   { margin-top: 5px; }
 })();
 </script>
 
-<!-- Tooltip global — WaTooltip.show(anchorEl, htmlString) / WaTooltip.hide() -->
 <script>
 window.WaTooltip = (function(){
   var el = document.getElementById('wa-tooltip');
@@ -460,13 +435,13 @@ window.WaTooltip = (function(){
     if (!el) return;
     el.innerHTML = html;
     el.style.display = 'block';
-    var r   = anchor.getBoundingClientRect();
-    var tw  = el.offsetWidth  || 240;
-    var th  = el.offsetHeight || 80;
+    var r    = anchor.getBoundingClientRect();
+    var tw   = el.offsetWidth  || 240;
+    var th   = el.offsetHeight || 80;
     var left = r.left + r.width / 2 - tw / 2;
     var top  = r.top - th - 8;
-    if (top < 4)                        top  = r.bottom + 8;
-    if (left < 4)                       left = 4;
+    if (top < 4)                           top  = r.bottom + 8;
+    if (left < 4)                          left = 4;
     if (left + tw > window.innerWidth - 4) left = window.innerWidth - tw - 4;
     el.style.left = left + 'px';
     el.style.top  = top  + 'px';
@@ -475,7 +450,6 @@ window.WaTooltip = (function(){
   return { show: show, hide: hide };
 })();
 </script>
-
 
 </body>
 </html>
