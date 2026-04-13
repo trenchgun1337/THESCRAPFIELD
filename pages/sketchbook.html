@@ -211,7 +211,6 @@ strong{color:var(--accent);font-weight:400}
 
 .gi-card-overlay{
   position:absolute;inset:0;
-  background:linear-gradient(to bottom,rgba(0,0,0,.0) 60%,rgba(0,0,0,.60) 100%);
   display:flex;align-items:flex-end;justify-content:center;
   padding-bottom:8px;
 }
@@ -365,7 +364,7 @@ strong{color:var(--accent);font-weight:400}
   <!-- Top bar -->
   <div class="aero-bar">
     <a class="back-link" href="../index.html#resources" style="color:var(--accent);font-size:11px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;">back</a>
-    <span class="bar-title">SKETCHBOOK &amp; GALLERY</span>
+    <span class="bar-title">SKETCHBOOK</span>
   </div>
 
   <!-- Loading banner — exact same structure as music player -->
@@ -378,7 +377,7 @@ strong{color:var(--accent);font-weight:400}
   <!-- Main tabs -->
   <div class="main-tab-bar">
     <button class="main-tab active" onclick="switchMainTab('gallery')">Gallery</button>
-    <button class="main-tab" onclick="switchMainTab('paint')">Paint</button>
+    <button class="main-tab" onclick="switchMainTab('paint')">JS Paint</button>
   </div>
 
   <!-- ═══════ GALLERY PANEL ═══════ -->
@@ -397,7 +396,7 @@ strong{color:var(--accent);font-weight:400}
       <div class="section-bar-flex">
         <span>GALLERY</span>
         <div style="display:flex;align-items:center;gap:8px;position:relative">
-          <span id="galleryCount" style="font-size:10px;letter-spacing:.5px;font-weight:400;opacity:.65">0 pieces</span>
+          <span id="galleryCount" style="font-size:10px;letter-spacing:.5px;font-weight:400;opacity:.65">0 UPLOADS </span>
           <div id="gallerySortPanel"></div>
         </div>
       </div>

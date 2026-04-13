@@ -524,7 +524,6 @@ const GallerySystem = {
 
     const ov     = document.createElement('div');
     ov.className = 'gi-card-overlay';
-    ov.innerHTML = '<span>View</span>';
     imgWrap.appendChild(ov);
     card.appendChild(imgWrap);
 
