@@ -164,14 +164,24 @@ a { color:#000; text-decoration:none; }
   font-family: system-ui, sans-serif, Arial;
   font-size: 12px;
 }
-
+/* ── Sound toggle — só texto puro ── */
 #soundToggle {
-  position:fixed; bottom:8px; left:10px; z-index:9999;
-  font-family:inherit; font-size:10px; color:rgba(0,0,0,.40);
-  cursor:pointer; user-select:none; background:none; border:none;
+  position: fixed;
+  bottom: 8px; left: 10px;
+  z-index: 9999;
+  font-size: 10px;
+  color: rgba(255,255,255,.50);
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: .3px;
+  padding: 2px 0;
+  font-family: 'Sawarabi Gothic', Tahoma, sans-serif;
 }
-#soundToggle:hover { color:rgba(0,0,0,.70); }
-#soundToggle.off   { color:rgba(0,0,0,.22); }
+#soundToggle:hover { color: rgba(255,255,255,.88); }
+#soundToggle.off   { color: rgba(255,255,255,.20); }
 
 @media (max-width:800px) { #pageWrap { width:100%; } }
 @media (max-width:600px) { body { padding:8px 4px 24px; background-attachment:scroll; } }
