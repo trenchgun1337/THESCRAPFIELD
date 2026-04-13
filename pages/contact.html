@@ -263,15 +263,9 @@ a { color:#000; text-decoration:none; }
 
     <!-- toolbar: text only + insert link + insert img url -->
     <div class="compose-toolbar" style="position:relative;">
-      <button class="tb-btn" onmousedown="event.preventDefault();fmt('bold')"><b>B</b></button>
-      <button class="tb-btn" onmousedown="event.preventDefault();fmt('italic')"><i>I</i></button>
-      <button class="tb-btn" onmousedown="event.preventDefault();fmt('underline')"><u>U</u></button>
-      <button class="tb-btn" id="linkBtn" onmousedown="event.preventDefault();toggleLinkPopup()">insert link</button>
-      <button class="tb-btn" onmousedown="event.preventDefault();insertImgUrl()">insert img</button>
 
       <!-- link popup -->
       <div id="linkPopup">
-        <div style="font-size:10px;color:#666;letter-spacing:.5px;">INSERT LINK</div>
         <input type="text" id="linkText" placeholder="display text (optional)">
         <input type="url"  id="linkUrl"  placeholder="https://...">
         <div class="popup-row">
