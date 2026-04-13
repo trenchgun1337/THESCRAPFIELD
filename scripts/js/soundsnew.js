@@ -1,16 +1,22 @@
 /* ================================================================
    soundnew.js — The Watanagashi Archive
-   Sons: entrada (1x por visita ao browser), click, hover
-   API pública: window.SiteSound.setOn(bool) / .toggle() / .isOn()
-   Compatibilidade: window.toggleSound(), window._soundsOn
-   Botão: #soundToggle (qualquer página que tiver esse id)
+   Sons: entrada (1x por sessão browser), click, hover
+   API: window.SiteSound.setOn(bool) / .toggle() / .isOn() / .play(key) / .playUrl(url)
+   Compatibilidade legado: window.toggleSound(), window._soundsOn
+   Botão: #soundToggle — funciona em qualquer página
    ================================================================ */
 
 (function () {
   'use strict';
 
-  /* ── Caminhos dos áudios ── */
-  var BASE = 'assets/audio/';
+  /* ── Path base dos áudios (sempre relativo à raiz do site) ──
+     Detecta se está numa subpasta (pages/) e ajusta o prefixo.       */
+  var _depth = window.location.pathname.split('/').filter(Boolean).length;
+  var _isSubpage = document.currentScript
+    ? document.currentScript.src.indexOf('/pages/') !== -1
+    : _depth > 1;
+  var BASE = _isSubpage ? '../assets/audio/' : 'assets/audio/';
+
   var S = {
     start:  BASE + 'sitestart.mp3',
     button: BASE + 'sitebuttonclick.mp3',
@@ -19,16 +25,12 @@
 
   /* ── Estado ── */
   var _on = true;
-
-  /* Restaura preferência da sessão */
   try {
-    var _stored = sessionStorage.getItem('_soundsOn');
-    if (_stored === 'false') _on = false;
+    if (sessionStorage.getItem('_soundsOn') === 'false') _on = false;
   } catch (e) {}
 
-  /* ── Cache de objetos Audio ── */
+  /* ── Cache Audio ── */
   var _cache = {};
-
   function _getAudio(src) {
     if (!_cache[src]) {
       var a = new Audio(src);
@@ -38,149 +40,162 @@
     return _cache[src];
   }
 
-  /* ── Toca um som (ignora se desligado ou erro) ── */
+  /* ── Toca som ── */
   function _play(src) {
     if (!_on) return;
     try {
       var a = _getAudio(src);
-      /* Reinicia caso já esteja tocando */
       a.currentTime = 0;
       var p = a.play();
-      if (p && p.catch) p.catch(function(){});
+      if (p && p.catch) p.catch(function () {});
     } catch (e) {}
   }
 
-  /* ── Som de entrada: 1x por sessão de BROWSER (sessionStorage) ── */
+  /* ── Som de entrada: 1x por sessão de browser ──
+     Se sair do site e voltar = nova sessão = toca de novo.
+     Navegar entre páginas internas = mesma sessão = não repete.      */
   function _playStart() {
     try {
       if (sessionStorage.getItem('_wa_started')) return;
       sessionStorage.setItem('_wa_started', '1');
     } catch (e) {}
-    /* Aguarda interação do usuário caso autoplay bloqueado */
+
+    /* Tenta autoplay; se bloqueado, espera primeiro input do usuário */
+    var _played = false;
     function _tryPlay() {
+      if (_played) return;
+      _played = true;
       _play(S.start);
-      document.removeEventListener('click',    _tryPlay, { once: true });
-      document.removeEventListener('keydown',  _tryPlay, { once: true });
-      document.removeEventListener('touchstart', _tryPlay, { once: true });
     }
-    /* Tenta imediatamente; se falhar (autoplay policy), toca no primeiro input */
+
     try {
       var a = _getAudio(S.start);
       var p = a.play();
       if (p && p.catch) {
-        p.catch(function () {
-          document.addEventListener('click',     _tryPlay, { once: true });
-          document.addEventListener('keydown',   _tryPlay, { once: true });
-          document.addEventListener('touchstart', _tryPlay, { once: true });
-        });
+        p.then(function () { _played = true; })
+         .catch(function () {
+           /* Autoplay bloqueado — aguarda primeiro gesto */
+           document.addEventListener('click',      _tryPlay, { once: true, capture: true });
+           document.addEventListener('keydown',    _tryPlay, { once: true, capture: true });
+           document.addEventListener('touchstart', _tryPlay, { once: true, capture: true });
+         });
+      } else {
+        _played = true;
       }
     } catch (e) {
-      document.addEventListener('click',     _tryPlay, { once: true });
-      document.addEventListener('keydown',   _tryPlay, { once: true });
-      document.addEventListener('touchstart', _tryPlay, { once: true });
+      document.addEventListener('click',      _tryPlay, { once: true, capture: true });
+      document.addEventListener('keydown',    _tryPlay, { once: true, capture: true });
+      document.addEventListener('touchstart', _tryPlay, { once: true, capture: true });
     }
   }
 
-  /* ── Delegação global: click em botões e links ── */
+  /* ── Delegação global: click em <a> e <button> ── */
   function _initClickSound() {
     document.addEventListener('click', function (e) {
+      if (!_on) return;
       var t = e.target;
-      /* Sobe até encontrar um <a> ou <button> clicável */
       while (t && t !== document.body) {
-        if (
-          (t.tagName === 'A'      && !t.getAttribute('style')?.includes('pointer-events:none')) ||
-          (t.tagName === 'BUTTON' && t.id !== 'soundToggle' && !t.disabled)
-        ) {
-          _play(S.button);
-          break;
+        var tag = t.tagName;
+        var sty = t.getAttribute('style') || '';
+        if (tag === 'BUTTON' && t.id !== 'soundToggle' && !t.disabled) {
+          _play(S.button); break;
+        }
+        if (tag === 'A' && sty.indexOf('pointer-events:none') === -1 && sty.indexOf('pointer-events: none') === -1) {
+          _play(S.button); break;
         }
         t = t.parentElement;
       }
     }, true);
   }
 
-  /* ── Delegação global: hover em links e botões ── */
-  var _hoverTimer = null;
+  /* ── Delegação global: hover em <a> e <button> ── */
+  var _hoverCooldown = false;
   function _initHoverSound() {
     document.addEventListener('mouseover', function (e) {
+      if (!_on || _hoverCooldown) return;
       var t = e.target;
       while (t && t !== document.body) {
-        if (
-          (t.tagName === 'A'      && !t.getAttribute('style')?.includes('pointer-events:none')) ||
-          (t.tagName === 'BUTTON' && t.id !== 'soundToggle')
-        ) {
-          /* Throttle: não spamma se o mouse passar rápido por vários links */
-          if (_hoverTimer) return;
-          _hoverTimer = setTimeout(function(){ _hoverTimer = null; }, 120);
-          _play(S.hover);
-          break;
+        var tag = t.tagName;
+        var sty = t.getAttribute('style') || '';
+        if (tag === 'BUTTON' && t.id !== 'soundToggle') {
+          _hoverCooldown = true;
+          setTimeout(function () { _hoverCooldown = false; }, 120);
+          _play(S.hover); break;
+        }
+        if (tag === 'A' && sty.indexOf('pointer-events:none') === -1 && sty.indexOf('pointer-events: none') === -1) {
+          _hoverCooldown = true;
+          setTimeout(function () { _hoverCooldown = false; }, 120);
+          _play(S.hover); break;
         }
         t = t.parentElement;
       }
     }, true);
   }
 
-  /* ── Sincroniza o botão #soundToggle ── */
+  /* ── Sincroniza visual do botão ── */
   function _syncBtn() {
     var btn = document.getElementById('soundToggle');
     if (!btn) return;
     btn.textContent = _on ? 'Sounds: On' : 'Sounds: Off';
-    if (_on) { btn.classList.remove('off'); }
-    else     { btn.classList.add('off');    }
+    btn.classList.toggle('off', !_on);
   }
 
   /* ── Liga / desliga ── */
   function _setOn(val) {
     _on = !!val;
     try { sessionStorage.setItem('_soundsOn', String(_on)); } catch (e) {}
-    /* Compatibilidade legado */
     window._soundsOn = _on;
     _syncBtn();
-    /* Muta todos os media elements na página */
     document.querySelectorAll('audio, video').forEach(function (el) {
       el.muted = !_on;
     });
   }
 
-  /* ── Botão #soundToggle ── */
-  function _initBtn() {
+  /* ── Vincula botão #soundToggle ──
+     Tenta imediatamente E re-tenta após DOMContentLoaded,
+     garantindo que funcione mesmo se o botão vier depois do script.   */
+  function _bindBtn() {
     var btn = document.getElementById('soundToggle');
-    if (!btn) return;
+    if (!btn || btn._sndBound) return;
+    btn._sndBound = true;
     _syncBtn();
-    btn.onclick = function () {
+    btn.onclick = function (e) {
+      e.stopPropagation(); /* Não dispara o click-sound no próprio toggle */
       _setOn(!_on);
     };
   }
 
   /* ── API pública ── */
   window.SiteSound = {
-    isOn:   function ()    { return _on; },
-    setOn:  function (val) { _setOn(val); },
-    toggle: function ()    { _setOn(!_on); },
-    play:   function (key) { _play(S[key] || key); },
-    /* Tocar áudio customizado de qualquer lugar: SiteSound.playUrl('assets/audio/foo.mp3') */
-    playUrl: function (url) { _play(url); }
+    isOn:    function ()    { return _on; },
+    setOn:   function (val) { _setOn(val); },
+    toggle:  function ()    { _setOn(!_on); },
+    play:    function (key) { _play(S[key] || key); },
+    playUrl: function (url) { _play(url); },
   };
 
-  /* Compatibilidade com sounds.js legado */
-  window.toggleSound = function () { _setOn(!_on); };
-  window._soundsOn = _on;
+  /* Compatibilidade legado */
+  window.toggleSound  = function () { _setOn(!_on); };
+  window._soundsOn    = _on;
 
   /* ── Init ── */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      _syncBtn();
-      _initBtn();
-      _playStart();
-      _initClickSound();
-      _initHoverSound();
-    });
-  } else {
-    _syncBtn();
-    _initBtn();
+  function _init() {
+    _bindBtn();
     _playStart();
     _initClickSound();
     _initHoverSound();
+  }
+
+  /* Roda assim que possível, e garante re-bind do botão após DOM completo */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      _init();
+      /* Re-tenta bind caso botão tenha sido inserido depois */
+      setTimeout(_bindBtn, 300);
+    });
+  } else {
+    _init();
+    setTimeout(_bindBtn, 0);
   }
 
 })();
