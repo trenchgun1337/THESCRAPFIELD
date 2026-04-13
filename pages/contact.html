@@ -16,7 +16,7 @@
 :root {
   --accent: #cc1a1a;
   --text: #111;
-  --border: rgba(0,0,0,.22);
+  --border: rgba(0,0,0,.20);
 }
 
 html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.5) transparent; }
@@ -42,12 +42,10 @@ a { color:#000; text-decoration:none; }
 
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; gap:7px; }
 
-/* corner logo */
 #cornerLogo { position:fixed; top:10px; right:14px; z-index:9998; line-height:0; }
 #cornerLogo img { height:36px; width:auto; opacity:.82; display:block; }
 #cornerLogo:hover img { opacity:1; }
 
-/* topbar */
 .aero-bar {
   background: #d8d8d8;
   border: 2px ridge #727272;
@@ -62,7 +60,6 @@ a { color:#000; text-decoration:none; }
 .back-link:hover { text-decoration:underline; }
 .bar-title { flex:1; text-align:center; font-size:11px; letter-spacing:2px; text-transform:uppercase; }
 
-/* compose window */
 #composeWin {
   background: #f2f2f2;
   border: 2px ridge #727272;
@@ -71,7 +68,6 @@ a { color:#000; text-decoration:none; }
   flex-direction: column;
 }
 
-/* title bar */
 #composeTitle {
   background: #3a3a3a;
   color: #ddd;
@@ -81,21 +77,16 @@ a { color:#000; text-decoration:none; }
   user-select: none;
 }
 
-/* anon row */
 .anon-row {
   padding: 5px 10px;
   background: #ebebeb;
   border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: #555;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: #555;
 }
 .anon-row input[type=checkbox] { accent-color: var(--accent); cursor:pointer; }
 .anon-row label { cursor:pointer; }
 
-/* header fields */
 .compose-fields { background: #f8f8f8; border-bottom: 1px solid var(--border); }
 .compose-field-row {
   display: flex; align-items: center;
@@ -110,45 +101,31 @@ a { color:#000; text-decoration:none; }
 }
 .field-val::placeholder { color:#bbb; }
 
-/* toolbar */
+/* minimal toolbar */
 .compose-toolbar {
   background: #e4e4e4;
   border-bottom: 1px solid var(--border);
   padding: 4px 8px;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
 }
 .tb-btn {
-  background: #d8d8d8;
+  background: #d0d0d0;
   border: 1px solid rgba(0,0,0,.20);
-  padding: 2px 7px;
+  padding: 3px 9px;
   font-family: inherit;
   font-size: 11px;
   cursor: pointer;
   color: #222;
-  min-width: 24px;
-  text-align: center;
   line-height: 1.5;
 }
-.tb-btn:hover { background: #c8c8c8; }
-.tb-sep { width:1px; background:rgba(0,0,0,.15); margin:0 3px; height:16px; align-self:center; }
+.tb-btn:hover { background: #bfbfbf; }
 
-.tb-select {
-  font-family:inherit; font-size:11px; background:#d8d8d8;
-  border:1px solid rgba(0,0,0,.20); padding:2px 4px; cursor:pointer; color:#222;
-}
-
-.tb-label { font-size:10px; color:#666; }
-
-.tb-color { width:22px; height:22px; border:1px solid rgba(0,0,0,.22); padding:1px; cursor:pointer; background:#d8d8d8; }
-
-/* body editor */
 #msgEditor {
   background: #fff;
   border: none;
-  min-height: 200px;
+  min-height: 220px;
   padding: 12px 14px;
   font-family: inherit;
   font-size: 12.5px;
@@ -162,7 +139,41 @@ a { color:#000; text-decoration:none; }
   pointer-events: none;
 }
 
-/* bottom */
+/* link insert popup */
+#linkPopup {
+  display: none;
+  position: absolute;
+  background: #f2f2f2;
+  border: 1px solid rgba(0,0,0,.28);
+  box-shadow: 0 3px 10px rgba(0,0,0,.18);
+  padding: 8px 10px;
+  z-index: 100;
+  gap: 6px;
+  flex-direction: column;
+  min-width: 260px;
+}
+#linkPopup.open { display: flex; }
+#linkPopup input {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.28);
+  padding: 4px 7px;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--text);
+  width: 100%;
+}
+.popup-row { display:flex; gap:5px; }
+.popup-btn {
+  background: #d0d0d0;
+  border: 1px solid rgba(0,0,0,.22);
+  padding: 3px 12px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  color: #222;
+}
+.popup-btn:hover { background: #bfbfbf; }
+
 .compose-bottom {
   background: #e4e4e4;
   border-top: 1px solid var(--border);
@@ -170,7 +181,6 @@ a { color:#000; text-decoration:none; }
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
 }
 .send-btn {
   background: #c8c8c8;
@@ -198,7 +208,6 @@ a { color:#000; text-decoration:none; }
   line-height: 1.6;
 }
 
-/* sound toggle */
 #soundToggle {
   position:fixed; bottom:8px; left:10px; z-index:9999;
   font-family:inherit; font-size:10px; color:rgba(0,0,0,.40);
@@ -252,37 +261,24 @@ a { color:#000; text-decoration:none; }
       </div>
     </div>
 
-    <!-- toolbar — only what actually works through EmailJS HTML -->
-    <div class="compose-toolbar">
-      <select class="tb-select" onchange="fmt('fontSize',this.value)" title="Size">
-        <option value="1">8pt</option>
-        <option value="2">10pt</option>
-        <option value="3" selected>12pt</option>
-        <option value="4">14pt</option>
-        <option value="5">18pt</option>
-        <option value="6">24pt</option>
-      </select>
-      <div class="tb-sep"></div>
-      <button class="tb-btn" title="Bold"          onmousedown="event.preventDefault();fmt('bold')"><b>B</b></button>
-      <button class="tb-btn" title="Italic"        onmousedown="event.preventDefault();fmt('italic')"><i>I</i></button>
-      <button class="tb-btn" title="Underline"     onmousedown="event.preventDefault();fmt('underline')"><u>U</u></button>
-      <button class="tb-btn" title="Strikethrough" onmousedown="event.preventDefault();fmt('strikeThrough')"><s>S</s></button>
-      <div class="tb-sep"></div>
-      <button class="tb-btn" title="Align left"   onmousedown="event.preventDefault();fmt('justifyLeft')">&#8676;</button>
-      <button class="tb-btn" title="Center"        onmousedown="event.preventDefault();fmt('justifyCenter')">&#8660;</button>
-      <button class="tb-btn" title="Align right"  onmousedown="event.preventDefault();fmt('justifyRight')">&#8677;</button>
-      <div class="tb-sep"></div>
-      <button class="tb-btn" title="Bullet list"   onmousedown="event.preventDefault();fmt('insertUnorderedList')">• list</button>
-      <button class="tb-btn" title="Numbered list" onmousedown="event.preventDefault();fmt('insertOrderedList')">1. list</button>
-      <div class="tb-sep"></div>
-      <button class="tb-btn" title="Link"          onmousedown="event.preventDefault();insertLink()">link</button>
-      <div class="tb-sep"></div>
-      <span class="tb-label">A</span>
-      <input type="color" class="tb-color" id="txtColor" value="#111111" onchange="fmt('foreColor',this.value)" title="Text color">
-      <span class="tb-label" style="margin-left:4px;">bg</span>
-      <input type="color" class="tb-color" id="bgColor" value="#ffffff" onchange="fmt('hiliteColor',this.value)" title="Highlight">
-      <div class="tb-sep"></div>
-      <button class="tb-btn" title="Clear formatting" onmousedown="event.preventDefault();fmt('removeFormat')">clear</button>
+    <!-- toolbar: text only + insert link + insert img url -->
+    <div class="compose-toolbar" style="position:relative;">
+      <button class="tb-btn" onmousedown="event.preventDefault();fmt('bold')"><b>B</b></button>
+      <button class="tb-btn" onmousedown="event.preventDefault();fmt('italic')"><i>I</i></button>
+      <button class="tb-btn" onmousedown="event.preventDefault();fmt('underline')"><u>U</u></button>
+      <button class="tb-btn" id="linkBtn" onmousedown="event.preventDefault();toggleLinkPopup()">insert link</button>
+      <button class="tb-btn" onmousedown="event.preventDefault();insertImgUrl()">insert img</button>
+
+      <!-- link popup -->
+      <div id="linkPopup">
+        <div style="font-size:10px;color:#666;letter-spacing:.5px;">INSERT LINK</div>
+        <input type="text" id="linkText" placeholder="display text (optional)">
+        <input type="url"  id="linkUrl"  placeholder="https://...">
+        <div class="popup-row">
+          <button class="popup-btn" onmousedown="event.preventDefault();confirmLink()">ok</button>
+          <button class="popup-btn" onmousedown="event.preventDefault();closeLinkPopup()">cancel</button>
+        </div>
+      </div>
     </div>
 
     <div id="msgEditor"
@@ -297,8 +293,7 @@ a { color:#000; text-decoration:none; }
     </div>
 
     <div class="note-bar">
-      name and email are optional — anonymous messages welcome &nbsp;·&nbsp;
-      formatting (bold, italic, color, lists, links) is preserved in the received email
+      name and email are optional — anonymous messages welcome
     </div>
 
   </div>
@@ -318,16 +313,81 @@ function toggleAnon() {
   document.getElementById('nameRow').style.display = hide ? 'none' : '';
 }
 
-function fmt(cmd, val) {
+function fmt(cmd) {
   document.getElementById('msgEditor').focus();
-  document.execCommand(cmd, false, val || null);
+  document.execCommand(cmd, false, null);
 }
 
-function insertLink() {
-  const url = prompt('URL:');
-  if (url) { document.getElementById('msgEditor').focus(); document.execCommand('createLink', false, url); }
+/* ── link popup ── */
+let _savedRange = null;
+
+function toggleLinkPopup() {
+  const p = document.getElementById('linkPopup');
+  if (p.classList.contains('open')) { closeLinkPopup(); return; }
+  // save selection so we can restore it when inserting
+  const sel = window.getSelection();
+  if (sel && sel.rangeCount) {
+    _savedRange = sel.getRangeAt(0).cloneRange();
+    const selText = sel.toString();
+    if (selText) document.getElementById('linkText').value = selText;
+  }
+  p.classList.add('open');
+  setTimeout(() => document.getElementById('linkUrl').focus(), 50);
 }
 
+function closeLinkPopup() {
+  document.getElementById('linkPopup').classList.remove('open');
+  document.getElementById('linkText').value = '';
+  document.getElementById('linkUrl').value  = '';
+  _savedRange = null;
+}
+
+function confirmLink() {
+  const text = document.getElementById('linkText').value.trim();
+  const url  = document.getElementById('linkUrl').value.trim();
+  if (!url) { closeLinkPopup(); return; }
+
+  const editor = document.getElementById('msgEditor');
+  editor.focus();
+
+  const sel = window.getSelection();
+  if (_savedRange) {
+    sel.removeAllRanges();
+    sel.addRange(_savedRange);
+  }
+
+  if (text) {
+    // replace selection (or insert at cursor) with linked text
+    document.execCommand('insertHTML', false,
+      `<a href="${url}" target="_blank" rel="noopener">${text}</a>`);
+  } else {
+    document.execCommand('createLink', false, url);
+    // make new link open in new tab
+    const links = editor.querySelectorAll('a:not([target])');
+    links.forEach(l => l.setAttribute('target', '_blank'));
+  }
+  closeLinkPopup();
+}
+
+/* img by URL — inserts inline in editor AND sends via HTML */
+function insertImgUrl() {
+  const url = prompt('Image URL:');
+  if (!url) return;
+  const editor = document.getElementById('msgEditor');
+  editor.focus();
+  document.execCommand('insertHTML', false,
+    `<img src="${url}" alt="image" style="max-width:100%;display:block;margin:4px 0;">`);
+}
+
+/* close link popup on outside click */
+document.addEventListener('mousedown', e => {
+  const p = document.getElementById('linkPopup');
+  if (p.classList.contains('open') && !p.contains(e.target) && e.target.id !== 'linkBtn') {
+    closeLinkPopup();
+  }
+});
+
+/* ── send ── */
 async function sendMsg() {
   const anon    = document.getElementById('anonCheck').checked;
   const name    = anon ? 'Anonymous' : (document.getElementById('senderName').value.trim() || 'Anonymous');
@@ -370,7 +430,7 @@ async function sendMsg() {
   btn.disabled = false;
 }
 
-/* sounds */
+/* ── sounds ── */
 const SOUND_BASE = '../assets/audio/';
 const SOUNDS = { start:'sitestart.mp3', button:'sitebuttonclick.mp3' };
 let _soundsOn = true;
