@@ -16,7 +16,6 @@
 :root {
   --accent: #cc1a1a;
   --text: #111;
-  --border: rgba(0,0,0,.20);
 }
 
 html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.5) transparent; }
@@ -61,10 +60,6 @@ a { color:#000; text-decoration:none; }
 .back-link:hover { text-decoration:underline; }
 .bar-title { flex:1; text-align:center; font-size:12px; letter-spacing:.5px; text-transform:uppercase; }
 
-/* ═══════════════════════════════════════
-   4CHAN-STYLE POST FORM — pixel faithful
-═══════════════════════════════════════ */
-
 #postFormWrap {
   background: #d8d8d8;
   border: 1px solid #b7c5d9;
@@ -74,7 +69,6 @@ a { color:#000; text-decoration:none; }
   padding: 6px;
 }
 
-/* outer wrapper table — full width */
 .chan-outer {
   width: 100%;
   border-collapse: collapse;
@@ -82,21 +76,19 @@ a { color:#000; text-decoration:none; }
   background: #d8d8d8;
 }
 
-/* label cells */
 .chan-label {
-    background: #b2b2b3;
-    border: 1px solid #858585;
-    font-size: 12px;
-    font-weight: bold;
-    color: #000;
-    padding: 4px 8px;
-    white-space: nowrap;
-    vertical-align: middle;
-    width: 90px;
-    text-align: left;
+  background: #b2b2b3;
+  border: 1px solid #858585;
+  font-size: 12px;
+  font-weight: bold;
+  color: #000;
+  padding: 4px 8px;
+  white-space: nowrap;
+  vertical-align: middle;
+  width: 90px;
+  text-align: left;
 }
 
-/* right content cells */
 .chan-field {
   background: #d8d8d8;
   border: 1px solid #b2b2b3;
@@ -104,7 +96,6 @@ a { color:#000; text-decoration:none; }
   vertical-align: middle;
 }
 
-/* text inputs */
 .chan-input {
   background: #fff;
   border: 1px inset #aaa;
@@ -117,13 +108,11 @@ a { color:#000; text-decoration:none; }
 .chan-input:focus { outline: none !important; }
 .chan-input[disabled] { background: #e8e8e8; color: #666; }
 
-/* subject row has the Post button inline */
-.subject-row-inner {
+.post-row-inner {
   display: flex;
   align-items: center;
   gap: 6px;
 }
-.subject-row-inner .chan-input { flex: 1; width: auto; }
 
 .chan-post-btn {
   background: #d8d8d8;
@@ -139,7 +128,6 @@ a { color:#000; text-decoration:none; }
 .chan-post-btn:active { border-style: inset; }
 .chan-post-btn:disabled { opacity:.5; cursor:default; }
 
-/* comment / msgEditor */
 #msgEditor {
   background: #fff;
   border: 1px inset #aaa;
@@ -150,8 +138,7 @@ a { color:#000; text-decoration:none; }
   font-size: 13px;
   color: #000;
   line-height: 1.5;
-  overflow-y: auto;
-  white-space: pre-wrap;
+  overflow: hidden;
   box-sizing: border-box;
   resize: vertical;
 }
@@ -160,15 +147,7 @@ a { color:#000; text-decoration:none; }
   color: #aaa;
   pointer-events: none;
 }
-#msgEditor img {
-  max-width: 100%;
-  max-height: 320px;
-  display: block;
-  margin: 4px 0;
-  border: 1px solid #aaa;
-}
 
-/* file row */
 .chan-file-inner {
   display: flex;
   align-items: center;
@@ -184,37 +163,28 @@ a { color:#000; text-decoration:none; }
   cursor: pointer;
 }
 .chan-file-btn:hover { background: #c8c8c8; }
-.chan-file-name {
-  font-size: 12px;
-  color: #555;
-}
+.chan-file-name { font-size: 12px; color: #555; }
 #imgFileInput { display: none; }
 
-/* bottom note */
 .chan-footer-note {
   font-size: 11px;
   color: #333;
   margin-top: 5px;
 }
-.chan-footer-note a { color: #555555; }
 
-/* status */
 #statusMsg { font-size:11px; color:#666; }
 #statusMsg.ok  { color:#117743; font-weight:bold; }
 #statusMsg.err { color:#cc0000; font-weight:bold; }
 
-/* ═══════════════════════════════════════
-   PREVIEW
-═══════════════════════════════════════ */
+/* ── PREVIEW ── */
 #previewSection {
   border: 2px ridge #727272;
   background: #f2f2f2;
   display: flex;
   flex-direction: column;
 }
-
 #previewTitle {
-  background: #000000;
+  background: #000;
   color: #ddd;
   font-size: 11px;
   letter-spacing: 1px;
@@ -222,31 +192,24 @@ a { color:#000; text-decoration:none; }
   user-select: none;
   text-transform: uppercase;
 }
-
 #previewBody {
-  padding: 18px 20px;
+  padding: 14px 16px;
   background: #fff;
-  font-family: system-ui, sans-serif, Arial;
-  font-size: 12px;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 13px;
 }
 
-#soundToggle {
-  position: fixed;
-  bottom: 8px; left: 10px;
-  z-index: 9999;
-  font-size: 10px;
-  color: rgba(255,255,255,.50);
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  user-select: none;
-  letter-spacing: .3px;
-  padding: 2px 0;
-  font-family: 'Sawarabi Gothic', Tahoma, sans-serif;
+.chan-post-box {
+  background: #d6daf0;
+  border: 1px solid #b7c5d9;
+  padding: 8px 10px;
+  display: inline-block;
+  min-width: 220px;
+  max-width: 100%;
 }
-#soundToggle:hover { color: rgba(255,255,255,.88); }
-#soundToggle.off   { color: rgba(255,255,255,.20); }
+.chan-post-meta { font-size: 12px; margin-bottom: 4px; }
+.chan-post-name { color: #117743; font-weight: bold; }
+.chan-post-time { color: #666; margin-left: 8px; font-size: 11px; }
 
 @media (max-width:800px) { #pageWrap { width:100%; } }
 @media (max-width:600px) { body { padding:8px 4px 24px; background-attachment:scroll; } }
@@ -265,7 +228,6 @@ a { color:#000; text-decoration:none; }
     <span class="bar-title">contact</span>
   </div>
 
-  <!-- 4CHAN-STYLE POST FORM -->
   <div id="postFormWrap">
     <table class="chan-outer">
       <tbody>
@@ -278,19 +240,18 @@ a { color:#000; text-decoration:none; }
           </td>
         </tr>
 
-        <!-- Subject + Post button -->
+        <!-- Post button row -->
         <tr>
-          <td class="chan-label">Subject</td>
+          <td class="chan-label"></td>
           <td class="chan-field">
-            <div class="subject-row-inner">
-              <input class="chan-input" type="text" id="replySubject" placeholder="">
+            <div class="post-row-inner">
               <button class="chan-post-btn" id="sendBtn" onclick="sendMsg()">Post</button>
               <div id="statusMsg"></div>
             </div>
           </td>
         </tr>
 
-        <!-- Comment -->
+        <!-- Content -->
         <tr>
           <td class="chan-label" style="vertical-align:top; padding-top:6px;">Content</td>
           <td class="chan-field">
@@ -317,67 +278,42 @@ a { color:#000; text-decoration:none; }
 
       </tbody>
     </table>
-
-    <div class="chan-footer-note">
-      • Please be kind to me. </div>
+    <div class="chan-footer-note">• Please be kind to me.</div>
   </div>
 
   <!-- PREVIEW -->
   <div id="previewSection">
     <div id="previewTitle">Preview — how the email will look</div>
     <div id="previewBody">
-      <div style="height:4px;background:#b0b0b0;margin-bottom:10px;border-radius:2px;"></div>
-      <div>An anonymous message has been received. Kindly respond at your earliest convenience.</div>
-      <div style="margin-top:5px;color:#888888;font-size:13px;">Source: watanagashiarchive.vercel.app/contact</div>
-      <div style="margin-top:20px;padding:15px 0;border-width:1px 0;border-style:dashed;border-color:lightgrey;">
-        <table role="presentation" style="border-collapse:collapse;">
-          <tbody>
-            <tr>
-              <td style="width:4px;background:#b0b0b0;border-radius:2px;padding:0;">&nbsp;</td>
-              <td style="vertical-align:top;padding:0;">
-                <div style="padding:6px 10px;margin:0 10px;background-color:#fff;border-radius:8px;">
-                  <img src="https://img1.picmix.com/output/stamp/thumb/2/9/8/5/2895892_9ee1d.png"
-                       style="width:36px;height:46px;display:block;">
-                </div>
-              </td>
-              <td style="vertical-align:top;padding-left:8px;">
-                <div style="color:#2c3e50;font-size:16px;"><strong>Anonymous</strong></div>
-                <div style="color:#aaaaaa;font-size:13px;" id="previewTime"></div>
-                <div style="margin-top:10px;">
-                  <span style="color:#888;text-transform:uppercase;letter-spacing:0.5px;font-size:11px;">Subject</span><br>
-                  <span style="font-size:14px;font-weight:bold;color:#2c3e50;" id="previewSubject">(no subject)</span>
-                </div>
-                <div style="margin-top:10px;">
-                  <span style="color:#888;text-transform:uppercase;letter-spacing:0.5px;font-size:11px;">Content</span>
-                  <div style="font-size:14px;margin-top:4px;line-height:1.6;" id="previewMsg">
-                    <span style="color:#bbb;">your message will appear here...</span>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div style="color:#777;font-size:11px;margin-bottom:8px;">
+        anonymous message — watanagashiarchive.vercel.app/contact
       </div>
-      <div style="height:3px;background:#b0b0b0;margin-top:10px;border-radius:2px;"></div>
+      <div class="chan-post-box">
+        <div class="chan-post-meta">
+          <span class="chan-post-name">Anonymous</span>
+          <span class="chan-post-time" id="previewTime"></span>
+        </div>
+        <div id="previewMsg" style="overflow:hidden;line-height:1.6;">
+          <span style="color:#bbb;">your message will appear here...</span>
+        </div>
+        <div style="clear:both;"></div>
+      </div>
     </div>
   </div>
 
 </div>
 
-
 <script>
 emailjs.init({ publicKey: 'iww-r-sgJVyoRmokf' });
 
-const CLOUD_NAME = 'dagsxkazw';
+const CLOUD_NAME    = 'dagsxkazw';
 const UPLOAD_PRESET = 'unsigned_upload';
 
 async function uploadToCloudinary(file) {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', UPLOAD_PRESET);
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-    method: 'POST', body: formData
-  });
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', UPLOAD_PRESET);
+  const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method:'POST', body:fd });
   const data = await res.json();
   if (!data.secure_url) throw new Error('upload failed');
   return data.secure_url;
@@ -387,28 +323,64 @@ const SERVICE_ID  = 'service_ina2cb8';
 const TEMPLATE_ID = 'template_g7owumb';
 
 function getTimeStr() {
-  return new Date().toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' });
+  return new Date().toLocaleString('en-GB', { dateStyle:'short', timeStyle:'short' });
 }
 
-const editor         = document.getElementById('msgEditor');
-const previewMsg     = document.getElementById('previewMsg');
-const previewTime    = document.getElementById('previewTime');
-const previewSubject = document.getElementById('previewSubject');
-const subjectInput   = document.getElementById('replySubject');
+const editor      = document.getElementById('msgEditor');
+const previewMsg  = document.getElementById('previewMsg');
+const previewTime = document.getElementById('previewTime');
 
 previewTime.textContent = getTimeStr();
 setInterval(() => { previewTime.textContent = getTimeStr(); }, 30000);
 
 editor.addEventListener('input', updatePreview);
-subjectInput.addEventListener('input', () => {
-  previewSubject.textContent = subjectInput.value.trim() || '(no subject)';
+
+// ── Protect .pic-specs nodes from deletion ──
+editor.addEventListener('keydown', (e) => {
+  if (e.key !== 'Backspace' && e.key !== 'Delete') return;
+  const sel = window.getSelection();
+  if (!sel || !sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+
+  // Block if selection spans a protected node
+  const frag = range.cloneContents();
+  if (frag.querySelector && frag.querySelector('.pic-specs')) {
+    e.preventDefault();
+    return;
+  }
+
+  if (range.collapsed) {
+    const container = range.startContainer;
+    const offset    = range.startOffset;
+
+    if (e.key === 'Backspace') {
+      let prev = null;
+      if (container.nodeType === Node.TEXT_NODE && offset === 0)
+        prev = container.previousSibling;
+      else if (container.nodeType !== Node.TEXT_NODE && offset > 0)
+        prev = container.childNodes[offset - 1];
+      if (prev && prev.classList && prev.classList.contains('pic-specs')) {
+        e.preventDefault();
+      }
+    }
+
+    if (e.key === 'Delete') {
+      let next = null;
+      if (container.nodeType === Node.TEXT_NODE && offset === container.length)
+        next = container.nextSibling;
+      else if (container.nodeType !== Node.TEXT_NODE)
+        next = container.childNodes[offset];
+      if (next && next.classList && next.classList.contains('pic-specs')) {
+        e.preventDefault();
+      }
+    }
+  }
 });
 
 function updatePreview() {
-  const html = editor.innerHTML.trim();
   const text = editor.innerText.trim();
   if (text || editor.querySelector('img')) {
-    previewMsg.innerHTML = buildEmailHTML(html);
+    previewMsg.innerHTML = buildEmailHTML(editor.innerHTML);
   } else {
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
   }
@@ -418,62 +390,74 @@ async function insertImage(event) {
   const file = event.target.files[0];
   if (!file) return;
 
-  const status = document.getElementById('statusMsg');
-  const fileName = file.name;
-  const fileSizeKB = (file.size / 1024).toFixed(1);
-
+  const status      = document.getElementById('statusMsg');
   const fileDisplay = document.getElementById('fileNameDisplay');
-  if (fileDisplay) fileDisplay.textContent = fileName;
+  const fileName    = file.name;
+  const fileSizeKB  = (file.size / 1024).toFixed(1);
 
-  const imgTemp = new Image();
-  const imgURL = URL.createObjectURL(file);
-  imgTemp.onload = () => {
-    const infoHTML = `<div style="font-family:monospace;font-size:11px;color:#789922;margin:3px 0;">File: ${fileName} (${fileSizeKB} KB, ${imgTemp.width}x${imgTemp.height})</div>`;
-    editor.innerHTML += infoHTML;
-  };
-  imgTemp.src = imgURL;
+  if (fileDisplay) fileDisplay.textContent = fileName;
 
   if (file.size > 400 * 1024) {
     status.textContent = 'image too large.';
-    status.className = 'err';
+    status.className   = 'err';
     event.target.value = '';
     return;
   }
 
   status.textContent = 'uploading...';
-  status.className = '';
+  status.className   = '';
+
+  // Get dimensions
+  const tmpURL  = URL.createObjectURL(file);
+  const tmpImg  = new Image();
+  tmpImg.src    = tmpURL;
+  await new Promise(res => { tmpImg.onload = res; tmpImg.onerror = res; });
+  const w = tmpImg.naturalWidth;
+  const h = tmpImg.naturalHeight;
+  URL.revokeObjectURL(tmpURL);
 
   try {
     const imgUrl = await uploadToCloudinary(file);
     editor.focus();
 
+    // File info — red, non-editable, ABOVE image
+    const specs = document.createElement('div');
+    specs.className       = 'pic-specs';
+    specs.contentEditable = 'false';
+    specs.style.cssText   = 'font-family:monospace;font-size:11px;color:#cc0000;margin:4px 0 1px;display:block;cursor:default;';
+    specs.textContent     = `File: ${fileName} (${fileSizeKB} KB, ${w}x${h})`;
+
+    // Image — float left
     const img = document.createElement('img');
-    img.src = imgUrl;
-    img.style.maxWidth = '100%';
-    img.style.maxHeight = '320px';
-    img.style.display = 'block';
-    img.style.margin = '4px 0';
-    img.style.border = '1px solid #aaa';
+    img.src           = imgUrl;
+    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 10px 8px 0;border:1px solid #aaa;display:block;';
+
+    // Clear
+    const clr = document.createElement('div');
+    clr.style.cssText = 'clear:both;';
 
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0 && editor.contains(sel.anchorNode)) {
       const range = sel.getRangeAt(0);
       range.deleteContents();
-      range.insertNode(img);
-      range.setStartAfter(img);
+      // insertNode inserts in reverse order when using same range
+      [clr, img, specs].forEach(n => range.insertNode(n));
+      range.setStartAfter(clr);
       range.collapse(true);
       sel.removeAllRanges();
       sel.addRange(range);
     } else {
+      editor.appendChild(specs);
       editor.appendChild(img);
+      editor.appendChild(clr);
     }
 
     status.textContent = 'image uploaded!';
-    status.className = 'ok';
-  } catch (e) {
+    status.className   = 'ok';
+  } catch (err) {
     status.textContent = 'upload failed';
-    status.className = 'err';
-    console.error(e);
+    status.className   = 'err';
+    console.error(err);
   }
 
   event.target.value = '';
@@ -483,19 +467,32 @@ async function insertImage(event) {
 function buildEmailHTML(editorHTML) {
   const tmp = document.createElement('div');
   tmp.innerHTML = editorHTML;
+
+  // Style uploaded images for email
+  tmp.querySelectorAll('img').forEach(img => {
+    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #ccc;display:block;';
+  });
+
+  // Clean pic-specs for email
+  tmp.querySelectorAll('.pic-specs').forEach(el => {
+    el.removeAttribute('contenteditable');
+    el.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;';
+  });
+
+  // Handle plain-text image URLs
   tmp.childNodes.forEach(node => {
     if (node.nodeType === Node.TEXT_NODE) {
-      const imageUrlRe = /(https?:\/\/\S+\.(?:jpg|jpeg|png|gif|webp)(\?\S*)?)/gi;
-      if (imageUrlRe.test(node.textContent)) {
+      const re = /(https?:\/\/\S+\.(?:jpg|jpeg|png|gif|webp)(\?\S*)?)/gi;
+      if (re.test(node.textContent)) {
         const span = document.createElement('span');
-        span.innerHTML = node.textContent.replace(
-          imageUrlRe,
-          url => `<a href="${url}" target="_blank" style="display:block;"><img src="${url}" style="max-width:100%;max-height:320px;display:block;margin:4px 0;border:1px solid rgba(0,0,0,.15);"></a>`
+        span.innerHTML = node.textContent.replace(re,
+          url => `<a href="${url}" target="_blank" style="display:block;"><img src="${url}" style="max-width:100%;display:block;margin:4px 0;border:1px solid rgba(0,0,0,.15);float:left;margin-right:12px;"></a>`
         );
         node.replaceWith(span);
       }
     }
   });
+
   return tmp.innerHTML;
 }
 
@@ -507,12 +504,12 @@ async function sendMsg() {
 
   if (!msgText && !hasImg) {
     status.textContent = 'write something first.';
-    status.className = 'err';
+    status.className   = 'err';
     return;
   }
 
-  btn.disabled = true;
-  status.className = '';
+  btn.disabled       = true;
+  status.className   = '';
   status.textContent = 'sending...';
 
   const finalHTML = buildEmailHTML(editor.innerHTML);
@@ -522,22 +519,19 @@ async function sendMsg() {
       from_name:    'Anonymous',
       from_email:   'anonymous@noreply.com',
       subject:      'anonymous message — watanagashi archive',
-      subject_line: subjectInput.value.trim() || '(no subject)',
       message:      msgText,
       message_html: finalHTML,
       time:         getTimeStr(),
       name:         'Anonymous',
     });
-    status.textContent = 'post sent!';
-    status.className = 'ok';
-    editor.innerHTML = '';
-    subjectInput.value = '';
-    previewSubject.textContent = '(no subject)';
+    status.textContent   = 'post sent!';
+    status.className     = 'ok';
+    editor.innerHTML     = '';
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
-  } catch(e) {
+  } catch(err) {
     status.textContent = 'failed — trenchgun1337@gmail.com';
-    status.className = 'err';
-    console.error(e);
+    status.className   = 'err';
+    console.error(err);
   }
   btn.disabled = false;
 }
