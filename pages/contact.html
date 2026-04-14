@@ -61,127 +61,219 @@ a { color:#000; text-decoration:none; }
 .back-link:hover { text-decoration:underline; }
 .bar-title { flex:1; text-align:center; font-size:12px; letter-spacing:.5px; text-transform:uppercase; }
 
-#composeWin {
-  background: #f2f2f2;
-  border: 2px ridge #727272;
-  box-shadow: #595959 1px 1px 12px 1px;
-  display: flex;
-  flex-direction: column;
+/* ═══════════════════════════════════════
+   4CHAN-STYLE POST FORM — pixel faithful
+═══════════════════════════════════════ */
+
+#postFormWrap {
+  background: #d6daf0;
+  border: 1px solid #b7c5d9;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 13px;
+  color: #000;
+  padding: 6px;
 }
 
-#composeTitle {
-  background: #000000;
-  color: #ddd;
-  font-size: 11px;
-  letter-spacing: 1px;
-  padding: 5px 10px;
-  user-select: none;
-  text-transform: uppercase;
+/* outer wrapper table — full width */
+.chan-outer {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #b7b7c7;
+  background: #d6daf0;
 }
 
-.compose-fields {
-  background: #f8f8f8;
-  border-bottom: 1px solid var(--border);
-}
-.compose-field-row {
-  display: flex; align-items: center;
-  border-bottom: 1px solid rgba(0,0,0,.07);
-  padding: 0 10px;
-}
-.compose-field-row:last-child { border-bottom: none; }
-.field-key { font-size:11px; color:#777; width:58px; flex-shrink:0; }
-.field-val {
-  flex:1; font-size:12px; padding:6px 0;
-  background:none; border:none; color:#555; font-family:inherit;
+/* label cells — the purple/blue left column */
+.chan-label {
+  background: #b7b7d7;
+  border: 1px solid #9090b0;
+  font-size: 12px;
+  font-weight: bold;
+  color: #000;
+  padding: 4px 8px;
+  white-space: nowrap;
+  vertical-align: middle;
+  width: 90px;
+  text-align: left;
 }
 
-/* ── toolbar de imagem ── */
-.editor-toolbar {
-  background: #e8e8e8;
-  border-bottom: 1px solid var(--border);
-  padding: 4px 10px;
+/* right content cells */
+.chan-field {
+  background: #d6daf0;
+  border: 1px solid #b7b7c7;
+  padding: 3px 5px;
+  vertical-align: middle;
+}
+
+/* text inputs */
+.chan-input {
+  background: #fff;
+  border: 1px inset #aaa;
+  padding: 2px 4px;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 13px;
+  color: #000;
+  width: 280px;
+}
+.chan-input:focus { outline: none !important; }
+.chan-input[disabled] { background: #e8e8e8; color: #666; }
+
+/* subject row has the Post button inline */
+.subject-row-inner {
   display: flex;
   align-items: center;
   gap: 6px;
 }
-.toolbar-btn {
-  background: #c8c8c8;
-  border: 1px solid rgba(0,0,0,.25);
-  padding: 3px 10px;
-  font-family: inherit;
-  font-size: 10.5px;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  color: var(--text);
+.subject-row-inner .chan-input { flex: 1; width: auto; }
+
+.chan-post-btn {
+  background: #d6daf0;
+  border: 1px outset #999;
+  padding: 2px 12px;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 13px;
+  color: #000;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  white-space: nowrap;
 }
-.toolbar-btn:hover { background: #b8b8b8; }
-.toolbar-sep { width:1px; height:16px; background:rgba(0,0,0,.15); }
-.toolbar-hint { font-size:10px; color:#999; }
+.chan-post-btn:hover { background: #c4c8e0; }
+.chan-post-btn:active { border-style: inset; }
+.chan-post-btn:disabled { opacity:.5; cursor:default; }
 
-/* hidden file input */
-#imgFileInput { display:none; }
-
+/* comment / msgEditor */
 #msgEditor {
-  background: #f1f1f1;
-  border: 5px ridge;
-  min-height: 220px;
-  padding: 20px 14px;
-  font-family: inherit;
-  font-size: 12.5px;
-  color: var(--text);
-  line-height: 1.7;
+  background: #fff;
+  border: 1px inset #aaa;
+  min-height: 100px;
+  width: 100%;
+  padding: 3px 4px;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 13px;
+  color: #000;
+  line-height: 1.5;
   overflow-y: auto;
   white-space: pre-wrap;
+  box-sizing: border-box;
+  resize: vertical;
 }
-
 #msgEditor:empty::before {
   content: attr(data-placeholder);
-  color: #bbb;
+  color: #aaa;
   pointer-events: none;
 }
-
-/* imagens inseridas no editor */
 #msgEditor img {
   max-width: 100%;
   max-height: 320px;
   display: block;
-  margin: 6px 0;
-  border: 1px solid rgba(0,0,0,.15);
-  pointer-events: auto;
-  user-select: auto;
+  margin: 4px 0;
+  border: 1px solid #aaa;
 }
 
-.compose-bottom {
-  background: #e4e4e4;
-  border-top: 1px solid var(--border);
-  padding: 7px 10px;
+/* verification row */
+.chan-verify-inner {
+  background: #e8e8f4;
+  border: 1px inset #aaa;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.verify-top {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
 }
-.send-btn {
-  background: #c8c8c8;
-  border: 1px solid rgba(0,0,0,.30);
-  padding: 5px 22px;
-  font-family: inherit;
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text);
+.verify-btn {
+  background: #d6daf0;
+  border: 1px outset #999;
+  padding: 2px 10px;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 12px;
+  color: #000;
   cursor: pointer;
 }
-.send-btn:hover { background: #b8b8b8; }
-.send-btn:disabled { opacity:.5; cursor:default; }
+.verify-btn:hover { background: #c4c8e0; }
 
-#statusMsg { font-size:11px; color:#666; flex:1; }
-#statusMsg.ok  { color:#2a7a2a; }
-#statusMsg.err { color:var(--accent); }
+.verify-next-btn {
+  background: #e0e0e0;
+  border: 1px outset #999;
+  padding: 2px 10px;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 12px;
+  color: #888;
+  cursor: default;
+}
 
-/* ── preview ── */
+.verify-slide-wrap {
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+.verify-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #ccc;
+  outline: none;
+  border-radius: 2px;
+}
+.verify-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #888;
+  cursor: pointer;
+  border: 1px solid #666;
+}
+
+.verify-note {
+  font-size: 11px;
+  color: #555;
+}
+.verify-note a { color: #34345c; }
+
+/* file row */
+.chan-file-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.chan-file-btn {
+  background: #d6daf0;
+  border: 1px outset #999;
+  padding: 2px 8px;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 12px;
+  color: #000;
+  cursor: pointer;
+}
+.chan-file-btn:hover { background: #c4c8e0; }
+.chan-file-name {
+  font-size: 12px;
+  color: #555;
+}
+#imgFileInput { display: none; }
+
+/* bottom note */
+.chan-footer-note {
+  font-size: 11px;
+  color: #333;
+  margin-top: 5px;
+}
+.chan-footer-note a { color: #34345c; }
+
+/* status */
+#statusMsg { font-size:11px; color:#666; }
+#statusMsg.ok  { color:#117743; font-weight:bold; }
+#statusMsg.err { color:#cc0000; font-weight:bold; }
+
+/* ═══════════════════════════════════════
+   PREVIEW — unchanged style
+═══════════════════════════════════════ */
 #previewSection {
   border: 2px ridge #727272;
   background: #f2f2f2;
@@ -241,40 +333,88 @@ a { color:#000; text-decoration:none; }
     <span class="bar-title">contact</span>
   </div>
 
-  <!-- COMPOSE -->
-  <div id="composeWin">
-    <div id="composeTitle">New Message — Watanagashi Archive</div>
+  <!-- 4CHAN-STYLE POST FORM -->
+  <div id="postFormWrap">
+    <table class="chan-outer">
+      <tbody>
 
-    <div class="compose-fields">
-      <div class="compose-field-row">
-        <span class="field-key">To:</span>
-        <span class="field-val">trenchgun1337@gmail.com</span>
-      </div>
-      <div class="compose-field-row">
-        <span class="field-key">From:</span>
-        <span class="field-val">Anonymous</span>
-      </div>
-    </div>
+        <!-- Name -->
+        <tr>
+          <td class="chan-label">Name</td>
+          <td class="chan-field">
+            <input class="chan-input" type="text" value="Anonymous" disabled>
+          </td>
+        </tr>
 
-    <!-- toolbar -->
-    <div class="editor-toolbar">
-      <button class="toolbar-btn" onclick="document.getElementById('imgFileInput').click()">
-        &#128247; Image
-      </button>
-      <div class="toolbar-sep"></div>
-      <span class="toolbar-hint">jpg, png, gif, webp </span>
-      <input type="file" id="imgFileInput" accept="image/jpeg,image/png,image/gif,image/webp" onchange="insertImage(event)">
-    </div>
+        <!-- Options -->
+        <tr>
+          <td class="chan-label">Options</td>
+          <td class="chan-field">
+            <input class="chan-input" type="text" id="replyOptions" placeholder="">
+          </td>
+        </tr>
 
-    <div id="msgEditor"
-      contenteditable="true"
-      data-placeholder="write your message here..."
-      spellcheck="true">
-    </div>
+        <!-- Subject + Post button -->
+        <tr>
+          <td class="chan-label">Subject</td>
+          <td class="chan-field">
+            <div class="subject-row-inner">
+              <input class="chan-input" type="text" id="replySubject" placeholder="">
+              <button class="chan-post-btn" id="sendBtn" onclick="sendMsg()">Post</button>
+              <div id="statusMsg"></div>
+            </div>
+          </td>
+        </tr>
 
-    <div class="compose-bottom">
-      <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send</button>
-      <div id="statusMsg"></div>
+        <!-- Comment -->
+        <tr>
+          <td class="chan-label" style="vertical-align:top; padding-top:6px;">Comment</td>
+          <td class="chan-field">
+            <div
+              id="msgEditor"
+              contenteditable="true"
+              data-placeholder=""
+              spellcheck="true"
+            ></div>
+          </td>
+        </tr>
+
+        <!-- Verification -->
+        <tr>
+          <td class="chan-label" style="vertical-align:top; padding-top:6px;">Verification</td>
+          <td class="chan-field">
+            <div class="chan-verify-inner">
+              <div class="verify-top">
+                <button class="verify-btn" onclick="this.textContent='Verified ✓'; this.disabled=true;">Get Captcha</button>
+                <button class="verify-next-btn" disabled>Next</button>
+              </div>
+              <div class="verify-slide-wrap">
+                <input type="range" class="verify-slider" min="0" max="100" value="10">
+              </div>
+              <div class="verify-note">
+                4chan Pass users can bypass this verification. [<a href="#">Learn More</a>] [<a href="#">Login</a>]
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- File -->
+        <tr>
+          <td class="chan-label">File</td>
+          <td class="chan-field">
+            <div class="chan-file-inner">
+              <button class="chan-file-btn" onclick="document.getElementById('imgFileInput').click()">Escolher arquivo</button>
+              <span class="chan-file-name" id="fileNameDisplay">Nenh…lhido</span>
+              <input type="file" id="imgFileInput" accept="image/jpeg,image/png,image/gif,image/webp" onchange="insertImage(event)">
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="chan-footer-note">
+      • Please read the <a href="#">Rules</a> and <a href="#">FAQ</a> before posting.
     </div>
   </div>
 
@@ -324,23 +464,17 @@ async function uploadToCloudinary(file) {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', UPLOAD_PRESET);
-
   const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-    method: 'POST',
-    body: formData
+    method: 'POST', body: formData
   });
-
   const data = await res.json();
-
   if (!data.secure_url) throw new Error('upload failed');
-
   return data.secure_url;
 }
 
 const SERVICE_ID  = 'service_ina2cb8';
 const TEMPLATE_ID = 'template_g7owumb';
 
-/* ── time ── */
 function getTimeStr() {
   return new Date().toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' });
 }
@@ -352,7 +486,6 @@ const previewTime = document.getElementById('previewTime');
 previewTime.textContent = getTimeStr();
 setInterval(() => { previewTime.textContent = getTimeStr(); }, 30000);
 
-/* ── live preview ── */
 editor.addEventListener('input', updatePreview);
 
 function updatePreview() {
@@ -365,34 +498,25 @@ function updatePreview() {
   }
 }
 
-/* ── insert image from file upload ── */
-
-
- async function insertImage(event) {
+async function insertImage(event) {
   const file = event.target.files[0];
   if (!file) return;
 
   const status = document.getElementById('statusMsg');
-// png jpg etc
-const fileName = file.name;
-const fileSizeKB = (file.size / 1024).toFixed(1);
+  const fileName = file.name;
+  const fileSizeKB = (file.size / 1024).toFixed(1);
 
-const imgTemp = new Image();
-const imgURL = URL.createObjectURL(file);
+  // update file name display
+  const fileDisplay = document.getElementById('fileNameDisplay');
+  if (fileDisplay) fileDisplay.textContent = fileName;
 
-imgTemp.onload = () => {
-  const width = imgTemp.width;
-  const height = imgTemp.height;
-
-  const infoHTML = `
-<div style="font-family:monospace; font-size:12px; color:#789922; margin:4px 0;">
-  File: ${fileName} (${fileSizeKB} KB, ${width}x${height})
-</div>
-`;
-
-editor.innerHTML += infoHTML;
-};
-imgTemp.src = imgURL;
+  const imgTemp = new Image();
+  const imgURL = URL.createObjectURL(file);
+  imgTemp.onload = () => {
+    const infoHTML = `<div style="font-family:monospace;font-size:11px;color:#789922;margin:3px 0;">File: ${fileName} (${fileSizeKB} KB, ${imgTemp.width}x${imgTemp.height})</div>`;
+    editor.innerHTML += infoHTML;
+  };
+  imgTemp.src = imgURL;
 
   if (file.size > 400 * 1024) {
     status.textContent = 'image too large.';
@@ -401,22 +525,20 @@ imgTemp.src = imgURL;
     return;
   }
 
-  status.textContent = 'uploading image...';
+  status.textContent = 'uploading...';
   status.className = '';
 
   try {
     const imgUrl = await uploadToCloudinary(file);
-
     editor.focus();
 
     const img = document.createElement('img');
     img.src = imgUrl;
-
     img.style.maxWidth = '100%';
     img.style.maxHeight = '320px';
     img.style.display = 'block';
-    img.style.margin = '6px 0';
-    img.style.border = '1px solid rgba(0,0,0,.15)';
+    img.style.margin = '4px 0';
+    img.style.border = '1px solid #aaa';
 
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0 && editor.contains(sel.anchorNode)) {
@@ -433,7 +555,6 @@ imgTemp.src = imgURL;
 
     status.textContent = 'image uploaded!';
     status.className = 'ok';
-
   } catch (e) {
     status.textContent = 'upload failed';
     status.className = 'err';
@@ -444,16 +565,9 @@ imgTemp.src = imgURL;
   updatePreview();
 }
 
-/* ── converte HTML do editor para HTML de email ──
-   - texto normal → mantém
-   - <img src="data:..."> → inline base64 no email
-   - URLs de imagem no texto → <img> clicável                        */
 function buildEmailHTML(editorHTML) {
-  // cria um container temporário
   const tmp = document.createElement('div');
   tmp.innerHTML = editorHTML;
-
-  // transforma URLs de imagem soltas em <img> clicável
   tmp.childNodes.forEach(node => {
     if (node.nodeType === Node.TEXT_NODE) {
       const imageUrlRe = /(https?:\/\/\S+\.(?:jpg|jpeg|png|gif|webp)(\?\S*)?)/gi;
@@ -461,17 +575,15 @@ function buildEmailHTML(editorHTML) {
         const span = document.createElement('span');
         span.innerHTML = node.textContent.replace(
           imageUrlRe,
-          url => `<a href="${url}" target="_blank" style="display:block;"><img src="${url}" style="max-width:100%;max-height:320px;display:block;margin:6px 0;border:1px solid rgba(0,0,0,.15);"></a>`
+          url => `<a href="${url}" target="_blank" style="display:block;"><img src="${url}" style="max-width:100%;max-height:320px;display:block;margin:4px 0;border:1px solid rgba(0,0,0,.15);"></a>`
         );
         node.replaceWith(span);
       }
     }
   });
-
   return tmp.innerHTML;
 }
 
-/* ── send ── */
 async function sendMsg() {
   const msgText = editor.innerText.trim();
   const hasImg  = editor.querySelector('img') !== null;
@@ -488,7 +600,6 @@ async function sendMsg() {
   status.className = '';
   status.textContent = 'sending...';
 
-  // monta HTML final para o email
   const finalHTML = buildEmailHTML(editor.innerHTML);
 
   try {
@@ -501,7 +612,7 @@ async function sendMsg() {
       time:         getTimeStr(),
       name:         'Anonymous',
     });
-    status.textContent = 'sent!';
+    status.textContent = 'post sent!';
     status.className = 'ok';
     editor.innerHTML = '';
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
