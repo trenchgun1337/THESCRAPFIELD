@@ -128,19 +128,23 @@ a { color:#000; text-decoration:none; }
 .chan-post-btn:active { border-style: inset; }
 .chan-post-btn:disabled { opacity:.5; cursor:default; }
 
+/* Editor: fixed height, no overflow growth */
 #msgEditor {
   background: #fff;
   border: 1px inset #aaa;
-  min-height: 100px;
+  min-height: 80px;
+  max-height: 260px;
   width: 100%;
   padding: 3px 4px;
   font-family: arial, helvetica, sans-serif;
   font-size: 13px;
   color: #000;
   line-height: 1.5;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   box-sizing: border-box;
   resize: vertical;
+  word-break: break-word;
 }
 #msgEditor:empty::before {
   content: attr(data-placeholder);
@@ -152,6 +156,7 @@ a { color:#000; text-decoration:none; }
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: wrap;
 }
 .chan-file-btn {
   background: #d8d8d8;
@@ -161,10 +166,25 @@ a { color:#000; text-decoration:none; }
   font-size: 12px;
   color: #000;
   cursor: pointer;
+  white-space: nowrap;
 }
 .chan-file-btn:hover { background: #c8c8c8; }
 .chan-file-name { font-size: 12px; color: #555; }
 #imgFileInput { display: none; }
+
+#removeBtn {
+  background: #d8d8d8;
+  border: 1px outset #999;
+  padding: 2px 8px;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 12px;
+  color: #cc0000;
+  cursor: pointer;
+  white-space: nowrap;
+  display: none;
+}
+#removeBtn:hover { background: #f0d0d0; }
+#removeBtn:active { border-style: inset; }
 
 .chan-footer-note {
   font-size: 11px;
@@ -197,6 +217,7 @@ a { color:#000; text-decoration:none; }
   background: #fff;
   font-family: arial, helvetica, sans-serif;
   font-size: 13px;
+  overflow: hidden;
 }
 
 .chan-post-box {
@@ -206,17 +227,15 @@ a { color:#000; text-decoration:none; }
   display: inline-block;
   min-width: 220px;
   max-width: 100%;
+  overflow: hidden;
 }
-.chan-post-meta { font-size: 12px; margin-bottom: 4px; }
+.chan-post-meta { font-size: 12px; margin-bottom: 6px; line-height: 1.4; }
 .chan-post-name { color: #117743; font-weight: bold; }
-.chan-post-time { color: #666; margin-left: 8px; font-size: 11px; }
+.chan-post-time { color: #444; margin-left: 6px; font-size: 11px; }
+.chan-post-no   { color: #000; margin-left: 4px; font-size: 11px; }
 
 @media (max-width:800px) { #pageWrap { width:100%; } }
 @media (max-width:600px) { body { padding:8px 4px 24px; background-attachment:scroll; } }
-
-#msgEditor {
-  overflow: auto;
-}
 </style>
 </head>
 <body>
@@ -244,7 +263,7 @@ a { color:#000; text-decoration:none; }
           </td>
         </tr>
 
-        <!-- Post button row -->
+        <!-- Post button row (before file) -->
         <tr>
           <td class="chan-label"></td>
           <td class="chan-field">
@@ -268,13 +287,14 @@ a { color:#000; text-decoration:none; }
           </td>
         </tr>
 
-        <!-- File -->
+        <!-- File (after Post button, after Content) -->
         <tr>
           <td class="chan-label">File</td>
           <td class="chan-field">
             <div class="chan-file-inner">
-              <button class="chan-file-btn" onclick="document.getElementById('imgFileInput').click()">Escolher arquivo</button>
-              <span class="chan-file-name" id="fileNameDisplay">Nenh…lhido</span>
+              <button class="chan-file-btn" onclick="document.getElementById('imgFileInput').click()">Choose file</button>
+              <span class="chan-file-name" id="fileNameDisplay">No file chosen</span>
+              <button id="removeBtn" onclick="removeAttachment()">Remove attachment</button>
               <input type="file" id="imgFileInput" accept="image/jpeg,image/png,image/gif,image/webp" onchange="insertImage(event)">
             </div>
           </td>
@@ -296,8 +316,9 @@ a { color:#000; text-decoration:none; }
         <div class="chan-post-meta">
           <span class="chan-post-name">Anonymous</span>
           <span class="chan-post-time" id="previewTime"></span>
+          <span class="chan-post-no" id="previewNo">No.?</span>
         </div>
-        <div id="previewMsg" style="overflow:hidden;line-height:1.6;">
+        <div id="previewMsg" style="overflow:hidden; line-height:1.6;">
           <span style="color:#bbb;">your message will appear here...</span>
         </div>
         <div style="clear:both;"></div>
@@ -312,41 +333,121 @@ emailjs.init({ publicKey: 'iww-r-sgJVyoRmokf' });
 
 const CLOUD_NAME    = 'dagsxkazw';
 const UPLOAD_PRESET = 'unsigned_upload';
+const SERVICE_ID    = 'service_ina2cb8';
+const TEMPLATE_ID   = 'template_g7owumb';
 
-async function uploadToCloudinary(file) {
-  const fd = new FormData();
-  fd.append('file', file);
-  fd.append('upload_preset', UPLOAD_PRESET);
-  const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method:'POST', body:fd });
-  const data = await res.json();
-  if (!data.secure_url) throw new Error('upload failed');
-  return data.secure_url;
+// ─────────────────────────────────────────────
+// COUNTER  (CountAPI — free, persistent)
+// First-time setup: open browser console and run:
+//   fetch('https://api.countapi.xyz/set/watanagashi-archive/posts?value=23818223')
+// That seeds the counter so the first post is No.23818224.
+// ─────────────────────────────────────────────
+let nextPostNumber = '?';
+
+async function loadPostNumber() {
+  try {
+    const res  = await fetch('https://api.countapi.xyz/get/watanagashi-archive/posts');
+    const data = await res.json();
+    nextPostNumber = (data.value || 0) + 1;
+  } catch {
+    nextPostNumber = '?';
+  }
+  document.getElementById('previewNo').textContent = 'No.' + nextPostNumber;
 }
 
-const SERVICE_ID  = 'service_ina2cb8';
-const TEMPLATE_ID = 'template_g7owumb';
-
-function getTimeStr() {
-  return new Date().toLocaleString('en-GB', { dateStyle:'short', timeStyle:'short' });
+async function incrementPostCount() {
+  try {
+    const res  = await fetch('https://api.countapi.xyz/hit/watanagashi-archive/posts');
+    const data = await res.json();
+    return data.value;
+  } catch {
+    return typeof nextPostNumber === 'number' ? nextPostNumber : '?';
+  }
 }
 
+loadPostNumber();
+
+// ─────────────────────────────────────────────
+// TIME  — chan format  MM/DD/YY(Day)HH:MM:SS
+// ─────────────────────────────────────────────
+function getChanTime() {
+  const now  = new Date();
+  const mm   = String(now.getMonth() + 1).padStart(2, '0');
+  const dd   = String(now.getDate()).padStart(2, '0');
+  const yy   = String(now.getFullYear()).slice(2);
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const day  = days[now.getDay()];
+  const hh   = String(now.getHours()).padStart(2, '0');
+  const min  = String(now.getMinutes()).padStart(2, '0');
+  const ss   = String(now.getSeconds()).padStart(2, '0');
+  return `${mm}/${dd}/${yy}(${day})${hh}:${min}:${ss}`;
+}
+
+// ─────────────────────────────────────────────
+// EDITOR SETUP
+// ─────────────────────────────────────────────
 const editor      = document.getElementById('msgEditor');
 const previewMsg  = document.getElementById('previewMsg');
 const previewTime = document.getElementById('previewTime');
 
-previewTime.textContent = getTimeStr();
-setInterval(() => { previewTime.textContent = getTimeStr(); }, 30000);
+previewTime.textContent = getChanTime();
+setInterval(() => { previewTime.textContent = getChanTime(); }, 1000);
 
 editor.addEventListener('input', updatePreview);
 
-// ── Protect .pic-specs nodes from deletion ──
+// ── Block image paste; allow plain text only ──
+editor.addEventListener('paste', (e) => {
+  e.preventDefault();
+  const text = e.clipboardData.getData('text/plain');
+  if (text) document.execCommand('insertText', false, text);
+});
+
+// ── Block drag of images inside editor ──
+editor.addEventListener('dragstart', (e) => {
+  if (e.target.tagName === 'IMG') e.preventDefault();
+});
+
+// ── Redirect clicks before image to after it ──
+editor.addEventListener('click', () => {
+  const img = editor.querySelector('img');
+  if (!img) return;
+  requestAnimationFrame(() => {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return;
+    const range = sel.getRangeAt(0);
+
+    let isBefore = false;
+    if (range.startContainer === editor) {
+      const imgIdx = Array.from(editor.childNodes).indexOf(img);
+      isBefore = range.startOffset <= imgIdx;
+    } else {
+      const pos = img.compareDocumentPosition(range.startContainer);
+      isBefore = !!(pos & Node.DOCUMENT_POSITION_PRECEDING);
+    }
+
+    if (isBefore) {
+      let node = img.nextSibling;
+      while (node && node.nodeType !== Node.TEXT_NODE) node = node.nextSibling;
+      if (!node) {
+        node = document.createTextNode('\u200B');
+        editor.appendChild(node);
+      }
+      const newRange = document.createRange();
+      newRange.setStart(node, node.length);
+      newRange.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(newRange);
+    }
+  });
+});
+
+// ── Protect .pic-specs and img from keyboard deletion ──
 editor.addEventListener('keydown', (e) => {
   if (e.key !== 'Backspace' && e.key !== 'Delete') return;
   const sel = window.getSelection();
   if (!sel || !sel.rangeCount) return;
   const range = sel.getRangeAt(0);
 
-  // Block if selection spans a protected node
   const frag = range.cloneContents();
   if (frag.querySelector && frag.querySelector('.pic-specs')) {
     e.preventDefault();
@@ -366,6 +467,9 @@ editor.addEventListener('keydown', (e) => {
       if (prev && prev.classList && prev.classList.contains('pic-specs')) {
         e.preventDefault();
       }
+      if (prev && prev.tagName === 'IMG') {
+        e.preventDefault();
+      }
     }
 
     if (e.key === 'Delete') {
@@ -377,17 +481,95 @@ editor.addEventListener('keydown', (e) => {
       if (next && next.classList && next.classList.contains('pic-specs')) {
         e.preventDefault();
       }
+      if (next && next.tagName === 'IMG') {
+        e.preventDefault();
+      }
     }
   }
 });
 
+// ─────────────────────────────────────────────
+// PREVIEW  (inline, uses CSS float)
+// ─────────────────────────────────────────────
 function updatePreview() {
-  const text = editor.innerText.trim();
-  if (text || editor.querySelector('img')) {
-    previewMsg.innerHTML = buildEmailHTML(editor.innerHTML);
+  const text   = editor.innerText.replace(/\u200B/g, '').trim();
+  const hasImg = !!editor.querySelector('img');
+  if (text || hasImg) {
+    previewMsg.innerHTML = buildPreviewHTML(editor.innerHTML);
   } else {
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
   }
+}
+
+function buildPreviewHTML(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html.replace(/\u200B/g, '');
+
+  tmp.querySelectorAll('img').forEach(img => {
+    img.removeAttribute('style');
+    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
+  });
+  tmp.querySelectorAll('.pic-specs').forEach(el => {
+    el.removeAttribute('contenteditable');
+    el.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;clear:both;';
+  });
+
+  return tmp.innerHTML;
+}
+
+// ─────────────────────────────────────────────
+// EMAIL HTML  (table layout for reliable clients)
+// ─────────────────────────────────────────────
+function buildEmailHTML(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html.replace(/\u200B/g, '');
+
+  const img   = tmp.querySelector('img');
+  const specs = tmp.querySelector('.pic-specs');
+
+  if (img) {
+    const specsHTML = specs
+      ? `<div style="font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 4px;display:block;">${escapeHtml(specs.textContent)}</div>`
+      : '';
+
+    if (specs) specs.remove();
+    img.remove();
+    const textHTML = tmp.innerHTML.trim();
+
+    return `${specsHTML}` +
+      `<table role="presentation" style="border-collapse:collapse;margin:0;">` +
+        `<tr>` +
+          `<td style="vertical-align:top;padding-right:10px;">` +
+            `<img src="${escapeAttr(img.src)}" style="max-width:200px;max-height:200px;border:1px solid #ccc;display:block;">` +
+          `</td>` +
+          `<td style="vertical-align:top;font-size:13px;line-height:1.6;">` +
+            `${textHTML || '&nbsp;'}` +
+          `</td>` +
+        `</tr>` +
+      `</table>`;
+  }
+
+  return tmp.innerHTML;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escapeAttr(str) {
+  return str.replace(/"/g, '&quot;');
+}
+
+// ─────────────────────────────────────────────
+// IMAGE UPLOAD
+// ─────────────────────────────────────────────
+async function uploadToCloudinary(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', UPLOAD_PRESET);
+  const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method:'POST', body:fd });
+  const data = await res.json();
+  if (!data.secure_url) throw new Error('upload failed');
+  return data.secure_url;
 }
 
 async function insertImage(event) {
@@ -396,71 +578,70 @@ async function insertImage(event) {
 
   const status      = document.getElementById('statusMsg');
   const fileDisplay = document.getElementById('fileNameDisplay');
+  const removeBtn   = document.getElementById('removeBtn');
   const fileName    = file.name;
   const fileSizeKB  = (file.size / 1024).toFixed(1);
 
-  if (fileDisplay) fileDisplay.textContent = fileName;
-
   if (file.size > 400 * 1024) {
-    status.textContent = 'image too large.';
+    status.textContent = 'Image too large (max 400 KB).';
     status.className   = 'err';
     event.target.value = '';
     return;
   }
 
-  status.textContent = 'uploading...';
+  status.textContent = 'Uploading...';
   status.className   = '';
-// remove imagem antiga + specs
-editor.querySelectorAll('img').forEach(el => el.remove());
-editor.querySelectorAll('.pic-specs').forEach(el => el.remove());
 
-  // Get dimensions
-  const tmpURL  = URL.createObjectURL(file);
-  const tmpImg  = new Image();
-  tmpImg.src    = tmpURL;
+  // Measure dimensions before upload
+  const tmpURL = URL.createObjectURL(file);
+  const tmpImg = new Image();
+  tmpImg.src   = tmpURL;
   await new Promise(res => { tmpImg.onload = res; tmpImg.onerror = res; });
   const w = tmpImg.naturalWidth;
   const h = tmpImg.naturalHeight;
   URL.revokeObjectURL(tmpURL);
 
+  // Preserve existing text
+  const existingText = editor.innerText.replace(/\u200B/g, '').trim();
+
   try {
     const imgUrl = await uploadToCloudinary(file);
-    editor.focus();
 
-    // File info — red, non-editable, ABOVE image
+    // Build: [specs] [img float:left] [text node]
     const specs = document.createElement('div');
     specs.className       = 'pic-specs';
     specs.contentEditable = 'false';
-    specs.style.cssText   = 'font-family:monospace;font-size:11px;color:#cc0000;margin:4px 0 1px;display:block;cursor:default;';
-    specs.textContent     = `File: ${fileName} (${fileSizeKB} KB, ${w}x${h})`;
+    specs.style.cssText   = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;cursor:default;clear:both;';
+    specs.textContent     = `File: ${fileName} (${fileSizeKB} KB, ${w}×${h})`;
 
-    // Image — float left
     const img = document.createElement('img');
     img.src           = imgUrl;
-    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:4px 12px 8px 0;border:1px solid #aaa;';
-    
+    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
+
+    // Text node: existing text or zero-width space so cursor has somewhere to land
+    const textNode = document.createTextNode(existingText || '\u200B');
+
+    editor.innerHTML = '';
+    editor.appendChild(specs);
+    editor.appendChild(img);
+    editor.appendChild(textNode);
+
+    // Place cursor at end of text node
+    editor.focus();
+    const range = document.createRange();
+    range.setStart(textNode, textNode.length);
+    range.collapse(true);
     const sel = window.getSelection();
-    if (sel && sel.rangeCount > 0 && editor.contains(sel.anchorNode)) {
-      const range = sel.getRangeAt(0);
-      range.deleteContents();
-      // insertNode inserts in reverse order when using same range
-     const frag = document.createDocumentFragment();
-frag.appendChild(specs);
-frag.appendChild(img);
+    sel.removeAllRanges();
+    sel.addRange(range);
 
-range.insertNode(frag);
-      range.collapse(true);
-      sel.removeAllRanges();
-      sel.addRange(range);
-    } else {
-      editor.appendChild(specs);
-      editor.appendChild(img);
-    }
-
-    status.textContent = 'image uploaded!';
+    fileDisplay.textContent     = fileName;
+    removeBtn.style.display     = 'inline-block';
+    status.textContent = 'Image uploaded!';
     status.className   = 'ok';
+
   } catch (err) {
-    status.textContent = 'upload failed';
+    status.textContent = 'Upload failed.';
     status.className   = 'err';
     console.error(err);
   }
@@ -469,75 +650,77 @@ range.insertNode(frag);
   updatePreview();
 }
 
-function buildEmailHTML(editorHTML) {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = editorHTML;
+// ─────────────────────────────────────────────
+// REMOVE ATTACHMENT
+// ─────────────────────────────────────────────
+function removeAttachment() {
+  editor.querySelectorAll('img').forEach(el => el.remove());
+  editor.querySelectorAll('.pic-specs').forEach(el => el.remove());
 
-  // Style uploaded images for email
-  tmp.querySelectorAll('img').forEach(img => {
-    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #ccc;display:block;';
-  });
+  document.getElementById('fileNameDisplay').textContent = 'No file chosen';
+  document.getElementById('removeBtn').style.display    = 'none';
+  document.getElementById('statusMsg').textContent      = '';
+  document.getElementById('statusMsg').className        = '';
 
-  // Clean pic-specs for email
-  tmp.querySelectorAll('.pic-specs').forEach(el => {
-    el.removeAttribute('contenteditable');
-    el.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;';
-  });
+  // Clean up any dangling zero-width spaces
+  editor.innerHTML = editor.innerHTML.replace(/\u200B/g, '');
 
-  // Handle plain-text image URLs
-  tmp.childNodes.forEach(node => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const re = /(https?:\/\/\S+\.(?:jpg|jpeg|png|gif|webp)(\?\S*)?)/gi;
-      if (re.test(node.textContent)) {
-        const span = document.createElement('span');
-        span.innerHTML = node.textContent.replace(re,
-          url => `<a href="${url}" target="_blank" style="display:block;"><img src="${url}" style="max-width:100%;display:block;margin:4px 0;border:1px solid rgba(0,0,0,.15);float:left;margin-right:12px;"></a>`
-        );
-        node.replaceWith(span);
-      }
-    }
-  });
-
-  return tmp.innerHTML;
+  updatePreview();
+  editor.focus();
 }
 
+// ─────────────────────────────────────────────
+// SEND
+// ─────────────────────────────────────────────
 async function sendMsg() {
-  const msgText = editor.innerText.trim();
-  const hasImg  = editor.querySelector('img') !== null;
+  const rawText = editor.innerText.replace(/\u200B/g, '').trim();
+  const hasImg  = !!editor.querySelector('img');
   const status  = document.getElementById('statusMsg');
   const btn     = document.getElementById('sendBtn');
 
-  if (!msgText && !hasImg) {
-    status.textContent = 'write something first.';
+  if (!rawText && !hasImg) {
+    status.textContent = 'Write something first.';
     status.className   = 'err';
     return;
   }
 
   btn.disabled       = true;
   status.className   = '';
-  status.textContent = 'sending...';
+  status.textContent = 'Sending...';
 
-  const finalHTML = buildEmailHTML(editor.innerHTML);
+  const postNumber = await incrementPostCount();
+  const timeStr    = getChanTime();
+  const finalHTML  = buildEmailHTML(editor.innerHTML);
 
   try {
     await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
       from_name:    'Anonymous',
       from_email:   'anonymous@noreply.com',
       subject:      'anonymous message — watanagashi archive',
-      message:      msgText,
+      message:      rawText,
       message_html: finalHTML,
-      time:         getTimeStr(),
-      name:         'Anonymous',
+      time:         timeStr,
+      post_number:  postNumber,
     });
-    status.textContent   = 'post sent!';
-    status.className     = 'ok';
+
+    status.textContent = `Post sent! No.${postNumber}`;
+    status.className   = 'ok';
+
     editor.innerHTML     = '';
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
-  } catch(err) {
-    status.textContent = 'failed — trenchgun1337@gmail.com';
+
+    document.getElementById('fileNameDisplay').textContent = 'No file chosen';
+    document.getElementById('removeBtn').style.display    = 'none';
+
+    nextPostNumber = typeof postNumber === 'number' ? postNumber + 1 : '?';
+    document.getElementById('previewNo').textContent = 'No.' + nextPostNumber;
+
+  } catch (err) {
+    status.textContent = 'Failed — trenchgun1337@gmail.com';
     status.className   = 'err';
     console.error(err);
   }
+
   btn.disabled = false;
 }
 </script>
