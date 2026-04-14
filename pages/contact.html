@@ -213,6 +213,10 @@ a { color:#000; text-decoration:none; }
 
 @media (max-width:800px) { #pageWrap { width:100%; } }
 @media (max-width:600px) { body { padding:8px 4px 24px; background-attachment:scroll; } }
+
+#msgEditor {
+  overflow: auto;
+}
 </style>
 </head>
 <body>
@@ -406,6 +410,9 @@ async function insertImage(event) {
 
   status.textContent = 'uploading...';
   status.className   = '';
+// remove imagem antiga + specs
+editor.querySelectorAll('img').forEach(el => el.remove());
+editor.querySelectorAll('.pic-specs').forEach(el => el.remove());
 
   // Get dimensions
   const tmpURL  = URL.createObjectURL(file);
@@ -431,24 +438,23 @@ async function insertImage(event) {
     const img = document.createElement('img');
     img.src           = imgUrl;
     img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:4px 12px 8px 0;border:1px solid #aaa;';
-    // Clear
-    const clr = document.createElement('div');
-    clr.style.cssText = 'clear:both;';
-
+    
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0 && editor.contains(sel.anchorNode)) {
       const range = sel.getRangeAt(0);
       range.deleteContents();
       // insertNode inserts in reverse order when using same range
-      [clr, img, specs].forEach(n => range.insertNode(n));
-      range.setStartAfter(clr);
+     const frag = document.createDocumentFragment();
+frag.appendChild(specs);
+frag.appendChild(img);
+
+range.insertNode(frag);
       range.collapse(true);
       sel.removeAllRanges();
       sel.addRange(range);
     } else {
       editor.appendChild(specs);
       editor.appendChild(img);
-      editor.appendChild(clr);
     }
 
     status.textContent = 'image uploaded!';
