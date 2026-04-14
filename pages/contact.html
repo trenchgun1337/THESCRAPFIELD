@@ -384,14 +384,13 @@ imgTemp.onload = () => {
   const width = imgTemp.width;
   const height = imgTemp.height;
 
-  const info = document.createElement('div');
-  info.style.fontSize = '11px';
-  info.style.color = '#777';
-  info.style.margin = '4px 0';
+  const infoHTML = `
+<div style="font-family:monospace; font-size:12px; color:#789922; margin:4px 0;">
+  File: ${fileName} (${fileSizeKB} KB, ${width}x${height})
+</div>
+`;
 
-  info.textContent = `File: ${fileName} (${fileSizeKB} KB, ${width}x${height})`;
-
-  editor.appendChild(info);
+editor.innerHTML += infoHTML;
 };
 imgTemp.src = imgURL;
 
