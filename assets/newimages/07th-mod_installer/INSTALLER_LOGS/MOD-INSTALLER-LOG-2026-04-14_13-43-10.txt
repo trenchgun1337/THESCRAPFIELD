@@ -1,0 +1,1331 @@
+Launcher is located at [C:\Users\Pichau\Downloads\WATANAGASHIARCHIVE\assets\newimages\07th-Mod.Installer.Windows.exe]
+> Install Started On 2026-04-14 13:43:11.208074
+Python 3.7.7 (tags/v3.7.7:d7c567b08f, Mar 10 2020, 09:44:33) [MSC v.1900 32 bit (Intel)]
+Operating System: Windows 10 AMD64 (10.0.19041)
+Locale - Default: utf-8 | Preferred: cp1252 | Filesystem: utf-8
+Installer Build Information: Git Tag: v1.4.1
+Build Date:2025-11-07 23:46:51.298499
+Installer is being run from: [C:\Users\Pichau\Downloads\WATANAGASHIARCHIVE\assets\newimages\07th-mod_installer]
+
+
+----------------------------------------- PLEASE READ -----------------------------------------
+
+ - Do not close this window until you are finished with the installer! Closing this window will
+   stop the installer!
+ - A web page should have opened - do not close it! The web page is the installer's user interface.
+ - On the web page, click the game you want to mod to start the installation.
+
+----------------------------------------- PLEASE READ -----------------------------------------
+
+If the web page did not open, you can manually navigate to http://127.0.0.1:8000/loading_screen.html in your browser.
+NOTE: Launching browser from Python script is disabled. Server started at http://127.0.0.1:8000/loading_screen.html, info written to server-info.json
+Found 7-zip at [./7za64]
+Found aria2c at [./aria2c]
+Testing Curl: [['curl', '-I', 'https://github.com/']]
+chooseCurlCertificate(): Will use certificate [None] when using cURL
+chooseURLOpenCertificate(): Will use certificate [None] for URLOpen()
+Testing Aria2C: [['./aria2c', 'https://github.com/', '--dry-run=true']]
+chooseAria2Certificate(): Will use certificate [None] when using Aria2C
+----- BEGIN EXECUTING COMMAND: [./aria2c --file-allocation=none --continue=true --retry-wait=5 -m 0 -x 1 -s 8 -j 1 --auto-file-renaming=false --allow-overwrite=true --follow-metalink=false --disable-ipv6=true https://github.com/07th-mod/python-patcher-metadata/releases/latest/download/installerMetadata.zip --out=installerMetadata.zip] -----
+Downloading [https://api.github.com/repos/07th-mod/python-patcher/releases?per_page=1] using Python urlopen...
+
+04/14 13:43:12 [[1;32mNOTICE[0m]
+ Downloading 1 item(s)
+
+04/14 13:43:12 [[1;32mNOTICE[0m]
+ CUID#7 - Redirecting to https://github.com/07th-mod/python-patcher-metadata/releases/download/2026-04-05_13-22-42/installerMetadata.zip
+> Installer is latest version: v1.4.1
+
+04/14 13:43:13 [[1;32mNOTICE[0m]
+ CUID#7 - Redirecting to https://release-assets.githubusercontent.com/github-production-release-asset/754038910/6465805a-8063-40cf-bb7e-20ccb9bd43eb?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-04-14T17%3A24%3A27Z&rscd=attachment%3B+filename%3DinstallerMetadata.zip&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-04-14T16%3A23%3A38Z&ske=2026-04-14T17%3A24%3A27Z&sks=b&skv=2018-11-09&sig=lob%2BRZ%2F%2Be6sbRHo9ujnnblA1sItyEFJwGw15FAoMBVY%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc3NjE4NTI5NSwibmJmIjoxNzc2MTg0OTk1LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.ECu4JXBWv1LNn5AGRCPHElvU11IXLZ4oJSdN5BQUJhs&response-content-disposition=attachment%3B%20filename%3DinstallerMetadata.zip&response-content-type=application%2Foctet-stream
+
+04/14 13:43:13 [[1;32mNOTICE[0m]
+ Download complete: C:/Users/Pichau/Downloads/WATANAGASHIARCHIVE/assets/newimages/07th-mod_installer/installerMetadata.zip
+
+Download Results:
+gid   |stat|avg speed  |path/URI
+======+====+===========+=======================================================
+a472dd|OK  |    93KiB/s|C:/Users/Pichau/Downloads/WATANAGASHIARCHIVE/assets/newimages/07th-mod_installer/installerMetadata.zip
+
+Status Legend:
+(OK):download completed.
+--------------- EXECUTION FINISHED ---------------
+
+----- BEGIN EXECUTING COMMAND: [./7za64 x .\installerMetadata.zip -aoa -bso1 -bsp1 -bse2 -oinstallerMetadata] -----
+ 
+7-Zip (a) 18.05 (x64) : Copyright (c) 1999-2018 Igor Pavlov : 2018-04-30 
+ 
+Scanning the drive for archives: 
+  0M Scan .\              1 file, 14679 bytes (15 KiB) 
+ 
+Extracting archive: .\installerMetadata.zip 
+-- 
+Path = .\installerMetadata.zip 
+Type = zip 
+Physical Size = 14679 
+ 
+0%
+      Everything is Ok 
+ 
+Files: 4 
+Size:       124465 
+Compressed: 14679 
+--------------- EXECUTION FINISHED ---------------
+
+Got Request [subModHandles] Data [[]]
+Got Request [setModName] Data [{'modName': 'Rei'}]
+Got Request [subModHandles] Data [[]]
+Got Request [gamePaths] Data [{'id': 16}]
+Scanning Steam install locations: ['c:\\program files (x86)\\steam']
+Scanning Secondary install locations:
+ - [c:\games\mangagamer] - [WinError 3] O sistema não pode encontrar o caminho especificado: 'c:\\games\\mangagamer'
+ - [c:\gog games] - OK
+
+The following games were found:
+ - Rei (HigurashiEp09.exe) at [c:\gog games\higurashi when they cry hou - rei]
+
+The following games were found:
+ - Rei (HigurashiEp09.exe) at [c:\gog games\higurashi when they cry hou - rei]
+Unity Version: Read [2019.4.3] from [c:\gog games\higurashi when they cry hou - rei\HigurashiEp09_Data\resources.assets]
+
+The following games were found:
+ - Rei (HigurashiEp09.exe) at [c:\gog games\higurashi when they cry hou - rei]
+Unity Version: Read [2019.4.3] from [c:\gog games\higurashi when they cry hou - rei\HigurashiEp09_Data\resources.assets]
+Successfully created secondary log file at: [c:\gog games\higurashi when they cry hou - rei\HigurashiEp09_Data\MOD-INSTALLER-LOG-2026-04-14_13-43-10.txt]
+Unity Version: Read [2019.4.3] from [c:\gog games\higurashi when they cry hou - rei\HigurashiEp09_Data\resources.assets]
+Full Update: True (3/3) excluding mod options
+
+Enabled Mod Options:
+  - Alternate Languages: English
+
+<<< Status: 1% Querying URLs to be Downloaded >>>
+Querying URL: [https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/rei-base.7z.meta4]
+<<< Status: 1% Inspecting URL 'https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/rei-base.7z.meta4' (attempt 1/5) >>>
+Downloading [https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/rei-base.7z.meta4] using Python urlopen...
+Metalink contains:  [('rei-base.7z', 1443158754, 'https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/rei-base.7z')]
+Querying URL: [https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/Rei-UI_2019.4.3_win.7z]
+<<< Status: 1% Inspecting URL 'https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/Rei-UI_2019.4.3_win.7z' (attempt 1/5) >>>
+Querying URL: [https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip]
+<<< Status: 1% Inspecting URL 'https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip' (attempt 1/5) >>>
+
+First these files will be downloaded (Total Download Size: 1.5 GB):
+ - https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/rei-base.7z.meta4
+ - https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/Rei-UI_2019.4.3_win.7z
+ - https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip
+
+Then these files will be extracted or copied:
+ - [rei-base.7z (1.4 GB)] to [c:\gog games\higurashi when they cry hou - rei] (metalink)
+ - [Rei-UI_2019.4.3_win.7z (4 MB)] to [c:\gog games\higurashi when they cry hou - rei] 
+ - [Rei.Voice.and.Graphics.Patch.zip (6 MB)] to [c:\gog games\higurashi when they cry hou - rei] 
+
+Downloading...
+ExtractableItem: Clearing [Rei-UI_2019.4.3_win.7z] as local [None] and remote [Fri, 13 Sep 2024 15:57:31 GMT] last-modified differ
+ExtractableItem: Clearing [Rei.Voice.and.Graphics.Patch.zip] as local [None] and remote [Sun, 05 Apr 2026 13:16:03 GMT] last-modified differ
+<<< Status: 0% Downloading: 1.5 GB (total) DL Folder: [Rei Downloads] URL: [https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/rei-base.7z.meta4] (Attempt: 1/10) >>>
+----- BEGIN EXECUTING COMMAND: [./aria2c --file-allocation=none --continue=true --retry-wait=5 -m 0 -x 1 -s 8 -j 1 --auto-file-renaming=false --allow-overwrite=true --follow-metalink=mem --check-integrity=true --disable-ipv6=true -d Rei Downloads https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/rei-base.7z.meta4] -----
+
+04/14 13:44:58 [[1;32mNOTICE[0m]
+ Downloading 1 item(s)
+
+04/14 13:44:58 [[1;32mNOTICE[0m]
+ CUID#7 - Redirecting to https://release-assets.githubusercontent.com/github-production-release-asset/820871634/0a1ecdac-ee9d-4ce5-86c3-5507a75bcedf?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-04-14T17%3A36%3A00Z&rscd=attachment%3B+filename%3Drei-base.7z.meta4&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-04-14T16%3A35%3A21Z&ske=2026-04-14T17%3A36%3A00Z&sks=b&skv=2018-11-09&sig=FrXX%2Fyw6RArOq9KAKzJSGle3trHpIqQ3URp9mVa9BdM%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc3NjE4NTQwMCwibmJmIjoxNzc2MTg1MTAwLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.1pp00G6Vs43T1kkLfXF12-5rPDVY-K5tdgYlZybONCI&response-content-disposition=attachment%3B%20filename%3Drei-base.7z.meta4&response-content-type=application%2Foctet-stream
+
+04/14 13:44:58 [[1;32mNOTICE[0m]
+Download complete: [MEMORY]
+rei-base.7z.meta4
+
+04/14 13:44:58 [[1;31mERROR[0m]
+ Checksum error detected. file=Rei Downloads/rei-base.7z
+
+04/14 13:44:58 [[1;32mNOTICE[0m]
+ CUID#9 - Redirecting to https://release-assets.githubusercontent.com/github-production-release-asset/820871634/45a14720-da73-4330-863f-b94bcafb13c1?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-04-14T17%3A24%3A56Z&rscd=attachment%3B+filename%3Drei-base.7z&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-04-14T16%3A24%3A36Z&ske=2026-04-14T17%3A24%3A56Z&sks=b&skv=2018-11-09&sig=QIeIWmBTdYVjh7tb1LKDzUvs2C2%2BJzKFgHikW1FVDIY%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc3NjE4ODcwMSwibmJmIjoxNzc2MTg1MTAxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.u-ToVNBlcsMpZZYcUfH0r4O6C7okrJZdzp9U1IMYAaY&response-content-disposition=attachment%3B%20filename%3Drei-base.7z&response-content-type=application%2Foctet-stream
+[#4ca05e 384KiB/1.3GiB(0%) CN:1 DL:2.4MiB ETA:9m25s]
+[#4ca05e 1.7MiB/1.3GiB(0%) CN:1 DL:1.4MiB ETA:15m38s]
+[#4ca05e 4.9MiB/1.3GiB(0%) CN:1 DL:2.2MiB ETA:10m14s]
+[#4ca05e 8.3MiB/1.3GiB(0%) CN:1 DL:2.5MiB ETA:8m49s]
+[#4ca05e 10MiB/1.3GiB(0%) CN:1 DL:2.5MiB ETA:8m59s]
+[#4ca05e 13MiB/1.3GiB(0%) CN:1 DL:2.5MiB ETA:8m44s]
+[#4ca05e 16MiB/1.3GiB(1%) CN:1 DL:2.7MiB ETA:8m23s]
+[#4ca05e 19MiB/1.3GiB(1%) CN:1 DL:2.7MiB ETA:8m14s]
+[#4ca05e 22MiB/1.3GiB(1%) CN:1 DL:2.7MiB ETA:8m13s]
+[#4ca05e 24MiB/1.3GiB(1%) CN:1 DL:2.6MiB ETA:8m28s]
+[#4ca05e 27MiB/1.3GiB(1%) CN:1 DL:2.7MiB ETA:8m1s]
+[#4ca05e 30MiB/1.3GiB(2%) CN:1 DL:2.8MiB ETA:7m46s]
+[#4ca05e 33MiB/1.3GiB(2%) CN:1 DL:2.7MiB ETA:8m9s]
+[#4ca05e 35MiB/1.3GiB(2%) CN:1 DL:2.7MiB ETA:7m59s]
+[#4ca05e 38MiB/1.3GiB(2%) CN:1 DL:2.7MiB ETA:8m6s]
+[#4ca05e 41MiB/1.3GiB(2%) CN:1 DL:2.7MiB ETA:8m9s]
+[#4ca05e 44MiB/1.3GiB(3%) CN:1 DL:2.7MiB ETA:8m7s]
+[#4ca05e 47MiB/1.3GiB(3%) CN:1 DL:2.7MiB ETA:7m59s]
+[#4ca05e 50MiB/1.3GiB(3%) CN:1 DL:2.8MiB ETA:7m40s]
+[#4ca05e 53MiB/1.3GiB(3%) CN:1 DL:2.9MiB ETA:7m31s]
+[#4ca05e 56MiB/1.3GiB(4%) CN:1 DL:2.8MiB ETA:7m44s]
+[#4ca05e 57MiB/1.3GiB(4%) CN:1 DL:2.7MiB ETA:8m2s]
+[#4ca05e 60MiB/1.3GiB(4%) CN:1 DL:2.7MiB ETA:7m57s]
+[#4ca05e 63MiB/1.3GiB(4%) CN:1 DL:2.7MiB ETA:7m51s]
+[#4ca05e 66MiB/1.3GiB(4%) CN:1 DL:2.8MiB ETA:7m43s]
+[#4ca05e 68MiB/1.3GiB(4%) CN:1 DL:2.7MiB ETA:7m54s]
+[#4ca05e 71MiB/1.3GiB(5%) CN:1 DL:2.7MiB ETA:7m58s]
+[#4ca05e 72MiB/1.3GiB(5%) CN:1 DL:2.4MiB ETA:8m45s]
+[#4ca05e 75MiB/1.3GiB(5%) CN:1 DL:2.4MiB ETA:9m1s]
+[#4ca05e 78MiB/1.3GiB(5%) CN:1 DL:2.4MiB ETA:8m51s]
+[#4ca05e 81MiB/1.3GiB(5%) CN:1 DL:2.5MiB ETA:8m36s]
+[#4ca05e 83MiB/1.3GiB(6%) CN:1 DL:2.6MiB ETA:8m2s]
+[#4ca05e 86MiB/1.3GiB(6%) CN:1 DL:2.6MiB ETA:7m59s]
+[#4ca05e 89MiB/1.3GiB(6%) CN:1 DL:2.6MiB ETA:7m56s]
+[#4ca05e 93MiB/1.3GiB(6%) CN:1 DL:2.7MiB ETA:7m53s]
+[#4ca05e 95MiB/1.3GiB(6%) CN:1 DL:2.7MiB ETA:7m52s]
+[#4ca05e 98MiB/1.3GiB(7%) CN:1 DL:2.6MiB ETA:7m55s]
+[#4ca05e 101MiB/1.3GiB(7%) CN:1 DL:2.8MiB ETA:7m27s]
+[#4ca05e 104MiB/1.3GiB(7%) CN:1 DL:2.9MiB ETA:7m9s]
+[#4ca05e 107MiB/1.3GiB(7%) CN:1 DL:3.0MiB ETA:7m1s]
+[#4ca05e 110MiB/1.3GiB(8%) CN:1 DL:2.9MiB ETA:7m3s]
+[#4ca05e 113MiB/1.3GiB(8%) CN:1 DL:2.9MiB ETA:7m5s]
+[#4ca05e 116MiB/1.3GiB(8%) CN:1 DL:2.9MiB ETA:7m5s]
+[#4ca05e 119MiB/1.3GiB(8%) CN:1 DL:3.0MiB ETA:6m57s]
+[#4ca05e 123MiB/1.3GiB(8%) CN:1 DL:3.0MiB ETA:6m49s]
+[#4ca05e 126MiB/1.3GiB(9%) CN:1 DL:3.1MiB ETA:6m38s]
+[#4ca05e 129MiB/1.3GiB(9%) CN:1 DL:3.0MiB ETA:6m42s]
+[#4ca05e 130MiB/1.3GiB(9%) CN:1 DL:2.8MiB ETA:7m15s]
+[#4ca05e 130MiB/1.3GiB(9%) CN:1 DL:2.6MiB ETA:7m56s]
+[#4ca05e 134MiB/1.3GiB(9%) CN:1 DL:2.5MiB ETA:8m1s]
+[#4ca05e 137MiB/1.3GiB(9%) CN:1 DL:2.6MiB ETA:7m54s]
+[#4ca05e 138MiB/1.3GiB(10%) CN:1 DL:2.3MiB ETA:8m47s]
+[#4ca05e 139MiB/1.3GiB(10%) CN:1 DL:2.0MiB ETA:9m55s]
+[#4ca05e 142MiB/1.3GiB(10%) CN:1 DL:2.0MiB ETA:10m3s]
+[#4ca05e 145MiB/1.3GiB(10%) CN:1 DL:1.9MiB ETA:10m17s]
+[#4ca05e 148MiB/1.3GiB(10%) CN:1 DL:2.0MiB ETA:10m4s]
+[#4ca05e 150MiB/1.3GiB(10%) CN:1 DL:2.2MiB ETA:9m16s]
+[#4ca05e 153MiB/1.3GiB(11%) CN:1 DL:2.4MiB ETA:8m19s]
+[#4ca05e 156MiB/1.3GiB(11%) CN:1 DL:2.4MiB ETA:8m27s]
+                                                                                  *** Download Progress Summary as of Tue Apr 14 13:45:58 2026 *** 
+===============================================================================
+[#4ca05e 159MiB/1.3GiB(11%) CN:1 DL:2.3MiB ETA:8m28s]
+
+FILE: Rei Downloads/rei-base.7z
+-------------------------------------------------------------------------------
+
+[#4ca05e 159MiB/1.3GiB(11%) CN:1 DL:2.3MiB ETA:8m28s]
+[#4ca05e 161MiB/1.3GiB(11%) CN:1 DL:2.5MiB ETA:8m1s]
+[#4ca05e 163MiB/1.3GiB(11%) CN:1 DL:2.6MiB ETA:7m40s]
+[#4ca05e 165MiB/1.3GiB(12%) CN:1 DL:2.5MiB ETA:8m2s]
+[#4ca05e 168MiB/1.3GiB(12%) CN:1 DL:2.5MiB ETA:7m50s]
+[#4ca05e 172MiB/1.3GiB(12%) CN:1 DL:2.6MiB ETA:7m35s]
+[#4ca05e 175MiB/1.3GiB(12%) CN:1 DL:2.6MiB ETA:7m32s]
+[#4ca05e 177MiB/1.3GiB(12%) CN:1 DL:2.6MiB ETA:7m32s]
+[#4ca05e 179MiB/1.3GiB(13%) CN:1 DL:2.5MiB ETA:7m41s]
+[#4ca05e 182MiB/1.3GiB(13%) CN:1 DL:2.6MiB ETA:7m37s]
+[#4ca05e 186MiB/1.3GiB(13%) CN:1 DL:2.6MiB ETA:7m23s]
+[#4ca05e 189MiB/1.3GiB(13%) CN:1 DL:2.8MiB ETA:7m]
+[#4ca05e 192MiB/1.3GiB(13%) CN:1 DL:2.9MiB ETA:6m44s]
+[#4ca05e 195MiB/1.3GiB(14%) CN:1 DL:3.0MiB ETA:6m32s]
+[#4ca05e 198MiB/1.3GiB(14%) CN:1 DL:2.9MiB ETA:6m35s]
+[#4ca05e 200MiB/1.3GiB(14%) CN:1 DL:2.8MiB ETA:6m47s]
+[#4ca05e 203MiB/1.3GiB(14%) CN:1 DL:2.9MiB ETA:6m43s]
+[#4ca05e 207MiB/1.3GiB(15%) CN:1 DL:2.9MiB ETA:6m30s]
+[#4ca05e 210MiB/1.3GiB(15%) CN:1 DL:3.1MiB ETA:6m15s]
+[#4ca05e 213MiB/1.3GiB(15%) CN:1 DL:3.0MiB ETA:6m17s]
+[#4ca05e 216MiB/1.3GiB(15%) CN:1 DL:3.0MiB ETA:6m21s]
+[#4ca05e 219MiB/1.3GiB(15%) CN:1 DL:3.0MiB ETA:6m17s]
+[#4ca05e 222MiB/1.3GiB(16%) CN:1 DL:3.0MiB ETA:6m13s]
+[#4ca05e 225MiB/1.3GiB(16%) CN:1 DL:3.1MiB ETA:6m10s]
+[#4ca05e 228MiB/1.3GiB(16%) CN:1 DL:3.0MiB ETA:6m14s]
+[#4ca05e 229MiB/1.3GiB(16%) CN:1 DL:2.9MiB ETA:6m32s]
+[#4ca05e 230MiB/1.3GiB(16%) CN:1 DL:2.5MiB ETA:7m26s]
+[#4ca05e 233MiB/1.3GiB(16%) CN:1 DL:2.2MiB ETA:8m33s]
+[#4ca05e 237MiB/1.3GiB(17%) CN:1 DL:2.3MiB ETA:8m13s]
+[#4ca05e 239MiB/1.3GiB(17%) CN:1 DL:2.2MiB ETA:8m16s]
+[#4ca05e 243MiB/1.3GiB(17%) CN:1 DL:2.3MiB ETA:8m11s]
+[#4ca05e 246MiB/1.3GiB(17%) CN:1 DL:2.2MiB ETA:8m23s]
+[#4ca05e 248MiB/1.3GiB(18%) CN:1 DL:2.1MiB ETA:8m40s]
+[#4ca05e 250MiB/1.3GiB(18%) CN:1 DL:2.2MiB ETA:8m24s]
+[#4ca05e 253MiB/1.3GiB(18%) CN:1 DL:2.7MiB ETA:6m52s]
+[#4ca05e 256MiB/1.3GiB(18%) CN:1 DL:2.7MiB ETA:6m42s]
+[#4ca05e 260MiB/1.3GiB(18%) CN:1 DL:2.9MiB ETA:6m18s]
+[#4ca05e 262MiB/1.3GiB(19%) CN:1 DL:2.7MiB ETA:6m49s]
+[#4ca05e 265MiB/1.3GiB(19%) CN:1 DL:2.7MiB ETA:6m46s]
+[#4ca05e 268MiB/1.3GiB(19%) CN:1 DL:2.7MiB ETA:6m43s]
+[#4ca05e 271MiB/1.3GiB(19%) CN:1 DL:2.7MiB ETA:6m36s]
+[#4ca05e 275MiB/1.3GiB(20%) CN:1 DL:2.9MiB ETA:6m18s]
+[#4ca05e 277MiB/1.3GiB(20%) CN:1 DL:2.8MiB ETA:6m20s]
+[#4ca05e 280MiB/1.3GiB(20%) CN:1 DL:3.0MiB ETA:6m4s]
+[#4ca05e 284MiB/1.3GiB(20%) CN:1 DL:3.0MiB ETA:5m59s]
+[#4ca05e 287MiB/1.3GiB(20%) CN:1 DL:2.9MiB ETA:6m5s]
+[#4ca05e 289MiB/1.3GiB(21%) CN:1 DL:3.0MiB ETA:5m52s]
+[#4ca05e 292MiB/1.3GiB(21%) CN:1 DL:3.0MiB ETA:5m51s]
+[#4ca05e 295MiB/1.3GiB(21%) CN:1 DL:3.0MiB ETA:5m59s]
+[#4ca05e 298MiB/1.3GiB(21%) CN:1 DL:2.9MiB ETA:6m3s]
+[#4ca05e 301MiB/1.3GiB(21%) CN:1 DL:2.9MiB ETA:6m7s]
+[#4ca05e 303MiB/1.3GiB(22%) CN:1 DL:2.9MiB ETA:6m8s]
+[#4ca05e 307MiB/1.3GiB(22%) CN:1 DL:2.9MiB ETA:6m6s]
+[#4ca05e 310MiB/1.3GiB(22%) CN:1 DL:2.8MiB ETA:6m15s]
+[#4ca05e 313MiB/1.3GiB(22%) CN:1 DL:2.9MiB ETA:6m4s]
+[#4ca05e 315MiB/1.3GiB(22%) CN:1 DL:2.7MiB ETA:6m20s]
+[#4ca05e 317MiB/1.3GiB(23%) CN:1 DL:2.7MiB ETA:6m21s]
+[#4ca05e 321MiB/1.3GiB(23%) CN:1 DL:2.8MiB ETA:6m8s]
+[#4ca05e 323MiB/1.3GiB(23%) CN:1 DL:2.7MiB ETA:6m21s]
+                                                                                  *** Download Progress Summary as of Tue Apr 14 13:46:58 2026 *** 
+===============================================================================
+[#4ca05e 325MiB/1.3GiB(23%) CN:1 DL:2.7MiB ETA:6m23s]
+
+FILE: Rei Downloads/rei-base.7z
+-------------------------------------------------------------------------------
+
+[#4ca05e 325MiB/1.3GiB(23%) CN:1 DL:2.7MiB ETA:6m23s]
+[#4ca05e 328MiB/1.3GiB(23%) CN:1 DL:2.7MiB ETA:6m15s]
+[#4ca05e 331MiB/1.3GiB(24%) CN:1 DL:2.7MiB ETA:6m16s]
+[#4ca05e 334MiB/1.3GiB(24%) CN:1 DL:2.7MiB ETA:6m15s]
+[#4ca05e 337MiB/1.3GiB(24%) CN:1 DL:2.7MiB ETA:6m20s]
+[#4ca05e 341MiB/1.3GiB(24%) CN:1 DL:2.7MiB ETA:6m14s]
+[#4ca05e 343MiB/1.3GiB(24%) CN:1 DL:2.9MiB ETA:5m53s]
+[#4ca05e 348MiB/1.3GiB(25%) CN:1 DL:3.0MiB ETA:5m38s]
+[#4ca05e 351MiB/1.3GiB(25%) CN:1 DL:3.0MiB ETA:5m35s]
+[#4ca05e 355MiB/1.3GiB(25%) CN:1 DL:3.3MiB ETA:5m9s]
+[#4ca05e 358MiB/1.3GiB(26%) CN:1 DL:3.3MiB ETA:5m3s]
+[#4ca05e 361MiB/1.3GiB(26%) CN:1 DL:3.3MiB ETA:5m]
+[#4ca05e 364MiB/1.3GiB(26%) CN:1 DL:3.3MiB ETA:5m]
+[#4ca05e 367MiB/1.3GiB(26%) CN:1 DL:3.2MiB ETA:5m8s]
+[#4ca05e 369MiB/1.3GiB(26%) CN:1 DL:3.2MiB ETA:5m10s]
+[#4ca05e 372MiB/1.3GiB(27%) CN:1 DL:3.1MiB ETA:5m21s]
+[#4ca05e 375MiB/1.3GiB(27%) CN:1 DL:3.1MiB ETA:5m20s]
+[#4ca05e 377MiB/1.3GiB(27%) CN:1 DL:2.9MiB ETA:5m40s]
+[#4ca05e 379MiB/1.3GiB(27%) CN:1 DL:2.7MiB ETA:5m57s]
+[#4ca05e 382MiB/1.3GiB(27%) CN:1 DL:2.7MiB ETA:6m4s]
+[#4ca05e 385MiB/1.3GiB(28%) CN:1 DL:2.6MiB ETA:6m9s]
+[#4ca05e 388MiB/1.3GiB(28%) CN:1 DL:2.6MiB ETA:6m17s]
+[#4ca05e 391MiB/1.3GiB(28%) CN:1 DL:2.6MiB ETA:6m13s]
+[#4ca05e 394MiB/1.3GiB(28%) CN:1 DL:2.7MiB ETA:5m57s]
+[#4ca05e 396MiB/1.3GiB(28%) CN:1 DL:2.7MiB ETA:6m1s]
+[#4ca05e 399MiB/1.3GiB(29%) CN:1 DL:2.7MiB ETA:5m58s]
+[#4ca05e 401MiB/1.3GiB(29%) CN:1 DL:2.6MiB ETA:6m9s]
+[#4ca05e 404MiB/1.3GiB(29%) CN:1 DL:2.7MiB ETA:5m48s]
+[#4ca05e 407MiB/1.3GiB(29%) CN:1 DL:2.8MiB ETA:5m43s]
+[#4ca05e 409MiB/1.3GiB(29%) CN:1 DL:2.7MiB ETA:5m56s]
+[#4ca05e 412MiB/1.3GiB(29%) CN:1 DL:2.7MiB ETA:5m49s]
+[#4ca05e 414MiB/1.3GiB(30%) CN:1 DL:2.6MiB ETA:6m5s]
+[#4ca05e 417MiB/1.3GiB(30%) CN:1 DL:2.5MiB ETA:6m9s]
+[#4ca05e 420MiB/1.3GiB(30%) CN:1 DL:2.6MiB ETA:5m59s]
+[#4ca05e 423MiB/1.3GiB(30%) CN:1 DL:2.6MiB ETA:5m55s]
+[#4ca05e 425MiB/1.3GiB(30%) CN:1 DL:2.6MiB ETA:5m57s]
+[#4ca05e 427MiB/1.3GiB(31%) CN:1 DL:2.5MiB ETA:6m6s]
+[#4ca05e 430MiB/1.3GiB(31%) CN:1 DL:2.5MiB ETA:6m7s]
+[#4ca05e 433MiB/1.3GiB(31%) CN:1 DL:2.5MiB ETA:6m7s]
+[#4ca05e 435MiB/1.3GiB(31%) CN:1 DL:2.5MiB ETA:6m6s]
+[#4ca05e 438MiB/1.3GiB(31%) CN:1 DL:2.5MiB ETA:6m10s]
+[#4ca05e 441MiB/1.3GiB(32%) CN:1 DL:2.6MiB ETA:5m58s]
+[#4ca05e 442MiB/1.3GiB(32%) CN:1 DL:2.2MiB ETA:7m4s]
+[#4ca05e 444MiB/1.3GiB(32%) CN:1 DL:2.1MiB ETA:7m13s]
+[#4ca05e 448MiB/1.3GiB(32%) CN:1 DL:2.3MiB ETA:6m33s]
+[#4ca05e 451MiB/1.3GiB(32%) CN:1 DL:2.4MiB ETA:6m25s]
+[#4ca05e 454MiB/1.3GiB(33%) CN:1 DL:2.3MiB ETA:6m25s]
+[#4ca05e 455MiB/1.3GiB(33%) CN:1 DL:2.3MiB ETA:6m39s]
+[#4ca05e 458MiB/1.3GiB(33%) CN:1 DL:2.3MiB ETA:6m32s]
+[#4ca05e 461MiB/1.3GiB(33%) CN:1 DL:2.4MiB ETA:6m20s]
+[#4ca05e 462MiB/1.3GiB(33%) CN:1 DL:2.2MiB ETA:6m41s]
+[#4ca05e 465MiB/1.3GiB(33%) CN:1 DL:2.6MiB ETA:5m49s]
+[#4ca05e 468MiB/1.3GiB(34%) CN:1 DL:2.6MiB ETA:5m44s]
+[#4ca05e 469MiB/1.3GiB(34%) CN:1 DL:2.4MiB ETA:6m9s]
+[#4ca05e 471MiB/1.3GiB(34%) CN:1 DL:2.3MiB ETA:6m21s]
+[#4ca05e 474MiB/1.3GiB(34%) CN:1 DL:2.3MiB ETA:6m27s]
+[#4ca05e 476MiB/1.3GiB(34%) CN:1 DL:2.2MiB ETA:6m43s]
+[#4ca05e 477MiB/1.3GiB(34%) CN:1 DL:2.1MiB ETA:6m51s]
+[#4ca05e 479MiB/1.3GiB(34%) CN:1 DL:2.1MiB ETA:7m1s]
+[#4ca05e 483MiB/1.3GiB(35%) CN:1 DL:2.1MiB ETA:6m51s]
+                                                                                  *** Download Progress Summary as of Tue Apr 14 13:47:59 2026 *** 
+===============================================================================
+[#4ca05e 485MiB/1.3GiB(35%) CN:1 DL:2.2MiB ETA:6m32s]
+
+FILE: Rei Downloads/rei-base.7z
+-------------------------------------------------------------------------------
+
+[#4ca05e 485MiB/1.3GiB(35%) CN:1 DL:2.2MiB ETA:6m32s]
+[#4ca05e 487MiB/1.3GiB(35%) CN:1 DL:2.1MiB ETA:6m48s]
+[#4ca05e 490MiB/1.3GiB(35%) CN:1 DL:2.2MiB ETA:6m38s]
+[#4ca05e 492MiB/1.3GiB(35%) CN:1 DL:2.3MiB ETA:6m12s]
+[#4ca05e 495MiB/1.3GiB(36%) CN:1 DL:2.1MiB ETA:6m40s]
+[#4ca05e 498MiB/1.3GiB(36%) CN:1 DL:2.3MiB ETA:6m12s]
+[#4ca05e 500MiB/1.3GiB(36%) CN:1 DL:2.4MiB ETA:5m57s]
+[#4ca05e 504MiB/1.3GiB(36%) CN:1 DL:2.5MiB ETA:5m39s]
+[#4ca05e 506MiB/1.3GiB(36%) CN:1 DL:2.4MiB ETA:5m52s]
+[#4ca05e 510MiB/1.3GiB(37%) CN:1 DL:2.6MiB ETA:5m28s]
+[#4ca05e 514MiB/1.3GiB(37%) CN:1 DL:2.8MiB ETA:5m1s]
+[#4ca05e 516MiB/1.3GiB(37%) CN:1 DL:2.7MiB ETA:5m9s]
+[#4ca05e 517MiB/1.3GiB(37%) CN:1 DL:2.5MiB ETA:5m34s]
+[#4ca05e 519MiB/1.3GiB(37%) CN:1 DL:2.6MiB ETA:5m17s]
+[#4ca05e 521MiB/1.3GiB(37%) CN:1 DL:2.5MiB ETA:5m41s]
+[#4ca05e 524MiB/1.3GiB(38%) CN:1 DL:2.7MiB ETA:5m15s]
+[#4ca05e 527MiB/1.3GiB(38%) CN:1 DL:2.7MiB ETA:5m10s]
+[#4ca05e 529MiB/1.3GiB(38%) CN:1 DL:2.4MiB ETA:5m45s]
+[#4ca05e 532MiB/1.3GiB(38%) CN:1 DL:2.3MiB ETA:5m57s]
+[#4ca05e 535MiB/1.3GiB(38%) CN:1 DL:2.3MiB ETA:5m56s]
+[#4ca05e 538MiB/1.3GiB(39%) CN:1 DL:2.5MiB ETA:5m28s]
+[#4ca05e 540MiB/1.3GiB(39%) CN:1 DL:2.5MiB ETA:5m29s]
+[#4ca05e 545MiB/1.3GiB(39%) CN:1 DL:2.8MiB ETA:4m54s]
+[#4ca05e 549MiB/1.3GiB(39%) CN:1 DL:3.0MiB ETA:4m34s]
+[#4ca05e 552MiB/1.3GiB(40%) CN:1 DL:3.0MiB ETA:4m27s]
+[#4ca05e 556MiB/1.3GiB(40%) CN:1 DL:3.1MiB ETA:4m20s]
+[#4ca05e 559MiB/1.3GiB(40%) CN:1 DL:3.2MiB ETA:4m7s]
+[#4ca05e 562MiB/1.3GiB(40%) CN:1 DL:3.2MiB ETA:4m11s]
+[#4ca05e 563MiB/1.3GiB(40%) CN:1 DL:2.9MiB ETA:4m31s]
+[#4ca05e 566MiB/1.3GiB(41%) CN:1 DL:2.9MiB ETA:4m35s]
+[#4ca05e 570MiB/1.3GiB(41%) CN:1 DL:3.1MiB ETA:4m13s]
+[#4ca05e 574MiB/1.3GiB(41%) CN:1 DL:3.1MiB ETA:4m15s]
+[#4ca05e 578MiB/1.3GiB(42%) CN:1 DL:3.0MiB ETA:4m18s]
+[#4ca05e 582MiB/1.3GiB(42%) CN:1 DL:3.1MiB ETA:4m11s]
+[#4ca05e 585MiB/1.3GiB(42%) CN:1 DL:3.1MiB ETA:4m13s]
+[#4ca05e 588MiB/1.3GiB(42%) CN:1 DL:3.1MiB ETA:4m12s]
+[#4ca05e 591MiB/1.3GiB(43%) CN:1 DL:3.1MiB ETA:4m9s]
+[#4ca05e 594MiB/1.3GiB(43%) CN:1 DL:3.3MiB ETA:3m56s]
+[#4ca05e 597MiB/1.3GiB(43%) CN:1 DL:3.4MiB ETA:3m47s]
+[#4ca05e 601MiB/1.3GiB(43%) CN:1 DL:3.4MiB ETA:3m42s]
+[#4ca05e 604MiB/1.3GiB(43%) CN:1 DL:3.3MiB ETA:3m47s]
+[#4ca05e 607MiB/1.3GiB(44%) CN:1 DL:3.3MiB ETA:3m51s]
+[#4ca05e 610MiB/1.3GiB(44%) CN:1 DL:3.2MiB ETA:3m58s]
+[#4ca05e 612MiB/1.3GiB(44%) CN:1 DL:3.1MiB ETA:4m6s]
+[#4ca05e 615MiB/1.3GiB(44%) CN:1 DL:3.0MiB ETA:4m9s]
+[#4ca05e 618MiB/1.3GiB(44%) CN:1 DL:2.9MiB ETA:4m16s]
+[#4ca05e 621MiB/1.3GiB(45%) CN:1 DL:2.9MiB ETA:4m16s]
+[#4ca05e 623MiB/1.3GiB(45%) CN:1 DL:2.9MiB ETA:4m17s]
+[#4ca05e 625MiB/1.3GiB(45%) CN:1 DL:2.7MiB ETA:4m28s]
+[#4ca05e 628MiB/1.3GiB(45%) CN:1 DL:2.7MiB ETA:4m35s]
+[#4ca05e 631MiB/1.3GiB(45%) CN:1 DL:2.7MiB ETA:4m27s]
+[#4ca05e 635MiB/1.3GiB(46%) CN:1 DL:2.7MiB ETA:4m26s]
+[#4ca05e 635MiB/1.3GiB(46%) CN:1 DL:2.5MiB ETA:4m47s]
+[#4ca05e 638MiB/1.3GiB(46%) CN:1 DL:2.3MiB ETA:5m19s]
+[#4ca05e 641MiB/1.3GiB(46%) CN:1 DL:2.3MiB ETA:5m10s]
+[#4ca05e 645MiB/1.3GiB(46%) CN:1 DL:2.5MiB ETA:4m52s]
+[#4ca05e 648MiB/1.3GiB(47%) CN:1 DL:2.6MiB ETA:4m33s]
+[#4ca05e 652MiB/1.3GiB(47%) CN:1 DL:2.7MiB ETA:4m24s]
+[#4ca05e 655MiB/1.3GiB(47%) CN:1 DL:2.7MiB ETA:4m21s]
+                                                                                  *** Download Progress Summary as of Tue Apr 14 13:48:59 2026 *** 
+===============================================================================
+[#4ca05e 659MiB/1.3GiB(47%) CN:1 DL:2.8MiB ETA:4m13s]
+
+FILE: Rei Downloads/rei-base.7z
+-------------------------------------------------------------------------------
+
+[#4ca05e 659MiB/1.3GiB(47%) CN:1 DL:2.8MiB ETA:4m13s]
+[#4ca05e 662MiB/1.3GiB(48%) CN:1 DL:3.0MiB ETA:3m56s]
+[#4ca05e 665MiB/1.3GiB(48%) CN:1 DL:3.0MiB ETA:3m55s]
+[#4ca05e 668MiB/1.3GiB(48%) CN:1 DL:3.4MiB ETA:3m22s]
+[#4ca05e 672MiB/1.3GiB(48%) CN:1 DL:3.4MiB ETA:3m21s]
+[#4ca05e 675MiB/1.3GiB(49%) CN:1 DL:3.3MiB ETA:3m26s]
+[#4ca05e 677MiB/1.3GiB(49%) CN:1 DL:3.2MiB ETA:3m32s]
+[#4ca05e 679MiB/1.3GiB(49%) CN:1 DL:3.0MiB ETA:3m45s]
+[#4ca05e 680MiB/1.3GiB(49%) CN:1 DL:2.9MiB ETA:3m53s]
+[#4ca05e 683MiB/1.3GiB(49%) CN:1 DL:2.8MiB ETA:4m5s]
+[#4ca05e 686MiB/1.3GiB(49%) CN:1 DL:2.7MiB ETA:4m11s]
+[#4ca05e 689MiB/1.3GiB(50%) CN:1 DL:2.7MiB ETA:4m14s]
+[#4ca05e 692MiB/1.3GiB(50%) CN:1 DL:2.6MiB ETA:4m16s]
+[#4ca05e 694MiB/1.3GiB(50%) CN:1 DL:2.5MiB ETA:4m29s]
+[#4ca05e 696MiB/1.3GiB(50%) CN:1 DL:2.4MiB ETA:4m36s]
+[#4ca05e 699MiB/1.3GiB(50%) CN:1 DL:2.3MiB ETA:4m44s]
+[#4ca05e 701MiB/1.3GiB(50%) CN:1 DL:2.4MiB ETA:4m34s]
+[#4ca05e 703MiB/1.3GiB(51%) CN:1 DL:2.5MiB ETA:4m23s]
+[#4ca05e 706MiB/1.3GiB(51%) CN:1 DL:2.5MiB ETA:4m21s]
+[#4ca05e 709MiB/1.3GiB(51%) CN:1 DL:2.5MiB ETA:4m20s]
+[#4ca05e 711MiB/1.3GiB(51%) CN:1 DL:2.4MiB ETA:4m26s]
+[#4ca05e 714MiB/1.3GiB(51%) CN:1 DL:2.4MiB ETA:4m31s]
+[#4ca05e 715MiB/1.3GiB(51%) CN:1 DL:2.3MiB ETA:4m39s]
+[#4ca05e 715MiB/1.3GiB(52%) CN:1 DL:2.1MiB ETA:5m8s]
+[#4ca05e 717MiB/1.3GiB(52%) CN:1 DL:2.1MiB ETA:5m13s]
+[#4ca05e 721MiB/1.3GiB(52%) CN:1 DL:2.2MiB ETA:4m53s]
+[#4ca05e 724MiB/1.3GiB(52%) CN:1 DL:2.3MiB ETA:4m37s]
+[#4ca05e 725MiB/1.3GiB(52%) CN:1 DL:2.1MiB ETA:5m]
+[#4ca05e 728MiB/1.3GiB(52%) CN:1 DL:2.1MiB ETA:5m1s]
+[#4ca05e 731MiB/1.3GiB(53%) CN:1 DL:2.2MiB ETA:4m46s]
+[#4ca05e 735MiB/1.3GiB(53%) CN:1 DL:2.3MiB ETA:4m31s]
+[#4ca05e 738MiB/1.3GiB(53%) CN:1 DL:2.5MiB ETA:4m9s]
+[#4ca05e 742MiB/1.3GiB(53%) CN:1 DL:2.8MiB ETA:3m42s]
+[#4ca05e 745MiB/1.3GiB(54%) CN:1 DL:3.0MiB ETA:3m23s]
+[#4ca05e 748MiB/1.3GiB(54%) CN:1 DL:3.0MiB ETA:3m26s]
+[#4ca05e 750MiB/1.3GiB(54%) CN:1 DL:2.9MiB ETA:3m33s]
+[#4ca05e 754MiB/1.3GiB(54%) CN:1 DL:3.2MiB ETA:3m12s]
+[#4ca05e 758MiB/1.3GiB(55%) CN:1 DL:3.2MiB ETA:3m8s]
+[#4ca05e 761MiB/1.3GiB(55%) CN:1 DL:3.3MiB ETA:3m6s]
+[#4ca05e 763MiB/1.3GiB(55%) CN:1 DL:3.2MiB ETA:3m10s]
+[#4ca05e 763MiB/1.3GiB(55%) CN:1 DL:2.7MiB ETA:3m39s]
+[#4ca05e 767MiB/1.3GiB(55%) CN:1 DL:2.8MiB ETA:3m31s]
+[#4ca05e 770MiB/1.3GiB(55%) CN:1 DL:2.8MiB ETA:3m35s]
+[#4ca05e 773MiB/1.3GiB(56%) CN:1 DL:2.7MiB ETA:3m35s]
+[#4ca05e 776MiB/1.3GiB(56%) CN:1 DL:2.8MiB ETA:3m32s]
+[#4ca05e 779MiB/1.3GiB(56%) CN:1 DL:2.8MiB ETA:3m25s]
+[#4ca05e 782MiB/1.3GiB(56%) CN:1 DL:2.8MiB ETA:3m31s]
+[#4ca05e 786MiB/1.3GiB(57%) CN:1 DL:2.7MiB ETA:3m31s]
+[#4ca05e 788MiB/1.3GiB(57%) CN:1 DL:2.6MiB ETA:3m40s]
+[#4ca05e 789MiB/1.3GiB(57%) CN:1 DL:2.9MiB ETA:3m21s]
+[#4ca05e 792MiB/1.3GiB(57%) CN:1 DL:2.9MiB ETA:3m18s]
+[#4ca05e 795MiB/1.3GiB(57%) CN:1 DL:2.8MiB ETA:3m26s]
+[#4ca05e 798MiB/1.3GiB(57%) CN:1 DL:2.7MiB ETA:3m29s]
+[#4ca05e 801MiB/1.3GiB(58%) CN:1 DL:2.7MiB ETA:3m29s]
+[#4ca05e 802MiB/1.3GiB(58%) CN:1 DL:2.6MiB ETA:3m39s]
+[#4ca05e 803MiB/1.3GiB(58%) CN:1 DL:2.3MiB ETA:4m3s]
+[#4ca05e 805MiB/1.3GiB(58%) CN:1 DL:2.2MiB ETA:4m8s]
+[#4ca05e 808MiB/1.3GiB(58%) CN:1 DL:2.2MiB ETA:4m12s]
+[#4ca05e 811MiB/1.3GiB(58%) CN:1 DL:2.3MiB ETA:3m56s]
+[#4ca05e 814MiB/1.3GiB(59%) CN:1 DL:2.4MiB ETA:3m45s]
+[#4ca05e 816MiB/1.3GiB(59%) CN:1 DL:2.3MiB ETA:3m56s]
+                                                                                  *** Download Progress Summary as of Tue Apr 14 13:50:00 2026 *** 
+===============================================================================
+[#4ca05e 818MiB/1.3GiB(59%) CN:1 DL:2.3MiB ETA:3m59s]
+
+FILE: Rei Downloads/rei-base.7z
+-------------------------------------------------------------------------------
+
+[#4ca05e 818MiB/1.3GiB(59%) CN:1 DL:2.3MiB ETA:3m59s]
+[#4ca05e 821MiB/1.3GiB(59%) CN:1 DL:2.2MiB ETA:4m1s]
+[#4ca05e 823MiB/1.3GiB(59%) CN:1 DL:2.2MiB ETA:4m5s]
+[#4ca05e 826MiB/1.3GiB(60%) CN:1 DL:2.4MiB ETA:3m43s]
+[#4ca05e 829MiB/1.3GiB(60%) CN:1 DL:2.6MiB ETA:3m29s]
+[#4ca05e 831MiB/1.3GiB(60%) CN:1 DL:2.6MiB ETA:3m29s]
+[#4ca05e 834MiB/1.3GiB(60%) CN:1 DL:2.5MiB ETA:3m30s]
+[#4ca05e 836MiB/1.3GiB(60%) CN:1 DL:2.4MiB ETA:3m37s]
+[#4ca05e 838MiB/1.3GiB(60%) CN:1 DL:2.4MiB ETA:3m37s]
+[#4ca05e 841MiB/1.3GiB(61%) CN:1 DL:2.5MiB ETA:3m31s]
+[#4ca05e 844MiB/1.3GiB(61%) CN:1 DL:2.6MiB ETA:3m23s]
+[#4ca05e 845MiB/1.3GiB(61%) CN:1 DL:2.4MiB ETA:3m32s]
+[#4ca05e 847MiB/1.3GiB(61%) CN:1 DL:2.3MiB ETA:3m46s]
+[#4ca05e 849MiB/1.3GiB(61%) CN:1 DL:2.2MiB ETA:3m51s]
+[#4ca05e 852MiB/1.3GiB(61%) CN:1 DL:2.3MiB ETA:3m44s]
+[#4ca05e 856MiB/1.3GiB(62%) CN:1 DL:2.4MiB ETA:3m33s]
+[#4ca05e 859MiB/1.3GiB(62%) CN:1 DL:2.4MiB ETA:3m27s]
+[#4ca05e 862MiB/1.3GiB(62%) CN:1 DL:2.5MiB ETA:3m22s]
+[#4ca05e 866MiB/1.3GiB(62%) CN:1 DL:2.7MiB ETA:3m3s]
+[#4ca05e 869MiB/1.3GiB(63%) CN:1 DL:2.8MiB ETA:2m58s]
+[#4ca05e 871MiB/1.3GiB(63%) CN:1 DL:2.6MiB ETA:3m6s]
+[#4ca05e 874MiB/1.3GiB(63%) CN:1 DL:2.9MiB ETA:2m51s]
+[#4ca05e 878MiB/1.3GiB(63%) CN:1 DL:3.1MiB ETA:2m37s]
+[#4ca05e 881MiB/1.3GiB(64%) CN:1 DL:3.2MiB ETA:2m30s]
+[#4ca05e 884MiB/1.3GiB(64%) CN:1 DL:3.2MiB ETA:2m33s]
+[#4ca05e 888MiB/1.3GiB(64%) CN:1 DL:3.2MiB ETA:2m30s]
+[#4ca05e 892MiB/1.3GiB(64%) CN:1 DL:3.3MiB ETA:2m23s]
+[#4ca05e 896MiB/1.3GiB(65%) CN:1 DL:3.3MiB ETA:2m22s]
+[#4ca05e 898MiB/1.3GiB(65%) CN:1 DL:3.2MiB ETA:2m26s]
+[#4ca05e 900MiB/1.3GiB(65%) CN:1 DL:3.1MiB ETA:2m31s]
+[#4ca05e 904MiB/1.3GiB(65%) CN:1 DL:3.3MiB ETA:2m19s]
+[#4ca05e 907MiB/1.3GiB(65%) CN:1 DL:3.3MiB ETA:2m21s]
+[#4ca05e 910MiB/1.3GiB(66%) CN:1 DL:3.1MiB ETA:2m25s]
+[#4ca05e 912MiB/1.3GiB(66%) CN:1 DL:3.0MiB ETA:2m33s]
+[#4ca05e 915MiB/1.3GiB(66%) CN:1 DL:3.0MiB ETA:2m30s]
+[#4ca05e 918MiB/1.3GiB(66%) CN:1 DL:2.8MiB ETA:2m38s]
+[#4ca05e 921MiB/1.3GiB(66%) CN:1 DL:2.8MiB ETA:2m38s]
+[#4ca05e 0.9GiB/1.3GiB(67%) CN:1 DL:2.8MiB ETA:2m37s]
+[#4ca05e 0.9GiB/1.3GiB(67%) CN:1 DL:3.0MiB ETA:2m28s]
+[#4ca05e 0.9GiB/1.3GiB(67%) CN:1 DL:2.7MiB ETA:2m43s]
+[#4ca05e 0.9GiB/1.3GiB(67%) CN:1 DL:2.7MiB ETA:2m41s]
+[#4ca05e 0.9GiB/1.3GiB(67%) CN:1 DL:2.7MiB ETA:2m39s]
+[#4ca05e 0.9GiB/1.3GiB(68%) CN:1 DL:2.9MiB ETA:2m27s]
+[#4ca05e 0.9GiB/1.3GiB(68%) CN:1 DL:2.9MiB ETA:2m28s]
+[#4ca05e 0.9GiB/1.3GiB(68%) CN:1 DL:2.9MiB ETA:2m25s]
+[#4ca05e 0.9GiB/1.3GiB(68%) CN:1 DL:2.7MiB ETA:2m34s]
+[#4ca05e 0.9GiB/1.3GiB(69%) CN:1 DL:2.8MiB ETA:2m32s]
+[#4ca05e 0.9GiB/1.3GiB(69%) CN:1 DL:2.8MiB ETA:2m29s]
+[#4ca05e 0.9GiB/1.3GiB(69%) CN:1 DL:3.0MiB ETA:2m19s]
+[#4ca05e 0.9GiB/1.3GiB(69%) CN:1 DL:3.0MiB ETA:2m18s]
+[#4ca05e 0.9GiB/1.3GiB(69%) CN:1 DL:2.9MiB ETA:2m20s]
+[#4ca05e 0.9GiB/1.3GiB(70%) CN:1 DL:2.9MiB ETA:2m19s]
+[#4ca05e 0.9GiB/1.3GiB(70%) CN:1 DL:2.9MiB ETA:2m19s]
+[#4ca05e 0.9GiB/1.3GiB(70%) CN:1 DL:2.8MiB ETA:2m24s]
+[#4ca05e 0.9GiB/1.3GiB(70%) CN:1 DL:2.7MiB ETA:2m26s]
+[#4ca05e 0.9GiB/1.3GiB(70%) CN:1 DL:2.9MiB ETA:2m16s]
+[#4ca05e 0.9GiB/1.3GiB(71%) CN:1 DL:2.8MiB ETA:2m17s]
+[#4ca05e 0.9GiB/1.3GiB(71%) CN:1 DL:2.8MiB ETA:2m16s]
+[#4ca05e 0.9GiB/1.3GiB(71%) CN:1 DL:2.9MiB ETA:2m14s]
+[#4ca05e 0.9GiB/1.3GiB(71%) CN:1 DL:2.8MiB ETA:2m15s]
+[#4ca05e 0.9GiB/1.3GiB(71%) CN:1 DL:2.8MiB ETA:2m17s]
+                                                                                  *** Download Progress Summary as of Tue Apr 14 13:51:01 2026 *** 
+===============================================================================
+[#4ca05e 0.9GiB/1.3GiB(72%) CN:1 DL:2.7MiB ETA:2m20s]
+
+FILE: Rei Downloads/rei-base.7z
+-------------------------------------------------------------------------------
+
+[#4ca05e 0.9GiB/1.3GiB(72%) CN:1 DL:2.7MiB ETA:2m20s]
+[#4ca05e 0.9GiB/1.3GiB(72%) CN:1 DL:2.5MiB ETA:2m32s]
+[#4ca05e 0.9GiB/1.3GiB(72%) CN:1 DL:2.2MiB ETA:2m52s]
+[#4ca05e 0.9GiB/1.3GiB(72%) CN:1 DL:1.7MiB ETA:3m33s]
+[#4ca05e 0.9GiB/1.3GiB(72%) CN:1 DL:1.9MiB ETA:3m9s]
+[#4ca05e 0.9GiB/1.3GiB(72%) CN:1 DL:2.0MiB ETA:3m4s]
+[#4ca05e 0.9GiB/1.3GiB(72%) CN:1 DL:2.0MiB ETA:3m3s]
+[#4ca05e 0.9GiB/1.3GiB(73%) CN:1 DL:2.0MiB ETA:3m2s]
+[#4ca05e 0.9GiB/1.3GiB(73%) CN:1 DL:1.8MiB ETA:3m17s]
+[#4ca05e 0.9GiB/1.3GiB(73%) CN:1 DL:1.7MiB ETA:3m31s]
+[#4ca05e 0.9GiB/1.3GiB(73%) CN:1 DL:2.5MiB ETA:2m25s]
+[#4ca05e 0.9GiB/1.3GiB(73%) CN:1 DL:2.2MiB ETA:2m43s]
+[#4ca05e 0.9GiB/1.3GiB(73%) CN:1 DL:2.5MiB ETA:2m18s]
+[#4ca05e 0.9GiB/1.3GiB(74%) CN:1 DL:2.4MiB ETA:2m23s]
+[#4ca05e 0.9GiB/1.3GiB(74%) CN:1 DL:2.4MiB ETA:2m21s]
+[#4ca05e 1.0GiB/1.3GiB(74%) CN:1 DL:2.3MiB ETA:2m28s]
+[#4ca05e 1.0GiB/1.3GiB(74%) CN:1 DL:2.3MiB ETA:2m30s]
+[#4ca05e 1.0GiB/1.3GiB(74%) CN:1 DL:2.2MiB ETA:2m30s]
+[#4ca05e 1.0GiB/1.3GiB(74%) CN:1 DL:2.4MiB ETA:2m21s]
+[#4ca05e 1.0GiB/1.3GiB(75%) CN:1 DL:2.3MiB ETA:2m22s]
+[#4ca05e 1.0GiB/1.3GiB(75%) CN:1 DL:2.6MiB ETA:2m9s]
+[#4ca05e 1.0GiB/1.3GiB(75%) CN:1 DL:2.5MiB ETA:2m11s]
+[#4ca05e 1.0GiB/1.3GiB(75%) CN:1 DL:2.1MiB ETA:2m36s]
+[#4ca05e 1.0GiB/1.3GiB(75%) CN:1 DL:2.0MiB ETA:2m39s]
+[#4ca05e 1.0GiB/1.3GiB(75%) CN:1 DL:2.0MiB ETA:2m41s]
+[#4ca05e 1.0GiB/1.3GiB(75%) CN:1 DL:1.8MiB ETA:3m3s]
+[#4ca05e 1.0GiB/1.3GiB(76%) CN:1 DL:1.7MiB ETA:3m6s]
+[#4ca05e 1.0GiB/1.3GiB(76%) CN:1 DL:1.7MiB ETA:3m4s]
+[#4ca05e 1.0GiB/1.3GiB(76%) CN:1 DL:1.7MiB ETA:3m4s]
+[#4ca05e 1.0GiB/1.3GiB(76%) CN:1 DL:1.7MiB ETA:3m2s]
+[#4ca05e 1.0GiB/1.3GiB(76%) CN:1 DL:1.7MiB ETA:3m3s]
+[#4ca05e 1.0GiB/1.3GiB(76%) CN:1 DL:1.7MiB ETA:3m8s]
+[#4ca05e 1.0GiB/1.3GiB(76%) CN:1 DL:1.6MiB ETA:3m15s]
+[#4ca05e 1.0GiB/1.3GiB(76%) CN:1 DL:1.5MiB ETA:3m23s]
+[#4ca05e 1.0GiB/1.3GiB(77%) CN:1 DL:1.7MiB ETA:3m3s]
+[#4ca05e 1.0GiB/1.3GiB(77%) CN:1 DL:1.6MiB ETA:3m5s]
+[#4ca05e 1.0GiB/1.3GiB(77%) CN:1 DL:1.6MiB ETA:3m9s]
+[#4ca05e 1.0GiB/1.3GiB(77%) CN:1 DL:1.5MiB ETA:3m15s]
+[#4ca05e 1.0GiB/1.3GiB(77%) CN:1 DL:1.5MiB ETA:3m18s]
+[#4ca05e 1.0GiB/1.3GiB(77%) CN:1 DL:1.5MiB ETA:3m22s]
+[#4ca05e 1.0GiB/1.3GiB(77%) CN:1 DL:1.5MiB ETA:3m24s]
+[#4ca05e 1.0GiB/1.3GiB(77%) CN:1 DL:1.4MiB ETA:3m23s]
+[#4ca05e 1.0GiB/1.3GiB(77%) CN:1 DL:1.4MiB ETA:3m24s]
+[#4ca05e 1.0GiB/1.3GiB(78%) CN:1 DL:1.5MiB ETA:3m17s]
+[#4ca05e 1.0GiB/1.3GiB(78%) CN:1 DL:1.5MiB ETA:3m11s]
+[#4ca05e 1.0GiB/1.3GiB(78%) CN:1 DL:1.6MiB ETA:3m4s]
+[#4ca05e 1.0GiB/1.3GiB(78%) CN:1 DL:1.6MiB ETA:3m]
+[#4ca05e 1.0GiB/1.3GiB(78%) CN:1 DL:1.6MiB ETA:2m59s]
+[#4ca05e 1.0GiB/1.3GiB(78%) CN:1 DL:1.6MiB ETA:3m]
+[#4ca05e 1.0GiB/1.3GiB(78%) CN:1 DL:1.6MiB ETA:2m59s]
+[#4ca05e 1.0GiB/1.3GiB(78%) CN:1 DL:1.6MiB ETA:2m59s]
+[#4ca05e 1.0GiB/1.3GiB(78%) CN:1 DL:1.6MiB ETA:2m55s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.6MiB ETA:2m55s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.6MiB ETA:2m57s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.5MiB ETA:2m59s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.5MiB ETA:3m1s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.5MiB ETA:3m2s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.5MiB ETA:2m59s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.5MiB ETA:2m57s]
+                                                                                  *** Download Progress Summary as of Tue Apr 14 13:52:01 2026 *** 
+===============================================================================
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.5MiB ETA:2m56s]
+
+FILE: Rei Downloads/rei-base.7z
+-------------------------------------------------------------------------------
+
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.5MiB ETA:2m56s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.3MiB ETA:3m18s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.2MiB ETA:3m46s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:1.0MiB ETA:4m19s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:0.9MiB ETA:5m4s]
+[#4ca05e 1.0GiB/1.3GiB(79%) CN:1 DL:762KiB ETA:6m11s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:788KiB ETA:5m57s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:811KiB ETA:5m45s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:791KiB ETA:5m51s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:777KiB ETA:5m56s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:1.5MiB ETA:2m56s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:1.5MiB ETA:2m51s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:1.5MiB ETA:2m50s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:1.5MiB ETA:2m55s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:1.4MiB ETA:2m55s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:1.4MiB ETA:3m5s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:1.1MiB ETA:3m40s]
+[#4ca05e 1.0GiB/1.3GiB(80%) CN:1 DL:1.0MiB ETA:4m9s]
+[#4ca05e 1.0GiB/1.3GiB(81%) CN:1 DL:1.0MiB ETA:4m1s]
+[#4ca05e 1.0GiB/1.3GiB(81%) CN:1 DL:1.5MiB ETA:2m49s]
+[#4ca05e 1.0GiB/1.3GiB(81%) CN:1 DL:1.4MiB ETA:2m48s]
+[#4ca05e 1.0GiB/1.3GiB(81%) CN:1 DL:1.4MiB ETA:2m50s]
+[#4ca05e 1.0GiB/1.3GiB(81%) CN:1 DL:1.2MiB ETA:3m20s]
+[#4ca05e 1.0GiB/1.3GiB(81%) CN:1 DL:1.6MiB ETA:2m30s]
+[#4ca05e 1.0GiB/1.3GiB(81%) CN:1 DL:1.4MiB ETA:2m52s]
+[#4ca05e 1.0GiB/1.3GiB(81%) CN:1 DL:1.2MiB ETA:3m14s]
+[#4ca05e 1.1GiB/1.3GiB(82%) CN:1 DL:1.3MiB ETA:3m3s]
+[#4ca05e 1.1GiB/1.3GiB(82%) CN:1 DL:798KiB ETA:5m15s]
+[#4ca05e 1.1GiB/1.3GiB(82%) CN:1 DL:758KiB ETA:5m30s]
+[#4ca05e 1.1GiB/1.3GiB(82%) CN:1 DL:1.1MiB ETA:3m35s]
+[#4ca05e 1.1GiB/1.3GiB(82%) CN:1 DL:2.0MiB ETA:1m54s]
+[#4ca05e 1.1GiB/1.3GiB(82%) CN:1 DL:1.9MiB ETA:2m3s]
+[#4ca05e 1.1GiB/1.3GiB(82%) CN:1 DL:1.8MiB ETA:2m10s]
+[#4ca05e 1.1GiB/1.3GiB(82%) CN:1 DL:1.5MiB ETA:2m31s]
+[#4ca05e 1.1GiB/1.3GiB(82%) CN:1 DL:1.3MiB ETA:2m59s]
+[#4ca05e 1.1GiB/1.3GiB(83%) CN:1 DL:1.3MiB ETA:2m52s]
+[#4ca05e 1.1GiB/1.3GiB(83%) CN:1 DL:1.2MiB ETA:3m13s]
+[#4ca05e 1.1GiB/1.3GiB(83%) CN:1 DL:0.9MiB ETA:4m13s]
+[#4ca05e 1.1GiB/1.3GiB(83%) CN:1 DL:914KiB ETA:4m18s]
+[#4ca05e 1.1GiB/1.3GiB(83%) CN:1 DL:838KiB ETA:4m40s]
+[#4ca05e 1.1GiB/1.3GiB(83%) CN:1 DL:1.3MiB ETA:2m42s]
+[#4ca05e 1.1GiB/1.3GiB(83%) CN:1 DL:1.4MiB ETA:2m39s]
+[#4ca05e 1.1GiB/1.3GiB(83%) CN:1 DL:1.4MiB ETA:2m34s]
+[#4ca05e 1.1GiB/1.3GiB(83%) CN:1 DL:1.7MiB ETA:2m4s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.7MiB ETA:2m5s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.7MiB ETA:2m7s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.6MiB ETA:2m11s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.4MiB ETA:2m24s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.5MiB ETA:2m15s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.5MiB ETA:2m19s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.3MiB ETA:2m40s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.3MiB ETA:2m38s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.3MiB ETA:2m38s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.3MiB ETA:2m35s]
+[#4ca05e 1.1GiB/1.3GiB(84%) CN:1 DL:1.3MiB ETA:2m33s]
+[#4ca05e 1.1GiB/1.3GiB(85%) CN:1 DL:1.3MiB ETA:2m30s]
+                                                                                  *** Download Progress Summary as of Tue Apr 14 13:53:02 2026 *** 
+===============================================================================
+[#4ca05e 1.1GiB/1.3GiB(85%) CN:1 DL:1.3MiB ETA:2m26s]
+
+FILE: Rei Downloads/rei-base.7z
+-------------------------------------------------------------------------------
+
+[#4ca05e 1.1GiB/1.3GiB(85%) CN:1 DL:1.3MiB ETA:2m26s]
+[#4ca05e 1.1GiB/1.3GiB(85%) CN:1 DL:1.3MiB ETA:2m26s]
+[#4ca05e 1.1GiB/1.3GiB(85%) CN:1 DL:1.2MiB ETA:2m37s]
+[#4ca05e 1.1GiB/1.3GiB(85%) CN:1 DL:1.4MiB ETA:2m21s]
+[#4ca05e 1.1GiB/1.3GiB(85%) CN:1 DL:1.3MiB ETA:2m21s]
+[#4ca05e 1.1GiB/1.3GiB(85%) CN:1 DL:1.4MiB ETA:2m17s]
+[#4ca05e 1.1GiB/1.3GiB(85%) CN:1 DL:1.3MiB ETA:2m22s]
+[#4ca05e 1.1GiB/1.3GiB(85%) CN:1 DL:1.3MiB ETA:2m22s]
+[#4ca05e 1.1GiB/1.3GiB(86%) CN:1 DL:1.3MiB ETA:2m17s]
+[#4ca05e 1.1GiB/1.3GiB(86%) CN:1 DL:1.4MiB ETA:2m11s]
+[#4ca05e 1.1GiB/1.3GiB(86%) CN:1 DL:1.5MiB ETA:2m4s]
+[#4ca05e 1.1GiB/1.3GiB(86%) CN:1 DL:1.8MiB ETA:1m42s]
+[#4ca05e 1.1GiB/1.3GiB(86%) CN:1 DL:1.7MiB ETA:1m42s]
+[#4ca05e 1.1GiB/1.3GiB(86%) CN:1 DL:1.6MiB ETA:1m52s]
+[#4ca05e 1.1GiB/1.3GiB(86%) CN:1 DL:1.6MiB ETA:1m52s]
+[#4ca05e 1.1GiB/1.3GiB(86%) CN:1 DL:1.4MiB ETA:2m3s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.5MiB ETA:1m51s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.5MiB ETA:1m51s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.5MiB ETA:1m51s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.5MiB ETA:1m52s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.5MiB ETA:1m49s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.5MiB ETA:1m47s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.5MiB ETA:1m48s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.5MiB ETA:1m50s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.6MiB ETA:1m42s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.2MiB ETA:2m9s]
+[#4ca05e 1.1GiB/1.3GiB(87%) CN:1 DL:1.1MiB ETA:2m22s]
+[#4ca05e 1.1GiB/1.3GiB(88%) CN:1 DL:1.1MiB ETA:2m21s]
+[#4ca05e 1.1GiB/1.3GiB(88%) CN:1 DL:1.2MiB ETA:2m11s]
+[#4ca05e 1.1GiB/1.3GiB(88%) CN:1 DL:1.0MiB ETA:2m32s]
+[#4ca05e 1.1GiB/1.3GiB(88%) CN:1 DL:0.9MiB ETA:2m49s]
+[#4ca05e 1.1GiB/1.3GiB(88%) CN:1 DL:1.0MiB ETA:2m37s]
+[#4ca05e 1.1GiB/1.3GiB(88%) CN:1 DL:1.0MiB ETA:2m32s]
+[#4ca05e 1.1GiB/1.3GiB(88%) CN:1 DL:1.3MiB ETA:1m57s]
+[#4ca05e 1.1GiB/1.3GiB(88%) CN:1 DL:1.3MiB ETA:1m55s]
+[#4ca05e 1.1GiB/1.3GiB(88%) CN:1 DL:1.2MiB ETA:2m1s]
+[#4ca05e 1.1GiB/1.3GiB(88%) CN:1 DL:1.2MiB ETA:2m3s]
+[#4ca05e 1.1GiB/1.3GiB(89%) CN:1 DL:1.0MiB ETA:2m17s]
+[#4ca05e 1.1GiB/1.3GiB(89%) CN:1 DL:1.2MiB ETA:2m4s]
+[#4ca05e 1.1GiB/1.3GiB(89%) CN:1 DL:1.2MiB ETA:2m]
+[#4ca05e 1.1GiB/1.3GiB(89%) CN:1 DL:1.1MiB ETA:2m5s]
+[#4ca05e 1.2GiB/1.3GiB(89%) CN:1 DL:1.1MiB ETA:2m4s]
+[#4ca05e 1.2GiB/1.3GiB(89%) CN:1 DL:1.1MiB ETA:2m2s]
+[#4ca05e 1.2GiB/1.3GiB(89%) CN:1 DL:1.1MiB ETA:2m6s]
+[#4ca05e 1.2GiB/1.3GiB(89%) CN:1 DL:1.3MiB ETA:1m43s]
+[#4ca05e 1.2GiB/1.3GiB(90%) CN:1 DL:1.5MiB ETA:1m29s]
+[#4ca05e 1.2GiB/1.3GiB(90%) CN:1 DL:1.6MiB ETA:1m22s]
+[#4ca05e 1.2GiB/1.3GiB(90%) CN:1 DL:1.7MiB ETA:1m14s]
+[#4ca05e 1.2GiB/1.3GiB(90%) CN:1 DL:1.9MiB ETA:1m7s]
+[#4ca05e 1.2GiB/1.3GiB(90%) CN:1 DL:2.0MiB ETA:1m3s]
+[#4ca05e 1.2GiB/1.3GiB(90%) CN:1 DL:2.1MiB ETA:59s]
+[#4ca05e 1.2GiB/1.3GiB(91%) CN:1 DL:2.2MiB ETA:55s]
+[#4ca05e 1.2GiB/1.3GiB(91%) CN:1 DL:2.3MiB ETA:52s]
+[#4ca05e 1.2GiB/1.3GiB(91%) CN:1 DL:2.4MiB ETA:49s]
+[#4ca05e 1.2GiB/1.3GiB(91%) CN:1 DL:2.3MiB ETA:50s]
+[#4ca05e 1.2GiB/1.3GiB(91%) CN:1 DL:2.2MiB ETA:50s]
+[#4ca05e 1.2GiB/1.3GiB(91%) CN:1 DL:2.3MiB ETA:47s]
+[#4ca05e 1.2GiB/1.3GiB(92%) CN:1 DL:2.4MiB ETA:45s]
+                                                                                  *** Download Progress Summary as of Tue Apr 14 13:54:02 2026 *** 
+===============================================================================
+[#4ca05e 1.2GiB/1.3GiB(92%) CN:1 DL:2.4MiB ETA:43s]
+
+FILE: Rei Downloads/rei-base.7z
+-------------------------------------------------------------------------------
+
+[#4ca05e 1.2GiB/1.3GiB(92%) CN:1 DL:2.4MiB ETA:43s]
+[#4ca05e 1.2GiB/1.3GiB(92%) CN:1 DL:2.5MiB ETA:40s]
+[#4ca05e 1.2GiB/1.3GiB(92%) CN:1 DL:2.6MiB ETA:38s]
+[#4ca05e 1.2GiB/1.3GiB(92%) CN:1 DL:2.6MiB ETA:36s]
+[#4ca05e 1.2GiB/1.3GiB(93%) CN:1 DL:2.7MiB ETA:33s]
+[#4ca05e 1.2GiB/1.3GiB(93%) CN:1 DL:2.8MiB ETA:32s]
+[#4ca05e 1.2GiB/1.3GiB(93%) CN:1 DL:2.8MiB ETA:31s]
+[#4ca05e 1.2GiB/1.3GiB(93%) CN:1 DL:2.8MiB ETA:30s]
+[#4ca05e 1.2GiB/1.3GiB(93%) CN:1 DL:2.8MiB ETA:29s]
+[#4ca05e 1.2GiB/1.3GiB(94%) CN:1 DL:2.9MiB ETA:27s]
+[#4ca05e 1.2GiB/1.3GiB(94%) CN:1 DL:2.7MiB ETA:28s]
+[#4ca05e 1.2GiB/1.3GiB(94%) CN:1 DL:2.6MiB ETA:28s]
+[#4ca05e 1.2GiB/1.3GiB(94%) CN:1 DL:2.6MiB ETA:27s]
+[#4ca05e 1.2GiB/1.3GiB(94%) CN:1 DL:2.6MiB ETA:26s]
+[#4ca05e 1.2GiB/1.3GiB(95%) CN:1 DL:2.7MiB ETA:24s]
+[#4ca05e 1.2GiB/1.3GiB(95%) CN:1 DL:2.7MiB ETA:23s]
+[#4ca05e 1.2GiB/1.3GiB(95%) CN:1 DL:2.7MiB ETA:21s]
+[#4ca05e 1.2GiB/1.3GiB(95%) CN:1 DL:2.8MiB ETA:20s]
+[#4ca05e 1.2GiB/1.3GiB(95%) CN:1 DL:2.8MiB ETA:19s]
+[#4ca05e 1.2GiB/1.3GiB(96%) CN:1 DL:2.9MiB ETA:18s]
+[#4ca05e 1.2GiB/1.3GiB(96%) CN:1 DL:3.0MiB ETA:16s]
+[#4ca05e 1.2GiB/1.3GiB(96%) CN:1 DL:3.1MiB ETA:14s]
+[#4ca05e 1.3GiB/1.3GiB(96%) CN:1 DL:3.1MiB ETA:13s]
+[#4ca05e 1.3GiB/1.3GiB(97%) CN:1 DL:3.1MiB ETA:12s]
+[#4ca05e 1.3GiB/1.3GiB(97%) CN:1 DL:3.1MiB ETA:11s]
+[#4ca05e 1.3GiB/1.3GiB(97%) CN:1 DL:3.1MiB ETA:10s]
+[#4ca05e 1.3GiB/1.3GiB(97%) CN:1 DL:3.2MiB ETA:9s]
+[#4ca05e 1.3GiB/1.3GiB(98%) CN:1 DL:3.2MiB ETA:8s]
+[#4ca05e 1.3GiB/1.3GiB(98%) CN:1 DL:3.2MiB ETA:7s]
+[#4ca05e 1.3GiB/1.3GiB(98%) CN:1 DL:3.1MiB ETA:6s]
+[#4ca05e 1.3GiB/1.3GiB(98%) CN:1 DL:3.0MiB ETA:6s]
+[#4ca05e 1.3GiB/1.3GiB(98%) CN:1 DL:2.9MiB ETA:5s]
+[#4ca05e 1.3GiB/1.3GiB(99%) CN:1 DL:2.9MiB ETA:4s]
+[#4ca05e 1.3GiB/1.3GiB(99%) CN:1 DL:2.8MiB ETA:3s]
+[#4ca05e 1.3GiB/1.3GiB(99%) CN:1 DL:2.6MiB ETA:3s]
+[#4ca05e 1.3GiB/1.3GiB(99%) CN:1 DL:2.4MiB ETA:2s]
+[#4ca05e 1.3GiB/1.3GiB(99%) CN:1 DL:2.2MiB ETA:2s]
+[#4ca05e 1.3GiB/1.3GiB(99%) CN:1 DL:1.9MiB ETA:2s]
+[#4ca05e 1.3GiB/1.3GiB(99%) CN:1 DL:1.7MiB ETA:2s]
+[#4ca05e 1.3GiB/1.3GiB(99%) CN:1 DL:1.6MiB ETA:1s]
+[#4ca05e 1.3GiB/1.3GiB(99%) CN:1 DL:1.5MiB]
+[#4ca05e 1.3GiB/1.3GiB(99%) CN:1 DL:1.3MiB]
+
+04/14 13:54:44 [[1;32mNOTICE[0m]
+ Download complete: Rei Downloads/rei-base.7z
+
+Download Results:
+gid   |stat|avg speed  |path/URI
+======+====+===========+=======================================================
+765444|OK  |        n/a|[MEMORY]
+rei-base.7z.meta4
+4ca05e|OK  |   2.3MiB/s|Rei Downloads/rei-base.7z
+
+Status Legend:
+(OK):download completed.
+--------------- EXECUTION FINISHED ---------------
+
+<<< Status: 15% Downloading: 1.5 GB (total) DL Folder: [Rei Downloads] URL: [https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/Rei-UI_2019.4.3_win.7z] (Attempt: 1/3) >>>
+----- BEGIN EXECUTING COMMAND: [./aria2c --file-allocation=none --continue=true --retry-wait=5 -m 0 -x 1 -s 8 -j 1 --auto-file-renaming=false --allow-overwrite=true --follow-metalink=false --disable-ipv6=true -d Rei Downloads https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/Rei-UI_2019.4.3_win.7z] -----
+
+04/14 13:54:44 [[1;32mNOTICE[0m]
+ Downloading 1 item(s)
+
+04/14 13:54:45 [[1;32mNOTICE[0m]
+ CUID#7 - Redirecting to https://release-assets.githubusercontent.com/github-production-release-asset/820871634/fceda4ac-b681-40d3-b20e-c9d2a8e7a917?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-04-14T17%3A35%3A28Z&rscd=attachment%3B+filename%3DRei-UI_2019.4.3_win.7z&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-04-14T16%3A35%3A21Z&ske=2026-04-14T17%3A35%3A28Z&sks=b&skv=2018-11-09&sig=AAWA6CI%2BUSttcfxvmYtiVum4ktSuIsJzO78cabQy2tQ%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc3NjE4NTk4NywibmJmIjoxNzc2MTg1Njg3LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.JyGDOme1VAhTv7jVEJw-EChw78YoaJaCXMuZtFsdRfk&response-content-disposition=attachment%3B%20filename%3DRei-UI_2019.4.3_win.7z&response-content-type=application%2Foctet-stream
+[#a94549 464KiB/3.5MiB(12%) CN:1 DL:0.9MiB ETA:3s]
+[#a94549 1.7MiB/3.5MiB(49%) CN:1 DL:1.2MiB ETA:1s]
+
+04/14 13:54:47 [[1;32mNOTICE[0m]
+ Download complete: Rei Downloads/Rei-UI_2019.4.3_win.7z
+
+Download Results:
+gid   |stat|avg speed  |path/URI
+======+====+===========+=======================================================
+a94549|OK  |   1.4MiB/s|Rei Downloads/Rei-UI_2019.4.3_win.7z
+
+Status Legend:
+(OK):download completed.
+--------------- EXECUTION FINISHED ---------------
+
+----- BEGIN EXECUTING COMMAND: [./7za64 t Rei Downloads\Rei-UI_2019.4.3_win.7z -bso1 -bsp1 -bse2] -----
+ 
+7-Zip (a) 18.05 (x64) : Copyright (c) 1999-2018 Igor Pavlov : 2018-04-30 
+ 
+Scanning the drive for archives: 
+  0M Scan           1 file, 3742643 bytes (3655 KiB) 
+ 
+Testing archive: Rei Downloads\Rei-UI_2019.4.3_win.7z 
+-- 
+Path = Rei Downloads\Rei-UI_2019.4.3_win.7z 
+Type = 7z 
+Physical Size = 3742643 
+Headers Size = 239 
+Method = LZMA2:24 
+Solid = + 
+Blocks = 1 
+ 
+0%
+95%
+ 1        Everything is Ok 
+ 
+Folders: 1 
+Files: 2 
+Size:       52604037 
+Compressed: 3742643 
+--------------- EXECUTION FINISHED ---------------
+
+<<< Status: 30% Downloading: 1.5 GB (total) DL Folder: [Rei Downloads] URL: [https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip] (Attempt: 1/3) >>>
+----- BEGIN EXECUTING COMMAND: [./aria2c --file-allocation=none --continue=true --retry-wait=5 -m 0 -x 1 -s 8 -j 1 --auto-file-renaming=false --allow-overwrite=true --follow-metalink=false --disable-ipv6=true -d Rei Downloads https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip] -----
+
+04/14 13:54:48 [[1;32mNOTICE[0m]
+ Downloading 1 item(s)
+
+04/14 13:54:48 [[1;32mNOTICE[0m]
+ CUID#7 - Redirecting to https://github.com/07th-mod/higurashi-rei/releases/download/v1.5.3/Rei.Voice.and.Graphics.Patch.zip
+
+04/14 13:54:49 [[1;32mNOTICE[0m]
+ CUID#7 - Redirecting to https://release-assets.githubusercontent.com/github-production-release-asset/499336015/8362078b-e2b9-4301-aba5-35595a6b7f7d?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-04-14T17%3A45%3A13Z&rscd=attachment%3B+filename%3DRei.Voice.and.Graphics.Patch.zip&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-04-14T16%3A44%3A20Z&ske=2026-04-14T17%3A45%3A13Z&sks=b&skv=2018-11-09&sig=OAASQHp9nk7viE%2F%2FxZOnlELtNk0%2BztepxVEu9oBjDbY%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc3NjE4NTk5MSwibmJmIjoxNzc2MTg1NjkxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.Oo11UtoTSMXWFf5SS6TMjRRYMhX8BHiR1aDtIBTs_aY&response-content-disposition=attachment%3B%20filename%3DRei.Voice.and.Graphics.Patch.zip&response-content-type=application%2Foctet-stream
+[#d6fb39 176KiB/5.3MiB(3%) CN:1 DL:5.6MiB]
+[#d6fb39 1.7MiB/5.3MiB(33%) CN:1 DL:1.7MiB ETA:2s]
+[#d6fb39 3.8MiB/5.3MiB(71%) CN:1 DL:1.9MiB]
+
+04/14 13:54:52 [[1;32mNOTICE[0m]
+ Download complete: Rei Downloads/Rei.Voice.and.Graphics.Patch.zip
+
+Download Results:
+gid   |stat|avg speed  |path/URI
+======+====+===========+=======================================================
+d6fb39|OK  |   1.7MiB/s|Rei Downloads/Rei.Voice.and.Graphics.Patch.zip
+
+Status Legend:
+(OK):download completed.
+--------------- EXECUTION FINISHED ---------------
+
+----- BEGIN EXECUTING COMMAND: [./7za64 t Rei Downloads\Rei.Voice.and.Graphics.Patch.zip -bso1 -bsp1 -bse2] -----
+ 
+7-Zip (a) 18.05 (x64) : Copyright (c) 1999-2018 Igor Pavlov : 2018-04-30 
+ 
+Scanning the drive for archives: 
+  0M Scan           1 file, 5603146 bytes (5472 KiB) 
+ 
+Testing archive: Rei Downloads\Rei.Voice.and.Graphics.Patch.zip 
+-- 
+Path = Rei Downloads\Rei.Voice.and.Graphics.Patch.zip 
+Type = zip 
+Physical Size = 5603146 
+ 
+0%
+      Everything is Ok 
+ 
+Folders: 13 
+Files: 103 
+Size:       11960831 
+Compressed: 5603146 
+--------------- EXECUTION FINISHED ---------------
+
+VersionManager: Not saving local version info as this is the 'first' install
+Attempting to clear compiled scripts in [c:\gog games\higurashi when they cry hou - rei\HigurashiEp09_Data\StreamingAssets\CompiledUpdateScripts/*.mg]
+Attempting to clear compiled scripts in [c:\gog games\higurashi when they cry hou - rei\HigurashiEp09_Data\StreamingAssets\Update/*.txt]
+Full Update Detected: Deleting old CG and CGAlt folders
+Extracting...
+<<< Status: 45% Extracting [rei-base.7z (1.4 GB)] to [c:\gog games\higurashi when they cry hou - rei] (metalink) >>>
+----- BEGIN EXECUTING COMMAND: [./7za64 x Rei Downloads\rei-base.7z -aoa -bso1 -bsp1 -bse2 -oc:\gog games\higurashi when they cry hou - rei] -----
+ 
+7-Zip (a) 18.05 (x64) : Copyright (c) 1999-2018 Igor Pavlov : 2018-04-30 
+ 
+Scanning the drive for archives: 
+  0M Scan           1 file, 1443158754 bytes (1377 MiB) 
+ 
+Extracting archive: Rei Downloads\rei-base.7z 
+-- 
+Path = Rei Downloads\rei-base.7z 
+Type = 7z 
+Physical Size = 1443158754 
+Headers Size = 53568 
+Method = LZMA2:29 LZMA:20 BCJ2 
+Solid = + 
+Blocks = 2 
+ 
+0%
+0%
+82           0%
+82 - HigurashiEp09_Data\Managed\Assembly-CSharp.version.txt                                                                    1%
+96 - HigurashiEp09_Data\StreamingAssets\CG\bg\g1.png                                                             3%
+111 - HigurashiEp09_Data\StreamingAssets\CG\bg\hu_engawa_01.png                                                                        4%
+119 - HigurashiEp09_Data\StreamingAssets\CG\bg\hu_rika.png                                                                   5%
+125 - HigurashiEp09_Data\StreamingAssets\CG\bg\jansou.png                                                                  6%
+130 - HigurashiEp09_Data\StreamingAssets\CG\bg\js1.png                                                               7%
+134 - HigurashiEp09_Data\StreamingAssets\CG\bg\jsa7.png                                                                8%
+140 - HigurashiEp09_Data\StreamingAssets\CG\bg\kamunomikotori.png                                                                          8%
+144 - HigurashiEp09_Data\StreamingAssets\CG\bg\ke_shiryou1_02.png                                                                          9%
+150 - HigurashiEp09_Data\StreamingAssets\CG\bg\mati7.png                                                                10%
+159 - HigurashiEp09_Data\StreamingAssets\CG\bg\mo_yg1.png                                                                 11%
+165 - HigurashiEp09_Data\StreamingAssets\CG\bg\m_hi6.png                                                                13%
+181 - HigurashiEp09_Data\StreamingAssets\CG\bg\saiguden_02.png                                                                      14%
+188 - HigurashiEp09_Data\StreamingAssets\CG\bg\sinryou_soto1_01.png                                                                           14%
+191 - HigurashiEp09_Data\StreamingAssets\CG\bg\sora.png                                                               15%
+196 - HigurashiEp09_Data\StreamingAssets\CG\bg\taka_sinryou_soto1.png                                                                             15%
+198 - HigurashiEp09_Data\StreamingAssets\CG\black.png                                                             16%
+204 - HigurashiEp09_Data\StreamingAssets\CG\effect\end04_hir.png                                                                        16%
+206 - HigurashiEp09_Data\StreamingAssets\CG\effect\end_1.png                                                                    16%
+227 - HigurashiEp09_Data\StreamingAssets\CG\effect\mask5.png                                                                    16%
+247 - HigurashiEp09_Data\StreamingAssets\CG\omake\arigatou.png                                                                      17%
+254 - HigurashiEp09_Data\StreamingAssets\CG\portrait\ha4_def_1.png                                                                          17%
+261 - HigurashiEp09_Data\StreamingAssets\CG\portrait\ha4_shinken_2.png                                                                              18%
+265 - HigurashiEp09_Data\StreamingAssets\CG\portrait\kei1_komaru_0.png                                                                              19%
+278 - HigurashiEp09_Data\StreamingAssets\CG\scene\411b.png                                                                  19%
+284 - HigurashiEp09_Data\StreamingAssets\CG\scene\622.png                                                                 19%
+288 - HigurashiEp09_Data\StreamingAssets\CG\scene\625.png                                                                 20%
+298 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ha1_au_0.png                                                                       20%
+310 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ha1_odoroki_0.png                                                                            20%
+317 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ha1_warai_1.png                                                                          21%
+323 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ha3a_au_1.png                                                                        21%
+329 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ha3a_shinken_1.png                                                                             21%
+334 - HigurashiEp09_Data\StreamingAssets\CG\sprite\iri1_def1_0.png                                                                          21%
+336 - HigurashiEp09_Data\StreamingAssets\CG\sprite\iri1_def1_2.png                                                                          21%
+345 - HigurashiEp09_Data\StreamingAssets\CG\sprite\iri1_majime_2.png                                                                            21%
+354 - HigurashiEp09_Data\StreamingAssets\CG\sprite\iri2_def2_2.png                                                                          22%
+363 - HigurashiEp09_Data\StreamingAssets\CG\sprite\iri2_warai_2.png                                                                           22%
+371 - HigurashiEp09_Data\StreamingAssets\CG\sprite\iri3_majime2_1.png                                                                             22%
+382 - HigurashiEp09_Data\StreamingAssets\CG\sprite\kameda2a_niyari_0.png                                                                                22%
+391 - HigurashiEp09_Data\StreamingAssets\CG\sprite\kameda2b_odoroki_0.png                                                                                 23%
+399 - HigurashiEp09_Data\StreamingAssets\CG\sprite\kei1_def1_2.png                                                                          23%
+406 - HigurashiEp09_Data\StreamingAssets\CG\sprite\kei1_komaru_0.png                                                                            23%
+409 - HigurashiEp09_Data\StreamingAssets\CG\sprite\kei1_majime2_0.png                                                                             23%
+416 - HigurashiEp09_Data\StreamingAssets\CG\sprite\kei1_nayamu_1.png                                                                            24%
+429 - HigurashiEp09_Data\StreamingAssets\CG\sprite\kei2_ikari1_2.png                                                                            24%
+442 - HigurashiEp09_Data\StreamingAssets\CG\sprite\kei2_nayamu_0.png                                                                            24%
+450 - HigurashiEp09_Data\StreamingAssets\CG\sprite\kei6_komaru_2.png                                                                            24%
+452 - HigurashiEp09_Data\StreamingAssets\CG\sprite\kei6_nayamu_1.png                                                                            25%
+457 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me1a_def_a1_0.png                                                                            25%
+464 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me1a_majime_a1_1.png                                                                               25%
+474 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me1a_tokui_a1_2.png                                                                              25%
+482 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me1a_yowaki_a1_1.png                                                                               25%
+487 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me1b_def_a1_0.png                                                                            26%
+491 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me1b_hau_a1_1.png                                                                            26%
+497 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me1b_odoroki_a1_1.png                                                                                26%
+501 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me1b_tohoho_a1_2.png                                                                               26%
+506 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me1b_warai_a1_1.png                                                                              26%
+514 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me2_akuwarai_a1_0.png                                                                                26%
+518 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me2_def_a1_1.png                                                                           26%
+523 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me2_huteki_a1_0.png                                                                              27%
+534 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me2_odoroki_a1_2.png                                                                               27%
+545 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me2_warai_a1_1.png                                                                             27%
+553 - HigurashiEp09_Data\StreamingAssets\CG\sprite\me4_tohoho_a1_0.png                                                                              28%
+562 - HigurashiEp09_Data\StreamingAssets\CG\sprite\oisi1_3_0.png                                                                        28%
+572 - HigurashiEp09_Data\StreamingAssets\CG\sprite\oisi2_10_1.png                                                                         28%
+579 - HigurashiEp09_Data\StreamingAssets\CG\sprite\oisi2_7_2.png                                                                        28%
+585 - HigurashiEp09_Data\StreamingAssets\CG\sprite\oko3_def_2.png                                                                         29%
+594 - HigurashiEp09_Data\StreamingAssets\CG\sprite\oko3_odoroki_2.png                                                                             29%
+608 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re1a_hau_a1_1.png                                                                            30%
+619 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re1a_nande_a1_0.png                                                                              30%
+631 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re1b_def_b1_0.png                                                                            30%
+640 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re1b_kaii_b1_0.png                                                                             30%
+652 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re1b_okoru_b1_0.png                                                                              31%
+664 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re2a_hau_a1_0.png                                                                            31%
+671 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re2a_hig_okoru_a1_1.png                                                                                  31%
+682 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re2a_nande_a1_0.png                                                                              32%
+692 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re2b_bikkuri_b1_1.png                                                                                32%
+705 - HigurashiEp09_Data\StreamingAs . sprite\re2b_hig_muhyou_b1_2.png                                                                              32%
+717 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re2b_komaru_b2_2.png                                                                               33%
+727 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re3a_hau_a1_0.png                                                                            33%
+730 - HigurashiEp09_Data\StreamingAssets\CG\sprite\re3b_komaru_b1_0.png                                                                               33%
+739 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ri1_komaru_a1_0.png                                                                              33%
+742 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ri1_komaru_a2_0.png                                                                              33%
+754 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ri1_warai_a1_0.png                                                                             33%
+767 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ri2_komaru_a2_1.png                                                                              34%
+779 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ri2_warai_a1_1.png                                                                             34%
+790 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ri4_warai_a1_0.png                                                                             34%
+801 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ri6_komaru_a1_2.png                                                                              34%
+809 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa1a_akuwarai_a1_1.png                                                                                 35%
+819 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa1a_hannbeso_a3_2.png                                                                                 35%
+832 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa1b_akireru_b1_0.png                                                                                35%
+846 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa1b_odoroki_b1_2.png                                                                                35%
+857 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa2a_akuwarai_a1_1.png                                                                                 36%
+865 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa2a_hau_a1_0.png                                                                            36%
+877 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa2a_yareyare_a1_0.png                                                                                 36%
+881 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa2a_yareyare_a2_1.png                                                                                 36%
+883 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa2b_akireru_b1_0.png                                                                                36%
+888 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa2b_akuwarai_b1_2.png                                                                                 36%
+897 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa2b_hau_b2_2.png                                                                            37%
+910 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sa4_akireru_a1_0.png                                                                               37%
+921 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sato1_def1_2.png                                                                           37%
+935 - HigurashiEp09_Data\StreamingAssets\CG\sprite\sato1_warai_1.png                                                                            38%
+948 - HigurashiEp09_Data\StreamingAssets\CG\sprite\si1a_warai_a1_2.png                                                                              38%
+958 - HigurashiEp09_Data\StreamingAssets\CG\sprite\si1b_majime_b1_0.png                                                                               39%
+971 - HigurashiEp09_Data\StreamingAssets\CG\sprite\si1b_yowaki_b1_1.png                                                                               39%
+979 - HigurashiEp09_Data\StreamingAssets\CG\sprite\si3_huteki_a1_0.png                                                                              39%
+989 - HigurashiEp09_Data\StreamingAssets\CG\sprite\si3_odoroki_a1_1.png                                                                               39%
+1001 - HigurashiEp09_Data\StreamingAssets\CG\sprite\si3_wink_a1_1.png                                                                             40%
+1012 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ta1_hatena_0.png                                                                            40%
+1026 - HigurashiEp09_Data\StreamingAssets\CG\sprite\ta2_def_2.png                                                                         40%
+1037 - HigurashiEp09_Data\StreamingAssets\CG\sprite\tetu_2_1.png                                                                        41%
+1048 - HigurashiEp09_Data\StreamingAssets\CG\sprite\tomi1_def_0.png                                                                           41%
+1056 - HigurashiEp09_Data\StreamingAssets\CG\sprite\tomi1_komaru_2.png                                                                              41%
+1067 - HigurashiEp09_Data\StreamingAssets\CG\sprite\tomi3_ikari_1.png                                                                             42%
+1077 - HigurashiEp09_Data\StreamingAssets\CG\sprite\tomi3_warai_2.png                                                                             42%
+1096 - HigurashiEp09_Data\StreamingAssets\CGAlt\portrait\ha4_def2_0.png                                                                               43%
+1100 - HigurashiEp09_Data\StreamingAssets\CGAlt\portrait\ha4_yowaki_0.png                                                                                 43%
+1105 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\aks1_shinken_0.png                                                                                 43%
+1108 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\ha1_def_0.png                                                                            43%
+1114 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\ha3a_au_2.png                                                                            44%
+1124 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\iri2_def2_2.png                                                                              44%
+1131 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\iri3_majime_2.png                                                                                44%
+1139 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\kei1_majime_0.png                                                                                45%
+1149 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\kei2_nayamu_2.png                                                                                45%
+1156 - HigurashiEp09_Data\StreamingAs . lt\sprite\me1a_majime_a1_0.png                                                                              45%
+1163 - HigurashiEp09_Data\StreamingAss . t\sprite\me1b_akuwarai_a1_2.png                                                                                46%
+1174 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\me2_def_a1_1.png                                                                               46%
+1183 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\me2_warai_a1_2.png                                                                                 47%
+1190 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\oisi1_4_1.png                                                                            47%
+1195 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\oisi2_9_1.png                                                                            47%
+1202 - HigurashiEp09_Data\StreamingAs . lt\sprite\re1a_bikkuri_a1_1.png                                                                               48%
+1210 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\re1a_warai_a1_2.png                                                                                  48%
+1220 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\re1b_warai_b1_2.png                                                                                  48%
+1229 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\re2a_nande_a1_2.png                                                                                  49%
+1238 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\re2b_kaii_b1_2.png                                                                                 49%
+1244 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\re3a_hau_a1_2.png                                                                                49%
+1252 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\ri1_niyari_a1_0.png                                                                                  49%
+1262 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\ri4_def_a1_0.png                                                                               50%
+1272 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\sa1a_def_a1_2.png                                                                                50%
+1283 - HigurashiEp09_Data\StreamingAs . lt\sprite\sa1b_odoroki_b1_2.png                                                                               51%
+1294 - HigurashiEp09_Data\StreamingAss . t\sprite\sa2a_yareyare_a1_0.png                                                                                51%
+1303 - HigurashiEp09_Data\StreamingAss . t\sprite\sa2b_yareyare_b1_0.png                                                                                51%
+1310 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\sato1_komaru2_0.png                                                                                  51%
+1319 - HigurashiEp09_Data\StreamingAss . t\sprite\si1b_akuwarai_b1_2.png                                                                                52%
+1324 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\si1b_wink_b1_0.png                                                                                 52%
+1330 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\si3_majime_a1_0.png                                                                                  52%
+1336 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\si3_yowaki_a1_2.png                                                                                  52%
+1343 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\ta2_def_0.png                                                                            53%
+1349 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\tie_2_0.png                                                                          53%
+1355 - HigurashiEp09_Data\StreamingAssets\CGAlt\sprite\tomi1_shinken_2.png                                                                                  54%
+1408 - HigurashiEp09_Data\StreamingAss . eScripts\txtInfoDictionary.json                                                                                54%
+1414 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\hm01_02.ogg                                                                      55%
+1416 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\hm01_05.ogg                                                                      55%
+1417 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\hm01_06.ogg                                                                      55%
+1419 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\hm02_08.ogg                                                                      56%
+1420 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\hm02_10.ogg                                                                      56%
+1421 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\hm02_11.ogg                                                                      57%
+1423 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\hm02_13.ogg                                                                      57%
+1424 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\hm03_14.ogg                                                                      57%
+1425 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\hm04_18.ogg                                                                      58%
+1426 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\hm05_21.ogg                                                                      58%
+1428 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\kaze_lp.ogg                                                                      58%
+1431 - HigurashiEp09_Data\StreamingAssets\ExtraBGM\t1_requiem.ogg                                                                         59%
+1450 - HigurashiEp09_Data\StreamingAssets\movies\mv11.mp4                                                                 61%
+1450 - HigurashiEp09_Data\StreamingAssets\movies\mv11.mp4                                                                 62%
+1450 - HigurashiEp09_Data\StreamingAssets\movies\mv11.mp4                                                                 64%
+1451 - HigurashiEp09_Data\StreamingAssets\movies\mv11.webm                                                                  65%
+1451 - HigurashiEp09_Data\StreamingAssets\movies\mv11.webm                                                                  66%
+1451 - HigurashiEp09_Data\StreamingAssets\movies\mv11.webm                                                                  67%
+1451 - HigurashiEp09_Data\StreamingAssets\movies\mv11.webm                                                                  68%
+1451 - HigurashiEp09_Data\StreamingAssets\movies\mv11.webm                                                                  69%
+1451 - HigurashiEp09_Data\StreamingAssets\movies\mv11.webm                                                                  71%
+1452 - HigurashiEp09_Data\StreamingAssets\movies\mv12.mp4                                                                 73%
+1452 - HigurashiEp09_Data\StreamingAssets\movies\mv12.mp4                                                                 74%
+1453 - HigurashiEp09_Data\StreamingAssets\movies\mv12.webm                                                                  75%
+1453 - HigurashiEp09_Data\StreamingAssets\movies\mv12.webm                                                                  76%
+1453 - HigurashiEp09_Data\StreamingAssets\movies\mv12.webm                                                                  77%
+1453 - HigurashiEp09_Data\StreamingAssets\movies\mv12.webm                                                                  78%
+1453 - HigurashiEp09_Data\StreamingAssets\movies\mv12.webm                                                                  79%
+1453 - HigurashiEp09_Data\StreamingAssets\movies\mv12.webm                                                                  79%
+1454 - HigurashiEp09_Data\StreamingAssets\OGBackgrounds\bg\byo_ten.png                                                                              80%
+1497 - HigurashiEp09_Data\StreamingAssets\OGBackgrounds\bg\ji2.png                                                                          81%
+1537 - HigurashiEp09_Data\StreamingAssets\OGBackgrounds\bg\m_y2.png                                                                           82%
+1575 - HigurashiEp09_Data\StreamingAssets\OGBackgrounds\effect\bg0.png                                                                              82%
+1615 - HigurashiEp09_Data\StreamingAssets\OGBackgrounds\effect\title02.png                                                                                  82%
+1640 - HigurashiEp09_Data\StreamingAssets\OGBGM\4.ogg                                                             83%
+1646 - HigurashiEp09_Data\StreamingAssets\OGBGM\kaze.ogg                                                                83%
+1649 - HigurashiEp09_Data\StreamingAssets\OGBGM\rika.ogg                                                                83%
+1659 - HigurashiEp09_Data\StreamingAssets\OGSE\daidageki-kai2.ogg                                                                         83%
+1697 - HigurashiEp09_Data\StreamingAss . rites\portrait\ha4_yowaki_0.png                                                                                84%
+1712 - HigurashiEp09_Data\StreamingAssets\OGSprites\sprite\ha3a_def_0.png                                                                                 84%
+1736 - HigurashiEp09_Data\StreamingAssets\OGSprites\sprite\kei1_def1_0.png                                                                                  84%
+1768 - HigurashiEp09_Data\StreamingAss . ites\sprite\me1b_majime_a1_0.png                                                                                 84%
+1794 - HigurashiEp09_Data\StreamingAssets\OGSprites\sprite\oisi2_10_2.png                                                                                 84%
+1823 - HigurashiEp09_Data\StreamingAsse . tes\sprite\re2a_bikkuri_a1_1.png                                                                                  85%
+1852 - HigurashiEp09_Data\StreamingAss . rites\sprite\ri1_majime_a1_2.png                                                                                 85%
+1881 - HigurashiEp09_Data\StreamingAsse . tes\sprite\sa1b_akireru_b1_0.png                                                                                  85%
+1906 - HigurashiEp09_Data\Streaming . sprite\sa2b_yareyare_b2_0.png                                                                           86%
+1937 - HigurashiEp09_Data\StreamingAs . prites\sprite\si3_wink_a1_0.png                                                                               86%
+1954 - HigurashiEp09_Data\StreamingAs . prites\sprite\tomi1_ikari_2.png                                                                               86%
+1978 - HigurashiEp09_Data\StreamingAssets\Update\hiruconsole_008.txt                                                                            86%
+2004 - HigurashiEp09_Data\StreamingAssets\Update\omake.txt                                                                  86%
+2021 - HigurashiEp09_Data\StreamingAssets\voice\org\rika8001.ogg                                                                        86%
+2035 - HigurashiEp09_Data\StreamingAss . e\ps3\s07\00\vt2a_renaf1001.ogg                                                                                86%
+2049 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100010.ogg                                                                                86%
+2065 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100026.ogg                                                                                86%
+2082 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100043.ogg                                                                                86%
+2092 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100053.ogg                                                                                86%
+2129 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100090.ogg                                                                                87%
+2165 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100126.ogg                                                                                87%
+2201 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100162.ogg                                                                                87%
+2230 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100191.ogg                                                                                87%
+2263 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100227.ogg                                                                                87%
+2296 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100259.ogg                                                                                87%
+2330 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100293.ogg                                                                                87%
+2368 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100331.ogg                                                                                87%
+2396 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100359.ogg                                                                                87%
+2431 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\01\330100394.ogg                                                                                87%
+2460 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200015.ogg                                                                                87%
+2489 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200044.ogg                                                                                87%
+2519 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200074.ogg                                                                                88%
+2551 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200106.ogg                                                                                88%
+2584 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200139.ogg                                                                                88%
+2590 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200145.ogg                                                                                88%
+2600 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200155.ogg                                                                                88%
+2625 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200180.ogg                                                                                88%
+2658 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200212.ogg                                                                                88%
+2689 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200243.ogg                                                                                88%
+2722 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200276.ogg                                                                                88%
+2750 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200304.ogg                                                                                88%
+2784 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200338.ogg                                                                                88%
+2808 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\02\330200362.ogg                                                                                88%
+2839 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\03\330300020.ogg                                                                                88%
+2869 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\03\330300050.ogg                                                                                89%
+2902 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\03\330300083.ogg                                                                                89%
+2934 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\03\330300115.ogg                                                                                89%
+2971 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\03\330300153.ogg                                                                                89%
+3004 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\03\330300185.ogg                                                                                89%
+3036 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\04\330400035.ogg                                                                                89%
+3061 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\04\330400060.ogg                                                                                89%
+3083 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\04\330400083.ogg                                                                                89%
+3105 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\04\330400105.ogg                                                                                89%
+3146 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\04\330400147.ogg                                                                                89%
+3187 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\04\330400188.ogg                                                                                90%
+3214 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\04\330400215.ogg                                                                                90%
+3245 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\04\330400246.ogg                                                                                90%
+3266 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\04\330400267.ogg                                                                                90%
+3286 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\05\330500008.ogg                                                                                90%
+3313 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\05\330500035.ogg                                                                                90%
+3349 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\05\330500070.ogg                                                                                90%
+3386 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\05\330500108.ogg                                                                                90%
+3418 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\05\330500140.ogg                                                                                90%
+3444 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\05\330500166.ogg                                                                                90%
+3464 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\05\330500186.ogg                                                                                90%
+3487 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\05\330500209.ogg                                                                                91%
+3514 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\06\330600027.ogg                                                                                91%
+3556 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\06\330600069.ogg                                                                                91%
+3586 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\06\330600099.ogg                                                                                91%
+3619 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\08\330800011.ogg                                                                                91%
+3646 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\08\330800038.ogg                                                                                91%
+3669 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\09\330900001.ogg                                                                                91%
+3676 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\09\330900008.ogg                                                                                91%
+3711 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\09\330900043.ogg                                                                                91%
+3739 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\09\330900071.ogg                                                                                91%
+3766 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\09\330900098.ogg                                                                                91%
+3780 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\10\331000008.ogg                                                                                91%
+3803 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\10\331000031.ogg                                                                                92%
+3821 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\10\331000049.ogg                                                                                92%
+3853 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\10\331000081.ogg                                                                                92%
+3879 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\10\331000107.ogg                                                                                92%
+3906 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\10\331000134.ogg                                                                                92%
+3929 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\10\331000157.ogg                                                                                92%
+3946 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\10\331000174.ogg                                                                                92%
+3963 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s07\10\331000191.ogg                                                                                92%
+3986 - HigurashiEp09_Data\StreamingAss . e\ps3\s07\23\vt2a_kameda1015.ogg                                                                                 92%
+4020 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\00\ds42220012.ogg                                                                                 92%
+4045 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\00\ds42220037.ogg                                                                                 92%
+4066 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\00\ds42220058.ogg                                                                                 92%
+4090 - HigurashiEp09_Data\StreamingAs . ce\ps3\s15\00\vt4c_docm2015.ogg                                                                               92%
+4127 - HigurashiEp09_Data\StreamingAs . ce\ps3\s15\00\vt4c_docm2052.ogg                                                                               93%
+4162 - HigurashiEp09_Data\StreamingAs . ce\ps3\s15\00\vt4c_docm2087.ogg                                                                               93%
+4196 - HigurashiEp09_Data\StreamingAs . ce\ps3\s15\00\vt4c_docm2121.ogg                                                                               93%
+4234 - HigurashiEp09_Data\StreamingAs . ce\ps3\s15\00\vt4c_docm2159.ogg                                                                               93%
+4266 - HigurashiEp09_Data\StreamingAss . e\ps3\s15\00\vt4c_koucho2016.ogg                                                                                 93%
+4294 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\01\ds42010008.ogg                                                                                 93%
+4330 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\02\ds42020012.ogg                                                                                 93%
+4363 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\02\ds42020045.ogg                                                                                 93%
+4401 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\02\ds42020083.ogg                                                                                 94%
+4431 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\02\ds42020113.ogg                                                                                 94%
+4461 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\02\ds42020143.ogg                                                                                 94%
+4489 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\02\ds42020172.ogg                                                                                 94%
+4517 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\03\ds42030017.ogg                                                                                 94%
+4550 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\03\ds42030050.ogg                                                                                 94%
+4586 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\03\ds42030086.ogg                                                                                 94%
+4621 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\04\ds42040030.ogg                                                                                 94%
+4662 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050027.ogg                                                                                 94%
+4693 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050058.ogg                                                                                 94%
+4720 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050085.ogg                                                                                 94%
+4751 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050116.ogg                                                                                 95%
+4790 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050156.ogg                                                                                 95%
+4809 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050175.ogg                                                                                 95%
+4838 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050204.ogg                                                                                 95%
+4873 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050239.ogg                                                                                 95%
+4894 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050260.ogg                                                                                 95%
+4911 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050277.ogg                                                                                 95%
+4933 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050299.ogg                                                                                 95%
+4961 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050327.ogg                                                                                 95%
+4999 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050365.ogg                                                                                 95%
+5038 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050404.ogg                                                                                 95%
+5072 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050438.ogg                                                                                 95%
+5101 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050467.ogg                                                                                 96%
+5132 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050498.ogg                                                                                 96%
+5160 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050526.ogg                                                                                 96%
+5198 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050564.ogg                                                                                 96%
+5232 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\05\ds42050598.ogg                                                                                 96%
+5273 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\07\ds42210018.ogg                                                                                 96%
+5295 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\07\ds42210040.ogg                                                                                 96%
+5324 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\10\ds42100018.ogg                                                                                 96%
+5357 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070030.ogg                                                                                 96%
+5389 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070063.ogg                                                                                 96%
+5419 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070093.ogg                                                                                 97%
+5455 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070129.ogg                                                                                 97%
+5473 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070147.ogg                                                                                 97%
+5495 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070169.ogg                                                                                 97%
+5524 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070198.ogg                                                                                 97%
+5548 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070222.ogg                                                                                 97%
+5576 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070251.ogg                                                                                 97%
+5602 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070277.ogg                                                                                 97%
+5641 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s15\12\ds42070316.ogg                                                                                 97%
+5665 - HigurashiEp09_Data\StreamingAs . ce\ps3\s15\22\vt4c_chie2024.ogg                                                                               97%
+5686 - HigurashiEp09_Data\StreamingAss . e\ps3\s20\01\vtt_keiichi3034.ogg                                                                                 98%
+5718 - HigurashiEp09_Data\StreamingAs . ce\ps3\s20\06\vtt_shion3006.ogg                                                                               98%
+5757 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\01\nkei_1770.ogg                                                                                98%
+5790 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\01\nkei_2090.ogg                                                                                98%
+5805 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\01\nkei_2240.ogg                                                                                98%
+5836 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\02\nren_1630.ogg                                                                                98%
+5867 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\04\nsat_0920.ogg                                                                                98%
+5883 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\06\nshi_0210.ogg                                                                                99%
+5911 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\08\ntom_0590.ogg                                                                                99%
+5942 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\08\ntom_0930.ogg                                                                                99%
+5968 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\10\niri_0140.ogg                                                                                99%
+5986 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\10\niri_0320.ogg                                                                                99%
+6011 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\11\nois_0140.ogg                                                                                99%
+ 6036 - HigurashiEp09_Data\StreamingAssets\voice\ps3\s27\11\nois_0390.ogg                                                                               Everything is Ok 
+ 
+Folders: 82 
+Files: 5968 
+Size:       1623910625 
+Compressed: 1443158754 
+--------------- EXECUTION FINISHED ---------------
+
+<<< Status: 60% Extracting [Rei-UI_2019.4.3_win.7z (4 MB)] to [c:\gog games\higurashi when they cry hou - rei]  >>>
+----- BEGIN EXECUTING COMMAND: [./7za64 x Rei Downloads\Rei-UI_2019.4.3_win.7z -aoa -bso1 -bsp1 -bse2 -oc:\gog games\higurashi when they cry hou - rei] -----
+ 
+7-Zip (a) 18.05 (x64) : Copyright (c) 1999-2018 Igor Pavlov : 2018-04-30 
+ 
+Scanning the drive for archives: 
+  0M Scan           1 file, 3742643 bytes (3655 KiB) 
+ 
+Extracting archive: Rei Downloads\Rei-UI_2019.4.3_win.7z 
+-- 
+Path = Rei Downloads\Rei-UI_2019.4.3_win.7z 
+Type = 7z 
+Physical Size = 3742643 
+Headers Size = 239 
+Method = LZMA2:24 
+Solid = + 
+Blocks = 1 
+ 
+0%
+60%
+1        100%
+2 - HigurashiEp09_Data\sharedassets0.assets                                                  100%
+ 3        Everything is Ok 
+ 
+Folders: 1 
+Files: 2 
+Size:       52604037 
+Compressed: 3742643 
+--------------- EXECUTION FINISHED ---------------
+
+<<< Status: 75% Extracting [Rei.Voice.and.Graphics.Patch.zip (6 MB)] to [c:\gog games\higurashi when they cry hou - rei]  >>>
+----- BEGIN EXECUTING COMMAND: [./7za64 x Rei Downloads\Rei.Voice.and.Graphics.Patch.zip -aoa -bso1 -bsp1 -bse2 -oc:\gog games\higurashi when they cry hou - rei] -----
+ 
+7-Zip (a) 18.05 (x64) : Copyright (c) 1999-2018 Igor Pavlov : 2018-04-30 
+ 
+Scanning the drive for archives: 
+  0M Scan           1 file, 5603146 bytes (5472 KiB) 
+ 
+Extracting archive: Rei Downloads\Rei.Voice.and.Graphics.Patch.zip 
+-- 
+Path = Rei Downloads\Rei.Voice.and.Graphics.Patch.zip 
+Type = zip 
+Physical Size = 5603146 
+ 
+0%
+10%
+22          24%
+44 - HigurashiEp09_Data\StreamingAssets\Update\saikoroshi02.txt                                                                       58%
+94          86%
+ 113 - HigurashiEp09_Data\Plugins\AVProVideo.dll                                                      Everything is Ok 
+ 
+Folders: 13 
+Files: 103 
+Size:       11960831 
+Compressed: 5603146 
+--------------- EXECUTION FINISHED ---------------
+
+<<< Status: 97% Cleaning up... >>>
+<<< Status: 100% Install Completed! >>>
+Install Completed: Deleted the lock file
+Got Request [troubleshoot] Data [{'action': 'getLogsZip', 'subMod': {'id': 16, 'modName': 'Rei', 'subModName': 'full', 'descriptionID': 'higurashiFull', 'modOptionGroups': [{'name': 'High Quality Ryukishi/OG Sprites (from Hou+)', 'radio': [], 'checkBox': [{'name': 'High Quality Ryukishi/OG Sprites (from Hou+)', 'id': 'High Quality Ryukishi/OG Sprites (from Hou+): High Quality Ryukishi/OG Sprites (from Hou+)', 'description': "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality."}], 'selectedCheckBoxes': [], 'selectedRadio': None}, {'name': 'Alternate Languages', 'radio': [{'name': 'English', 'id': 'Alternate Languages: English', 'description': 'Use the default language'}, {'name': 'Apply Russian language patch', 'id': 'Alternate Languages: Apply Russian language patch', 'description': 'Патч с полным переводом контента Higurashi no Naku Koro ni Rei. [Больше информации](https://github.com/Airdrakis/Higurashi_Rei-ru/). Примечание:\n - Команда 07th-mod не занимается поддержкой данного перевода!\n - О возникших проблемах вы можете сообщить здесь [github](https://github.com/Airdrakis/Higurashi_Rei-ru/issues).\n - Также вы можете обратиться за помощью в личные сообщения сообщества авторов перевода [Zettai TL](https://vk.com/zettai_tl).'}], 'checkBox': [], 'selectedCheckBoxes': [], 'selectedRadio': 'Alternate Languages: English'}, {'name': 'Common Options', 'radio': [], 'checkBox': [{'name': 'Update Steamgrid Icons', 'id': 'Common Options: Update Steamgrid Icons', 'description': '\n<p>This option updates the header and icon art in the Steam app to match the mod\'s art style. All Higurashi and Umineko games will have their icons updated, not just the game being patched.</p>\n<strong>NOTE: A computer restart may be required to see the updated art!</strong>\n\n<table class="umineko-image-table-content umineko-image-table-horizontal">\n<tbody>\n\t<tr>\n\t<td>Original</td>\n\t\t<td><img src="img/steamgrid/header-original.jpg"></td>\n\t</tr>\n\t<tr>\n\t\t<td>Updated</td>\n\t\t<td><img src="img/steamgrid/header-updated.jpg"></td>\n\t</tr>\n</tbody>\n</table>\n'}, {'name': 'Quick Repair', 'id': 'Common Options: Quick Repair', 'description': 'This option repairs your install by re-installing critical mod files. This is useful if:\n\n- Steam updated your install, which overwrote some important mod files\n- Enabling or Disabling Proton on Linux has broken your install.\n    - On Linux, changing your "Steam Play Compatability Tool" (disabling or enabling Proton) will cause Steam to overwrite your mod files, causing a black screen on startup. Enable this option to fix this problem.\n- In some cases, this will fix crashing on startup, or getting a black screen on startup\n\nMake sure to select the same mod options you chose previously before using this option (for example, "French Language Patch"), as this option may overwrite them.\n'}, {'name': 'Download Manually', 'id': 'Common Options: Download Manually', 'description': "This option requires you to manually download the files for the installation.\n\nIf you're having problems downloading via the installer, you can use this option to bypass the download stage.\n\nPlease scroll down the page to the download preview table below, which will tell you what to download and where to put the downloads.\n\nThe files you manually downloaded will not be deleted automatically at the end of the install (in case you want to back them up).\n\nFor detailed instructions, [see our Wiki](https://07th-mod.com/wiki/Installer/faq/#workaround-for-download-and-verify-stage-failed-error).\n"}, {'name': 'Keep Temporary Downloads', 'id': 'Common Options: Keep Temporary Downloads', 'description': 'Temporary downloads are normally deleted after a successful install. This\noption keeps these downloads, useful for backup, a full re-install without re-downloading, or an offline install.\n\nDownloads will be saved in the `C:\\Users\\Pichau\\Downloads\\WATANAGASHIARCHIVE\\assets\\newimages\\07th-mod_installer\\Rei Downloads` folder.\n'}, {'name': 'Force Install from Scratch', 'id': 'Common Options: Force Install from Scratch', 'description': 'Enabling this option forces re-install of all mod files.\n\nUse this option:\n - If you re-installed the unmodded game, causing some mod files to be overwritten.\n - If you think some previously installed files are broken or missing.\n'}], 'selectedCheckBoxes': [], 'selectedRadio': None}, {'name': 'Experimental Options', 'radio': [], 'checkBox': [{'name': 'Partial Manual Install', 'id': 'Experimental Options: Partial Manual Install', 'description': "Users who get a 'Permission Denied' error should use this option to install the mod.\n\nPlease watch the instructions on using this option: [https://www.youtube.com/watch?v=Px4JWsSycQE](https://www.youtube.com/watch?v=Px4JWsSycQE)\n\nThis makes the installer download and extract the mod files to a temporary folder (shown at the end of the install). After this, **you** have to manually copy the mod files to the game directory.\n\nYou also need to manually delete the temporary installer files (see end of video)."}], 'selectedCheckBoxes': [], 'selectedRadio': None}], 'family': 'higurashi', 'identifiers': ['Higurashi When They Cry Rei_Data', 'HigurashiEp09_Data', 'HigurashiEp09.x86_64', 'HigurashiEp09.exe'], 'modUpdatesHTML': '<strong>ERROR: Failed to get Mod Updates HTML for Rei - modName missing from self.updates</strong>'}, 'installPath': 'c:\\gog games\\higurashi when they cry hou - rei'}]
+Game Log [c:\gog games\higurashi when they cry hou - rei\HigurashiEp09_Data\output_log.txt] WAS NOT FOUND

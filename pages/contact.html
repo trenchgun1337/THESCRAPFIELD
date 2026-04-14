@@ -26,12 +26,12 @@ html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.5) transparent; }
 body {
   font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
   font-size:12px;
- background-color:#000000;
-background-image: url('../assets/images/whitebg.jpeg');
-background-size: 74%;
-background-attachment: fixed;
+  background-color:#000000;
+  background-image: url('../assets/images/whitebg.jpeg');
+  background-size: 74%;
+  background-attachment: fixed;
   background-repeat: no-repeat;
-background-position: center center;
+  background-position: center center;
   color:var(--text);
   min-height:100vh;
   padding:18px 6px 40px;
@@ -95,6 +95,36 @@ a { color:#000; text-decoration:none; }
   background:none; border:none; color:#555; font-family:inherit;
 }
 
+/* ── toolbar de imagem ── */
+.editor-toolbar {
+  background: #e8e8e8;
+  border-bottom: 1px solid var(--border);
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.toolbar-btn {
+  background: #c8c8c8;
+  border: 1px solid rgba(0,0,0,.25);
+  padding: 3px 10px;
+  font-family: inherit;
+  font-size: 10.5px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.toolbar-btn:hover { background: #b8b8b8; }
+.toolbar-sep { width:1px; height:16px; background:rgba(0,0,0,.15); }
+.toolbar-hint { font-size:10px; color:#999; }
+
+/* hidden file input */
+#imgFileInput { display:none; }
+
 #msgEditor {
   background: #f1f1f1;
   border: 5px ridge;
@@ -112,6 +142,17 @@ a { color:#000; text-decoration:none; }
   content: attr(data-placeholder);
   color: #bbb;
   pointer-events: none;
+}
+
+/* imagens inseridas no editor */
+#msgEditor img {
+  max-width: 100%;
+  max-height: 320px;
+  display: block;
+  margin: 6px 0;
+  border: 1px solid rgba(0,0,0,.15);
+  pointer-events: auto;
+  user-select: auto;
 }
 
 .compose-bottom {
@@ -140,7 +181,7 @@ a { color:#000; text-decoration:none; }
 #statusMsg.ok  { color:#2a7a2a; }
 #statusMsg.err { color:var(--accent); }
 
-/* preview */
+/* ── preview ── */
 #previewSection {
   border: 2px ridge #727272;
   background: #f2f2f2;
@@ -164,7 +205,7 @@ a { color:#000; text-decoration:none; }
   font-family: system-ui, sans-serif, Arial;
   font-size: 12px;
 }
-/* ── Sound toggle — só texto puro ── */
+
 #soundToggle {
   position: fixed;
   bottom: 8px; left: 10px;
@@ -197,7 +238,7 @@ a { color:#000; text-decoration:none; }
 
   <div class="aero-bar">
     <a class="back-link" href="../index.html">back</a>
-    <span class="bar-title">contact </span>
+    <span class="bar-title">contact</span>
   </div>
 
   <!-- COMPOSE -->
@@ -213,6 +254,16 @@ a { color:#000; text-decoration:none; }
         <span class="field-key">From:</span>
         <span class="field-val">Anonymous</span>
       </div>
+    </div>
+
+    <!-- toolbar -->
+    <div class="editor-toolbar">
+      <button class="toolbar-btn" onclick="document.getElementById('imgFileInput').click()">
+        &#128247; Image
+      </button>
+      <div class="toolbar-sep"></div>
+      <span class="toolbar-hint">jpg, png, gif, webp — max 400kb</span>
+      <input type="file" id="imgFileInput" accept="image/jpeg,image/png,image/gif,image/webp" onchange="insertImage(event)">
     </div>
 
     <div id="msgEditor"
@@ -240,7 +291,7 @@ a { color:#000; text-decoration:none; }
             <tr>
               <td style="width:4px;background:#b0b0b0;border-radius:2px;padding:0;">&nbsp;</td>
               <td style="vertical-align:top;padding:0;">
-                <div style="padding:6px 10px;margin:0 10px;background-color:rgb(255, 255, 255);border-radius:8px;">
+                <div style="padding:6px 10px;margin:0 10px;background-color:#fff;border-radius:8px;">
                   <img src="https://img1.picmix.com/output/stamp/thumb/2/9/8/5/2895892_9ee1d.png"
                        style="width:36px;height:46px;display:block;">
                 </div>
@@ -248,7 +299,9 @@ a { color:#000; text-decoration:none; }
               <td style="vertical-align:top;padding-left:8px;">
                 <div style="color:#2c3e50;font-size:16px;"><strong>Anonymous</strong></div>
                 <div style="color:#aaaaaa;font-size:13px;" id="previewTime"></div>
-                <p style="font-size:16px;margin-top:5px;white-space:pre-wrap;" id="previewMsg"><span style="color:#bbb;">your message will appear here...</span></p>
+                <div style="font-size:14px;margin-top:5px;line-height:1.6;" id="previewMsg">
+                  <span style="color:#bbb;">your message will appear here...</span>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -266,7 +319,7 @@ emailjs.init({ publicKey: 'iww-r-sgJVyoRmokf' });
 const SERVICE_ID  = 'service_ina2cb8';
 const TEMPLATE_ID = 'template_g7owumb';
 
-/* ── live preview ── */
+/* ── time ── */
 function getTimeStr() {
   return new Date().toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' });
 }
@@ -278,28 +331,115 @@ const previewTime = document.getElementById('previewTime');
 previewTime.textContent = getTimeStr();
 setInterval(() => { previewTime.textContent = getTimeStr(); }, 30000);
 
-editor.addEventListener('input', () => {
-  const txt = editor.innerText.trim();
-  if (txt) {
-    previewMsg.style.color = '';
-    previewMsg.textContent = txt;
+/* ── live preview ── */
+editor.addEventListener('input', updatePreview);
+
+function updatePreview() {
+  const html = editor.innerHTML.trim();
+  const text = editor.innerText.trim();
+  if (text || editor.querySelector('img')) {
+    previewMsg.innerHTML = buildEmailHTML(html);
   } else {
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
   }
-});
+}
+
+/* ── insert image from file upload ── */
+function insertImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const status = document.getElementById('statusMsg');
+
+  if (file.size > 400 * 1024) {
+    status.textContent = 'image too large — max 400kb.';
+    status.className = 'err';
+    event.target.value = '';
+    return;
+  }
+
+  status.textContent = '';
+  status.className = '';
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // foca o editor antes de inserir
+    editor.focus();
+
+    const img = document.createElement('img');
+    img.src = e.target.result; // base64
+    img.style.maxWidth = '100%';
+    img.style.maxHeight = '320px';
+    img.style.display = 'block';
+    img.style.margin = '6px 0';
+    img.style.border = '1px solid rgba(0,0,0,.15)';
+
+    // insere no cursor atual ou no final
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0 && editor.contains(sel.anchorNode)) {
+      const range = sel.getRangeAt(0);
+      range.deleteContents();
+      range.insertNode(img);
+      range.setStartAfter(img);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } else {
+      editor.appendChild(img);
+    }
+
+    updatePreview();
+  };
+  reader.readAsDataURL(file);
+  event.target.value = ''; // reset para poder reenviar a mesma imagem
+}
+
+/* ── converte HTML do editor para HTML de email ──
+   - texto normal → mantém
+   - <img src="data:..."> → inline base64 no email
+   - URLs de imagem no texto → <img> clicável                        */
+function buildEmailHTML(editorHTML) {
+  // cria um container temporário
+  const tmp = document.createElement('div');
+  tmp.innerHTML = editorHTML;
+
+  // transforma URLs de imagem soltas em <img> clicável
+  tmp.childNodes.forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const imageUrlRe = /(https?:\/\/\S+\.(?:jpg|jpeg|png|gif|webp)(\?\S*)?)/gi;
+      if (imageUrlRe.test(node.textContent)) {
+        const span = document.createElement('span');
+        span.innerHTML = node.textContent.replace(
+          imageUrlRe,
+          url => `<a href="${url}" target="_blank" style="display:block;"><img src="${url}" style="max-width:100%;max-height:320px;display:block;margin:6px 0;border:1px solid rgba(0,0,0,.15);"></a>`
+        );
+        node.replaceWith(span);
+      }
+    }
+  });
+
+  return tmp.innerHTML;
+}
 
 /* ── send ── */
 async function sendMsg() {
   const msgText = editor.innerText.trim();
-  const msgHTML = editor.innerHTML.trim();
+  const hasImg  = editor.querySelector('img') !== null;
   const status  = document.getElementById('statusMsg');
   const btn     = document.getElementById('sendBtn');
 
-  if (!msgText) { status.textContent = 'write something first.'; status.className = 'err'; return; }
+  if (!msgText && !hasImg) {
+    status.textContent = 'write something first.';
+    status.className = 'err';
+    return;
+  }
 
   btn.disabled = true;
   status.className = '';
   status.textContent = 'sending...';
+
+  // monta HTML final para o email
+  const finalHTML = buildEmailHTML(editor.innerHTML);
 
   try {
     await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
@@ -307,7 +447,7 @@ async function sendMsg() {
       from_email:   'anonymous@noreply.com',
       subject:      'anonymous message — watanagashi archive',
       message:      msgText,
-      message_html: msgHTML,
+      message_html: finalHTML,
       time:         getTimeStr(),
       name:         'Anonymous',
     });
@@ -322,6 +462,6 @@ async function sendMsg() {
   }
   btn.disabled = false;
 }
-
 </script>
+</body>
 </html>

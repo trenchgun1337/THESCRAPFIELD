@@ -1,0 +1,200 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+		<link rel="icon" type="image/png" href="favicon.png" />
+        <meta charset="utf-8">
+        <title>07th-Mod Installer Index</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/flexslider.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="css/custom.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href='https://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+		<div id="app" class="main-container" v-cloak>
+		<div id="modal-container" >
+			<modal v-bind:visible="modalVisible" v-on:close="clearModal()">
+				<div v-if="versionInfoAvailable">
+					<h3>New Installer Available</h3>
+					<p>{{metaInfo.installerIsLatest[1]}}</p>
+					<p>You should update the installer to get bug-fixes and new features.</p>
+				</div>
+				<div v-else>
+					<h3>Error while checking if installer is latest</h3>
+					<p>{{metaInfo.installerIsLatest[1]}}</p>
+					<p>If you're sure you have the latest version, click "Use Old Installer", and ignore this message.</p>
+					<p>Otherwise please go to the installer download page and make sure you have the latest version.</p>
+				</div>
+				<a href="https://github.com/07th-mod/python-patcher/releases" target="_blank"><button type="button" class="btn">Go to installer download page</button></a>
+				<button type="button" class="btn" style="border: grey;" v-on:click="clearModal()">Use old installer (not recommended)</button>
+			</modal>
+		</div>
+
+		<div class="nav-container">
+		    <nav>
+		        <div class="nav-bar">
+		            <div class="module left">
+		                <a href="index.html">
+		                    <img class="logo logo-dark" alt="07th-Mod Installer" src="img/logo-07th.png">
+		                </a>
+		            </div>
+		            <div class="module widget-handle mobile-toggle right visible-sm visible-xs">
+		                <i class="ti-menu"></i>
+		            </div>
+		            <div class="module-group right">
+		                <div class="module left">
+							<dropdown-game-menu v-bind:handles="subModList" v-bind:on-download-logs="getLogsZip"></dropdown-game-menu>
+		                </div>
+		            </div>
+		        </div>
+		    </nav>
+		</div>
+		
+		<div class="main-container">
+			<snack-bar></snack-bar>
+			<section class="page-title page-title-2 image-bg overlay parallax">
+					<div class="background-image-holder">
+						<img alt="Background Image" class="background-image" src="img/games/banner7.jpg">
+					</div>
+					<div class="container">
+						<div class="row">
+							<div class="col-md-6">
+								<span class="rendered-markdown" v-html="renderHTML(metaInfo.landingBannerHTML)"></span>
+							</div>
+						</div>
+						
+					</div>
+					
+				</section><section class="pt48">
+					<div class="container">
+						<div class="row pb24">
+							<div class="col-sm-12 text-center">
+								<h3>To begin the installation, choose the mod you want to install</h3>
+							</div>
+						</div>
+
+						<h2>Higurashi Mods</h2>
+						<div class="row masonry masonryFlyIn">
+							<div
+							v-for="subMod in higurashiSubMods"
+							class="col-md-4 col-sm-6 masonry-item project"
+							data-filter="Question Arcs"
+							>
+							<!-- A hard value of 168px is set for the heigh here. This is so that 'masonry' which provides the
+								 fly in animation knows the approximate size of the tiles before the images have been loaded.
+								I tried fixing this other ways but this seems the most foolproof.-->
+								<div class="image-tile inner-title hover-reveal text-center"
+								v-bind:class ="{'index-button-disable': !(currentDataFilter === null || currentDataFilter === getSubModExtraProperties(subMod.modName).dataFilter) }">
+									<a v-on:click="nav(subMod.modName)">
+										<img v-bind:alt="subMod.modName" v-bind:src="getSubModExtraProperties(subMod.modName).img" height="168px">
+										<div class="title">
+											<h5 class="uppercase mb0">{{ subMod.modName }}</h5>
+											<span>{{ getSubModExtraProperties(subMod.modName).dataFilter }}</span>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- This section contains buttons that filter the Higurashi mods.
+							For example, clicking "Question Arcs" shows the buttons for Chapters 1-4,
+							and greys out all other chapters. -->
+						<div class="row pb24">
+							<div class="col-sm-12 text-center">
+								<ul class="filters mb0">
+									<!-- This part is populated by the theme - it contains buttons for each filter -->
+									<li
+										v-bind:class="{ active: currentDataFilter === null }"
+										v-on:click="currentDataFilter = null"
+									>
+										All
+									</li>
+									<li
+										v-for="dataFilter in dataFilters"
+										v-bind:class="{ active: currentDataFilter === dataFilter}"
+										v-on:click="currentDataFilter = dataFilter"
+									>
+										{{ dataFilter }}
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<h2>Umineko Mods</h2>
+						<div class="row masonry masonryFlyIn">
+							<div
+							v-for="subMod in uminekoSubMods"
+							class="col-md-4 col-sm-6 masonry-item project" 
+							data-filter="Question Arcs"
+							>
+								<div class="image-tile inner-title hover-reveal text-center">
+									<a v-on:click="nav(subMod.modName)">
+										<img v-bind:alt="subMod.modName" v-bind:src="getSubModExtraProperties(subMod.modName).img" height="168px">
+										<div class="title">
+											<h5 class="uppercase mb0">{{ subMod.modName }}</h5>
+											<span>{{ getSubModExtraProperties(subMod.modName).dataFilter }}</span>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<h2>Tools</h2>
+						<div class="row masonry masonryFlyIn">
+							<div class="col-md-4 col-sm-6 masonry-item project button-tabs">
+								<a href="troubleshooting.html">
+									<div class="image-tile inner-title hover-reveal text-center tab-title" style="width:360px; height:168px"
+									v-bind:class ="{'index-button-disable': !(currentDataFilter === null) }">
+										<h3>Troubleshooting</h3>
+										<div class="title">
+											<h5 class="uppercase mb0">Troubleshooting</h5>
+										</div>
+									</div>
+								</a>
+							</div>
+							<div class="col-md-4 col-sm-6 masonry-item project button-tabs">
+								<a href="shutdown.html">
+									<div class="image-tile inner-title hover-reveal text-center tab-title" style="width:360px; height:168px"
+									v-bind:class ="{'index-button-disable': !(currentDataFilter === null) }">
+										<h3>Quit the installer</h3>
+										<div class="title">
+											<h5 class="uppercase mb0">Shutdown the installer</h5>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+						
+					</div>
+					
+				</section>
+				<section class="section-small-padding bg-secondary">
+					<div class="container">{{ metaInfo.buildInfo }}</div>
+				</section>
+		</div>
+		</div>
+			
+					
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/masonry.min.js"></script>
+		<script src="js/scripts.js"></script>
+		<script src="js/vue.js"></script>
+		<script src="js/marked.min.js"></script>
+		<script src="js/lodash.min.js"></script>
+		<script src="js/purify.min.js"></script>
+		<script src="python-patcher-rest-lib.js"></script>
+		<script src="python-patcher-vue-common.js"></script>
+		<script src="python-patcher-index.js"></script>
+		<script>
+			// Warn the user if they are on Internet Explorer - we don't support it!
+			if(window.navigator.userAgent.match(/(MSIE|Trident)/)) {
+				alert('ERROR: The 07th-Mod Installer does not support Internet Explorer!\n\nPlease install Microsoft Edge, Firefox, or Chrome. Please also restart the installer.');
+			}
+		</script>
+		</body>
+	</html>

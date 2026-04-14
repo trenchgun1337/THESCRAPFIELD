@@ -1,0 +1,120 @@
+Launcher is located at [C:\Users\Pichau\Downloads\WATANAGASHIARCHIVE\assets\newimages\07th-Mod.Installer.Windows.exe]
+> Install Started On 2026-04-14 13:38:55.513675
+Python 3.7.7 (tags/v3.7.7:d7c567b08f, Mar 10 2020, 09:44:33) [MSC v.1900 32 bit (Intel)]
+Operating System: Windows 10 AMD64 (10.0.19041)
+Locale - Default: utf-8 | Preferred: cp1252 | Filesystem: utf-8
+Installer Build Information: Git Tag: v1.4.1
+Build Date:2025-11-07 23:46:51.298499
+Installer is being run from: [C:\Users\Pichau\Downloads\WATANAGASHIARCHIVE\assets\newimages\07th-mod_installer]
+
+
+----------------------------------------- PLEASE READ -----------------------------------------
+
+ - Do not close this window until you are finished with the installer! Closing this window will
+   stop the installer!
+ - A web page should have opened - do not close it! The web page is the installer's user interface.
+ - On the web page, click the game you want to mod to start the installation.
+
+----------------------------------------- PLEASE READ -----------------------------------------
+
+If the web page did not open, you can manually navigate to http://127.0.0.1:8000/loading_screen.html in your browser.
+NOTE: Launching browser from Python script is disabled. Server started at http://127.0.0.1:8000/loading_screen.html, info written to server-info.json
+Found 7-zip at [./7za64]
+Found aria2c at [./aria2c]
+Testing Curl: [['curl', '-I', 'https://github.com/']]
+chooseCurlCertificate(): Will use certificate [None] when using cURL
+chooseURLOpenCertificate(): Will use certificate [None] for URLOpen()
+Testing Aria2C: [['./aria2c', 'https://github.com/', '--dry-run=true']]
+chooseAria2Certificate(): Will use certificate [None] when using Aria2C
+----- BEGIN EXECUTING COMMAND: [./aria2c --file-allocation=none --continue=true --retry-wait=5 -m 0 -x 1 -s 8 -j 1 --auto-file-renaming=false --allow-overwrite=true --follow-metalink=false --disable-ipv6=true https://github.com/07th-mod/python-patcher-metadata/releases/latest/download/installerMetadata.zip --out=installerMetadata.zip] -----
+Downloading [https://api.github.com/repos/07th-mod/python-patcher/releases?per_page=1] using Python urlopen...
+WARNING: Failed to get mod updates from server
+[Errno 2] No such file or directory: 'installerMetadata\\updates.json'
+
+04/14 13:38:57 [[1;32mNOTICE[0m]
+ Downloading 1 item(s)
+> Installer is latest version: v1.4.1
+
+04/14 13:38:57 [[1;32mNOTICE[0m]
+ CUID#7 - Redirecting to https://github.com/07th-mod/python-patcher-metadata/releases/download/2026-04-05_13-22-42/installerMetadata.zip
+
+04/14 13:38:57 [[1;32mNOTICE[0m]
+ CUID#7 - Redirecting to https://release-assets.githubusercontent.com/github-production-release-asset/754038910/6465805a-8063-40cf-bb7e-20ccb9bd43eb?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-04-14T17%3A34%3A34Z&rscd=attachment%3B+filename%3DinstallerMetadata.zip&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-04-14T16%3A34%3A12Z&ske=2026-04-14T17%3A34%3A34Z&sks=b&skv=2018-11-09&sig=AQmXp7mYarQOS%2B5bO7qV7ZtKJNX71je0A9CCj0l4x3Y%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc3NjE4NTA0MCwibmJmIjoxNzc2MTg0NzQwLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.5R6T67cLhbeVOfOY1san80g5lnzC7JEzDshoxuX743k&response-content-disposition=attachment%3B%20filename%3DinstallerMetadata.zip&response-content-type=application%2Foctet-stream
+[#8d80c7 0B/0B CN:1 DL:0B]
+
+04/14 13:38:58 [[1;32mNOTICE[0m]
+ Download complete: C:/Users/Pichau/Downloads/WATANAGASHIARCHIVE/assets/newimages/07th-mod_installer/installerMetadata.zip
+
+Download Results:
+gid   |stat|avg speed  |path/URI
+======+====+===========+=======================================================
+8d80c7|OK  |   231KiB/s|C:/Users/Pichau/Downloads/WATANAGASHIARCHIVE/assets/newimages/07th-mod_installer/installerMetadata.zip
+
+Status Legend:
+(OK):download completed.
+--------------- EXECUTION FINISHED ---------------
+
+----- BEGIN EXECUTING COMMAND: [./7za64 x .\installerMetadata.zip -aoa -bso1 -bsp1 -bse2 -oinstallerMetadata] -----
+ 
+7-Zip (a) 18.05 (x64) : Copyright (c) 1999-2018 Igor Pavlov : 2018-04-30 
+ 
+Scanning the drive for archives: 
+  0M Scan .\              1 file, 14679 bytes (15 KiB) 
+ 
+Extracting archive: .\installerMetadata.zip 
+-- 
+Path = .\installerMetadata.zip 
+Type = zip 
+Physical Size = 14679 
+ 
+0%
+      Everything is Ok 
+ 
+Files: 4 
+Size:       124465 
+Compressed: 14679 
+--------------- EXECUTION FINISHED ---------------
+
+Got Request [subModHandles] Data [[]]
+Got Request [setModName] Data [{'modName': 'Onikakushi Ch.1'}]
+Got Request [subModHandles] Data [[]]
+Got Request [gamePaths] Data [{'id': 0}]
+Scanning Steam install locations: ['c:\\program files (x86)\\steam']
+Scanning Secondary install locations:
+ - [c:\games\mangagamer] - [WinError 3] O sistema não pode encontrar o caminho especificado: 'c:\\games\\mangagamer'
+ - [c:\gog games] - OK
+
+The following games were found:
+Got Request [showFileChooser] Data [0]
+askPathWindowsLauncher: Will use launcher exe at [C:\Users\Pichau\Downloads\WATANAGASHIARCHIVE\assets\newimages\07th-Mod.Installer.Windows.exe]...
+askPathWindowsLauncher: Executing ['C:\\Users\\Pichau\\Downloads\\WATANAGASHIARCHIVE\\assets\\newimages\\07th-Mod.Installer.Windows.exe', 'open', 'Game Executable', 'HigurashiEp01_Data;HigurashiEp01.x86_64;HigurashiEp01.exe', 'Any In Game Folder', '*.*']
+Got Request [showFileChooser] Data [0]
+askPathWindowsLauncher: Will use launcher exe at [C:\Users\Pichau\Downloads\WATANAGASHIARCHIVE\assets\newimages\07th-Mod.Installer.Windows.exe]...
+askPathWindowsLauncher: Executing ['C:\\Users\\Pichau\\Downloads\\WATANAGASHIARCHIVE\\assets\\newimages\\07th-Mod.Installer.Windows.exe', 'open', 'Game Executable', 'HigurashiEp01_Data;HigurashiEp01.x86_64;HigurashiEp01.exe', 'Any In Game Folder', '*.*']
+Got Request [showFileChooser] Data [0]
+askPathWindowsLauncher: Will use launcher exe at [C:\Users\Pichau\Downloads\WATANAGASHIARCHIVE\assets\newimages\07th-Mod.Installer.Windows.exe]...
+askPathWindowsLauncher: Executing ['C:\\Users\\Pichau\\Downloads\\WATANAGASHIARCHIVE\\assets\\newimages\\07th-Mod.Installer.Windows.exe', 'open', 'Game Executable', 'HigurashiEp01_Data;HigurashiEp01.x86_64;HigurashiEp01.exe', 'Any In Game Folder', '*.*']
+Got Request [showFileChooser] Data [0]
+askPathWindowsLauncher: Will use launcher exe at [C:\Users\Pichau\Downloads\WATANAGASHIARCHIVE\assets\newimages\07th-Mod.Installer.Windows.exe]...
+askPathWindowsLauncher: Executing ['C:\\Users\\Pichau\\Downloads\\WATANAGASHIARCHIVE\\assets\\newimages\\07th-Mod.Installer.Windows.exe', 'open', 'Game Executable', 'HigurashiEp01_Data;HigurashiEp01.x86_64;HigurashiEp01.exe', 'Any In Game Folder', '*.*']
+
+The following games were found:
+
+The following games were found:
+
+The following games were found:
+scanUserSelectedPath(): Can't install the mod. Searched:
+ - C:\
+ - C:\GOG Games
+ - C:\GOG Games\Higurashi When They Cry Hou - Rei
+Traceback (most recent call last):
+  File "C:\Users\Pichau\Downloads\WATANAGASHIARCHIVE\assets\newimages\07th-mod_installer\gameScanner.py", line 245, in gamePathIsPartiallyUninstalled
+    filesInGamePath = os.listdir(gamePath)
+NotADirectoryError: [WinError 267] O nome do diretório é inválido: 'C:\\GOG Games\\Higurashi When They Cry Hou - Rei\\HigurashiEp09.exe'
+Failed to scan for partially uninstalled paths
+scanUserSelectedPath(): game executable path is falsey: []
+Traceback (most recent call last):
+  File "C:\Users\Pichau\Downloads\WATANAGASHIARCHIVE\assets\newimages\07th-mod_installer\gameScanner.py", line 245, in gamePathIsPartiallyUninstalled
+    filesInGamePath = os.listdir(gamePath)
+FileNotFoundError: [WinError 3] O sistema não pode encontrar o caminho especificado: ''
+Failed to scan for partially uninstalled paths

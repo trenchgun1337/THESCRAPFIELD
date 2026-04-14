@@ -1,0 +1,798 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+		<link id="favicon" rel="icon" type="image/png" href="favicon.png" />
+        <meta charset="utf-8">
+        <title>07th-Mod Installer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="css/custom.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href='https://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
+		The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
+		<div id="app" class="main-container" v-cloak v-show="installDataLoaded">
+		<div id="modal-container" >
+			<modal v-bind:visible="installErrorDescription" v-on:close="installErrorDescription = ''">
+				<h3>Please read the below message</h3>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<strong>Error Message</strong>
+							&nbsp;
+							<a data-toggle="collapse" href="#collapse1"><u>(Show Details)</u></a>
+						</h4>
+					</div>
+					<div class="panel-body">
+						<p><pre>{{installErrorDescription}}</pre></p>
+						<p>Please try to fix the issue, then restart the installer. We can also help you, but you need to download the install log and send it to our Discord server using the buttons below.</p>
+					</div>
+					<div id="collapse1" class="panel-collapse collapse">
+						<div class="panel-body">
+							<hr>
+							<span style="white-space: pre-line; font-family: monospace;">{{detailedExceptionInformation}}</span>
+						</div>
+					</div>
+				</div>
+				<a class="btn" v-on:click="installErrorDescription = ''">OK</a>
+				<a class="btn" v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)">Download Install Logs</a>
+				<a class="btn" href="https://discord.gg/pf5VhF9" target="_blank">Visit 07th-mod Discord server (send install log here!)</a>
+			</modal>
+		</div>
+		<div class="nav-container">
+		    <nav>
+		        <div class="nav-bar">
+		            <div class="module left">
+		                <a href="index.html">
+		                    <img class="logo logo-dark" alt="07th-Mod Installer" src="img/logo-07th.png">
+		                </a>
+		            </div>
+		            <div class="module widget-handle mobile-toggle right visible-sm visible-xs">
+		                <i class="ti-menu"></i>
+		            </div>
+		            <div class="module-group right">
+		                <div class="module left">
+							<dropdown-game-menu v-bind:handles="subModList" v-bind:on-download-logs="() => getLogsZip(selectedSubMod, selectedInstallPath)"></dropdown-game-menu>
+		                </div>
+		            </div>
+		        </div>
+		    </nav>
+		</div>
+
+		<div>
+			<snack-bar></snack-bar>
+			<section class="page-title page-title-4 bg-secondary">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-8">
+								<h3 class="uppercase mb0">{{ selectedMod }}</h3>
+							</div>
+							<div class="col-md-4 text-right">
+								<ol class="breadcrumb breadcrumb-2">
+									<li>
+										<a href="index.html" target="_self">Home</a>
+									</li>
+									<li class="active">{{ selectedMod }}<br></li>
+								</ol>
+							</div>
+						</div>
+					</div>
+			</section>
+			<transition name="fade">
+			<div class="container mt40 install-finished-div" v-show="installFinished">
+			<hr>
+			<!-- Displayed when the install finishes successfully -->
+			<section class="section-small-padding" v-show="!installFailed">
+				<h1 style="color: green;">The install was successful!</h1>
+				<h4>IMPORTANT INFO BEFORE YOU PLAY</h4>
+				<div v-if="selectedMod === null ? false : selectedMod.includes('Umineko')">
+					<h4>⚠️We <b>highly</b> recommend you read the <a href="https://07th-mod.com/wiki/Umineko/Umineko-Part-0-TroubleShooting-and-FAQ/" target="_blank">Umineko FAQ</a><br>for known issues with our mod.</h4>
+					<hr>
+
+					<h4>☁ Question Arcs - Umineko Steam Cloud Issues ☁</h4>
+					<p>For the Question Arcs, Steam Cloud synchronization is disabled by default</p>
+					<p>This is to <b>prevent the game breaking if steam ever updates the game.</b></p>
+					<p>Please run <b>"EnableSteamSync.bat"</b> in the game folder if you really want to enable it.</p>
+					<br>
+
+					<hr>
+
+					<h4>☁ Answer Arcs - Umineko Steam Cloud Issues ☁</h4>
+					<p>
+						<b  style="color: red;">Steam Cloud is broken on the Umineko Answer Arcs!</b> (even on the unmodded game)<br>
+						This is not fixable by the mod, so you <b  style="color: red;">cannot use Steam Cloud on the Umineko Answer Arcs!</b>
+					</p>
+
+					<br>
+					<hr>
+				</div>
+				<div v-else>
+					<h4>⚠️We <b>highly</b> recommend you read the <a href="https://07th-mod.com/wiki/Higurashi/FAQ/" target="_blank">Higurashi FAQ</a> for known issues with our mod.</h4>
+				</div>
+				If you still have problems, queries, please follow the <a href="https://07th-mod.com/wiki/Installer/support/" target="_blank">Support Checklist</a>.
+				We also have a discord server: <a href="https://discord.gg/pf5VhF9" target="_blank">https://discord.gg/pf5VhF9</a>
+				<div v-if="selectedSubMod !== null && selectedSubMod.modName === 'Console Arcs'">
+					<hr>
+					<h4>🔧 Adding Console Arcs to Steam Library</h4>
+					<p>
+						See
+						<a href="https://07th-mod.com/wiki/Higurashi/steam-add-console-arcs/steam-add-console-arcs/">"Console Arcs Steam Library Tutorial"</a>
+						to make the Console Arcs appear in Steam with the correct logos and name.
+					</p>
+				</div>
+			</section>
+			<!-- Displayed when the install fails-->
+			<section class="section-small-padding" v-show="installFailed">
+				<h1 style="color: red;">The install failed :(</h1>
+				<p> Please check the last few mesages in the terminal output for more information. </p>
+				<div v-if="selectedMod === null ? false : selectedMod.includes('Umineko')">
+					<p>Please make sure you have a legal copy of the game, and that you have enough free disk space to install the patch.</p>
+				</div>
+				<div v-else>
+					<p>A common reason for the Higurashi installation to fail is that you have an <b>old version of the game</b>.</p>
+					<p>The installer would have detected this and mentioned you have an old Unity version. Please make sure your game is up to date before installing the game.</p>
+				</div>
+			</section>
+			<!-- Displayed always-->
+			<hr>
+			<div class="mb40">
+				<h4>⚠️ Game/Mod Uninstall Warning</h4>
+				<p>
+					<strong>Steam (and possibly other launchers) will not properly uninstall the game/mod.</strong><br>
+					To properly uninstall the game, manually delete the game folder: <strong>{{ selectedInstallPath }}</strong><br>
+					After the folder is deleted, you can run the Steam uninstaller to remove the game from your game library.<br>
+					Save files should be kept even after an uninstall, but check section 4 of <a href="https://07th-mod.com/wiki/Installer/support/" target="_blank">the installer support page</a> if you want to find your saves.
+				</p>
+			</div>
+			<div class="mb40" v-if="downloadItemsPreview?.downloadFolder !== undefined">
+				<hr>
+				<h4>Temporary Downloads Cleanup</h4>
+				<p>If you chose to keep downloads, they are at <a v-on:click="showInFileBrowser(downloadItemsPreview.downloadFolder)"> {{ downloadItemsPreview.downloadFolder }} </a> (click to open)</p>
+				<p>Please make sure your game works correctly before deleting the downloads, as you may wish to re-install.</p>
+				<p>You can also back-up the downloads if you wish to install again in the future.</p>
+			</div>
+			<hr>
+			<div class="mb40">
+				<h4>Install Information and Log Files</h4>
+				<p>
+					The mod was installed to: <strong>{{ selectedInstallPath }}</strong><br>
+					Check your browser downloads for the install logs (<code>07th-mod-logs.zip</code>), or manually open:<br><strong>{{ logFilePath }}</strong>
+				</p>
+			</div>
+			<hr>
+			<div>
+				<h4>Want to mod another game? <a href="index.html">Click here to return to the main menu</a></h4>
+				<br>
+				<h4>If you are finished, <a href="shutdown.html">Click here to exit the installer</a></h4>
+			</div>
+			<hr>
+			</div>
+			</transition>
+			<transition name="fade">
+				<section class="section-small-padding" v-show="installStarted">
+						<div class="container">
+							<div class="alert alert-danger" role="alert" v-if="!installFinished"><strong>
+								To quit the installation, click <button type="button" class="btn" v-on:click="abortInstall()" style="margin-bottom: 0">Quit Installer</button></a>. Download progress will be kept (resuming downloads is supported).
+							</strong></div>
+							<div class="alert alert-warning" role="alert" v-if="!installFinished">
+								If you're getting <strong>unusually slow download speeds</strong>, we suggest retrying the download in 12 to 24 hours.<br>
+								Just click "Quit Installer" above. Then 12 to 24 hours later, start the installer again with the same options.<br><br>
+								You can also try the "Download Manually" option in the installer - <a href="https://07th-mod.com/wiki/Installer/faq/#workaround-for-download-and-verify-stage-failed-error" target="_blank">see detailed instructions on our wiki.</a>
+							</div>
+							<h3> Overall Progress: {{ overallPercentage }}% </h3>
+							<h5 style="font-family: monospace"> {{ overallTaskDescription }} </h5>
+							<div class="progress">
+								<div id="overallProgressBar" class="progress-bar installer-progress-bar" :style="{width: overallPercentage + '%'}" role="progressbar" v-bind:aria-valuenow="overallPercentage" aria-valuemin="0" aria-valuemax="100" >
+									<span class="sr-only">{{ overallPercentage }}% Complete</span>
+								</div>
+							</div>
+
+							<h3> Subtask Progress: {{ subTaskPercentage }}% </h3>
+							<h5 style="font-family: monospace"> {{ subTaskDescription }} </h5>
+							<div class="progress">
+								<div id="subTaskProgressBar" class="progress-bar installer-progress-bar" :style="{width: subTaskPercentage + '%', transition: subTaskPercentage == 0 ? 'none' : 'width .6s ease' }" role="progressbar" v-bind:aria-valuenow="subTaskPercentage" aria-valuemin="0" aria-valuemax="100" >
+									<span class="sr-only">{{ subTaskPercentage }}% Complete</span>
+								</div>
+							</div>
+
+							<h3>Terminal:</h3>
+							<p>Terminal Output (<strong>NOTE: this may not capture all installer output! Please download the full install log for debugging</strong>)</p>
+							<div id="terminal"></div>
+							<input type="checkbox" id="autoscrollCheckbox" name="autoscrollCheckbox" checked>
+							<label for="autoscrollCheckbox">Enable Auto Scroll</label>
+							<div class="tabbed-content button-tabs vertical">
+								<div class="tab-title mb40" style='width:200px;float:right;' v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)">
+									<span>Download Logs</span>
+								</div>
+							</div>
+						</div>
+						<div class="container">
+							<h4>Install settings displayed below are for reference only.</h4>
+						</div>
+				</section>
+			</transition>
+			<transition name="fade">
+			<section class="section-small-padding" v-bind:class="{ 'greyed-out-disabled': installStarted }">
+					<div class="container">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="tabbed-content button-tabs vertical">
+									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
+									<ul class="col-md-8">
+										<section class="section-small-padding" v-show="partiallyUninstalledPaths.length > 0">
+											<div class="alert alert-danger">
+											<h3>⚠️ Action Required: Please delete the partially uninstalled games below</h3>
+											<h4><strong>The below folders were not uninstalled properly.<br><br>Please manually delete the below folders to free disk space and avoid problems with the installer.<br><br>Click the links below to open each folder (check your taskbar for a flashing icon):</strong></h4>
+											<ul class="installer-bullets">
+											<li v-for="path in partiallyUninstalledPaths"><a href="#" v-on:click='showInFileBrowser(path)'>{{ path }}</a></li>
+											</ul>
+											</div>
+										</section>
+										<br><br>
+										<div v-if="metaInfo !== null">
+										<div v-if="selectedSubMod !== null && selectedSubMod.family === 'higurashi' && metaInfo.operatingSystem === 'linux'">
+											<h3>Linux PLEASE READ</h3>
+											There are two ways to run the game on Linux:
+											<ol class="installer-ordered">
+												<li>Running the <strong>Native Linux version of the game</strong></li>
+												<li>Running the <strong>Windows version of the game using Proton (Steam/Mangagamer/GOG) or Wine (Mangagamer/GOG)</strong></li>
+											</ol>
+											<br>
+
+											<span class="border border-primary">Your game is detected as: </span>
+											<strong class="installer-text-border" v-if="installPathValid">
+												{{ isWine ? (isSteam ? "2. Proton" : "2. Wine/Proton") : "1. Native Linux" }}
+											</strong>
+											<strong class="installer-text-border" v-else>
+												Install path not yet selected or auto-detected! Please select it below!
+											</strong>
+											<br><br>
+
+											As some users have issues with the Native Linux version of the game, we recommend the following:
+											<br>
+											<ul class="installer-bullets">
+												<li>
+													<strong>If you bought from Steam</strong>, it is suggested you enable Proton compatibility mode before installing the mod.
+												</li>
+												<li>
+													<strong>If you bought from GOG/Mangagamer:</strong>
+													<ul class="installer-bullets">
+														<li>We suggest trying the Native Linux version of the game first</li>
+														<li>If you have problems with the native version, you can try Wine (plain Wine, using Lutris, or using Minigalaxy for GOG).</li>
+														<li>You might only encounter issues with the Native version when reaching Chapter 5 onwards</li>
+													</ul>
+												</li>
+											</ul>
+											Please visit <a href="https://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/" target="_blank">our wiki's Higurashi install instructions page</a>, then click the <strong>"Linux/Proton/Wine" tab</strong> for instructions on <strong>how to enable/disable Proton</strong> and general <strong>information on Wine/Proton</strong>.
+											<br><br>
+
+											<div class="alert alert-danger" role="alert">
+												<strong>
+													Warning: Some GNOME/MATE Desktop users (the default on Ubuntu and Fedora Linux) report Higurashi Ep.4 and upwards will <strong>crash the entire desktop when you start the game.</strong>
+													This happens even on the base game (without any mods applied).<br><br>
+													A workaround for this is to install XFCE desktop (please look up instructions for your specific operating system).<br><br>
+													Please make sure you can launch the base game before applying any mods (please don't make any saves on the base game as they are not compatible with the mod).
+												</strong>
+											</div>
+										</div>
+										<div class="alert alert-warning" role="alert" v-if="!metaInfo.installAlreadyInProgress && metaInfo.lockFileExists"><strong>
+											Warning: It appears an install is already in progress, or the last install was closed unexpectedly.<br>
+											Please double check that there is only one console window open, and the install is not already running.<br>
+											If you force closed the installer last time you ran it, then you can ignore this message.
+										</strong></div>
+										</div>
+										<div v-if="possibleSubMods.length > 1">
+											<h4 class="uppercase">Choose Patch</h4>
+											<hr>
+											Please choose which variant of the patch you would like to install:
+											<p>
+											<div v-for="subMod in possibleSubMods" class="d-inline-block">
+												<input class="form-check-input invisible" type="radio" v-bind:id="subMod.subModName" v-bind:name="subMod.subModName" v-bind:value="subMod" v-model="selectedSubMod">
+												<label class="form-check-label" v-bind:for="subMod.subModName">
+													<li v-bind:class="{ active: selectedSubMod === subMod}"><div class="tab-title"><span>{{ subMod.subModName }}</span></div></li>
+												</label>
+											</div>
+											</p>
+										</div>
+										<div v-if="selectedSubMod !== null">
+											<div class="tab-content">
+												<h4 class="uppercase ">{{selectedSubMod.modName}} ({{selectedSubMod.subModName}} Patch)</h4>
+												<!-- This text is common to all umineko graphics patches -->
+												<div v-if="selectedSubMod.descriptionID === 'uminekoQuestionFull' || selectedSubMod.descriptionID === 'uminekoAnswerFull' || selectedSubMod.descriptionID === 'uminekoAnswerADV'">
+													<p style="font-size: 1.5em; font-weight: bold; line-height: 1.3em;">
+														2023-04-05: Experimental Script Feedback Wanted!<br><br>
+														The Experimental Script Option mainly fixes the mod having no auto-advancement of text. We would like to make it the default script, but need to make sure there are no serious bugs.<br><br>
+														If you play the Experimental Script (even just one episode), let us know on our
+														<a href="https://discord.gg/pf5VhF9" target="_blank">Discord</a> or
+														<span v-if="selectedSubMod.descriptionID === 'uminekoQuestionFull'">
+															<a href="https://github.com/07th-mod/umineko-question/issues/new" target="_blank">Question Arcs Repo</a>.
+														</span>
+														<span v-else>
+															<a href="https://github.com/07th-mod/umineko-answer/issues/new" target="_blank">Answer Arcs Repo</a>.
+														</span>
+													</p>
+													<hr>
+												</div>
+												<!-- Show the appropriate description depending on the descriptionID -->
+												<div v-if="selectedSubMod.descriptionID === 'higurashiFull'">
+													<div v-if="selectedSubMod.modName === 'Console Arcs'">
+														<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
+														<strong style="color: red">Warning: This will replace your Himatsubushi Ch.4 installation with the console arcs</strong><br>
+														We recommend installing the console arcs on a clean copy of Himatsubushi. However, a patched version might still work.<br>
+														A backup of Himatsubushi also works with the console arcs patch. You can create a backup by making a copy of the game folder.<br>
+														</div>
+
+														<br>
+
+														<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
+															<h4>🔧 Adding Console Arcs to Steam Library</h4>
+															<p>
+																See
+																<a href="https://07th-mod.com/wiki/Higurashi/steam-add-console-arcs/steam-add-console-arcs/">"Console Arcs Steam Library Tutorial"</a>
+																to make the Console Arcs appear in Steam with the correct logos and name.
+																You will need to follow these instructions <b>after the mod is installed.</b>
+															</p>
+														</div>
+
+														<br><br>
+														The console arcs should be played at the points of the story and in the order indicated by the below flowchart (<strong>click image for big version</strong>).<br>
+														<a href='https://07th-mod.com/wiki/Higurashi/img/flow.png' target="_blank"><img src='img/higurashi/flow_thumbnail.jpg'></a><br><br>
+
+														This mod contains:
+														<ul class="installer-bullets">
+															<li>Full voiceover</li>
+															<li>PS3 backgrounds and CGs in Full HD</li>
+															<li>In-game Sprite Options
+																<ul class="installer-bullets">
+																	<li>PS3 sprites with lipsync in 1440p</li>
+																	<li>Updated MangaGamer sprites in 1440p (if sprites exist for that character)</li>
+																	<li>Original Japanese release sprites (if sprites exist for that character)</li>
+																</ul>
+															</li>
+															<li>Upgraded user interface</li>
+															<li>Opening videos</li>
+														</ul>
+													</div>
+													<!-- In the future should remotely get installer page description, but for now just test it on Hou Plus only -->
+													<div v-else-if="selectedSubMod.modName === 'Hou Plus'">
+														<span class="rendered-markdown" v-html="renderHTML(selectedSubMod.modUpdatesHTML)"></span>
+													</div>
+													<div v-else>
+														For details and screenshots on what the mod contains, <a href="https://07th-mod.com/wiki/Higurashi/Higurashi-Getting-started/" target="_blank">see the Intro page on our Wiki</a><br>
+														This mod contains:
+														<ul class="installer-bullets">
+															<li>Full voiceover</li>
+															<li>In-game Background Options
+																<ul class="installer-bullets">
+																	<li>PS3 backgrounds and CGs in Full HD</li>
+																	<li>Original Japanese release Backgrounds</li>
+																</ul>
+															</li>
+															<li>In-game Sprite Options
+																<ul class="installer-bullets">
+																	<li>PS3 sprites with lipsync in 1440p</li>
+																	<li>Updated MangaGamer sprites in 1440p</li>
+																	<li>Original Japanese release sprites</li>
+																</ul>
+															</li>
+															<li>Upgraded user interface</li>
+															<li>Opening videos</li>
+															<li>In-game switchable Background Music (BGM) and Sound Effects (SE):<br>
+																<ul class="installer-bullets">
+																	<li><a href="https://07th-mod.com/wiki/Higurashi/BGM-SE-FAQ/" target="_blank">We highly recommend checking out our BGM/SE FAQ</a></li>
+																	<li><strong>New BGM/SE</strong> - The BGM introduced in the April 2019 update</li>
+																	<li><strong>GIN's BGM/SE</strong> - Brings the BGM/SE closer (but definitely NOT identical to) the original Japanese release and/or Pre April Update. See the <a href="https://07th-mod.com/wiki/Higurashi/BGM-SE-FAQ/" target="_blank">BGM/SE FAQ</a> for more details</li>
+																	<li>
+																		<strong>OST Remake (for Chapters 2,3,4 only): </strong>
+																		<ul class="installer-bullets">
+																			<li>Handmade remakes of nine tracks from the original release.</li>
+																			<li><a href="https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1" target="_blank">Click listen to OST Remake samples</a></li>
+																			<li>Note that Ch.1 does not use any OST Remake tracks, and that no OST remake for Ch.5-8 has been created.</li>
+																		</ul>
+																	</li>
+																</ul>
+															</li>
+														</ul>
+														<br>
+														<div v-if="selectedSubMod.modName === 'Rei'">
+															<h4>Why two versions of Hirukowashi? Which one should I read?</h4>
+															Hirukowashi had changes in the Console version which are difficult to combine with the PC version.<br>
+															Due to this, we made two versions of Hirukowashi:
+															<ul class="installer-bullets">
+																<li>An unvoiced PC version.</li>
+																<li>A full port of the Console version.</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'higurashiVoiceOnly'">
+													<h4><b>The voice-only patch may contain more bugs than the "Full" patch.
+														We only offer limited support for the voice-only patch, except during initial release.</b></h4>
+
+													<h4><b>If you switch between a Voice-Only install and Full install, you should do a fresh
+														install of the game (or keep a unmodded copy of the game files handy)</b></h4>
+
+													<h4><b><a href="https://07th-mod.com/wiki/Higurashi/Higurashi-Part-1.1---Voices-only-Patch/" target="_blank">See the wiki</a> for more info on the voice-only patch.</b></h4>
+
+													This option <strong>only installs voices</strong>. No graphics are changed.<br><br>
+													Features:<br>
+													<ul class="installer-bullets">
+														<li>Full voiceover</li>
+													</ul>
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoVoiceOnly'">
+													This option only installs voice related options. No graphics are changed.<br>
+													<ul class="installer-bullets">
+														<li>Full voiceover</li>
+														<li>Mod menu added to adjust voice/music volume</li>
+														<li><strong>Japanese text is NOT supported!</strong></li>
+													</ul>
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoQuestionFull'">
+													<strong>NOTE: The Question and Answer arcs differ in how ADV mode is enabled.</strong>
+													<ul class="installer-bullets">
+														<li>In the Question arcs, ADV mode can be toggled at any time from the in-game mod menu</li>
+														<li>In the Answer arcs, ADV mode must be selected at install time</li>
+													</ul>
+													Please keep this in mind when you eventually install the Answer Arcs.
+													<br><br>
+													This patch installs all PS3 content that the team has ported so far:
+													<ul class="installer-bullets">
+														<li>Has ADV mode, where text is shown in a textbox at the bottom of the screen. In the Question Arcs only, this can be toggled on or off at any time.</li>
+														<li>Japanese Text is ONLY supported with the <strong>Experimental Script</strong> option</li>
+														<li>PS3 voices</li>
+														<li>PS3 sprites</li>
+														<li>PS3 CGs (event images)</li>
+														<li>PS3 Backgrounds</li>
+														<li>Remake of original OP with PS3 graphics OR (spoilery) PS3 Game's OP movie (user option on startup)</li>
+														<li>DOES NOT add shader effects or lipsync from the PS3 game.</li>
+													</ul>
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoAnswerFull'">
+													<strong>NOTE: ADV mode is not in-game switchable for the answer arcs.</strong><br>
+													Please select the "ADV-MODE" option if you want to play with ADV mode.<br><br>
+													This patch installs all PS3 content that the team has ported so far:<br>
+													<ul class="installer-bullets">
+														<li>Japanese Text is ONLY supported with the <strong>Experimental Script</strong> option</li>
+														<li>PS3 voices</li>
+														<li>PS3 sprites</li>
+														<li>PS3 CGs (event images)</li>
+														<li>PS3 Backgrounds</li>
+														<li>DOES NOT add shader effects or lipsync from the PS3 game.</li>
+													</ul>
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoAnswerADV'">
+													<strong>NOTE: ADV mode is not in-game switchable for the answer arcs.</strong><br>
+													Please select the "NOVEL-MODE" option if you want to play with NOVEL mode.<br><br>
+													This patch installs all PS3 content that the team has ported so far:<br>
+													This patch is the same as the "full" variant except it adds ADV mode:
+													<ul class="installer-bullets">
+														<li>WARNING: Playing with <strong>Japanese</strong> Text is <strong>NOT supported</strong></li>
+														<li>Has <b>ADV mode</b>, where text is shown in a textbox at the bottom of the screen.</li>
+														<li>PS3 voices</li>
+														<li>PS3 sprites</li>
+														<li>PS3 CGs (event images)</li>
+														<li>PS3 Backgrounds</li>
+														<li>DOES NOT add shader effects or lipsync from the PS3 game.</li>
+													</ul>
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoHaneVoiceOnly'">
+													<h4>
+														This patch is only for the ponscripter release of Umineko Hane.
+														This is the release bundled with Umineko Saku, and the one that will eventually
+														be published on Steam. This patch will NOT work with the old NScripter release.
+														To check which version you have, try resizing the game window by dragging its corners.
+														If you can do that, you're good to go.
+													</h4>
+													<h4>This patch is only for WINDOWS. It does not work on Mac or Linux</h4>
+													This is the mod for Umineko Hane that provides nothing but voices. It does NOT update graphics or add widescreen support.
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoSakuTLOnly'">
+													This is an initial version of the mod for Umineko Saku, that uses a fan translation of the story with original art.<br><br>
+													This version of the patch will be removed when an official translation becomes available.<br><br>
+												</div>
+												
+												<div v-else>
+													No description for {{ selectedSubMod.descriptionID }} :(
+												</div>
+												<!-- Umineko Novel/ADV Mode Example Images Table (shown on all non-voice only Umineko options) -->
+												<div v-if="selectedSubMod.family === 'umineko' && selectedSubMod.descriptionID !== 'uminekoVoiceOnly'">
+													<table class="umineko-image-table-content">
+														<thead>
+															<tr>
+																<th>NOVEL/Normal Mode</th>
+																<th>ADV Mode</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td><img src="img/umineko/novel-mode-example.jpg"></td>
+																<td><img src="img/umineko/adv-mode-example.jpg"></td>
+															</tr>
+														</tbody>
+													</table>
+													<table class="umineko-image-table-content">
+														<thead>
+															<tr>
+																<th>Alchemist/PS3 sprites</th>
+																<th>Mangagamer/Pachinko sprites</th>
+																<th>Ryukishi sprites</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td><img src="img/umineko/sprite_alchemist.png"></td>
+																<td><img src="img/umineko/sprite_pachinko.png"></td>
+																<td><img src="img/umineko/sprite_potato.png"></td>
+															</tr>
+														</tbody>
+													</table><br>
+													A more detailed sprite comparison, with more characters, may be found <a href="https://07th-mod.com/wiki/Umineko/img/umineko-sprite-comparison.png" target="_blank">here</a>.
+												</div>
+												<!-- Changelog info -->
+												<br>
+												<div v-if="changelogURL === null">
+													📝 Changlog URL Missing! Tell the developers to fix it!
+												</div>
+												<div v-else>
+													<a v-bind:href="changelogURL" target="_blank">📝 Click here to view the {{ selectedMod }} Changelog</a>
+												</div>
+												<div v-if="pathAutoDetectionInProgress">
+													<br>
+													<h3><span>Please wait, path autodetection in progress</span><span class="loader"></span></h3>
+													<h4>Detection may take up to {{ TIMEOUT_AUTO_DETECT_PATHS }} seconds.</h4>
+													<button type="button" class="btn" v-on:click="abortGamePaths()">Cancel Path Autodetection (Select Manually)</button>
+												</div>
+												<!-- Section allowing you to start install or choose game path to install -->
+												<div v-bind:class="{ 'greyed-out-disabled': pathAutoDetectionInProgress }">
+													<h4 v-if="!installPathValid && !validationInProgress" class="uppercase mt40" style="color: red">Choose an install path ⚠️</h4>
+													<h4 v-else class="uppercase mt40">Choose an install path</h4>
+													<hr>
+													If available, please select one of the autodetected <strong>{{selectedSubMod.modName}}</strong> paths below.<br><br>
+													If no paths were detected, you need to find
+													<span v-if="metaInfo.operatingSystem === 'mac'">
+														a `.app` file which contains the <strong>{{selectedSubMod.modName}}</strong> game.
+													</span>
+													<span v-else>
+														a <strong>{{selectedSubMod.modName}}</strong> game path, containing at least one of {{ selectedSubMod.identifiers }} files.
+													</span>
+													<br><br>
+													<ul>
+														<div v-if="showPathSelectionButtons">
+															Currently Chosen Path:<br>
+															<input v-bind:style="{'width':'99%', 'margin-bottom': '0px', 'background-color': !installPathValid ? '#ffdddd' : '#ffffff'}"
+																		v-model="selectedInstallPath" placeholder="You can paste a path here if the below options don't work"
+																		@focus="installPathFocussed = true" @blur="installPathFocussed = false">
+															<div v-if="installPathFocussed" style="color: red"><strong>Use manual entry as a last resort (if the file-chooser below doesn't work)</strong></div>
+															<div style="min-height: 5.5em"> <!-- Fix options jumping around if "if" and "else" divs are different sizes -->
+															<div v-if="validationInProgress">
+																<div v-if="selectedInstallPath !== null" style="color: goldenrod"><strong>Validating...<span class="loader loader-small"></span></strong></div>
+																<div v-if="selectedInstallPath == null"><strong>Please use the buttons below to select a path.</strong></div>
+															</div>
+															<div v-else>
+																<div v-if="installPathValid" style="color: green"><strong>Detected game at: {{ validatedInstallPath }} ✓</strong></div>
+																<div v-else-if="selectedInstallPath == null && fullInstallConfigs" style="color: #e5692c"><strong>Please select an autodetected path below, or enter one manually ⚠️</strong></div>
+																<div v-else style="color: red"><strong>Couldn't detect game at the above path! ❌</strong></div>
+															</div>
+															</div>
+															<!-- Autodetected path buttons -->
+															<ul class="installButtons">
+																<li v-for="fullInstallConfig in fullInstallConfigs"
+																	v-on:click="onChoosePathButtonClicked(fullInstallConfig.path);"
+																	v-bind:key="fullInstallConfig.key">
+																	<div class="tab-title mb16">
+																		Use Autodetected Path: "{{ fullInstallConfig.path }}"
+																	</div>
+																</li>
+															</ul>
+															<!-- Select path manually button -->
+															<li>
+																<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=onChoosePathButtonClicked()>
+																	Select {{ {'mac':'Application (.app file)', 'windows':'Game Executable (.exe file)','linux':'Game Executable', null:'Game Executable'}[metaInfo.operatingSystem] }} Manually (Open File Dialog) <br><br>
+																	NOTE: Check your task bar for a flashing icon if no window appeared.<br>
+																	NOTE: Please wait as the file chooser may take a while to open.
+																</div>
+																<div v-if="metaInfo.operatingSystem === 'mac'">
+																	MAC USERS: You must select a .app file. For example:<br>
+																<b>/Users/[USERNAME]/library/application support/steam/steamapps/common/Higurashi When They Cry/HigurashiEp01.app</b>
+																</div>
+																<div v-else>
+																	You can select one of the following: {{ selectedSubMod.identifiers }}<br><br>
+																</div>
+															</li>
+														</div>
+														<!-- If path was detected automatically, then don't show other path selection options unless asked -->
+														<div v-else>
+															<div v-if="installPathValid" style="color: green"><strong>Game was autodetected at: {{ validatedInstallPath }} ✓</strong></div>
+															<div v-else-if="validationInProgress" style="color: goldenrod"><strong>Please wait, validating path... <span class="loader loader-small"></span></strong></div>
+															<button class="button-small" v-on:click="showPathSelectionButtons = true">Choose a different path</button>
+														</div>
+													</ul>
+												</div>
+												<!-- Install options, displayed as radio buttons and checkboxes -->
+												<div v-if="selectedSubMod.modOptionGroups.length > 0 && installPathValid">
+													<h4 class="uppercase mt40">Choose Mod Options</h4>
+													<hr>
+													<div class="installer-options-group" v-for="modOptionGroup in selectedSubMod.modOptionGroups">
+														<h5 class="uppercase installer-options-group-heading"> {{ modOptionGroup.name }} </h5>
+														<div v-for="radioOption in modOptionGroup.radio">
+															<div class="mod-option-group"
+															v-bind:class="{'mod-option-group-active': modOptionGroup.selectedRadio === radioOption.id}"
+															v-on:click="modOptionGroup.selectedRadio = radioOption.id">
+																<input class="form-check-input" type="radio" v-bind:name="modOptionGroup.name" v-bind:id="radioOption.id" v-bind:value="radioOption.id" v-model="modOptionGroup.selectedRadio">
+																<label class="form-check-label">{{ radioOption.name }}</label>
+																<br>
+																<span class="rendered-markdown" v-html="renderMarkdown(radioOption.description)"></span>
+															</div>
+														</div>
+														<div class="form-check" v-for="checkBoxOption in modOptionGroup.checkBox">
+															<div class="mod-option-group"
+															v-bind:class="{'mod-option-group-active': modOptionGroup.selectedCheckBoxes.includes(checkBoxOption.id)}"
+															v-on:click="modOptionGroup.selectedCheckBoxes = _.xor(modOptionGroup.selectedCheckBoxes, [checkBoxOption.id])">
+																<input class="form-check-input" type="checkbox" v-bind:id="checkBoxOption.id" v-bind:value="checkBoxOption.id" v-model="modOptionGroup.selectedCheckBoxes">
+																<label class="form-check-label">{{ checkBoxOption.name }}</label>
+																<span class="rendered-markdown" v-html="renderMarkdown(checkBoxOption.description)"></span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<transition name="fade">
+													<div v-if="installPathValid">
+														<h4 class="uppercase mt40">Please confirm your install settings:</h4>
+														<hr>
+														<div class="mb40">
+															<strong>Configuration</strong><br>
+															Mod Name: {{ selectedMod }} <br>
+															Patch Type: {{ selectedSubMod.subModName }} <br>
+															Install Path: {{ validatedInstallPath === null ? "Not Selected" : validatedInstallPath }}" <br>
+															<span v-if="isWine || metaInfo.operatingSystem === 'linux'">
+															Linux Compatibility Layer:
+																<span v-if="isWine"><strong>YES: Using Wine or Proton</strong></span>
+																<span v-else>no: Using Native</span>
+															</span>
+
+															<br><br>
+															<strong>Options</strong><br>
+															<div v-if="selectedSubMod.modOptionGroups.length == 0">
+																There are no game specific options for this mod.
+															</div>
+															<div v-else v-for="modOptionGroup in selectedSubMod.modOptionGroups">
+																<div v-if="modOptionGroup.selectedRadio === null && modOptionGroup.selectedCheckBoxes.length == 0">
+																	{{ modOptionGroup.name + ': None' }}
+																</div>
+																<div v-else>
+																	{{ (modOptionGroup.selectedRadio || '') + modOptionGroup.selectedCheckBoxes.join(', ') }}
+																</div>
+															</div>
+															<br>
+															<strong>Files to be downloaded</strong>
+															<div class="warning-text"
+																v-if="downloadItemsPreview.downloadManually"
+																v-on:click="showInFileBrowser(downloadItemsPreview.downloadFolder)">
+																<span>Please put downloaded files in:<br><br>
+																	<a>{{ downloadItemsPreview.downloadFolder }}</a> (click to open)
+																</span><br><br>
+																<span>Rows will turn green when downloaded correctly.</span>
+															</div>
+															<div v-bind:class="{ 'greyed-out': startInstallInProgressFiltered }">
+																<table class="umineko-image-table-content">
+																	<thead>
+																		<tr>
+																			<th style="width: 100px">File</th>
+																			<th style="width: 80px">Size</th>
+																			<th style="width: 100%">Update Reason</th>
+																			<th v-if="downloadItemsPreview.downloadManually" style="width: 200%">Manual Download Status</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr v-for="fileInfo in downloadItemsPreview.downloadItems"
+																		v-bind:class="{ active: fileInfo.rowClass === 'active', inactive: fileInfo.rowClass === 'inactive', warning: fileInfo.rowClass === 'warning' }">
+																			<td>{{ fileInfo.id }}</td>
+																			<td>{{ fileInfo.fileSize }}</td>
+																			<td>{{ fileInfo.updateReason }}</td>
+																			<td v-if="downloadItemsPreview.downloadManually"><span class="rendered-markdown" v-html="renderMarkdown(fileInfo.manualDownloadStatus)"></span>	</td>
+																		</tr>
+																		<tr>
+																			<td>Total Download Size</td>
+																			<td>{{ downloadItemsPreview.totalDownload }}</td>
+																			<td>{{ downloadItemsPreview.updateTypeDescription }}</td>
+																			<td v-if="downloadItemsPreview.downloadManually"></td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+															<strong>
+																<div v-if="numUpdatesRequired === 0" class="alert alert-warning">Warning: No updates detected. Mod options will still be installed, however.</div>
+																<div v-if="haveEnoughFreeSpace === false" style="color: red; background-color: yellow">
+																	<span class="rendered-markdown free-space-warning-text" v-html="renderMarkdown(freeSpaceAdvisoryString)"></span>
+																</div>
+																<div v-if="CWDHaveEnoughFreeSpace === false" style="color: red; background-color: yellow">
+																	<span class="rendered-markdown free-space-warning-text" v-html="renderMarkdown(CWDFreeSpaceAdvisoryString)"></span>
+																</div>
+																<div class="alert" v-bind:class="[alertClassFromMaybeBool(haveEnoughFreeSpace === true && CWDHaveEnoughFreeSpace === true)]">
+																	<div class="row">
+																		<div class="col-md-6">Install Space: <span class="rendered-markdown" v-html="renderMarkdown(freeSpaceAdvisoryString)"></span></div>
+																		<div class="col-md-6">Temp Space: <span class="rendered-markdown" v-html="renderMarkdown(CWDFreeSpaceAdvisoryString)"></span></div>
+																	</div>
+																</div>
+															</strong>
+														</div>
+														<h4 class="uppercase mt40">Start The Install {{ isWine ? "(Wine/Proton)" : "" }}</h4>
+														<hr>
+														<div v-if="downloadItemsPreview?.manualDownloadIncomplete">
+															<div class="warning-text">
+																<span>You haven't downloaded all the files yet! Please do this before starting the install!</span>
+															</div>
+															<br>
+														</div>
+														<div v-if="partialReinstallDetected && !fullUpdateRequired">
+															<div class="warning-text">
+																<span>
+																	WARNING: We detected you re-installed the unmodded game without deleting the game folder - you MUST enable the 'Force Install from Scratch' option above, otherwise the mod may not work!<br><br>
+																	If this message incorrect (you did not re-install the unmodded game), ignore this message, and let the mod team know.
+																</span>
+															</div>
+															<br>
+														</div>
+														<ul class="tabs button-tabs" v-show="selectedSubMod!==null">
+															<li><div class="tab-title" v-on:click=doInstall() style="background: red">
+																<span v-if="fullUpdateRequired" style="font-size:24px">🚀 Start the installation! 🚀</span>
+																<span v-else style="font-size:20px">⏫ Start Update!</span><br>
+																<span>(Install green files above)</span>
+															</div></li>
+														</ul>
+													</div>
+													<div v-else>
+														<br><br>
+														<h3 style="color: red">
+															You must choose an install path before starting the install.
+														</h3>
+													</div>
+												</transition>
+											</div>
+										</div>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+			</section>
+			</transition>
+			<br><br><br><br>
+			<section class="section-small-padding bg-secondary">
+				<div class="container">
+				<h3><a v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)"> 📖 Click here to download the Install Logs</a></h3>
+				</div>
+			</section>
+			<section class="section-small-padding bg-secondary">
+			<div class="container">
+				<h3>
+				<div v-if="changelogURL === null">
+					📝 Changlog URL Missing! Tell the developers to fix it!
+				</div>
+				<div v-else>
+					<a v-bind:href="changelogURL" target="_blank">📝 Click here to view the latest Changelog</a>
+				</div>
+				</h3>
+				<div>{{ metaInfo.buildInfo }}</div>
+			</div>
+			</section>
+		</div>
+		</div>
+		<script src="js/lodash.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/scripts.js"></script>
+		<script src="js/vue.js"></script>
+		<script src="js/purify.min.js"></script>
+		<script src="js/marked.min.js"></script>
+		<script src="python-patcher-rest-lib.js"></script>
+		<script src="python-patcher-vue-common.js"></script>
+		<script src="python-patcher-lib.js"></script>
+    </body>
+</html>
