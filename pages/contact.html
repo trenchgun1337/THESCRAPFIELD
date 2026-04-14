@@ -78,28 +78,28 @@ a { color:#000; text-decoration:none; }
 .chan-outer {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #b7b7c7;
+  border: 1px solid #b2b2b3;
   background: #d6daf0;
 }
 
 /* label cells — the purple/blue left column */
 .chan-label {
-  background: #b7b7d7;
-  border: 1px solid #9090b0;
-  font-size: 12px;
-  font-weight: bold;
-  color: #000;
-  padding: 4px 8px;
-  white-space: nowrap;
-  vertical-align: middle;
-  width: 90px;
-  text-align: left;
+    background: #b2b2b3;
+    border: 1px solid #858585;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000;
+    padding: 4px 8px;
+    white-space: nowrap;
+    vertical-align: middle;
+    width: 90px;
+    text-align: left;
 }
 
 /* right content cells */
 .chan-field {
   background: #d6daf0;
-  border: 1px solid #b7b7c7;
+  border: 1px solid #b2b2b3;
   padding: 3px 5px;
   vertical-align: middle;
 }
@@ -167,74 +167,6 @@ a { color:#000; text-decoration:none; }
   margin: 4px 0;
   border: 1px solid #aaa;
 }
-
-/* verification row */
-.chan-verify-inner {
-  background: #e8e8f4;
-  border: 1px inset #aaa;
-  padding: 6px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.verify-top {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.verify-btn {
-  background: #d6daf0;
-  border: 1px outset #999;
-  padding: 2px 10px;
-  font-family: arial, helvetica, sans-serif;
-  font-size: 12px;
-  color: #000;
-  cursor: pointer;
-}
-.verify-btn:hover { background: #c4c8e0; }
-
-.verify-next-btn {
-  background: #e0e0e0;
-  border: 1px outset #999;
-  padding: 2px 10px;
-  font-family: arial, helvetica, sans-serif;
-  font-size: 12px;
-  color: #888;
-  cursor: default;
-}
-
-.verify-slide-wrap {
-  background: #f0f0f0;
-  border: 1px solid #ccc;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
-}
-.verify-slider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 4px;
-  background: #ccc;
-  outline: none;
-  border-radius: 2px;
-}
-.verify-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: #888;
-  cursor: pointer;
-  border: 1px solid #666;
-}
-
-.verify-note {
-  font-size: 11px;
-  color: #555;
-}
-.verify-note a { color: #34345c; }
 
 /* file row */
 .chan-file-inner {
@@ -346,14 +278,6 @@ a { color:#000; text-decoration:none; }
           </td>
         </tr>
 
-        <!-- Options -->
-        <tr>
-          <td class="chan-label">Options</td>
-          <td class="chan-field">
-            <input class="chan-input" type="text" id="replyOptions" placeholder="">
-          </td>
-        </tr>
-
         <!-- Subject + Post button -->
         <tr>
           <td class="chan-label">Subject</td>
@@ -368,7 +292,7 @@ a { color:#000; text-decoration:none; }
 
         <!-- Comment -->
         <tr>
-          <td class="chan-label" style="vertical-align:top; padding-top:6px;">Comment</td>
+          <td class="chan-label" style="vertical-align:top; padding-top:6px;">Content</td>
           <td class="chan-field">
             <div
               id="msgEditor"
@@ -379,24 +303,6 @@ a { color:#000; text-decoration:none; }
           </td>
         </tr>
 
-        <!-- Verification -->
-        <tr>
-          <td class="chan-label" style="vertical-align:top; padding-top:6px;">Verification</td>
-          <td class="chan-field">
-            <div class="chan-verify-inner">
-              <div class="verify-top">
-                <button class="verify-btn" onclick="this.textContent='Verified ✓'; this.disabled=true;">Get Captcha</button>
-                <button class="verify-next-btn" disabled>Next</button>
-              </div>
-              <div class="verify-slide-wrap">
-                <input type="range" class="verify-slider" min="0" max="100" value="10">
-              </div>
-              <div class="verify-note">
-                4chan Pass users can bypass this verification. [<a href="#">Learn More</a>] [<a href="#">Login</a>]
-              </div>
-            </div>
-          </td>
-        </tr>
 
         <!-- File -->
         <tr>
@@ -414,8 +320,7 @@ a { color:#000; text-decoration:none; }
     </table>
 
     <div class="chan-footer-note">
-      • Please read the <a href="#">Rules</a> and <a href="#">FAQ</a> before posting.
-    </div>
+      • Please be kind to me. </div>
   </div>
 
   <!-- PREVIEW -->
