@@ -316,6 +316,27 @@ a { color:#000; text-decoration:none; }
 
 <script>
 emailjs.init({ publicKey: 'iww-r-sgJVyoRmokf' });
+
+const CLOUD_NAME = 'dagsxkazw';
+const UPLOAD_PRESET = 'unsigned_upload';
+
+async function uploadToCloudinary(file) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', UPLOAD_PRESET);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+    method: 'POST',
+    body: formData
+  });
+
+  const data = await res.json();
+
+  if (!data.secure_url) throw new Error('upload failed');
+
+  return data.secure_url;
+}
+
 const SERVICE_ID  = 'service_ina2cb8';
 const TEMPLATE_ID = 'template_g7owumb';
 
@@ -345,7 +366,8 @@ function updatePreview() {
 }
 
 /* ── insert image from file upload ── */
-function insertImage(event) {
+
+ async function insertImage(event) {
   const file = event.target.files[0];
   if (!file) return;
 
@@ -358,23 +380,23 @@ function insertImage(event) {
     return;
   }
 
-  status.textContent = '';
+  status.textContent = 'uploading image...';
   status.className = '';
 
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    // foca o editor antes de inserir
+  try {
+    const imgUrl = await uploadToCloudinary(file);
+
     editor.focus();
 
     const img = document.createElement('img');
-    img.src = e.target.result; // base64
+    img.src = imgUrl;
+
     img.style.maxWidth = '100%';
     img.style.maxHeight = '320px';
     img.style.display = 'block';
     img.style.margin = '6px 0';
     img.style.border = '1px solid rgba(0,0,0,.15)';
 
-    // insere no cursor atual ou no final
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0 && editor.contains(sel.anchorNode)) {
       const range = sel.getRangeAt(0);
@@ -388,10 +410,17 @@ function insertImage(event) {
       editor.appendChild(img);
     }
 
-    updatePreview();
-  };
-  reader.readAsDataURL(file);
-  event.target.value = ''; // reset para poder reenviar a mesma imagem
+    status.textContent = 'image uploaded!';
+    status.className = 'ok';
+
+  } catch (e) {
+    status.textContent = 'upload failed';
+    status.className = 'err';
+    console.error(e);
+  }
+
+  event.target.value = '';
+  updatePreview();
 }
 
 /* ── converte HTML do editor para HTML de email ──
