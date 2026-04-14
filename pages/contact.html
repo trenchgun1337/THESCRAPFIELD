@@ -262,7 +262,7 @@ a { color:#000; text-decoration:none; }
         &#128247; Image
       </button>
       <div class="toolbar-sep"></div>
-      <span class="toolbar-hint">jpg, png, gif, webp — max 400kb</span>
+      <span class="toolbar-hint">jpg, png, gif, webp </span>
       <input type="file" id="imgFileInput" accept="image/jpeg,image/png,image/gif,image/webp" onchange="insertImage(event)">
     </div>
 
@@ -367,14 +367,36 @@ function updatePreview() {
 
 /* ── insert image from file upload ── */
 
+
  async function insertImage(event) {
   const file = event.target.files[0];
   if (!file) return;
 
   const status = document.getElementById('statusMsg');
+// png jpg etc
+const fileName = file.name;
+const fileSizeKB = (file.size / 1024).toFixed(1);
+
+const imgTemp = new Image();
+const imgURL = URL.createObjectURL(file);
+
+imgTemp.onload = () => {
+  const width = imgTemp.width;
+  const height = imgTemp.height;
+
+  const info = document.createElement('div');
+  info.style.fontSize = '11px';
+  info.style.color = '#777';
+  info.style.margin = '4px 0';
+
+  info.textContent = `File: ${fileName} (${fileSizeKB} KB, ${width}x${height})`;
+
+  editor.appendChild(info);
+};
+imgTemp.src = imgURL;
 
   if (file.size > 400 * 1024) {
-    status.textContent = 'image too large — max 400kb.';
+    status.textContent = 'image too large.';
     status.className = 'err';
     event.target.value = '';
     return;
