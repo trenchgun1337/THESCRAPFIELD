@@ -90,15 +90,11 @@ a { color:#000; text-decoration:none; }
 }
 
 .chan-field {
-   background: #d8d8d8;
+
+  background: #d8d8d8;
   border: 1px solid #b2b2b3;
   padding: 3px 5px;
-  vertical-align: top;
-
-  height: 120px;
-  max-height: 120px;
-
-  overflow: hidden;   /* 🔥 corta crescimento da célula */
+  vertical-align: middle;
 
 }
 
@@ -288,11 +284,15 @@ a { color:#000; text-decoration:none; }
         <!-- Content -->
         <tr>
           <td class="chan-label" style="vertical-align:top; padding-top:6px;">Content</td>
-         <td class="chan-field">
-  <div class="editor-wrap">
-    <div id="msgEditor" contenteditable="true"></div>
-  </div>
-</td>
+          <td class="chan-field">
+            <div
+              id="msgEditor"
+              contenteditable="true"
+              data-placeholder=""
+              spellcheck="true"
+            ></div>
+          </td>
+        </tr>
 
         <!-- File (after Post button, after Content) -->
         <tr>
