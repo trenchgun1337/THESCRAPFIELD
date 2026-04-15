@@ -345,7 +345,7 @@ const TEMPLATE_ID   = 'template_g7owumb';
 let nextPostNumber = '?';
 async function loadPostNumber() {
   try {
-    const res = await fetch('/api/getCount');
+    const res = await fetch('/api/getcount');
 
     // 🔥 evita crash
     if (!res.ok) throw new Error('API failed');
