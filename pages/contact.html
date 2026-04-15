@@ -90,12 +90,14 @@ a { color:#000; text-decoration:none; }
 }
 
 .chan-field {
-
   background: #d8d8d8;
   border: 1px solid #b2b2b3;
   padding: 3px 5px;
   vertical-align: middle;
 
+  height: 120px;        /* força altura */
+  max-height: 120px;    /* impede crescimento */
+  overflow: hidden;     /* corta excesso */
 }
 
 .chan-input {
@@ -137,7 +139,8 @@ a { color:#000; text-decoration:none; }
   display: block;
   white-space: pre-wrap;
 
-  height: 120px;        /* 🔥 altura fixa */
+  height: 100%;          /* 🔥 muda isso */
+  max-height: 100%;      /* 🔥 adiciona isso */
   width: 100%;
 
   padding: 3px 4px;
@@ -145,7 +148,7 @@ a { color:#000; text-decoration:none; }
   font-size: 13px;
   line-height: 1.5;
 
-  overflow-y: auto;     /* 🔥 scroll aqui */
+  overflow-y: auto;
   overflow-x: hidden;
 
   resize: none;
