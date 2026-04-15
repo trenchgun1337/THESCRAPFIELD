@@ -90,14 +90,16 @@ a { color:#000; text-decoration:none; }
 }
 
 .chan-field {
-  background: #d8d8d8;
+   background: #d8d8d8;
   border: 1px solid #b2b2b3;
   padding: 3px 5px;
-  vertical-align: middle;
+  vertical-align: top;
 
-  height: 120px;        /* força altura */
-  max-height: 120px;    /* impede crescimento */
-  overflow: hidden;     /* corta excesso */
+  height: 120px;
+  max-height: 120px;
+
+  overflow: hidden;   /* 🔥 corta crescimento da célula */
+
 }
 
 .chan-input {
@@ -139,8 +141,7 @@ a { color:#000; text-decoration:none; }
   display: block;
   white-space: pre-wrap;
 
-  height: 100%;          /* 🔥 muda isso */
-  max-height: 100%;      /* 🔥 adiciona isso */
+  height: 120px;        /* 🔥 altura fixa */
   width: 100%;
 
   padding: 3px 4px;
@@ -148,7 +149,7 @@ a { color:#000; text-decoration:none; }
   font-size: 13px;
   line-height: 1.5;
 
-  overflow-y: auto;
+  overflow-y: auto;     /* 🔥 scroll aqui */
   overflow-x: hidden;
 
   resize: none;
@@ -287,15 +288,11 @@ a { color:#000; text-decoration:none; }
         <!-- Content -->
         <tr>
           <td class="chan-label" style="vertical-align:top; padding-top:6px;">Content</td>
-          <td class="chan-field">
-            <div
-              id="msgEditor"
-              contenteditable="true"
-              data-placeholder=""
-              spellcheck="true"
-            ></div>
-          </td>
-        </tr>
+         <td class="chan-field">
+  <div class="editor-wrap">
+    <div id="msgEditor" contenteditable="true"></div>
+  </div>
+</td>
 
         <!-- File (after Post button, after Content) -->
         <tr>
