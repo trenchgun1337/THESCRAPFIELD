@@ -217,15 +217,15 @@ a { color:#000; text-decoration:none; }
 }
 #previewBody {
   padding: 14px 16px;
-  background: #fff;
+  background: #d8d8d8;
   font-family: arial, helvetica, sans-serif;
   font-size: 13px;
   overflow: hidden;
 }
 
 .chan-post-box {
-  background: #d6daf0;
-  border: 1px solid #b7c5d9;
+  background: #ffffff;
+  border: 1px solid #aaa;
   padding: 8px 10px;
   display: inline-block;
   min-width: 220px;
@@ -239,6 +239,25 @@ a { color:#000; text-decoration:none; }
 
 @media (max-width:800px) { #pageWrap { width:100%; } }
 @media (max-width:600px) { body { padding:8px 4px 24px; background-attachment:scroll; } }
+
+
+/* ── Headings ── */
+h1, h2, h3 {
+    display: inline;
+    background: #000;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border: 0.5px ridge;
+    border-color: #727272;
+}
+h1 { font-size: 12px; }
+h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
+
+
 </style>
 </head>
 <body>
@@ -254,6 +273,7 @@ a { color:#000; text-decoration:none; }
     <span class="bar-title">contact</span>
   </div>
 
+  <h3>Feel free to get in touch. </h3>
   <div id="postFormWrap">
     <table class="chan-outer">
       <tbody>
@@ -310,7 +330,7 @@ a { color:#000; text-decoration:none; }
 
   <!-- PREVIEW -->
   <div id="previewSection">
-    <div id="previewTitle">Preview — how the email will look</div>
+    <div id="previewTitle">Preview </div>
     <div id="previewBody">
       <div style="color:#777;font-size:11px;margin-bottom:8px;">
         anonymous message — watanagashiarchive.vercel.app/contact
