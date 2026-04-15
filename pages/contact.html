@@ -238,7 +238,7 @@ a { color:#000; text-decoration:none; }
 <body>
 
 <a id="cornerLogo" href="../index.html" title="Watanagashi Archive — Home">
-  <img src="../assets/images/watanagashilogo.png" alt="Watanagashi Archive" onerror="this.style.display='none'">
+  <img src="/assets/images/watanagashilogo.png" alt="Watanagashi Archive" onerror="this.style.display='none'">
 </a>
 
 <div id="pageWrap">
@@ -343,10 +343,13 @@ const TEMPLATE_ID   = 'template_g7owumb';
 // COUNTER (via backend seguro)
 // ─────────────────────────────────────────────
 let nextPostNumber = '?';
-
 async function loadPostNumber() {
   try {
     const res = await fetch('/api/getCount');
+
+    // 🔥 evita crash
+    if (!res.ok) throw new Error('API failed');
+
     const data = await res.json();
 
     nextPostNumber = (data.value || 0) + 1;
@@ -365,8 +368,10 @@ async function incrementPostCount() {
       method: 'POST'
     });
 
-    const data = await res.json();
-    return data.value;
+if (!res.ok) return nextPostNumber;
+
+const data = await res.json();
+return data.value;
 
   } catch (err) {
     console.error(err);
