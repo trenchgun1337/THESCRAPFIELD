@@ -133,26 +133,6 @@ a { color:#000; text-decoration:none; }
 .chan-post-btn:disabled { opacity:.5; cursor:default; }
 
 /* Editor: fixed height, no overflow growth */
-#msgEditor {
-  background: #fff;
-  border: 1px inset #aaa;
-  display: block;
-  white-space: pre-wrap;
-
-  height: 100%;          /* 🔥 muda isso */
-  max-height: 100%;      /* 🔥 adiciona isso */
-  width: 100%;
-
-  padding: 3px 4px;
-  font-family: arial, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 1.5;
-
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  resize: none;
-}
 
 #msgEditor:empty::before {
   content: attr(data-placeholder);
@@ -358,8 +338,9 @@ const TEMPLATE_ID   = 'template_g7owumb';
 let nextPostNumber = '?';
 async function loadPostNumber() {
   try {
-    const res = await fetch('https://api.counterapi.dev/v1/workspace/3553');
+    const res = await fetch('/api/getcount');
 
+    // 🔥 evita crash
     if (!res.ok) throw new Error('API failed');
 
     const data = await res.json();
@@ -376,15 +357,14 @@ async function loadPostNumber() {
 
 async function incrementPostCount() {
   try {
-    const res = await fetch(
-      'https://api.counterapi.dev/v1/workspace/3553/increment',
-      { method: 'POST' }
-    );
+    const res = await fetch('/api/increment', {
+      method: 'POST'
+    });
 
-    if (!res.ok) return nextPostNumber;
+if (!res.ok) return nextPostNumber;
 
-    const data = await res.json();
-    return data.value;
+const data = await res.json();
+return data.value;
 
   } catch (err) {
     console.error(err);
