@@ -545,7 +545,7 @@ function unwrapLinkSpans() {
 }
 
 function highlightLinks() {
-  const rawText = editor.innerText.replace(/\u200B/g, '');
+const rawText = editor.textContent.replace(/\u200B/g, '');
   EMBED_URL_REGEX.lastIndex = 0;
   const hasLinks = EMBED_URL_REGEX.test(rawText);
 
@@ -610,6 +610,7 @@ previewTime.textContent = getChanTime();
 setInterval(() => { previewTime.textContent = getChanTime(); }, 1000);
 
 editor.addEventListener('input', () => {
+  suppressedEmbeds.clear(); //  ISSO AQUI
   highlightLinks();
   updatePreview();
 });
@@ -962,6 +963,43 @@ function removeEmbeds() {
 // ─────────────────────────────────────────────
 async function sendMsg() {
   const rawText = editor.innerText.replace(/\u200B/g, '').trim();
+  const embeds = detectEmbeds(rawText);
+
+const embedsHTML = embeds.map(e => {
+  if (e.name === 'youtube') {
+    return `
+      <div style="margin:8px 0;">
+        <a href="${e.url}" target="_blank">
+          <img src="https://img.youtube.com/vi/${e.id}/hqdefault.jpg"
+               style="max-width:300px;display:block;border:1px solid #ccc;">
+        </a>
+        <div style="font-size:11px;color:#666;">YouTube</div>
+      </div>
+    `;
+  }
+
+  if (e.name === 'spotify') {
+    return `
+      <div style="margin:8px 0;">
+        <a href="${e.url}" target="_blank" style="color:#1DB954;">
+          ▶ Open on Spotify
+        </a>
+      </div>
+    `;
+  }
+
+  if (e.name === 'soundcloud') {
+    return `
+      <div style="margin:8px 0;">
+        <a href="${e.url}" target="_blank" style="color:#ff5500;">
+          ▶ Open on SoundCloud
+        </a>
+      </div>
+    `;
+  }
+
+  return '';
+}).join('');
   const hasImg  = !!editor.querySelector('img');
   const status  = document.getElementById('statusMsg');
   const btn     = document.getElementById('sendBtn');
