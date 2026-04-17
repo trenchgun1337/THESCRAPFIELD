@@ -641,6 +641,21 @@ linkInput.addEventListener('keydown', (e) => {
 
     links.push(val);
     linkInput.value = '';
+    
+    function extractLinksFromEditor() {
+  const text = editor.innerText.replace(/\u200B/g, '');
+  const matches = text.match(EMBED_URL_REGEX);
+
+  if (!matches) return;
+
+  matches.forEach(link => {
+    if (!links.includes(link)) {
+      links.push(link);
+    }
+  });
+
+  renderLinks();
+}
     renderLinks();
     updatePreview();
   }
@@ -666,6 +681,7 @@ setInterval(() => { previewTime.textContent = getChanTime(); }, 1000);
 
 editor.addEventListener('input', () => {
   suppressedEmbeds.clear(); //  ISSO AQUI
+    extractLinksFromEditor(); 
   highlightLinks();
   updatePreview();
 });
