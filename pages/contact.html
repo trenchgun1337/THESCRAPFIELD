@@ -412,16 +412,16 @@ const embedPatterns = [
       url: m[0],
       id: m[1],
       iframeSrc: `https://www.youtube.com/embed/${m[1]}`,
-      width: '100%', height: '160'
+      width: '100%', height: '65'
     })
   },
   {
     name: 'spotify',
-    regex: /https?:\/\/open\.spotify\.com\/(track|album|playlist|episode)\/([a-zA-Z0-9]+)(?:\?[^\s]*)?/g,
+    regex: /https?:\/\/open\.spotify\.com\/(?:intl-[a-z]{2}\/)?(track|album|playlist|episode)\/([a-zA-Z0-9]+)(?:\?[^\s]*)?/g,
     build: (m) => ({
       url: m[0],
       iframeSrc: `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0`,
-      width: '100%', height: '80'
+      width: '100%', height: '65'
     })
   },
   {
@@ -430,15 +430,14 @@ const embedPatterns = [
     build: (m) => ({
       url: m[0],
       iframeSrc: `https://w.soundcloud.com/player/?url=${encodeURIComponent(m[0])}&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`,
-      width: '100%', height: '60'
+      width: '100%', height: '65'
     })
   }
 ];
 
 // Regex that matches all embeddable URLs (for link highlighting)
-const EMBED_URL_REGEX = /https?:\/\/(?:(?:www\.)?(?:youtube\.com\/watch\?[^\s]*v=[a-zA-Z0-9_-]{11}|youtu\.be\/[a-zA-Z0-9_-]{11})|open\.spotify\.com\/(?:track|album|playlist|episode)\/[a-zA-Z0-9]+(?:\?[^\s]*)?|(?:www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(?:\?[^\s]*)?)/g;
-
 // Detect all embeds from plain text
+const EMBED_URL_REGEX = /https?:\/\/(?:(?:www\.)?(?:youtube\.com\/watch\?[^\s]*v=[a-zA-Z0-9_-]{11}|youtu\.be\/[a-zA-Z0-9_-]{11})|open\.spotify\.com\/(?:intl-[a-z]{2}\/)?(?:track|album|playlist|episode)\/[a-zA-Z0-9]+(?:\?[^\s]*)?|(?:www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(?:\?[^\s]*)?)/g;
 function detectEmbeds(text) {
   const found = [];
   for (const pat of embedPatterns) {
