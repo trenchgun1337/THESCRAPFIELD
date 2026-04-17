@@ -626,15 +626,17 @@ editor.addEventListener('dragstart', (e) => {
   if (e.target.tagName === 'IMG') e.preventDefault();
 });
 
-// ── Ctrl+A: select only text nodes, skip images ──
+// ── Ctrl+A + Enter fix + Delete protection ──
 editor.addEventListener('keydown', (e) => {
+
+  // ── Ctrl+A: select only text nodes, skip images ──
   if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
     const img = editor.querySelector('img');
     if (img) {
       e.preventDefault();
       const sel = window.getSelection();
       sel.removeAllRanges();
-      // Collect all text nodes after the image
+
       const textNodes = [];
       function collectTextNodes(node) {
         if (node.nodeType === Node.TEXT_NODE) {
@@ -643,7 +645,9 @@ editor.addEventListener('keydown', (e) => {
           for (const child of node.childNodes) collectTextNodes(child);
         }
       }
+
       collectTextNodes(editor);
+
       if (textNodes.length > 0) {
         const range = document.createRange();
         range.setStart(textNodes[0], 0);
@@ -655,43 +659,27 @@ editor.addEventListener('keydown', (e) => {
     }
   }
 
-  if (e.key !== 'Backspace' && e.key !== 'Delete') return;
-  const sel = window.getSelection();
-  if (!sel || !sel.rangeCount) return;
-  const range = sel.getRangeAt(0);
-
-  const frag = range.cloneContents();
-  if (frag.querySelector && frag.querySelector('.pic-specs')) {
+  // ── ENTER FIX (ESSENCIAL) ──
+  if (e.key === 'Enter') {
     e.preventDefault();
+
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+
+    const range = sel.getRangeAt(0);
+    range.deleteContents();
+
+    const br = document.createElement('br');
+    range.insertNode(br);
+
+    range.setStartAfter(br);
+    range.setEndAfter(br);
+    sel.removeAllRanges();
+    sel.addRange(range);
     return;
   }
 
-  if (range.collapsed) {
-    const container = range.startContainer;
-    const offset    = range.startOffset;
-
-    if (e.key === 'Backspace') {
-      let prev = null;
-      if (container.nodeType === Node.TEXT_NODE && offset === 0)
-        prev = container.previousSibling;
-      else if (container.nodeType !== Node.TEXT_NODE && offset > 0)
-        prev = container.childNodes[offset - 1];
-      if (prev && prev.classList && prev.classList.contains('pic-specs')) { e.preventDefault(); }
-      if (prev && prev.tagName === 'IMG') { e.preventDefault(); }
-    }
-
-    if (e.key === 'Delete') {
-      let next = null;
-      if (container.nodeType === Node.TEXT_NODE && offset === container.length)
-        next = container.nextSibling;
-      else if (container.nodeType !== Node.TEXT_NODE)
-        next = container.childNodes[offset];
-      if (next && next.classList && next.classList.contains('pic-specs')) { e.preventDefault(); }
-      if (next && next.tagName === 'IMG') { e.preventDefault(); }
-    }
-  }
 });
-
 editor.addEventListener('click', () => {
   const img = editor.querySelector('img');
   if (!img) return;
