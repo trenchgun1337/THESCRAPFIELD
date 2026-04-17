@@ -16,6 +16,7 @@
 :root {
   --accent: #cc1a1a;
   --text: #111;
+  --editor-h: 120px;
 }
 
 html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.5) transparent; }
@@ -128,24 +129,23 @@ a { color:#000; text-decoration:none; }
 .chan-post-btn:active { border-style: inset; }
 .chan-post-btn:disabled { opacity:.5; cursor:default; }
 
-/* Editor: fixed height, no overflow growth */
+/* ── Editor: strictly fixed height, never grows ── */
 #msgEditor {
   background: #fff;
   border: 1px inset #aaa;
   display: block;
   white-space: pre-wrap;
-  height: 120px;        
+  height: var(--editor-h);
+  min-height: var(--editor-h);
+  max-height: var(--editor-h);
   width: 100%;
-
   padding: 3px 4px;
   font-family: arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 1.5;
-
-  overflow-y: auto;     
+  overflow-y: auto;
   overflow-x: hidden;
-
-  resize: none;         
+  resize: none;
 }
 #msgEditor:empty::before {
   content: attr(data-placeholder);
@@ -173,21 +173,19 @@ a { color:#000; text-decoration:none; }
 .chan-file-name { font-size: 12px; color: #555; }
 #imgFileInput { display: none; }
 
-#removeBtn {
+#removeBtn, #removeEmbedBtn {
   font-family: arial, helvetica, sans-serif;
   font-size: 12px;
   color: #cc0000;
   cursor: pointer;
   white-space: nowrap;
   display: none;
-
-  background: none;     
-  border: none;        
-  outline: none;       
-
+  background: none;
+  border: none;
+  outline: none;
 }
-#removeBtn:hover { background: #f0d0d0; text-decoration: underline; }
-#removeBtn:active { border-style: inset; }
+#removeBtn:hover, #removeEmbedBtn:hover { background: #f0d0d0; text-decoration: underline; }
+#removeBtn:active, #removeEmbedBtn:active { border-style: inset; }
 
 .chan-footer-note {
   font-size: 11px;
@@ -227,9 +225,8 @@ a { color:#000; text-decoration:none; }
   background: #ffffff;
   border: 1px solid #aaa;
   padding: 8px 10px;
-  display: inline-block;
-  min-width: 220px;
-  max-width: 100%;
+  display: block;
+  width: 100%;
   overflow: hidden;
 }
 .chan-post-meta { font-size: 12px; margin-bottom: 6px; line-height: 1.4; }
@@ -237,9 +234,30 @@ a { color:#000; text-decoration:none; }
 .chan-post-time { color: #444; margin-left: 6px; font-size: 11px; }
 .chan-post-no   { color: #000; margin-left: 4px; font-size: 11px; }
 
+/* ── Preview message area: EXACT same height as editor ── */
+#previewMsg {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: var(--editor-h);
+  min-height: var(--editor-h);
+  max-height: var(--editor-h);
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+/* ── Embed containers in preview ── */
+.embed-wrap {
+  margin: 6px 0;
+  clear: both;
+}
+.embed-wrap iframe {
+  border: 1px solid #ccc;
+  display: block;
+  max-width: 100%;
+}
+
 @media (max-width:800px) { #pageWrap { width:100%; } }
 @media (max-width:600px) { body { padding:8px 4px 24px; background-attachment:scroll; } }
-
 
 /* ── Headings ── */
 h1, h2, h3 {
@@ -256,8 +274,6 @@ h1, h2, h3 {
 }
 h1 { font-size: 12px; }
 h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
-
-
 </style>
 </head>
 <body>
@@ -286,7 +302,7 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
           </td>
         </tr>
 
-        <!-- Post button row (before file) -->
+        <!-- Post button row -->
         <tr>
           <td class="chan-label"></td>
           <td class="chan-field">
@@ -310,7 +326,7 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
           </td>
         </tr>
 
-        <!-- File (after Post button, after Content) -->
+        <!-- File + embed controls -->
         <tr>
           <td class="chan-label">File</td>
           <td class="chan-field">
@@ -318,6 +334,7 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
               <button class="chan-file-btn" onclick="document.getElementById('imgFileInput').click()">Choose file</button>
               <span class="chan-file-name" id="fileNameDisplay">No file chosen</span>
               <button id="removeBtn" onclick="removeAttachment()">Remove attachment</button>
+              <button id="removeEmbedBtn" onclick="removeEmbeds()">Remove embeds</button>
               <input type="file" id="imgFileInput" accept="image/jpeg,image/png,image/gif,image/webp" onchange="insertImage(event)">
             </div>
           </td>
@@ -341,7 +358,7 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
           <span class="chan-post-time" id="previewTime"></span>
           <span class="chan-post-no" id="previewNo"></span>
         </div>
-        <div id="previewMsg" style="overflow:hidden; line-height:1.6;">
+        <div id="previewMsg">
           <span style="color:#bbb;">your message will appear here...</span>
         </div>
         <div style="clear:both;"></div>
@@ -360,52 +377,34 @@ const SERVICE_ID    = 'service_ina2cb8';
 const TEMPLATE_ID   = 'template_g7owumb';
 
 // ─────────────────────────────────────────────
-// COUNTER  (CountAPI — free, persistent)
-// First-time setup: open browser console and run:
-//   fetch('https://api.countapi.xyz/set/watanagashi-archive/posts?value=23818223')
-// That seeds the counter so the first post is No.23818224.
-// ─────────────────────────────────────────────
-// ─────────────────────────────────────────────
-// COUNTER (via backend seguro)
+// COUNTER
 // ─────────────────────────────────────────────
 let nextPostNumber = '?';
 async function loadPostNumber() {
   try {
     const res = await fetch('/api/getcount');
-
-    // 🔥 evita crash
     if (!res.ok) throw new Error('API failed');
-
     const data = await res.json();
-
     nextPostNumber = (data.value || 0) + 1;
-
   } catch (err) {
     console.error(err);
     nextPostNumber = '?';
   }
-
   document.getElementById('previewNo').textContent = 'No.' + nextPostNumber;
 }
 
 async function incrementPostCount() {
   try {
-    const res = await fetch('/api/increment', {
-      method: 'POST'
-    });
-
-if (!res.ok) return nextPostNumber;
-
-const data = await res.json();
-return data.value;
-
+    const res = await fetch('/api/increment', { method: 'POST' });
+    if (!res.ok) return nextPostNumber;
+    const data = await res.json();
+    return data.value;
   } catch (err) {
     console.error(err);
     return nextPostNumber;
   }
 }
 
-// iniciar contador
 loadPostNumber();
 
 // ─────────────────────────────────────────────
@@ -422,6 +421,86 @@ function getChanTime() {
   const min  = String(now.getMinutes()).padStart(2, '0');
   const ss   = String(now.getSeconds()).padStart(2, '0');
   return `${mm}/${dd}/${yy}(${day})${hh}:${min}:${ss}`;
+}
+
+// ─────────────────────────────────────────────
+// EMBED DETECTION
+// ─────────────────────────────────────────────
+const embedPatterns = [
+  {
+    name: 'youtube',
+    regex: /https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?(?:[^#&\s]*&)*v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/g,
+    build: (m) => ({
+      url: m[0],
+      id: m[1],
+      iframeSrc: `https://www.youtube.com/embed/${m[1]}`,
+      width: '100%', height: '160'
+    })
+  },
+  {
+    name: 'spotify',
+    regex: /https?:\/\/open\.spotify\.com\/(track|album|playlist|episode)\/([a-zA-Z0-9]+)(?:\?[^\s]*)?/g,
+    build: (m) => ({
+      url: m[0],
+      iframeSrc: `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0`,
+      width: '100%', height: '80'
+    })
+  },
+  {
+    name: 'soundcloud',
+    regex: /https?:\/\/(?:www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(?:\?[^\s]*)?/g,
+    build: (m) => ({
+      url: m[0],
+      iframeSrc: `https://w.soundcloud.com/player/?url=${encodeURIComponent(m[0])}&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`,
+      width: '100%', height: '60'
+    })
+  }
+];
+
+// Detect all embeds from plain text
+function detectEmbeds(text) {
+  const found = [];
+  for (const pat of embedPatterns) {
+    pat.regex.lastIndex = 0;
+    let m;
+    while ((m = pat.regex.exec(text)) !== null) {
+      const built = pat.build(m);
+      // Avoid duplicates by URL
+      if (!found.some(e => e.url === built.url)) {
+        found.push({ ...built, name: pat.name });
+      }
+    }
+  }
+  return found;
+}
+
+// Build preview HTML for embeds
+function buildEmbedPreviewHTML(embeds) {
+  if (!embeds.length) return '';
+  return embeds.map(e =>
+    `<div class="embed-wrap">
+      <iframe
+        src="${escapeAttr(e.iframeSrc)}"
+        width="${e.width}" height="${e.height}"
+        frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        allowfullscreen
+        loading="lazy"
+        style="border-radius:0;border:1px solid #ccc;display:block;"
+      ></iframe>
+    </div>`
+  ).join('');
+}
+
+// Build email-safe embed section (links instead of iframes)
+function buildEmbedEmailHTML(embeds) {
+  if (!embeds.length) return '';
+  const items = embeds.map(e =>
+    `<div style="margin:4px 0;font-size:12px;">
+      [${e.name.toUpperCase()}] <a href="${escapeAttr(e.url)}" style="color:#0055cc;">${escapeHtml(e.url)}</a>
+    </div>`
+  ).join('');
+  return `<div style="margin-top:8px;padding-top:6px;border-top:1px dotted #ccc;font-size:11px;color:#888;">Embeds:</div>${items}`;
 }
 
 // ─────────────────────────────────────────────
@@ -505,12 +584,8 @@ editor.addEventListener('keydown', (e) => {
         prev = container.previousSibling;
       else if (container.nodeType !== Node.TEXT_NODE && offset > 0)
         prev = container.childNodes[offset - 1];
-      if (prev && prev.classList && prev.classList.contains('pic-specs')) {
-        e.preventDefault();
-      }
-      if (prev && prev.tagName === 'IMG') {
-        e.preventDefault();
-      }
+      if (prev && prev.classList && prev.classList.contains('pic-specs')) { e.preventDefault(); }
+      if (prev && prev.tagName === 'IMG') { e.preventDefault(); }
     }
 
     if (e.key === 'Delete') {
@@ -519,24 +594,27 @@ editor.addEventListener('keydown', (e) => {
         next = container.nextSibling;
       else if (container.nodeType !== Node.TEXT_NODE)
         next = container.childNodes[offset];
-      if (next && next.classList && next.classList.contains('pic-specs')) {
-        e.preventDefault();
-      }
-      if (next && next.tagName === 'IMG') {
-        e.preventDefault();
-      }
+      if (next && next.classList && next.classList.contains('pic-specs')) { e.preventDefault(); }
+      if (next && next.tagName === 'IMG') { e.preventDefault(); }
     }
   }
 });
 
 // ─────────────────────────────────────────────
-// PREVIEW  (inline, uses CSS float)
+// PREVIEW  (fixed height, embeds appended)
 // ─────────────────────────────────────────────
 function updatePreview() {
   const text   = editor.innerText.replace(/\u200B/g, '').trim();
   const hasImg = !!editor.querySelector('img');
+  const embeds = detectEmbeds(text);
+
+  // Show/hide Remove embeds button
+  document.getElementById('removeEmbedBtn').style.display = embeds.length ? 'inline-block' : 'none';
+
   if (text || hasImg) {
-    previewMsg.innerHTML = buildPreviewHTML(editor.innerHTML);
+    const msgHTML    = buildPreviewHTML(editor.innerHTML);
+    const embedsHTML = buildEmbedPreviewHTML(embeds);
+    previewMsg.innerHTML = msgHTML + embedsHTML;
   } else {
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
   }
@@ -559,7 +637,7 @@ function buildPreviewHTML(html) {
 }
 
 // ─────────────────────────────────────────────
-// EMAIL HTML  (table layout for reliable clients)
+// EMAIL HTML
 // ─────────────────────────────────────────────
 function buildEmailHTML(html) {
   const tmp = document.createElement('div');
@@ -568,16 +646,21 @@ function buildEmailHTML(html) {
   const img   = tmp.querySelector('img');
   const specs = tmp.querySelector('.pic-specs');
 
+  // Grab embeds from current text
+  const plainText = tmp.innerText || tmp.textContent || '';
+  const embeds = detectEmbeds(editor.innerText.replace(/\u200B/g, '').trim());
+  const embedsSection = buildEmbedEmailHTML(embeds);
+
+  let bodyHTML;
   if (img) {
     const specsHTML = specs
       ? `<div style="font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 4px;display:block;">${escapeHtml(specs.textContent)}</div>`
       : '';
-
     if (specs) specs.remove();
     img.remove();
     const textHTML = tmp.innerHTML.trim();
 
-    return `${specsHTML}` +
+    bodyHTML = `${specsHTML}` +
       `<table role="presentation" style="border-collapse:collapse;margin:0;">` +
         `<tr>` +
           `<td style="vertical-align:top;padding-right:10px;">` +
@@ -588,9 +671,11 @@ function buildEmailHTML(html) {
           `</td>` +
         `</tr>` +
       `</table>`;
+  } else {
+    bodyHTML = tmp.innerHTML;
   }
 
-  return tmp.innerHTML;
+  return bodyHTML + embedsSection;
 }
 
 function escapeHtml(str) {
@@ -633,7 +718,6 @@ async function insertImage(event) {
   status.textContent = 'Uploading...';
   status.className   = '';
 
-  // Measure dimensions before upload
   const tmpURL = URL.createObjectURL(file);
   const tmpImg = new Image();
   tmpImg.src   = tmpURL;
@@ -642,13 +726,11 @@ async function insertImage(event) {
   const h = tmpImg.naturalHeight;
   URL.revokeObjectURL(tmpURL);
 
-  // Preserve existing text
   const existingText = editor.innerText.replace(/\u200B/g, '').trim();
 
   try {
     const imgUrl = await uploadToCloudinary(file);
 
-    // Build: [specs] [img float:left] [text node]
     const specs = document.createElement('div');
     specs.className       = 'pic-specs';
     specs.contentEditable = 'false';
@@ -659,7 +741,6 @@ async function insertImage(event) {
     img.src           = imgUrl;
     img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
 
-    // Text node: existing text or zero-width space so cursor has somewhere to land
     const textNode = document.createTextNode(existingText || '\u200B');
 
     editor.innerHTML = '';
@@ -667,7 +748,6 @@ async function insertImage(event) {
     editor.appendChild(img);
     editor.appendChild(textNode);
 
-    // Place cursor at end of text node
     editor.focus();
     const range = document.createRange();
     range.setStart(textNode, textNode.length);
@@ -676,8 +756,8 @@ async function insertImage(event) {
     sel.removeAllRanges();
     sel.addRange(range);
 
-    fileDisplay.textContent     = fileName;
-    removeBtn.style.display     = 'inline-block';
+    fileDisplay.textContent = fileName;
+    removeBtn.style.display = 'inline-block';
     status.textContent = 'Image uploaded!';
     status.className   = 'ok';
 
@@ -698,14 +778,44 @@ function removeAttachment() {
   editor.querySelectorAll('img').forEach(el => el.remove());
   editor.querySelectorAll('.pic-specs').forEach(el => el.remove());
 
-  document.getElementById('fileNameDisplay').textContent = '';
+  document.getElementById('fileNameDisplay').textContent = 'No file chosen';
   document.getElementById('removeBtn').style.display    = 'none';
   document.getElementById('statusMsg').textContent      = '';
   document.getElementById('statusMsg').className        = '';
 
-  // Clean up any dangling zero-width spaces
   editor.innerHTML = editor.innerHTML.replace(/\u200B/g, '');
 
+  updatePreview();
+  editor.focus();
+}
+
+// ─────────────────────────────────────────────
+// REMOVE EMBEDS (clears detected embed links from text)
+// ─────────────────────────────────────────────
+function removeEmbeds() {
+  // Strip all embeddable URLs from the editor text
+  let html = editor.innerHTML.replace(/\u200B/g, '');
+
+  // We work on plain text via a temp div
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+
+  // Walk all text nodes and strip embed URLs
+  const allEmbedRegex = /https?:\/\/(?:(?:www\.)?(?:youtube\.com\/watch\?[^\s]*v=[a-zA-Z0-9_-]{11}|youtu\.be\/[a-zA-Z0-9_-]{11})|open\.spotify\.com\/(?:track|album|playlist|episode)\/[a-zA-Z0-9]+(?:\?[^\s]*)?|(?:www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(?:\?[^\s]*)?)/g;
+
+  function stripEmbeds(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const replaced = node.textContent.replace(allEmbedRegex, '').replace(/\s{2,}/g, ' ').trim();
+      if (replaced !== node.textContent) node.textContent = replaced;
+    } else {
+      node.childNodes.forEach(stripEmbeds);
+    }
+  }
+  stripEmbeds(tmp);
+
+  editor.innerHTML = tmp.innerHTML;
+
+  document.getElementById('removeEmbedBtn').style.display = 'none';
   updatePreview();
   editor.focus();
 }
@@ -725,9 +835,9 @@ async function sendMsg() {
     return;
   }
 
-if (btn.disabled) return;
-btn.disabled = true;  status.className   = '';
-
+  if (btn.disabled) return;
+  btn.disabled = true;
+  status.className   = '';
   status.textContent = 'Sending...';
 
   const postNumber = await incrementPostCount() || nextPostNumber;
@@ -736,7 +846,7 @@ btn.disabled = true;  status.className   = '';
 
   try {
     await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-      name:    'Anonymous',
+      name:         'Anonymous',
       from_email:   'anonymous@noreply.com',
       subject:      'anonymous message — watanagashi archive',
       message:      rawText,
@@ -751,11 +861,12 @@ btn.disabled = true;  status.className   = '';
     editor.innerHTML     = '';
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
 
-    document.getElementById('fileNameDisplay').textContent = '';
+    document.getElementById('fileNameDisplay').textContent = 'No file chosen';
     document.getElementById('removeBtn').style.display    = 'none';
+    document.getElementById('removeEmbedBtn').style.display = 'none';
 
     nextPostNumber = typeof postNumber === 'number' ? postNumber + 1 : '?';
-document.getElementById('previewNo').textContent = 'No.' + nextPostNumber;
+    document.getElementById('previewNo').textContent = 'No.' + nextPostNumber;
   } catch (err) {
     status.textContent = 'Failed — trenchgun1337@gmail.com';
     status.className   = 'err';
