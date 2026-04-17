@@ -129,7 +129,6 @@ a { color:#000; text-decoration:none; }
 .chan-post-btn:active { border-style: inset; }
 .chan-post-btn:disabled { opacity:.5; cursor:default; }
 
-/* ── Editor: strictly fixed height, never grows ── */
 #msgEditor {
   background: #fff;
   border: 1px inset #aaa;
@@ -148,7 +147,6 @@ a { color:#000; text-decoration:none; }
   overflow-y: scroll;
   overflow-x: hidden;
   resize: none;
-  /* Prevent browser from growing the element */
   contain: strict;
 }
 #msgEditor:empty::before {
@@ -157,7 +155,6 @@ a { color:#000; text-decoration:none; }
   pointer-events: none;
 }
 
-/* Blue link spans inside editor */
 #msgEditor .link-span {
   color: #0055cc;
 }
@@ -179,7 +176,16 @@ a { color:#000; text-decoration:none; }
   white-space: nowrap;
 }
 .chan-file-btn:hover { background: #c8c8c8; }
-.chan-file-name { font-size: 12px; color: #555; }
+.chan-file-name {
+  font-size: 12px;
+  color: #555;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+}
 #imgFileInput { display: none; }
 
 #removeBtn, #removeEmbedBtn {
@@ -206,7 +212,6 @@ a { color:#000; text-decoration:none; }
 #statusMsg.ok  { color:#117743; font-weight:bold; }
 #statusMsg.err { color:#cc0000; font-weight:bold; }
 
-/* ── PREVIEW ── */
 #previewSection {
   border: 2px ridge #727272;
   background: #f2f2f2;
@@ -241,9 +246,7 @@ a { color:#000; text-decoration:none; }
 .chan-post-meta { font-size: 12px; margin-bottom: 6px; line-height: 1.4; }
 .chan-post-name { color: #117743; font-weight: bold; }
 .chan-post-time { color: #444; margin-left: 6px; font-size: 11px; }
-.chan-post-no   { color: #000; margin-left: 4px; font-size: 11px; }
 
-/* ── Preview message area: EXACT same height as editor ── */
 #previewMsg {
   overflow-y: auto;
   overflow-x: hidden;
@@ -254,7 +257,6 @@ a { color:#000; text-decoration:none; }
   word-break: break-word;
 }
 
-/* ── Embed containers in preview ── */
 .embed-wrap {
   margin: 6px 0;
   clear: both;
@@ -268,7 +270,6 @@ a { color:#000; text-decoration:none; }
 @media (max-width:800px) { #pageWrap { width:100%; } }
 @media (max-width:600px) { body { padding:8px 4px 24px; background-attachment:scroll; } }
 
-/* ── Headings ── */
 h1, h2, h3 {
     display: inline;
     background: #000;
@@ -365,7 +366,6 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
         <div class="chan-post-meta">
           <span class="chan-post-name">Anonymous</span>
           <span class="chan-post-time" id="previewTime"></span>
-          <span class="chan-post-no" id="previewNo"></span>
         </div>
         <div id="previewMsg">
           <span style="color:#bbb;">your message will appear here...</span>
@@ -384,37 +384,6 @@ const CLOUD_NAME    = 'dagsxkazw';
 const UPLOAD_PRESET = 'unsigned_upload';
 const SERVICE_ID    = 'service_ina2cb8';
 const TEMPLATE_ID   = 'template_g7owumb';
-
-// ─────────────────────────────────────────────
-// COUNTER
-// ─────────────────────────────────────────────
-let nextPostNumber = '?';
-async function loadPostNumber() {
-  try {
-    const res = await fetch('/api/getcount');
-    if (!res.ok) throw new Error('API failed');
-    const data = await res.json();
-    nextPostNumber = (data.value || 0) + 1;
-  } catch (err) {
-    console.error(err);
-    nextPostNumber = '?';
-  }
-  document.getElementById('previewNo').textContent = 'No.' + nextPostNumber;
-}
-
-async function incrementPostCount() {
-  try {
-    const res = await fetch('/api/increment', { method: 'POST' });
-    if (!res.ok) return nextPostNumber;
-    const data = await res.json();
-    return data.value;
-  } catch (err) {
-    console.error(err);
-    return nextPostNumber;
-  }
-}
-
-loadPostNumber();
 
 // ─────────────────────────────────────────────
 // TIME  — chan format  MM/DD/YY(Day)HH:MM:SS
@@ -518,7 +487,6 @@ function buildEmbedEmailHTML(embeds) {
 // LINK HIGHLIGHTING IN EDITOR
 // ─────────────────────────────────────────────
 
-// Get caret char offset from start of el (counting only text)
 function getCaretCharOffset(el) {
   const sel = window.getSelection();
   if (!sel || !sel.rangeCount) return 0;
@@ -529,7 +497,6 @@ function getCaretCharOffset(el) {
   return preRange.toString().length;
 }
 
-// Restore caret to char offset
 function setCaretByOffset(el, offset) {
   const sel = window.getSelection();
   if (!sel) return;
@@ -560,7 +527,6 @@ function setCaretByOffset(el, offset) {
   walk(el);
 
   if (!found) {
-    // Set to end of content
     const range = document.createRange();
     range.selectNodeContents(el);
     range.collapse(false);
@@ -569,7 +535,6 @@ function setCaretByOffset(el, offset) {
   }
 }
 
-// Remove all .link-span wrappers, collapsing back to plain text nodes
 function unwrapLinkSpans() {
   editor.querySelectorAll('.link-span').forEach(span => {
     const parent = span.parentNode;
@@ -580,14 +545,11 @@ function unwrapLinkSpans() {
   editor.normalize();
 }
 
-// Wrap detected embed URLs in blue spans (non-destructive to other content)
 function highlightLinks() {
-  // Don't run if editor has no embed URLs at all (quick check)
   const rawText = editor.innerText.replace(/\u200B/g, '');
   EMBED_URL_REGEX.lastIndex = 0;
   const hasLinks = EMBED_URL_REGEX.test(rawText);
 
-  // If no links and no existing spans, nothing to do
   const hasSpans = !!editor.querySelector('.link-span');
   if (!hasLinks && !hasSpans) return;
 
@@ -597,12 +559,10 @@ function highlightLinks() {
 
   function processNode(node) {
     if (node.nodeType === Node.ELEMENT_NODE) {
-      // Skip protected elements
       if (node.tagName === 'IMG' ||
           (node.classList && (node.classList.contains('pic-specs') || node.classList.contains('link-span')))) {
         return;
       }
-      // Process children (snapshot to avoid live mutation issues)
       Array.from(node.childNodes).forEach(processNode);
     } else if (node.nodeType === Node.TEXT_NODE) {
       EMBED_URL_REGEX.lastIndex = 0;
@@ -655,57 +615,47 @@ editor.addEventListener('input', () => {
   updatePreview();
 });
 
-// ── Block image paste; allow plain text only ──
 editor.addEventListener('paste', (e) => {
   e.preventDefault();
   const text = e.clipboardData.getData('text/plain');
   if (text) {
     document.execCommand('insertText', false, text);
-    // highlightLinks & updatePreview fired via 'input' event above
   }
 });
 
-// ── Block drag of images inside editor ──
 editor.addEventListener('dragstart', (e) => {
   if (e.target.tagName === 'IMG') e.preventDefault();
 });
 
-// ── Redirect clicks before image to after it ──
-editor.addEventListener('click', () => {
-  const img = editor.querySelector('img');
-  if (!img) return;
-  requestAnimationFrame(() => {
-    const sel = window.getSelection();
-    if (!sel || !sel.rangeCount) return;
-    const range = sel.getRangeAt(0);
-
-    let isBefore = false;
-    if (range.startContainer === editor) {
-      const imgIdx = Array.from(editor.childNodes).indexOf(img);
-      isBefore = range.startOffset <= imgIdx;
-    } else {
-      const pos = img.compareDocumentPosition(range.startContainer);
-      isBefore = !!(pos & Node.DOCUMENT_POSITION_PRECEDING);
-    }
-
-    if (isBefore) {
-      let node = img.nextSibling;
-      while (node && node.nodeType !== Node.TEXT_NODE) node = node.nextSibling;
-      if (!node) {
-        node = document.createTextNode('\u200B');
-        editor.appendChild(node);
-      }
-      const newRange = document.createRange();
-      newRange.setStart(node, node.length);
-      newRange.collapse(true);
-      sel.removeAllRanges();
-      sel.addRange(newRange);
-    }
-  });
-});
-
-// ── Protect .pic-specs and img from keyboard deletion ──
+// ── Ctrl+A: select only text nodes, skip images ──
 editor.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+    const img = editor.querySelector('img');
+    if (img) {
+      e.preventDefault();
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      // Collect all text nodes after the image
+      const textNodes = [];
+      function collectTextNodes(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          textNodes.push(node);
+        } else if (node.tagName !== 'IMG' && !(node.classList && node.classList.contains('pic-specs'))) {
+          for (const child of node.childNodes) collectTextNodes(child);
+        }
+      }
+      collectTextNodes(editor);
+      if (textNodes.length > 0) {
+        const range = document.createRange();
+        range.setStart(textNodes[0], 0);
+        const last = textNodes[textNodes.length - 1];
+        range.setEnd(last, last.textContent.length);
+        sel.addRange(range);
+      }
+      return;
+    }
+  }
+
   if (e.key !== 'Backspace' && e.key !== 'Delete') return;
   const sel = window.getSelection();
   if (!sel || !sel.rangeCount) return;
@@ -743,23 +693,54 @@ editor.addEventListener('keydown', (e) => {
   }
 });
 
+editor.addEventListener('click', () => {
+  const img = editor.querySelector('img');
+  if (!img) return;
+  requestAnimationFrame(() => {
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return;
+    const range = sel.getRangeAt(0);
+
+    let isBefore = false;
+    if (range.startContainer === editor) {
+      const imgIdx = Array.from(editor.childNodes).indexOf(img);
+      isBefore = range.startOffset <= imgIdx;
+    } else {
+      const pos = img.compareDocumentPosition(range.startContainer);
+      isBefore = !!(pos & Node.DOCUMENT_POSITION_PRECEDING);
+    }
+
+    if (isBefore) {
+      let node = img.nextSibling;
+      while (node && node.nodeType !== Node.TEXT_NODE) node = node.nextSibling;
+      if (!node) {
+        node = document.createTextNode('\u200B');
+        editor.appendChild(node);
+      }
+      const newRange = document.createRange();
+      newRange.setStart(node, node.length);
+      newRange.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(newRange);
+    }
+  });
+});
+
 // ─────────────────────────────────────────────
-// SUPPRESS EMBEDS (keeps link text, hides iframes)
+// SUPPRESS EMBEDS
 // ─────────────────────────────────────────────
 const suppressedEmbeds = new Set();
 
 // ─────────────────────────────────────────────
-// PREVIEW  (fixed height, embeds appended)
+// PREVIEW
 // ─────────────────────────────────────────────
 function updatePreview() {
   const text   = editor.innerText.replace(/\u200B/g, '').trim();
   const hasImg = !!editor.querySelector('img');
   const allEmbeds = detectEmbeds(text);
 
-  // Only render iframes for embeds not suppressed
   const visibleEmbeds = allEmbeds.filter(e => !suppressedEmbeds.has(e.url));
 
-  // Show "Remove embed" button if there are any unsuppressed embeds
   document.getElementById('removeEmbedBtn').style.display =
     visibleEmbeds.length ? 'inline-block' : 'none';
 
@@ -776,7 +757,6 @@ function buildPreviewHTML(html) {
   const tmp = document.createElement('div');
   tmp.innerHTML = html.replace(/\u200B/g, '');
 
-  // Convert .link-span → styled anchor in preview
   tmp.querySelectorAll('.link-span').forEach(span => {
     const a = document.createElement('a');
     a.href = span.textContent;
@@ -806,7 +786,6 @@ function buildEmailHTML(html) {
   const tmp = document.createElement('div');
   tmp.innerHTML = html.replace(/\u200B/g, '');
 
-  // Convert .link-span → real anchor tags for email
   tmp.querySelectorAll('.link-span').forEach(span => {
     const a = document.createElement('a');
     a.href = span.textContent;
@@ -818,7 +797,6 @@ function buildEmailHTML(html) {
   const img   = tmp.querySelector('img');
   const specs = tmp.querySelector('.pic-specs');
 
-  // Always include all detected embed links in email (as clickable links)
   const embeds = detectEmbeds(editor.innerText.replace(/\u200B/g, '').trim());
   const embedsSection = buildEmbedEmailHTML(embeds);
 
@@ -854,6 +832,18 @@ function escapeHtml(str) {
 }
 function escapeAttr(str) {
   return str.replace(/"/g, '&quot;');
+}
+
+// ─────────────────────────────────────────────
+// TRUNCATE FILE NAME
+// ─────────────────────────────────────────────
+function truncateFileName(name, maxLen) {
+  if (name.length <= maxLen) return name;
+  const ext = name.includes('.') ? name.slice(name.lastIndexOf('.')) : '';
+  const base = name.slice(0, name.lastIndexOf('.'));
+  const allowed = maxLen - ext.length - 3;
+  if (allowed <= 0) return name.slice(0, maxLen - 3) + '...';
+  return base.slice(0, allowed) + '...' + ext;
 }
 
 // ─────────────────────────────────────────────
@@ -927,7 +917,7 @@ async function insertImage(event) {
     sel.removeAllRanges();
     sel.addRange(range);
 
-    fileDisplay.textContent = fileName;
+    fileDisplay.textContent = truncateFileName(fileName, 22);
     removeBtn.style.display = 'inline-block';
     status.textContent = 'Image uploaded!';
     status.className   = 'ok';
@@ -964,13 +954,11 @@ function removeAttachment() {
 
 // ─────────────────────────────────────────────
 // REMOVE EMBEDS
-// Suppresses iframe previews; keeps link text in editor
 // ─────────────────────────────────────────────
 function removeEmbeds() {
   const text = editor.innerText.replace(/\u200B/g, '').trim();
   const embeds = detectEmbeds(text);
 
-  // Add all currently visible embed URLs to the suppressed set
   embeds.forEach(e => {
     if (!suppressedEmbeds.has(e.url)) {
       suppressedEmbeds.add(e.url);
@@ -1002,7 +990,6 @@ async function sendMsg() {
   status.className   = '';
   status.textContent = 'Sending...';
 
-  const postNumber = await incrementPostCount() || nextPostNumber;
   const timeStr    = getChanTime();
   const finalHTML  = buildEmailHTML(editor.innerHTML);
 
@@ -1014,10 +1001,9 @@ async function sendMsg() {
       message:      rawText,
       message_html: finalHTML,
       time:         timeStr,
-      post_number:  postNumber,
     });
 
-    status.textContent = `Post sent! No.${postNumber}`;
+    status.textContent = 'Post sent!';
     status.className   = 'ok';
 
     editor.innerHTML     = '';
@@ -1029,8 +1015,6 @@ async function sendMsg() {
 
     suppressedEmbeds.clear();
 
-    nextPostNumber = typeof postNumber === 'number' ? postNumber + 1 : '?';
-    document.getElementById('previewNo').textContent = 'No.' + nextPostNumber;
   } catch (err) {
     status.textContent = 'Failed — trenchgun1337@gmail.com';
     status.className   = 'err';
