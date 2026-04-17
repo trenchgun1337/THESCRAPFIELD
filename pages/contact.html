@@ -639,8 +639,10 @@ linkInput.addEventListener('keydown', (e) => {
     const val = linkInput.value.trim();
     if (!val) return;
 
-    links.push(val);
-    linkInput.value = '';
+if (!links.includes(val)) {
+  links.push(val);
+  
+}    linkInput.value = '';
     
     function extractLinksFromEditor() {
   const text = editor.innerText.replace(/\u200B/g, '');
