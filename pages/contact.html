@@ -641,7 +641,7 @@ linkInput.addEventListener('keydown', (e) => {
 
 if (!links.includes(val)) {
   links.push(val);
-  
+
 }    linkInput.value = '';
     
     function extractLinksFromEditor() {
@@ -861,8 +861,9 @@ function buildEmailHTML(html) {
   const img   = tmp.querySelector('img');
   const specs = tmp.querySelector('.pic-specs');
 
-const embeds = detectEmbeds(links.join('\n'));
-  const embedsSection = buildEmbedEmailHTML(embeds);
+const rawText = tmp.innerText || '';
+const embeds = detectEmbeds(rawText + '\n' + links.join('\n'));
+const embedsSection = buildEmbedEmailHTML(embeds);
 
   let bodyHTML;
   if (img) {
@@ -1040,8 +1041,7 @@ function removeEmbeds() {
 async function sendMsg() {
   const rawText = editor.innerText.replace(/\u200B/g, '').trim();
   const embeds = detectEmbeds(rawText);
-  links.length = 0;
-renderLinks();
+  
 
 const embedsHTML = embeds.map(e => {
   if (e.name === 'youtube') {
