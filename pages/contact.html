@@ -39,7 +39,10 @@ body {
 }
 
 img { -webkit-user-drag:none; user-select:none; }
-a { color:#000; text-decoration:none; }
+a {
+  color:#0055cc;
+  text-decoration: underline;
+}
 
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; gap:7px; }
 
@@ -336,6 +339,26 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
           </td>
         </tr>
 
+        <tr>
+          <!-- Links -->
+  <td class="chan-label">Links</td>
+  <td class="chan-field">
+    <div style="display:flex; flex-direction:column; gap:6px;">
+
+      <input id="linkInput" class="chan-input" type="text" placeholder="paste youtube / spotify / soundcloud link">
+
+      <div id="linkDropdown" style="
+        background:#fff;
+        border:1px inset #aaa;
+        max-height:90px;
+        overflow-y:auto;
+        font-size:12px;
+        padding:4px;
+      "></div>
+
+    </div>
+  </td>
+</tr>
         <!-- File + embed controls -->
         <tr>
           <td class="chan-label">File</td>
@@ -412,7 +435,7 @@ const embedPatterns = [
       url: m[0],
       id: m[1],
       iframeSrc: `https://www.youtube.com/embed/${m[1]}`,
-      width: '100%', height: '65'
+      width: '100%', height: '95'
     })
   },
   {
@@ -421,7 +444,7 @@ const embedPatterns = [
     build: (m) => ({
       url: m[0],
       iframeSrc: `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0`,
-      width: '100%', height: '65'
+      width: '100%', height: '95'
     })
   },
   {
@@ -430,7 +453,7 @@ const embedPatterns = [
     build: (m) => ({
       url: m[0],
       iframeSrc: `https://w.soundcloud.com/player/?url=${encodeURIComponent(m[0])}&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`,
-      width: '100%', height: '65'
+      width: '100%', height: '95'
     })
   }
 ];
@@ -605,6 +628,38 @@ const rawText = editor.textContent.replace(/\u200B/g, '');
 const editor      = document.getElementById('msgEditor');
 const previewMsg  = document.getElementById('previewMsg');
 const previewTime = document.getElementById('previewTime');
+ const links = [];
+
+const linkInput = document.getElementById('linkInput');
+const linkDropdown = document.getElementById('linkDropdown');
+
+linkInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const val = linkInput.value.trim();
+    if (!val) return;
+
+    links.push(val);
+    linkInput.value = '';
+    renderLinks();
+    updatePreview();
+  }
+});
+
+function renderLinks() {
+  linkDropdown.innerHTML = links.map((l, i) => `
+    <div style="display:flex;justify-content:space-between;gap:6px;margin-bottom:3px;">
+      <span style="color:#0055cc;overflow:hidden;text-overflow:ellipsis;">${l}</span>
+      <button onclick="removeLink(${i})" style="color:red;background:none;border:none;cursor:pointer;">x</button>
+    </div>
+  `).join('');
+}
+
+function removeLink(i) {
+  links.splice(i, 1);
+  renderLinks();
+  updatePreview();
+}
 
 previewTime.textContent = getChanTime();
 setInterval(() => { previewTime.textContent = getChanTime(); }, 1000);
@@ -711,6 +766,8 @@ editor.addEventListener('click', () => {
       sel.removeAllRanges();
       sel.addRange(newRange);
     }
+
+   
   });
 });
 
@@ -725,7 +782,8 @@ const suppressedEmbeds = new Set();
 function updatePreview() {
   const text   = editor.innerText.replace(/\u200B/g, '').trim();
   const hasImg = !!editor.querySelector('img');
-  const allEmbeds = detectEmbeds(text);
+  const editorText = editor.innerText.replace(/\u200B/g, '');
+  const allEmbeds = detectEmbeds(editorText + '\n' + links.join('\n'));
 
   const visibleEmbeds = allEmbeds.filter(e => !suppressedEmbeds.has(e.url));
 
@@ -785,7 +843,7 @@ function buildEmailHTML(html) {
   const img   = tmp.querySelector('img');
   const specs = tmp.querySelector('.pic-specs');
 
-  const embeds = detectEmbeds(editor.innerText.replace(/\u200B/g, '').trim());
+const embeds = detectEmbeds(links.join('\n'));
   const embedsSection = buildEmbedEmailHTML(embeds);
 
   let bodyHTML;
@@ -964,6 +1022,8 @@ function removeEmbeds() {
 async function sendMsg() {
   const rawText = editor.innerText.replace(/\u200B/g, '').trim();
   const embeds = detectEmbeds(rawText);
+  links.length = 0;
+renderLinks();
 
 const embedsHTML = embeds.map(e => {
   if (e.name === 'youtube') {
