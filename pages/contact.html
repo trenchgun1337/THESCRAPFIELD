@@ -135,6 +135,8 @@ a { color:#000; text-decoration:none; }
   border: 1px inset #aaa;
   display: block;
   white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
   height: var(--editor-h);
   min-height: var(--editor-h);
   max-height: var(--editor-h);
@@ -143,14 +145,21 @@ a { color:#000; text-decoration:none; }
   font-family: arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 1.5;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   resize: none;
+  /* Prevent browser from growing the element */
+  contain: strict;
 }
 #msgEditor:empty::before {
   content: attr(data-placeholder);
   color: #aaa;
   pointer-events: none;
+}
+
+/* Blue link spans inside editor */
+#msgEditor .link-span {
+  color: #0055cc;
 }
 
 .chan-file-inner {
@@ -457,6 +466,9 @@ const embedPatterns = [
   }
 ];
 
+// Regex that matches all embeddable URLs (for link highlighting)
+const EMBED_URL_REGEX = /https?:\/\/(?:(?:www\.)?(?:youtube\.com\/watch\?[^\s]*v=[a-zA-Z0-9_-]{11}|youtu\.be\/[a-zA-Z0-9_-]{11})|open\.spotify\.com\/(?:track|album|playlist|episode)\/[a-zA-Z0-9]+(?:\?[^\s]*)?|(?:www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(?:\?[^\s]*)?)/g;
+
 // Detect all embeds from plain text
 function detectEmbeds(text) {
   const found = [];
@@ -465,7 +477,6 @@ function detectEmbeds(text) {
     let m;
     while ((m = pat.regex.exec(text)) !== null) {
       const built = pat.build(m);
-      // Avoid duplicates by URL
       if (!found.some(e => e.url === built.url)) {
         found.push({ ...built, name: pat.name });
       }
@@ -474,7 +485,7 @@ function detectEmbeds(text) {
   return found;
 }
 
-// Build preview HTML for embeds
+// Build preview HTML for embeds (only unsuppressed ones)
 function buildEmbedPreviewHTML(embeds) {
   if (!embeds.length) return '';
   return embeds.map(e =>
@@ -504,6 +515,132 @@ function buildEmbedEmailHTML(embeds) {
 }
 
 // ─────────────────────────────────────────────
+// LINK HIGHLIGHTING IN EDITOR
+// ─────────────────────────────────────────────
+
+// Get caret char offset from start of el (counting only text)
+function getCaretCharOffset(el) {
+  const sel = window.getSelection();
+  if (!sel || !sel.rangeCount) return 0;
+  const range = sel.getRangeAt(0).cloneRange();
+  const preRange = document.createRange();
+  preRange.selectNodeContents(el);
+  preRange.setEnd(range.endContainer, range.endOffset);
+  return preRange.toString().length;
+}
+
+// Restore caret to char offset
+function setCaretByOffset(el, offset) {
+  const sel = window.getSelection();
+  if (!sel) return;
+  let pos = 0;
+  let found = false;
+
+  function walk(node) {
+    if (found) return;
+    if (node.nodeType === Node.TEXT_NODE) {
+      const len = node.textContent.length;
+      if (pos + len >= offset) {
+        const range = document.createRange();
+        range.setStart(node, offset - pos);
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        found = true;
+        return;
+      }
+      pos += len;
+    } else {
+      for (const child of node.childNodes) {
+        walk(child);
+        if (found) return;
+      }
+    }
+  }
+  walk(el);
+
+  if (!found) {
+    // Set to end of content
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+}
+
+// Remove all .link-span wrappers, collapsing back to plain text nodes
+function unwrapLinkSpans() {
+  editor.querySelectorAll('.link-span').forEach(span => {
+    const parent = span.parentNode;
+    if (!parent) return;
+    while (span.firstChild) parent.insertBefore(span.firstChild, span);
+    parent.removeChild(span);
+  });
+  editor.normalize();
+}
+
+// Wrap detected embed URLs in blue spans (non-destructive to other content)
+function highlightLinks() {
+  // Don't run if editor has no embed URLs at all (quick check)
+  const rawText = editor.innerText.replace(/\u200B/g, '');
+  EMBED_URL_REGEX.lastIndex = 0;
+  const hasLinks = EMBED_URL_REGEX.test(rawText);
+
+  // If no links and no existing spans, nothing to do
+  const hasSpans = !!editor.querySelector('.link-span');
+  if (!hasLinks && !hasSpans) return;
+
+  const caretOffset = getCaretCharOffset(editor);
+
+  unwrapLinkSpans();
+
+  function processNode(node) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      // Skip protected elements
+      if (node.tagName === 'IMG' ||
+          (node.classList && (node.classList.contains('pic-specs') || node.classList.contains('link-span')))) {
+        return;
+      }
+      // Process children (snapshot to avoid live mutation issues)
+      Array.from(node.childNodes).forEach(processNode);
+    } else if (node.nodeType === Node.TEXT_NODE) {
+      EMBED_URL_REGEX.lastIndex = 0;
+      if (!EMBED_URL_REGEX.test(node.textContent)) return;
+
+      EMBED_URL_REGEX.lastIndex = 0;
+      const frag = document.createDocumentFragment();
+      let lastIndex = 0;
+      let m;
+      const text = node.textContent;
+
+      while ((m = EMBED_URL_REGEX.exec(text)) !== null) {
+        if (m.index > lastIndex) {
+          frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
+        }
+        const span = document.createElement('span');
+        span.className = 'link-span';
+        span.style.color = '#0055cc';
+        span.textContent = m[0];
+        frag.appendChild(span);
+        lastIndex = m.index + m[0].length;
+      }
+      if (lastIndex < text.length) {
+        frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+      }
+
+      if (node.parentNode) {
+        node.parentNode.replaceChild(frag, node);
+      }
+    }
+  }
+
+  Array.from(editor.childNodes).forEach(processNode);
+
+  setCaretByOffset(editor, caretOffset);
+}
+
+// ─────────────────────────────────────────────
 // EDITOR SETUP
 // ─────────────────────────────────────────────
 const editor      = document.getElementById('msgEditor');
@@ -513,13 +650,19 @@ const previewTime = document.getElementById('previewTime');
 previewTime.textContent = getChanTime();
 setInterval(() => { previewTime.textContent = getChanTime(); }, 1000);
 
-editor.addEventListener('input', updatePreview);
+editor.addEventListener('input', () => {
+  highlightLinks();
+  updatePreview();
+});
 
 // ── Block image paste; allow plain text only ──
 editor.addEventListener('paste', (e) => {
   e.preventDefault();
   const text = e.clipboardData.getData('text/plain');
-  if (text) document.execCommand('insertText', false, text);
+  if (text) {
+    document.execCommand('insertText', false, text);
+    // highlightLinks & updatePreview fired via 'input' event above
+  }
 });
 
 // ── Block drag of images inside editor ──
@@ -601,19 +744,28 @@ editor.addEventListener('keydown', (e) => {
 });
 
 // ─────────────────────────────────────────────
+// SUPPRESS EMBEDS (keeps link text, hides iframes)
+// ─────────────────────────────────────────────
+const suppressedEmbeds = new Set();
+
+// ─────────────────────────────────────────────
 // PREVIEW  (fixed height, embeds appended)
 // ─────────────────────────────────────────────
 function updatePreview() {
   const text   = editor.innerText.replace(/\u200B/g, '').trim();
   const hasImg = !!editor.querySelector('img');
-  const embeds = detectEmbeds(text);
+  const allEmbeds = detectEmbeds(text);
 
-  // Show/hide Remove embeds button
-  document.getElementById('removeEmbedBtn').style.display = embeds.length ? 'inline-block' : 'none';
+  // Only render iframes for embeds not suppressed
+  const visibleEmbeds = allEmbeds.filter(e => !suppressedEmbeds.has(e.url));
+
+  // Show "Remove embed" button if there are any unsuppressed embeds
+  document.getElementById('removeEmbedBtn').style.display =
+    visibleEmbeds.length ? 'inline-block' : 'none';
 
   if (text || hasImg) {
     const msgHTML    = buildPreviewHTML(editor.innerHTML);
-    const embedsHTML = buildEmbedPreviewHTML(embeds);
+    const embedsHTML = buildEmbedPreviewHTML(visibleEmbeds);
     previewMsg.innerHTML = msgHTML + embedsHTML;
   } else {
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
@@ -623,6 +775,17 @@ function updatePreview() {
 function buildPreviewHTML(html) {
   const tmp = document.createElement('div');
   tmp.innerHTML = html.replace(/\u200B/g, '');
+
+  // Convert .link-span → styled anchor in preview
+  tmp.querySelectorAll('.link-span').forEach(span => {
+    const a = document.createElement('a');
+    a.href = span.textContent;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.style.color = '#0055cc';
+    a.textContent = span.textContent;
+    span.parentNode.replaceChild(a, span);
+  });
 
   tmp.querySelectorAll('img').forEach(img => {
     img.removeAttribute('style');
@@ -643,11 +806,19 @@ function buildEmailHTML(html) {
   const tmp = document.createElement('div');
   tmp.innerHTML = html.replace(/\u200B/g, '');
 
+  // Convert .link-span → real anchor tags for email
+  tmp.querySelectorAll('.link-span').forEach(span => {
+    const a = document.createElement('a');
+    a.href = span.textContent;
+    a.style.color = '#0055cc';
+    a.textContent = span.textContent;
+    span.parentNode.replaceChild(a, span);
+  });
+
   const img   = tmp.querySelector('img');
   const specs = tmp.querySelector('.pic-specs');
 
-  // Grab embeds from current text
-  const plainText = tmp.innerText || tmp.textContent || '';
+  // Always include all detected embed links in email (as clickable links)
   const embeds = detectEmbeds(editor.innerText.replace(/\u200B/g, '').trim());
   const embedsSection = buildEmbedEmailHTML(embeds);
 
@@ -768,6 +939,7 @@ async function insertImage(event) {
   }
 
   event.target.value = '';
+  highlightLinks();
   updatePreview();
 }
 
@@ -785,35 +957,25 @@ function removeAttachment() {
 
   editor.innerHTML = editor.innerHTML.replace(/\u200B/g, '');
 
+  highlightLinks();
   updatePreview();
   editor.focus();
 }
 
 // ─────────────────────────────────────────────
-// REMOVE EMBEDS (clears detected embed links from text)
+// REMOVE EMBEDS
+// Suppresses iframe previews; keeps link text in editor
 // ─────────────────────────────────────────────
 function removeEmbeds() {
-  // Strip all embeddable URLs from the editor text
-  let html = editor.innerHTML.replace(/\u200B/g, '');
+  const text = editor.innerText.replace(/\u200B/g, '').trim();
+  const embeds = detectEmbeds(text);
 
-  // We work on plain text via a temp div
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html;
-
-  // Walk all text nodes and strip embed URLs
-  const allEmbedRegex = /https?:\/\/(?:(?:www\.)?(?:youtube\.com\/watch\?[^\s]*v=[a-zA-Z0-9_-]{11}|youtu\.be\/[a-zA-Z0-9_-]{11})|open\.spotify\.com\/(?:track|album|playlist|episode)\/[a-zA-Z0-9]+(?:\?[^\s]*)?|(?:www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(?:\?[^\s]*)?)/g;
-
-  function stripEmbeds(node) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const replaced = node.textContent.replace(allEmbedRegex, '').replace(/\s{2,}/g, ' ').trim();
-      if (replaced !== node.textContent) node.textContent = replaced;
-    } else {
-      node.childNodes.forEach(stripEmbeds);
+  // Add all currently visible embed URLs to the suppressed set
+  embeds.forEach(e => {
+    if (!suppressedEmbeds.has(e.url)) {
+      suppressedEmbeds.add(e.url);
     }
-  }
-  stripEmbeds(tmp);
-
-  editor.innerHTML = tmp.innerHTML;
+  });
 
   document.getElementById('removeEmbedBtn').style.display = 'none';
   updatePreview();
@@ -864,6 +1026,8 @@ async function sendMsg() {
     document.getElementById('fileNameDisplay').textContent = 'No file chosen';
     document.getElementById('removeBtn').style.display    = 'none';
     document.getElementById('removeEmbedBtn').style.display = 'none';
+
+    suppressedEmbeds.clear();
 
     nextPostNumber = typeof postNumber === 'number' ? postNumber + 1 : '?';
     document.getElementById('previewNo').textContent = 'No.' + nextPostNumber;
