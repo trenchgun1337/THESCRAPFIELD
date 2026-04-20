@@ -74,7 +74,7 @@ const GALLERY_ITEMS = [
     src: IMG_BASE + 'princessunicorn.png', // ← recomendo RENOMEAR o arquivo
     title: 'Princess Unicorn Bunny Kitten Angel the most beautifulest in the whole wide world',
     description: 'Love laugh bunnies 4ever.',
-  }
+  },
   {
     src: IMG_BASE + 'easter.jpg', // ← recomendo RENOMEAR o arquivo
     title: 'Happy Easter PCDJ!',
