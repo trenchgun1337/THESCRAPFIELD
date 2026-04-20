@@ -85,6 +85,17 @@ const GALLERY_ITEMS = [
     src: IMG_BASE + 'mishanshizune.jpg', // ← recomendo RENOMEAR o arquivo
     title: 'Misha and Shizune from Katawa Shoujo',
     description: 'Lesbian ahhh',
+  
+  },
+  {
+    src: IMG_BASE + 'lerolero.png', // ← recomendo RENOMEAR o arquivo
+    title: 'Lero lero',
+    description: 'lerolerolerolerolero',
+  },
+  {
+    src: IMG_BASE + 'demon.png', // ← recomendo RENOMEAR o arquivo
+    title: 'Stare',
+    description: '<O> <O>',
   }
 ];
 
