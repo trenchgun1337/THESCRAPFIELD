@@ -79,6 +79,12 @@ const GALLERY_ITEMS = [
     src: IMG_BASE + 'easter.jpg', // ← recomendo RENOMEAR o arquivo
     title: 'Happy Easter PCDJ!',
     description: 'What the bunny brings you?',
+  
+   },
+  {
+    src: IMG_BASE + 'mishanshizune.jpg', // ← recomendo RENOMEAR o arquivo
+    title: 'Misha and Shizune from Katawa Shoujo',
+    description: 'Lesbian ahhh',
   }
 ];
 
