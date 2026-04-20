@@ -76,7 +76,7 @@ const GALLERY_ITEMS = [
     description: 'Love laugh bunnies 4ever.',
   }
   {
-    src: IMG_BASE + 'easter.png', // ← recomendo RENOMEAR o arquivo
+    src: IMG_BASE + 'easter.jpg', // ← recomendo RENOMEAR o arquivo
     title: 'Happy Easter PCDJ!',
     description: 'What the bunny brings you?',
   }
