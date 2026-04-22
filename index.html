@@ -7,28 +7,25 @@
 <title>The Watanagashi Archive</title>
 <link rel="icon" id="sitefavicon" type="image/x-icon" href="assets/images/rikaico.ico">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
-
 <style>
-/* ================================================================
-   INDEX.HTML — CSS exclusivo desta página
-   ================================================================ */
+@font-face {
+  font-family: 'AngelicWar';
+  src: url('assets/fonts/AngelicWar.ttf') format('truetype');
+  font-display: swap;
+}
 
-/* ── Reset mínimo ── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 img { -webkit-user-drag: none; user-select: none; pointer-events: none; }
 
-/* ── Selection ── */
 ::selection      { background: rgba(80,80,80,.45); color: #fff; }
 ::-moz-selection { background: rgba(80,80,80,.45); color: #fff; }
 
-/* ── Scrollbar ── */
 html { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(120,120,120,.50) transparent; }
 ::-webkit-scrollbar             { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track       { background: transparent; }
 ::-webkit-scrollbar-thumb       { background: rgba(120,120,120,.50); }
 ::-webkit-scrollbar-thumb:hover { background: rgba(54,54,54,.8); }
 
-/* ── Body ── */
 body {
   font-family: 'Sawarabi Gothic', 'Sazanami Gothic', Tahoma, 'Segoe UI', sans-serif;
   font-size: 12px;
@@ -48,7 +45,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Logo absolute (rola com a página) ── */
 #siteLogoTop {
   position: absolute;
   top: 0; left: 50%;
@@ -61,14 +57,12 @@ body {
   box-shadow: #595959 1px 1px 12px 1px;
 }
 
-/* ── Container ── */
 #websiteContainer {
   width: 800px; max-width: 100%;
   display: flex; flex-direction: column;
   position: relative;
 }
 
-/* ── Layout ── */
 #navAndContentContainer { display: flex; align-items: stretch; }
 
 #sidebarAside {
@@ -114,7 +108,6 @@ body {
 .nav-link:hover  { color: red; text-decoration: underline; }
 .nav-link.active { color: red; font-weight: bold; text-decoration: underline; }
 
-/* ── Main content ── */
 #mainContent {
   background: #f2f2f2;
   border: 2px ridge #727272;
@@ -123,22 +116,21 @@ body {
   box-sizing: border-box;
   box-shadow: #595959 1px 1px 12px 1px;
   color: #111; flex: 1; min-width: 0;
-  padding-bottom: 44px;   /* espaço para o footer não tocar no chão */
+  padding-bottom: 44px;
   position: relative;
 }
 
-/* ── Pages ── */
 .page { display: none; }
 .page.active { display: block; }
 
-/* ── Headings ── */
 h1, h2, h3 {
   display: inline; background: #000; color: #fff;
-  font-size: 11px; font-weight: 400;
+  font-size: 20px; font-weight: 400;
   letter-spacing: 1.5px; text-transform: uppercase;
   padding: 2px 6px;
+  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
 }
-h1 { font-size: 12px; }
+h1 { font-size: 40px; }
 h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 
 .bar-row {
@@ -153,7 +145,6 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
   padding: 5px 8px; margin-top: 5px; width: 100%;
 }
 
-/* ── Glass / aero ── */
 .glass-borders {
   background-image: linear-gradient(rgba(255,255,255,.50), rgba(240,240,240,.28));
   box-shadow: inset 0 1px 0 rgba(255,255,255,.90), 0 5px 6px rgba(0,0,0,.18);
@@ -165,7 +156,6 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 .styled-containers         { background: #000; padding: 10px; }
 .styled-containers-headers { background: #fff; padding: 8px 10px; }
 
-/* ── Special Thanks ── */
 .rights-content {
   background: #fff; padding: 8px 10px;
   display: flex; flex-direction: column; gap: 4px;
@@ -177,20 +167,17 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 .rights-content a       { color: #ff0303; text-decoration: none; }
 .rights-content a:hover { color: #ff0303; text-decoration: underline; }
 
-/* ── Intro banner ── */
 #introBanner {
   width: 100%; max-height: 375px; object-fit: cover;
   display: block; border-bottom: 2px solid rgba(150,150,150,.50);
   pointer-events: none; filter: none;
 }
 
-/* ── Typography ── */
 a       { color: #000; text-decoration: none; }
 a:hover { text-decoration: underline; }
 p       { font-size: 12.5px; line-height: 18px; color: #111; margin: 0; }
 p + p   { margin-top: 5px; }
 
-/* ── Contact links (Resources) ── */
 .contact-links { list-style: none; margin: 0; padding: 0; }
 .contact-links li { border-bottom: 1px solid rgba(255,255,255,.08); }
 .contact-links li:last-child { border-bottom: none; }
@@ -203,7 +190,116 @@ p + p   { margin-top: 5px; }
 .link-label { flex: 1; }
 .link-note  { color: rgba(255,255,255,.45); font-size: 11px; }
 
-/* ── Footer dentro da box ── */
+/* ── Site stats ── */
+.stats-row {
+  display: flex;
+  background: #000;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.stat-block {
+  flex: 1;
+  padding: 7px 10px;
+  border-right: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+.stat-block:last-child { border-right: none; }
+.stat-num {
+  font-size: 18px;
+  color: #fff;
+  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
+  letter-spacing: 1px;
+}
+.stat-label {
+  font-size: 9.5px;
+  color: rgba(255,255,255,.40);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Last Updated ── */
+.last-updated-block {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.last-updated-icon {
+  background: #111;
+  color: #fff;
+  font-size: 9.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0 10px;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,.08);
+}
+.last-updated-values {
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.last-updated-date {
+  font-size: 13px;
+  color: #111;
+  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
+  letter-spacing: 0.5px;
+}
+.last-updated-time {
+  font-size: 10.5px;
+  color: #aaa;
+  letter-spacing: 0.3px;
+}
+
+/* ── About Me ── */
+.about-grid {
+  background: #fff;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.about-col {
+  padding: 10px 12px;
+  border-right: 1px solid rgba(0,0,0,.10);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.about-col:last-child { border-right: none; }
+.about-col-label {
+  font-size: 9.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #888;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  padding-bottom: 4px;
+  margin-bottom: 2px;
+}
+.about-tag {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  background: #000;
+  color: #fff;
+  margin: 1px 2px 1px 0;
+}
+.about-list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
 #pageFooter {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -226,7 +322,6 @@ p + p   { margin-top: 5px; }
   border-bottom-style: solid;
 }
 
-/* ── Tooltip ── */
 #wa-tooltip {
   position: fixed;
   z-index: 99999;
@@ -247,7 +342,6 @@ p + p   { margin-top: 5px; }
 #wa-tooltip td:last-child { padding-left: 10px; }
 #wa-tooltip a   { color: #cc1a1a; text-decoration: underline; }
 
-/* ── Sound toggle — só texto puro ── */
 #soundToggle {
   position: fixed;
   bottom: 8px; left: 10px;
@@ -266,7 +360,6 @@ p + p   { margin-top: 5px; }
 #soundToggle:hover { color: rgba(255,255,255,.88); }
 #soundToggle.off   { color: rgba(255,255,255,.20); }
 
-/* ── Responsive ── */
 @media (max-width: 800px) {
   body { padding-top: 220px; }
   #siteLogoTop { max-height: 210px; }
@@ -286,16 +379,14 @@ p + p   { margin-top: 5px; }
   .nav-categories { flex-direction: row !important; flex-wrap: wrap !important; border: none !important; }
   .navbar-titles { display: none !important; }
   .nav-link { width: auto !important; padding: 4px 6px !important; font-size: 11px !important; margin: 1px !important; }
+  .about-grid { grid-template-columns: 1fr; }
+  .stats-row { flex-wrap: wrap; }
 }
-
-
 </style>
 </head>
 <body>
 
-<!-- Anti-flash bg -->
 <script>
-  
 (function(){
   var s = document.createElement('style');
   s.textContent = 'body{background-color:#000!important;background-image:url("assets/images/whitebg.jpeg")!important;}';
@@ -304,24 +395,90 @@ p + p   { margin-top: 5px; }
 </script>
 
 <script>
-  // Redireciona páginas bloqueadas se acessadas diretamente pela URL
   (function () {
     var blocked = ['musicplayer', 'videos', 'downloader', 'community', 'preferences', 'projects'];
     var path = window.location.pathname.toLowerCase();
     var hash = window.location.hash.replace(/^#/, '').toLowerCase();
-
-    // Checa se o pathname contém alguma página bloqueada (ex: /pages/music.html)
-    var pathBlocked = blocked.some(function (p) {
-      return path.indexOf(p) !== -1;
-    });
-
-    // Checa se o hash aponta para uma página bloqueada (ex: #music)
+    var pathBlocked = blocked.some(function (p) { return path.indexOf(p) !== -1; });
     var hashBlocked = blocked.indexOf(hash) !== -1;
-
-    if (pathBlocked || hashBlocked) {
-      window.location.replace('pages/notfound.html');
-    }
+    if (pathBlocked || hashBlocked) { window.location.replace('pages/notfound.html'); }
   })();
+</script>
+
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, get, set, onValue, increment, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+  const FIREBASE_CONFIG = {
+    apiKey:            "AIzaSyBBr6zPaWgGNcGHz9iiNTO8O4EgAzsUMOk",
+    authDomain:        "scrapfielddatabase.firebaseapp.com",
+    databaseURL:       "https://scrapfielddatabase-default-rtdb.firebaseio.com",
+    projectId:         "scrapfielddatabase",
+    storageBucket:     "scrapfielddatabase.firebasestorage.app",
+    messagingSenderId: "489751764776",
+    appId:             "1:489751764776:web:22255a1e9bf05a538bfa1d",
+    measurementId:     "G-WN09XFRPTK"
+  };
+
+  const app = initializeApp(FIREBASE_CONFIG);
+  const db  = getDatabase(app);
+
+  /* ── Visitor counter ─────────────────────────────────────────── */
+  // Increment on each unique session (sessionStorage guard)
+  if (!sessionStorage.getItem('wa_visited')) {
+    sessionStorage.setItem('wa_visited', '1');
+    runTransaction(ref(db, 'archive/visitors'), function(current) {
+      return (current || 0) + 1;
+    });
+  }
+
+  // Live-listen to visitor count
+  onValue(ref(db, 'archive/visitors'), function(snap) {
+    var v = snap.val() || 0;
+    var el = document.getElementById('stat-visitors');
+    if (el) el.textContent = String(v).padStart(2, '0');
+  });
+
+  /* ── Sketch count ────────────────────────────────────────────── */
+  // Tries both common paths — adjust the path if your DB structure differs
+  get(ref(db, 'sketches')).then(function(snap) {
+    var count = 0;
+    if (snap.exists()) {
+      var val = snap.val();
+      if (typeof val === 'object' && val !== null) {
+        count = Object.keys(val).length;
+      } else if (typeof val === 'number') {
+        count = val;
+      }
+    }
+    var el = document.getElementById('stat-sketches');
+    if (el) el.textContent = String(count).padStart(2, '0');
+  }).catch(function() {
+    // silently keep 00 if path doesn't exist yet
+  });
+
+  /* ── Last Updated timestamp ──────────────────────────────────── */
+  // Reads a timestamp stored at archive/lastUpdated (set manually or via deploy hook)
+  get(ref(db, 'archive/lastUpdated')).then(function(snap) {
+    var dateEl = document.getElementById('lu-date');
+    var timeEl = document.getElementById('lu-time');
+    if (!dateEl || !timeEl) return;
+    if (snap.exists()) {
+      var ts = new Date(snap.val());
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var days   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      dateEl.textContent = days[ts.getDay()] + ', ' + String(ts.getDate()).padStart(2,'0') + ' ' + months[ts.getMonth()] + ' ' + ts.getFullYear();
+      timeEl.textContent = String(ts.getHours()).padStart(2,'0') + ':' + String(ts.getMinutes()).padStart(2,'0') + ' UTC';
+    } else {
+      // Fallback: show hardcoded site launch date — update this string when you push changes
+      dateEl.textContent = 'Tue, 22 Apr 2026';
+      timeEl.textContent = '00:00 UTC';
+    }
+  }).catch(function() {
+    document.getElementById('lu-date').textContent = 'Tue, 22 Apr 2026';
+    document.getElementById('lu-time').textContent = '00:00 UTC';
+  });
 </script>
 
 <img id="siteLogoTop"
@@ -329,13 +486,11 @@ p + p   { margin-top: 5px; }
   alt="Watanagashi Archive"
   onerror="this.style.display='none'">
 
-<!-- Tooltip global -->
 <div id="wa-tooltip"></div>
 
 <div id="websiteContainer">
   <div id="navAndContentContainer">
 
-    <!-- ══ SIDEBAR ══ -->
     <aside id="sidebarAside">
       <div id="navigationMenu">
         <nav class="nav-categories">
@@ -347,11 +502,11 @@ p + p   { margin-top: 5px; }
       </div>
     </aside>
 
-    <!-- ══ CONTEÚDO ══ -->
     <main id="mainContent">
 
       <!-- INTRODUCTION -->
       <div id="pg-introduction" class="page">
+
         <div class="bar-row"><h1>Introduction</h1></div>
         <div class="glass-borders">
           <div class="aero-borders" style="overflow:hidden">
@@ -363,49 +518,124 @@ p + p   { margin-top: 5px; }
           </article>
         </div>
 
+        <!-- ABOUT ME -->
+        <div class="bar-row"><h1>About Me</h1></div>
+        <div style="margin: 0 7px 7px;">
+          <div class="about-grid aero-borders">
+            <div class="about-col">
+              <span class="about-col-label">&#9670; who</span>
+              <p>hey. i'm <h4>Settembre19th</h4> &mdash; somewhere online, making things for the sake of it.</p>
+              <p style="margin-top:6px">this archive is where i dump whatever i'm working on or obsessing over. no particular schedule. no particular audience.</p>
+            </div>
+            <div class="about-col">
+              <span class="about-col-label">&#9670; interests</span>
+              <ul class="about-list">
+                <span class="about-tag">visual novels</span>
+                <span class="about-tag">horror</span>
+                <span class="about-tag">analog aesthetics</span>
+                <span class="about-tag">music</span>
+                <span class="about-tag">old web</span>
+                <span class="about-tag">drawing</span>
+                <span class="about-tag">games</span>
+                <span class="about-tag">archiving</span>
+              </ul>
+            </div>
+          </div>
+          <div class="about-grid aero-borders" style="border-top:none">
+            <div class="about-col">
+              <span class="about-col-label">&#9670; this place</span>
+              <p>built by hand. no frameworks. the site is a living thing &mdash; pages come online as they're ready, sections get filled in over time.</p>
+              <p style="margin-top:6px">if something is locked, it's not ready yet. check back.</p>
+            </div>
+            <div class="about-col">
+              <span class="about-col-label">&#9670; contact</span>
+              <p>reach me at <h4><a href="mailto:trenchgun1337@gmail.com" style="color:red">trenchgun1337@gmail.com</a></h4> for anything.</p>
+              <p style="margin-top:6px">or head to the <a href="pages/contact.html" style="color:red;text-decoration:underline">Contact</a> page.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ARCHIVE STATS -->
+        <div class="bar-row"><h1>Archive Stats</h1></div>
+        <div style="margin: 0 7px 7px;">
+          <div class="stats-row aero-borders">
+            <div class="stat-block">
+              <span class="stat-num" id="stat-pages-live">01</span>
+              <span class="stat-label">Pages Live</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-num" id="stat-in-dev">06</span>
+              <span class="stat-label">In Dev</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-num" id="stat-sketches">00</span>
+              <span class="stat-label">Sketches</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-num" id="stat-visitors">--</span>
+              <span class="stat-label">Visitors</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- LAST UPDATED -->
+        <div class="bar-row"><h1>Last Updated</h1></div>
+        <div style="margin: 0 7px 7px;">
+          <div class="last-updated-block aero-borders">
+            <div class="last-updated-icon">&#9656; update</div>
+            <div class="last-updated-values">
+              <span class="last-updated-date" id="lu-date">loading&hellip;</span>
+              <span class="last-updated-time" id="lu-time"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SPECIAL THANKS -->
         <div class="bar-row"><h1>Special Thanks</h1></div>
         <div class="rights-content aero-borders" style="margin:0 7px 7px">
-          <h3>Honorable Mention: <a href="https://frutigeraeroarchive.org/" target="_blank">frutigeraeroarchive.org</a></h3>
-          <h3>Honorable Mention: <a href="https://kaomoji.you/" target="_blank">kaomoji.you</a></h3>
+          <h4>Honorable Mention: <a href="https://frutigeraeroarchive.org/" target="_blank">frutigeraeroarchive.org</a></h4>
+          <h4>Honorable Mention: <a href="https://kaomoji.you/" target="_blank">kaomoji.you</a></h4>
+        </div>
+
+      </div>
+
+      <!-- RESOURCES -->
+      <div id="pg-resources" class="page">
+        <div class="bar-row"><h1>Resources</h1></div>
+        <div class="glass-borders">
+          <div class="styled-containers-headers aero-borders">
+            <p>Tools, media &amp; everything else on this archive.</p>
+          </div>
+
+          <div class="rights-bar">Pages</div>
+          <div class="aero-borders" style="background:#000">
+            <ul class="contact-links">
+              <li>
+                <a href="pages/sketchbook.html"
+                  onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
+                  onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
+                  <span class="link-label">Sketchbook</span>
+                  <span class="link-note">gallery &amp; JS Paint</span>
+                </a>
+              </li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Music Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Video Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Ultimate Downloader Converter</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+            </ul>
+          </div>
+
+          <div class="rights-bar">Coming Soon</div>
+          <div class="aero-borders" style="background:#000">
+            <ul class="contact-links">
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">File Dumpster</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">RabbitHoles / WeirdSites / RandomSites</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Projects</span><span class="link-note">LOCKED / IN DEV</span></a></li>
+            </ul>
+          </div>
+
         </div>
       </div>
-<!-- RESOURCES -->
-<div id="pg-resources" class="page">
-  <div class="bar-row"><h1>Resources</h1></div>
-  <div class="glass-borders">
-    <div class="styled-containers-headers aero-borders">
-      <p>Tools, media &amp; everything else on this archive.</p>
-    </div>
 
-    <div class="rights-bar">Pages</div>
-    <div class="aero-borders" style="background:#000">
-      <ul class="contact-links">
-        <li>
-          <a href="pages/sketchbook.html"
-            onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-            onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-            <span class="link-label">Sketchbook</span>
-            <span class="link-note">gallery &amp; JS Paint</span>
-          </a>
-        </li>
-        <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Music Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-        <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Video Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-        <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Ultimate Downloader Converter</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-      </ul>
-    </div>
-
-    <div class="rights-bar">Coming Soon</div>
-    <div class="aero-borders" style="background:#000">
-      <ul class="contact-links">
-        <li><a style="pointer-events:none;opacity:.45"><span class="link-label">File Dumpster</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-        <li><a style="pointer-events:none;opacity:.45"><span class="link-label">RabbitHoles / WeirdSites / RandomSites</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-        <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Projects</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
-      <!-- FOOTER dentro da box -->
       <div id="pageFooter">
         2026 | Watanagashi Archive &mdash; Created by
         <span
@@ -418,13 +648,10 @@ p + p   { margin-top: 5px; }
   </div>
 </div>
 
-
-<!-- Navegação index -->
 <script>
 (function(){
   'use strict';
   var pages = ['introduction','resources'];
-
   function gotoPage(name) {
     if (pages.indexOf(name) === -1) name = 'introduction';
     document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
@@ -436,7 +663,6 @@ p + p   { margin-top: 5px; }
     document.title = name[0].toUpperCase() + name.slice(1) + ' \u2014 The Watanagashi Archive';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
   window.gotoPage = gotoPage;
   window.navClick = function(e, name) {
     e.preventDefault();
@@ -458,7 +684,6 @@ p + p   { margin-top: 5px; }
 })();
 </script>
 
-<!-- Tooltip global — WaTooltip.show(anchorEl, htmlString) / WaTooltip.hide() -->
 <script>
 window.WaTooltip = (function(){
   var el = document.getElementById('wa-tooltip');
@@ -481,7 +706,6 @@ window.WaTooltip = (function(){
   return { show: show, hide: hide };
 })();
 </script>
-
 
 </body>
 </html>
