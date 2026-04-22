@@ -219,85 +219,37 @@ p + p   { margin-top: 5px; }
   letter-spacing: 1px;
 }
 
-/* ── Last Updated ── */
-.last-updated-block {
-  background: #fff;
-  display: flex;
-  align-items: center;
-  gap: 0;
-}
-.last-updated-icon {
-  background: #111;
-  color: #fff;
-  font-size: 9.5px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 0 10px;
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  border-right: 1px solid rgba(255,255,255,.08);
-}
-.last-updated-values {
-  padding: 8px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.last-updated-date {
-  font-size: 13px;
-  color: #111;
-  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
-  letter-spacing: 0.5px;
-}
-.last-updated-time {
-  font-size: 10.5px;
-  color: #aaa;
-  letter-spacing: 0.3px;
-}
-
-/* ── About Me ── */
-.about-grid {
-  background: #fff;
+/* ── Currently / About / Last Updated (shared grid) ── */
+.currently-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 0;
+  background: #fff;
 }
-.about-col {
-  padding: 10px 12px;
+.currently-grid.two-col { grid-template-columns: 1fr 1fr; }
+.currently-grid.one-col { grid-template-columns: 1fr; }
+.currently-item {
+  padding: 8px 10px;
   border-right: 1px solid rgba(0,0,0,.10);
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 3px;
 }
-.about-col:last-child { border-right: none; }
-.about-col-label {
-  font-size: 9.5px;
+.currently-item:last-child { border-right: none; }
+.currently-label {
+  font-size: 10px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #888;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-  padding-bottom: 4px;
-  margin-bottom: 2px;
 }
-.about-tag {
-  display: inline-block;
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 1px 5px;
-  background: #000;
-  color: #fff;
-  margin: 1px 2px 1px 0;
+.currently-value {
+  font-size: 12px;
+  color: #111;
+  line-height: 1.4;
 }
-.about-list {
-  list-style: none;
-  margin: 0; padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
+.currently-sub {
+  font-size: 10.5px;
+  color: #aaa;
 }
 
 #pageFooter {
@@ -520,37 +472,28 @@ p + p   { margin-top: 5px; }
 
         <!-- ABOUT ME -->
         <div class="bar-row"><h1>About Me</h1></div>
-        <div style="margin: 0 7px 7px;">
-          <div class="about-grid aero-borders">
-            <div class="about-col">
-              <span class="about-col-label">&#9670; who</span>
-              <p>hey. i'm <h4>Settembre19th</h4> &mdash; somewhere online, making things for the sake of it.</p>
-              <p style="margin-top:6px">this archive is where i dump whatever i'm working on or obsessing over. no particular schedule. no particular audience.</p>
+        <div class="glass-borders" style="padding:0; margin:0 7px 7px;">
+          <div class="currently-grid two-col aero-borders">
+            <div class="currently-item">
+              <span class="currently-label">who</span>
+              <span class="currently-value">hey. i'm <h4>Settembre19th</h4> &mdash; somewhere online, making things for the sake of it.</span>
+              <span class="currently-sub">this archive is where i dump whatever i'm working on or obsessing over. no schedule, no particular audience.</span>
             </div>
-            <div class="about-col">
-              <span class="about-col-label">&#9670; interests</span>
-              <ul class="about-list">
-                <span class="about-tag">visual novels</span>
-                <span class="about-tag">horror</span>
-                <span class="about-tag">analog aesthetics</span>
-                <span class="about-tag">music</span>
-                <span class="about-tag">old web</span>
-                <span class="about-tag">drawing</span>
-                <span class="about-tag">games</span>
-                <span class="about-tag">archiving</span>
-              </ul>
+            <div class="currently-item">
+              <span class="currently-label">interests</span>
+              <span class="currently-value">visual novels, horror, analog aesthetics, music, old web, drawing, games, archiving</span>
             </div>
           </div>
-          <div class="about-grid aero-borders" style="border-top:none">
-            <div class="about-col">
-              <span class="about-col-label">&#9670; this place</span>
-              <p>built by hand. no frameworks. the site is a living thing &mdash; pages come online as they're ready, sections get filled in over time.</p>
-              <p style="margin-top:6px">if something is locked, it's not ready yet. check back.</p>
+          <div class="currently-grid two-col aero-borders" style="border-top: 1px solid rgba(0,0,0,.10);">
+            <div class="currently-item">
+              <span class="currently-label">this place</span>
+              <span class="currently-value">built by hand. no frameworks. pages come online as they're ready, sections fill in over time.</span>
+              <span class="currently-sub">if something is locked, it's not ready yet. check back.</span>
             </div>
-            <div class="about-col">
-              <span class="about-col-label">&#9670; contact</span>
-              <p>reach me at <h4><a href="mailto:trenchgun1337@gmail.com" style="color:red">trenchgun1337@gmail.com</a></h4> for anything.</p>
-              <p style="margin-top:6px">or head to the <a href="pages/contact.html" style="color:red;text-decoration:underline">Contact</a> page.</p>
+            <div class="currently-item">
+              <span class="currently-label">contact</span>
+              <span class="currently-value"><a href="mailto:trenchgun1337@gmail.com" style="color:red">trenchgun1337@gmail.com</a></span>
+              <span class="currently-sub">or use the <a href="pages/contact.html" style="color:red">Contact</a> page</span>
             </div>
           </div>
         </div>
@@ -580,12 +523,12 @@ p + p   { margin-top: 5px; }
 
         <!-- LAST UPDATED -->
         <div class="bar-row"><h1>Last Updated</h1></div>
-        <div style="margin: 0 7px 7px;">
-          <div class="last-updated-block aero-borders">
-            <div class="last-updated-icon">&#9656; update</div>
-            <div class="last-updated-values">
-              <span class="last-updated-date" id="lu-date">loading&hellip;</span>
-              <span class="last-updated-time" id="lu-time"></span>
+        <div class="glass-borders" style="padding:0; margin:0 7px 7px;">
+          <div class="currently-grid one-col aero-borders">
+            <div class="currently-item">
+              <span class="currently-label">last updated</span>
+              <span class="currently-value" id="lu-date">loading...</span>
+              <span class="currently-sub" id="lu-time"></span>
             </div>
           </div>
         </div>
