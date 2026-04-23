@@ -896,18 +896,17 @@ async function sendMsg() {
   </div>
 </div>`;
   try {
-    const response = await fetch('https://formsubmit.co/ajax/' + SEU_EMAIL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        _subject: `Contato do Archive - ${timeStr}`,
-        message: rawText,
-        _template: 'table',
-        _captcha: 'false',
-        _autoresponse: 'Obrigado pela mensagem! Responderei em breve.',
-        html: emailHTML
-      })
-    });
+   const response = await fetch('https://formsubmit.co/ajax/' + SEU_EMAIL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    _subject: `Contato do Archive - ${timeStr}`,
+    _html: emailHTML,          // ← campo correto para HTML
+    _captcha: 'false',
+    _autoresponse: 'Thank you! ill try to respond as soon as i can :)',
+    // remova _template: 'table' para não misturar
+  })
+});
     if (response.ok) {
       status.textContent = 'Post sent!';
       status.className = 'ok';
