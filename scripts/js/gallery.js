@@ -202,6 +202,11 @@ const GallerySystem = {
           this.updateRatingUI(i);
           this.updateAwardedSection();
         });
+        // ── Sincroniza contagem de sketches no Firebase para o index.html ──
+FirebaseManager._set(
+  FirebaseManager._ref(FirebaseManager.db, 'archive/sketchCount'),
+  GALLERY_ITEMS.length
+);
       });
     } else {
       try { this._localRatings = JSON.parse(localStorage.getItem('galleryRatings') || '{}'); }
@@ -796,5 +801,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (spa.classList.contains('active')) GallerySystem.init();
   } else {
     GallerySystem.init();
+    // ── Sync sketch count to stat element ──
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('stat-sketches');
+  if (el) el.textContent = String(GALLERY_ITEMS.length).padStart(2, '0');
+});
   }
 });

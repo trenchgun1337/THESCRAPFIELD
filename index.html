@@ -237,10 +237,12 @@ p + p   { margin-top: 5px; }
 }
 .currently-item:last-child { border-right: none; }
 .currently-label {
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #888;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #f5f5f5;
+    background: black;
+    text-align: center;
 }
 .currently-value {
   font-size: 12px;
@@ -250,6 +252,28 @@ p + p   { margin-top: 5px; }
 .currently-sub {
   font-size: 10.5px;
   color: #aaa;
+}
+
+/* ── Last Updated special style ── */
+.lu-value-big {
+  font-size: 18px;
+  color: #111;
+  line-height: 1.4;
+  text-align: center;
+  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
+  letter-spacing: 1px;
+  padding: 6px 0 4px;
+}
+
+/* ── Visitor counter (freecounterstat) ── */
+.visitor-counter-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0 2px;
+}
+.visitor-counter-wrap img {
+  pointer-events: auto !important;
 }
 
 #pageFooter {
@@ -360,7 +384,7 @@ p + p   { margin-top: 5px; }
 <!-- Firebase SDKs -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, get, set, onValue, increment, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const FIREBASE_CONFIG = {
     apiKey:            "AIzaSyBBr6zPaWgGNcGHz9iiNTO8O4EgAzsUMOk",
@@ -376,61 +400,49 @@ p + p   { margin-top: 5px; }
   const app = initializeApp(FIREBASE_CONFIG);
   const db  = getDatabase(app);
 
-  /* ── Visitor counter ─────────────────────────────────────────── */
-  // Increment on each unique session (sessionStorage guard)
-  if (!sessionStorage.getItem('wa_visited')) {
-    sessionStorage.setItem('wa_visited', '1');
-    runTransaction(ref(db, 'archive/visitors'), function(current) {
-      return (current || 0) + 1;
-    });
-  }
-
-  // Live-listen to visitor count
-  onValue(ref(db, 'archive/visitors'), function(snap) {
-    var v = snap.val() || 0;
-    var el = document.getElementById('stat-visitors');
-    if (el) el.textContent = String(v).padStart(2, '0');
-  });
-
-  /* ── Sketch count ────────────────────────────────────────────── */
-  // Tries both common paths — adjust the path if your DB structure differs
-  get(ref(db, 'sketches')).then(function(snap) {
-    var count = 0;
-    if (snap.exists()) {
-      var val = snap.val();
-      if (typeof val === 'object' && val !== null) {
-        count = Object.keys(val).length;
-      } else if (typeof val === 'number') {
-        count = val;
-      }
-    }
-    var el = document.getElementById('stat-sketches');
-    if (el) el.textContent = String(count).padStart(2, '0');
-  }).catch(function() {
-    // silently keep 00 if path doesn't exist yet
-  });
-
-  /* ── Last Updated timestamp ──────────────────────────────────── */
-  // Reads a timestamp stored at archive/lastUpdated (set manually or via deploy hook)
+  /* ── Last Updated timestamp ── */
   get(ref(db, 'archive/lastUpdated')).then(function(snap) {
     var dateEl = document.getElementById('lu-date');
-    var timeEl = document.getElementById('lu-time');
-    if (!dateEl || !timeEl) return;
+    if (!dateEl) return;
     if (snap.exists()) {
       var ts = new Date(snap.val());
       var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       var days   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
       dateEl.textContent = days[ts.getDay()] + ', ' + String(ts.getDate()).padStart(2,'0') + ' ' + months[ts.getMonth()] + ' ' + ts.getFullYear();
-      timeEl.textContent = String(ts.getHours()).padStart(2,'0') + ':' + String(ts.getMinutes()).padStart(2,'0') + ' UTC';
     } else {
-      // Fallback: show hardcoded site launch date — update this string when you push changes
       dateEl.textContent = 'Tue, 22 Apr 2026';
-      timeEl.textContent = '00:00 UTC';
     }
   }).catch(function() {
-    document.getElementById('lu-date').textContent = 'Tue, 22 Apr 2026';
-    document.getElementById('lu-time').textContent = '00:00 UTC';
+    var dateEl = document.getElementById('lu-date');
+    if (dateEl) dateEl.textContent = 'Tue, 22 Apr 2026';
   });
+</script>
+
+<!-- Read gallery.js to count GALLERY_ITEMS dynamically -->
+<script>
+(function() {
+  function updateSketchCount(count) {
+    var el = document.getElementById('stat-sketches');
+    if (el) el.textContent = String(count).padStart(2, '0');
+  }
+
+  fetch('assets/js/gallery.js')
+    .then(function(r) { return r.text(); })
+    .then(function(src) {
+      var match = src.match(/const\s+GALLERY_ITEMS\s*=\s*\[/);
+      if (!match) return;
+      var start = src.indexOf('[', match.index + match[0].length - 1);
+      var depth = 0, i = start, count = 0;
+      for (; i < src.length; i++) {
+        if (src[i] === '[' || src[i] === '{') depth++;
+        if (src[i] === ']' || src[i] === '}') depth--;
+        if (depth === 1 && src[i] === '{') count++;
+        if (depth === 0) break;
+      }
+      updateSketchCount(count);
+    })
+    .catch(function() {});
+})();
 </script>
 
 <img id="siteLogoTop"
@@ -475,25 +487,21 @@ p + p   { margin-top: 5px; }
         <div class="glass-borders" style="padding:0; margin:0 7px 7px;">
           <div class="currently-grid two-col aero-borders">
             <div class="currently-item">
-              <span class="currently-label">who</span>
-              <span class="currently-value">hey. i'm <h4>Settembre19th</h4> &mdash; somewhere online, making things for the sake of it.</span>
-              <span class="currently-sub">this archive is where i dump whatever i'm working on or obsessing over. no schedule, no particular audience.</span>
+              <span class="currently-label">a bit</span>
+              <br>
+              <span class="currently-value">I have many aliases, but for now, let's just say I'm <h4>Settembre.</h4></span>
+              <span class="currently-value">I don't really feel like socializing. I'd rather stay in my room forever. I have no purpose in life, and that's my purpose. maybe the internet is where I truly belong; maybe I just wasn't made for the outside world.</span>
+              <br>
+              <span class="currently-value">i don't remember being a talkative or sociable kid, even when i was younger. i always preferred to be alone and play in my own way, like i always knew what was good for me.</span>
+              <br>
+              <span class="currently-value">i always had a strong sense of justice and a strange hatred for people, even when i was extremely kind to them. maybe i've always felt hatred for humans — i never hugged a family member with true love inside me, or ever felt that healthy, common fondness for them.</span>
             </div>
             <div class="currently-item">
-              <span class="currently-label">interests</span>
-              <span class="currently-value">visual novels, horror, analog aesthetics, music, old web, drawing, games, archiving</span>
-            </div>
-          </div>
-          <div class="currently-grid two-col aero-borders" style="border-top: 1px solid rgba(0,0,0,.10);">
-            <div class="currently-item">
-              <span class="currently-label">this place</span>
-              <span class="currently-value">built by hand. no frameworks. pages come online as they're ready, sections fill in over time.</span>
-              <span class="currently-sub">if something is locked, it's not ready yet. check back.</span>
-            </div>
-            <div class="currently-item">
-              <span class="currently-label">contact</span>
-              <span class="currently-value"><a href="mailto:trenchgun1337@gmail.com" style="color:red">trenchgun1337@gmail.com</a></span>
-              <span class="currently-sub">or use the <a href="pages/contact.html" style="color:red">Contact</a> page</span>
+              <span class="currently-label">interests dump</span>
+              <br>
+              <span class="currently-value">anime, visual novels, higurashi, umineko, resident evil 4 (2005), fear &amp; hunger, horror, zombies, cult media, xbox 360, old web, windows 7, 2000s, nostalgia, diy, design, fashion, boots, leather, victorianism, psychology, philosophy, politics, history, literature, poems, testing morality, atheism, cyber-religion, conspiracy, coding, music, drawing, art, experimental stuff, shotguns, trench guns, bows, cats, bunnies, plants, germany, italy, brazil.
+nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death note, corpse party, silent hill, school days, mad father, witch's house, mogeko castle, wadanohara, okegom, happy tree friends, south park, my little pony, homestuck, soyjak, chud, memes, gothic architecture, lolita, kindness, justice, empathy, critical thinking, accent, "brigadeiro", bloodplay, anatomical graphics, nature, animals, solding, occultism, atheism, misanthropy, nihilism, existentialism, schizoanalysis
+</span>
             </div>
           </div>
         </div>
@@ -515,8 +523,12 @@ p + p   { margin-top: 5px; }
               <span class="stat-label">Sketches</span>
             </div>
             <div class="stat-block">
-              <span class="stat-num" id="stat-visitors">--</span>
-              <span class="stat-label">Visitors</span>
+              <span class="stat-label" style="margin-top:4px">Visitors</span>
+              <div class="visitor-counter-wrap">
+                <a href="https://www.freecounterstat.com" title="free web counter" target="_blank">
+                  <img src="https://counter1.optistats.ovh/private/freecounterstat.php?c=6k8suplclznu8lglhlhwtfzfenwdlftg" border="0" title="free web counter" alt="free web counter" style="pointer-events:auto">
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -525,10 +537,9 @@ p + p   { margin-top: 5px; }
         <div class="bar-row"><h1>Last Updated</h1></div>
         <div class="glass-borders" style="padding:0; margin:0 7px 7px;">
           <div class="currently-grid one-col aero-borders">
-            <div class="currently-item">
-              <span class="currently-label">last updated</span>
-              <span class="currently-value" id="lu-date">loading...</span>
-              <span class="currently-sub" id="lu-time"></span>
+            <div class="currently-item" style="align-items:center; padding: 10px;">
+              <span class="currently-label" style="width:100%; display:block;">last updated</span>
+              <span class="lu-value-big" id="lu-date">loading...</span>
             </div>
           </div>
         </div>
@@ -540,7 +551,7 @@ p + p   { margin-top: 5px; }
           <h4>Honorable Mention: <a href="https://kaomoji.you/" target="_blank">kaomoji.you</a></h4>
         </div>
 
-      </div>
+      </div><!-- /#pg-introduction -->
 
       <!-- RESOURCES -->
       <div id="pg-resources" class="page">
@@ -577,7 +588,7 @@ p + p   { margin-top: 5px; }
           </div>
 
         </div>
-      </div>
+      </div><!-- /#pg-resources -->
 
       <div id="pageFooter">
         2026 | Watanagashi Archive &mdash; Created by
