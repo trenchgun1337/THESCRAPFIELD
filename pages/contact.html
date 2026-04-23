@@ -19,9 +19,29 @@
   --editor-h: 120px;
 }
 
-html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.5) transparent; }
-::-webkit-scrollbar { width:6px; }
-::-webkit-scrollbar-thumb { background:rgba(120,120,120,.5); border-radius:3px; }
+
+/* 1. Largura da barra */
+::-webkit-scrollbar {
+  width: 7px; /* Um pouco mais larga para destacar a borda ridge */
+  height: 4px; /* Para barras horizontais */
+}
+
+/* 2. O trilho (fundo da barra) */
+::-webkit-scrollbar-track {
+  background: #3d3d3d54; /* Cinza bem clarinho */
+}
+
+/* 3. O polegar (parte que arrasta) */
+::-webkit-scrollbar-thumb {
+  background: #d3d3d3; /* Cinza claro */
+  border: 2px ridge #b0b0b0; /* Borda ridge no polegar */
+  border-radius: 0; /* Garante que fique quadrada */
+}
+
+/* 4. Efeito ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+  background: #c0c0c0;
+}
 
 body {
   font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
