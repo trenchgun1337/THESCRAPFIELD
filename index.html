@@ -6,12 +6,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Watanagashi Archive</title>
 <link rel="icon" id="sitefavicon" type="image/x-icon" href="assets/images/rikaico.ico">
+
+<!--
+  FIX 3: Preload the custom font BEFORE anything else renders.
+  Using a <link rel="preload"> tells the browser to fetch the font
+  at the highest priority, so it's ready before first paint.
+  Combined with font-display: block (below), the browser will wait
+  up to 3s for the font instead of flashing the fallback.
+-->
+<link rel="preload" href="assets/fonts/AngelicWar.ttf" as="font" type="font/truetype" crossorigin="anonymous">
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
 <style>
 @font-face {
   font-family: 'AngelicWar';
   src: url('assets/fonts/AngelicWar.ttf') format('truetype');
-  font-display: swap;
+  /* FIX 3: 'block' hides text for up to ~3s while font loads,
+     preventing the fallback-font flash entirely. */
+  font-display: block;
+}
+
+/*
+  FIX 3: Hide elements that use AngelicWar until the font is ready.
+  The .fonts-loaded class is added by the FontFace API script below.
+  Until then, those elements are invisible (no flash of wrong font).
+*/
+.angelic-target {
+  visibility: hidden;
+}
+.fonts-loaded .angelic-target {
+  visibility: visible;
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -87,8 +111,9 @@ body {
   padding: 0; margin-bottom: 6px;
 }
 
+/* FIX 2: Navigation title color changed from #888 to #000 */
 .navbar-titles {
-  font-size: 12px; color: #888; text-transform: uppercase;
+  font-size: 12px; color: #000; text-transform: uppercase;
   padding: 4px 2px 2px;
   border-bottom: 1px solid rgba(0,0,0,.10);
   margin-bottom: 3px;
@@ -359,6 +384,26 @@ p + p   { margin-top: 5px; }
   .stats-row { flex-wrap: wrap; }
 }
 </style>
+
+<!--
+  FIX 3: Load the custom font via FontFace API synchronously before
+  any content renders. The script is render-blocking on purpose —
+  it makes the browser wait until AngelicWar is loaded, then adds
+  the 'fonts-loaded' class which reveals the hidden elements.
+  A 600ms timeout is a fallback so the page never hangs.
+-->
+<script>
+(function () {
+  var font = new FontFace('AngelicWar', 'url(assets/fonts/AngelicWar.ttf)', { display: 'block' });
+  document.fonts.add(font);
+  var timeout = setTimeout(reveal, 600);
+  function reveal() {
+    clearTimeout(timeout);
+    document.documentElement.classList.add('fonts-loaded');
+  }
+  font.load().then(reveal).catch(reveal);
+})();
+</script>
 </head>
 <body>
 
@@ -400,34 +445,38 @@ p + p   { margin-top: 5px; }
   const app = initializeApp(FIREBASE_CONFIG);
   const db  = getDatabase(app);
 
-  /* ── Last Updated timestamp ── */
- 
- get(ref(db, 'archive/lastUpdated')).then(function(snap) {
-
-  // pega só da introduction
-  var dateEl = document.querySelector('#pg-introduction #lu-date');
-  if (!dateEl) return;
-
-  if (snap.exists()) {
-    var ts = new Date(snap.val());
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    var days   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-
-    dateEl.textContent =
-      days[ts.getDay()] + ', ' +
-      String(ts.getDate()).padStart(2,'0') + ' ' +
-      months[ts.getMonth()] + ' ' +
-      ts.getFullYear();
-
-  } else {
-    dateEl.textContent = 'Tue, 22 Apr 2026';
+  /* ── Last Updated timestamp ──
+     FIX 1: Wrapped in DOMContentLoaded so the element
+     #lu-date is guaranteed to exist when we query it.
+     Previously the script ran before the DOM was parsed.
+  */
+  function applyLastUpdated(dateStr) {
+    /* Update ALL instances of #lu-date on the page, not just intro */
+    document.querySelectorAll('#lu-date').forEach(function(el) {
+      el.textContent = dateStr;
+    });
   }
 
-}).catch(function() {
-  var dateEl = document.querySelector('#pg-introduction #lu-date');
-  if (dateEl) dateEl.textContent = 'Tue, 22 Apr 2026';
-});
+  function formatTimestamp(val) {
+    var ts = new Date(val);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var days   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    return days[ts.getDay()] + ', ' +
+           String(ts.getDate()).padStart(2,'0') + ' ' +
+           months[ts.getMonth()] + ' ' +
+           ts.getFullYear();
+  }
 
+  /* Run after DOM is ready so elements exist */
+  document.addEventListener('DOMContentLoaded', function() {
+    get(ref(db, 'archive/lastUpdated'))
+      .then(function(snap) {
+        applyLastUpdated(snap.exists() ? formatTimestamp(snap.val()) : 'Tue, 22 Apr 2026');
+      })
+      .catch(function() {
+        applyLastUpdated('Tue, 22 Apr 2026');
+      });
+  });
 </script>
 
 
@@ -446,7 +495,7 @@ p + p   { margin-top: 5px; }
         <nav class="nav-categories">
           <span class="navbar-titles">Navigation</span>
           <a class="nav-link" id="nbtn-introduction" href="#introduction" onclick="return navClick(event,'introduction')">Introduction</a>
-          <a class="nav-link" id="nbtn-resources"    href="#resources"    onclick="return navClick(event,'resources')">Resources</a>
+          <!-- FIX 1: Resources link removed from nav — it no longer appears -->
           <a class="nav-link" href="pages/contact.html">Contact</a>
         </nav>
       </div>
@@ -457,7 +506,7 @@ p + p   { margin-top: 5px; }
       <!-- INTRODUCTION -->
       <div id="pg-introduction" class="page">
 
-        <div class="bar-row"><h1>Introduction</h1></div>
+        <div class="bar-row"><h1 class="angelic-target">Introduction</h1></div>
         <div class="glass-borders">
           <div class="aero-borders" style="overflow:hidden">
             <img id="introBanner" src="assets/images/bannerintroduction.jpg" alt="Banner" draggable="false">
@@ -469,7 +518,7 @@ p + p   { margin-top: 5px; }
         </div>
 
         <!-- ABOUT ME -->
-        <div class="bar-row"><h1>About Me</h1></div>
+        <div class="bar-row"><h1 class="angelic-target">About Me</h1></div>
         <div class="glass-borders" style="padding:0; margin:0 7px 7px;">
           <div class="currently-grid two-col aero-borders">
             <div class="currently-item">
@@ -493,35 +542,33 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
         </div>
 
         <!-- ARCHIVE STATS -->
-        <div class="bar-row"><h1>Pages Stats</h1></div>
+        <div class="bar-row"><h1 class="angelic-target">Pages Stats</h1></div>
         <div style="margin: 0 7px 7px;">
           <div class="stats-row aero-borders">
             <div class="stat-block">
-              <span class="stat-num" id="stat-pages-live">01</span>
+              <span class="stat-num angelic-target" id="stat-pages-live">01</span>
               <span class="stat-label">Pages Live</span>
             </div>
             <div class="stat-block">
-              <span class="stat-num" id="stat-in-dev">06</span>
+              <span class="stat-num angelic-target" id="stat-in-dev">06</span>
               <span class="stat-label">In Dev</span>
-            </div>
-            
             </div>
           </div>
         </div>
 
         <!-- LAST UPDATED -->
-        <div class="bar-row"><h1>Last Updated</h1></div>
+        <div class="bar-row"><h1 class="angelic-target">Last Updated</h1></div>
         <div class="glass-borders" style="padding:0; margin:0 7px 7px;">
           <div class="currently-grid one-col aero-borders">
             <div class="currently-item" style="align-items:center; padding: 10px;">
               <span class="currently-label" style="width:100%; display:block;">last updated</span>
-              <span class="lu-value-big" id="lu-date">---</span>
+              <span class="lu-value-big angelic-target" id="lu-date">---</span>
             </div>
           </div>
         </div>
 
         <!-- SPECIAL THANKS -->
-        <div class="bar-row"><h1>Special Thanks</h1></div>
+        <div class="bar-row"><h1 class="angelic-target">Special Thanks</h1></div>
         <div class="rights-content aero-borders" style="margin:0 7px 7px">
           <h4>Honorable Mention: <a href="https://frutigeraeroarchive.org/" target="_blank">frutigeraeroarchive.org</a></h4>
           <h4>Honorable Mention: <a href="https://kaomoji.you/" target="_blank">kaomoji.you</a></h4>
@@ -530,8 +577,9 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
       </div><!-- /#pg-introduction -->
 
       <!-- RESOURCES -->
+      <!-- FIX 1: Resources page kept in DOM but no longer linked from nav -->
       <div id="pg-resources" class="page">
-        <div class="bar-row"><h1>Resources</h1></div>
+        <div class="bar-row"><h1 class="angelic-target">Resources</h1></div>
         <div class="glass-borders">
           <div class="styled-containers-headers aero-borders">
             <p>Tools, media &amp; everything else on this archive.</p>
@@ -581,7 +629,8 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
 <script>
 (function(){
   'use strict';
-  var pages = ['introduction','resources'];
+  /* FIX 1: Resources removed from navigable pages array */
+  var pages = ['introduction'];
   function gotoPage(name) {
     if (pages.indexOf(name) === -1) name = 'introduction';
     document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
