@@ -72,7 +72,7 @@ body {
 
 #navigationMenu {
   background: linear-gradient(108deg, #f5f5f5 50%, #ececec 100%);
-  border: 2px ridge #000000;
+  border: 2px ridge #727272;
   width: 162px; flex-shrink: 0;
   padding: 10px 8px 14px;
   overflow-y: auto; height: auto;
@@ -401,36 +401,33 @@ p + p   { margin-top: 5px; }
   const db  = getDatabase(app);
 
   /* ── Last Updated timestamp ── */
-  get(ref(db, 'archive/lastUpdated')).then(function(snap) {
-    // ── Sketch count (gallery) ──
-get(ref(db, 'archive/sketchCount')).then(function(snap) {
-  var el = document.getElementById('stat-sketches');
-  if (!el) return;
+ 
+ get(ref(db, 'archive/lastUpdated')).then(function(snap) {
+
+  // pega só da introduction
+  var dateEl = document.querySelector('#pg-introduction #lu-date');
+  if (!dateEl) return;
 
   if (snap.exists()) {
-    el.textContent = String(snap.val()).padStart(2, '0');
+    var ts = new Date(snap.val());
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var days   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+    dateEl.textContent =
+      days[ts.getDay()] + ', ' +
+      String(ts.getDate()).padStart(2,'0') + ' ' +
+      months[ts.getMonth()] + ' ' +
+      ts.getFullYear();
+
   } else {
-    el.textContent = '00';
+    dateEl.textContent = 'Tue, 22 Apr 2026';
   }
+
 }).catch(function() {
-  var el = document.getElementById('stat-sketches');
-  if (el) el.textContent = '00';
+  var dateEl = document.querySelector('#pg-introduction #lu-date');
+  if (dateEl) dateEl.textContent = 'Tue, 22 Apr 2026';
 });
 
-    var dateEl = document.getElementById('lu-date');
-    if (!dateEl) return;
-    if (snap.exists()) {
-      var ts = new Date(snap.val());
-      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      var days   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      dateEl.textContent = days[ts.getDay()] + ', ' + String(ts.getDate()).padStart(2,'0') + ' ' + months[ts.getMonth()] + ' ' + ts.getFullYear();
-    } else {
-      dateEl.textContent = 'Tue, 22 Apr 2026';
-    }
-  }).catch(function() {
-    var dateEl = document.getElementById('lu-date');
-    if (dateEl) dateEl.textContent = 'Tue, 22 Apr 2026';
-  });
 </script>
 
 
@@ -518,7 +515,7 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
           <div class="currently-grid one-col aero-borders">
             <div class="currently-item" style="align-items:center; padding: 10px;">
               <span class="currently-label" style="width:100%; display:block;">last updated</span>
-              <span class="lu-value-big" id="lu-date">xxx</span>
+              <span class="lu-value-big" id="lu-date">---</span>
             </div>
           </div>
         </div>
