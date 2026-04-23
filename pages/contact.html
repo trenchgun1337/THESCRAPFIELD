@@ -383,18 +383,14 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 
 <script>
 // ============================================================
-// CONFIGURAÇÃO – SUBSTITUA PELO SEU E-MAIL REAL
+// CONFIG
 // ============================================================
-const SEU_EMAIL = 'trenchgun1337@gmail.com';  // <--- SEU E-MAIL
-
-// ============================================================
-// CLOUDINARY
-// ============================================================
+const SEU_EMAIL     = 'trenchgun1337@gmail.com';
 const CLOUD_NAME    = 'dagsxkazw';
 const UPLOAD_PRESET = 'unsigned_upload';
 
 // ============================================================
-// FUNÇÕES AUXILIARES
+// HELPERS
 // ============================================================
 function getChanTime() {
   const now  = new Date();
@@ -413,6 +409,16 @@ function getPostNumber() {
   return Math.floor(Math.random() * 900000) + 100000;
 }
 
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escapeAttr(str) {
+  return str.replace(/"/g, '&quot;');
+}
+
+// ============================================================
+// EMBED DETECTION
+// ============================================================
 const embedPatterns = [
   {
     name: 'youtube',
@@ -463,7 +469,9 @@ function buildEmbedEmailHTML(embeds) {
   }).join('');
 }
 
-// ========== EDITOR HIGHLIGHT LINKS ==========
+// ============================================================
+// LINK HIGHLIGHTING
+// ============================================================
 function getCaretCharOffset(el) {
   const sel = window.getSelection();
   if (!sel || !sel.rangeCount) return 0;
@@ -522,10 +530,8 @@ function highlightLinks() {
   const hasLinks = EMBED_URL_REGEX.test(rawText);
   const hasSpans = !!editor.querySelector('.link-span');
   if (!hasLinks && !hasSpans) return;
-
   const caretOffset = getCaretCharOffset(editor);
   unwrapLinkSpans();
-
   function processNode(node) {
     if (node.nodeType === Node.ELEMENT_NODE) {
       if (node.tagName === 'IMG' || (node.classList && (node.classList.contains('pic-specs') || node.classList.contains('link-span')))) return;
@@ -554,7 +560,9 @@ function highlightLinks() {
   setCaretByOffset(editor, caretOffset);
 }
 
-// ========== LINKS MANUAIS ==========
+// ============================================================
+// LINKS MANUAIS
+// ============================================================
 const links = [];
 const linkInput = document.getElementById('linkInput');
 const linkDropdown = document.getElementById('linkDropdown');
@@ -586,7 +594,6 @@ linkInput.addEventListener('keydown', (e) => {
   }
 });
 
-// ========== EXTRAIR LINKS DO EDITOR ==========
 function extractLinksFromEditor() {
   const text = editor.innerText.replace(/\u200B/g, '');
   EMBED_URL_REGEX.lastIndex = 0;
@@ -598,15 +605,16 @@ function extractLinksFromEditor() {
   renderLinks();
 }
 
-// ========== EDITOR E PREVIEW ==========
+// ============================================================
+// EDITOR & PREVIEW
+// ============================================================
 const editor = document.getElementById('msgEditor');
 const previewMsg = document.getElementById('previewMsg');
 const previewTime = document.getElementById('previewTime');
+const suppressedEmbeds = new Set();
 
 previewTime.textContent = getChanTime();
 setInterval(() => { previewTime.textContent = getChanTime(); }, 1000);
-
-const suppressedEmbeds = new Set();
 
 function updatePreview() {
   const text = editor.innerText.replace(/\u200B/g, '').trim();
@@ -672,14 +680,9 @@ function buildEmailHTML(html) {
   return bodyHTML;
 }
 
-function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-function escapeAttr(str) {
-  return str.replace(/"/g, '&quot;');
-}
-
-// ========== IMAGEM ==========
+// ============================================================
+// IMAGE
+// ============================================================
 function truncateFileName(name, maxLen) {
   if (name.length <= maxLen) return name;
   const ext = name.includes('.') ? name.slice(name.lastIndexOf('.')) : '';
@@ -779,7 +782,9 @@ function removeEmbeds() {
   editor.focus();
 }
 
-// ========== EVENTOS DO EDITOR ==========
+// ============================================================
+// EDITOR EVENTS
+// ============================================================
 editor.addEventListener('input', () => {
   suppressedEmbeds.clear();
   extractLinksFromEditor();
@@ -858,12 +863,15 @@ editor.addEventListener('click', () => {
   });
 });
 
-// ========== ENVIO VIA FORMSUBMIT (SEM EMAILJS) ==========
+// ============================================================
+// ENVIO — FormSubmit via FormData (suporta HTML no email)
+// ============================================================
 async function sendMsg() {
   const rawText = editor.innerText.replace(/\u200B/g, '').trim();
-  const hasImg = !!editor.querySelector('img');
-  const status = document.getElementById('statusMsg');
-  const btn = document.getElementById('sendBtn');
+  const hasImg  = !!editor.querySelector('img');
+  const status  = document.getElementById('statusMsg');
+  const btn     = document.getElementById('sendBtn');
+
   if (!rawText && !hasImg) {
     status.textContent = 'Write something first.';
     status.className = 'err';
@@ -873,11 +881,14 @@ async function sendMsg() {
   btn.disabled = true;
   status.className = '';
   status.textContent = 'Sending...';
-  const timeStr = getChanTime();
+
+  const timeStr    = getChanTime();
   const postNumber = getPostNumber();
-  const bodyHTML = buildEmailHTML(editor.innerHTML);
-  const allEmbeds = detectEmbeds(rawText + '\n' + links.join('\n'));
+  const bodyHTML   = buildEmailHTML(editor.innerHTML);
+  const allEmbeds  = detectEmbeds(rawText + '\n' + links.join('\n'));
   const embedsHTML = buildEmbedEmailHTML(allEmbeds);
+
+  // HTML completo do email — idêntico ao template do EmailJS
   const emailHTML = `
 <div style="font-family: system-ui, Arial, sans-serif; font-size: 13px; color:#111;">
   <div style="margin-bottom:10px;">An anonymous message has been received. Kindly respond at your earliest convenience.</div>
@@ -887,7 +898,7 @@ async function sendMsg() {
       <tr>
         <td style="vertical-align: top;">
           <div style="color: #2c3e50; font-size: 15px;"><strong>Anonymous</strong></div>
-          <div style="color:#aaa; font-size:12px;">${escapeHtml(timeStr)} • No.${postNumber}</div>
+          <div style="color:#aaa; font-size:12px;">${escapeHtml(timeStr)} &bull; No.${postNumber}</div>
           <div style="font-size: 14px; margin-top: 6px; line-height: 1.6;">${bodyHTML}</div>
           <div style="margin-top:12px;">${embedsHTML}</div>
         </td>
@@ -895,18 +906,22 @@ async function sendMsg() {
     </table>
   </div>
 </div>`;
+
   try {
-   const response = await fetch('https://formsubmit.co/ajax/' + SEU_EMAIL, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    _subject: `Contato do Archive - ${timeStr}`,
-    _html: emailHTML,          // ← campo correto para HTML
-    _captcha: 'false',
-    _autoresponse: 'Thank you! ill try to respond as soon as i can :)',
-    // remova _template: 'table' para não misturar
-  })
-});
+    // FormData em vez de JSON — única forma do FormSubmit renderizar HTML
+    const fd = new FormData();
+    fd.append('_subject', `Contato do Archive - ${timeStr}`);
+    fd.append('_captcha', 'false');
+    fd.append('_template', 'basic');  // template básico sem tabela azul
+    fd.append('_autoresponse', 'Thank you! ill try to respond as soon as i can :)');
+    fd.append('message', emailHTML);  // campo "message" recebe o HTML
+
+    const response = await fetch(`https://formsubmit.co/${SEU_EMAIL}`, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: fd
+    });
+
     if (response.ok) {
       status.textContent = 'Post sent!';
       status.className = 'ok';
@@ -919,14 +934,14 @@ async function sendMsg() {
       document.getElementById('removeEmbedBtn').style.display = 'none';
       suppressedEmbeds.clear();
     } else {
-      const errorData = await response.json();
-      throw new Error(errorData.msg || 'Erro no envio');
+      throw new Error('Erro no envio');
     }
   } catch (err) {
     status.textContent = 'Failed — ' + err.message;
     status.className = 'err';
     console.error(err);
   }
+
   btn.disabled = false;
 }
 
