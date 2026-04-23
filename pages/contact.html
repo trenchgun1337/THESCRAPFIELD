@@ -385,16 +385,16 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 // ============================================================
 // CONFIGURAÇÃO – SUBSTITUA PELO SEU E-MAIL REAL
 // ============================================================
-const SEU_EMAIL = 'trenchgun1337@gmail.com';  // <--- MUDE AQUI
+const SEU_EMAIL = 'trenchgun1337@gmail.com';  // <--- SEU E-MAIL
 
 // ============================================================
-// CLOUDINARY (mantido igual)
+// CLOUDINARY
 // ============================================================
 const CLOUD_NAME    = 'dagsxkazw';
 const UPLOAD_PRESET = 'unsigned_upload';
 
 // ============================================================
-// FUNÇÕES AUXILIARES (TIME, EMBEDS, ETC.)
+// FUNÇÕES AUXILIARES
 // ============================================================
 function getChanTime() {
   const now  = new Date();
@@ -409,39 +409,25 @@ function getChanTime() {
   return `${mm}/${dd}/${yy}(${day})${hh}:${min}:${ss}`;
 }
 
-// Gera um número de post pseudo-aleatório (estilo 4chan)
 function getPostNumber() {
-  return Math.floor(Math.random() * 900000) + 100000; // 6 dígitos
+  return Math.floor(Math.random() * 900000) + 100000;
 }
 
 const embedPatterns = [
   {
     name: 'youtube',
     regex: /https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?(?:[^#&\s]*&)*v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/g,
-    build: (m) => ({
-      url: m[0],
-      id: m[1],
-      iframeSrc: `https://www.youtube.com/embed/${m[1]}`,
-      width: '100%', height: '95'
-    })
+    build: (m) => ({ url: m[0], id: m[1], iframeSrc: `https://www.youtube.com/embed/${m[1]}`, width: '100%', height: '95' })
   },
   {
     name: 'spotify',
     regex: /https?:\/\/open\.spotify\.com\/(?:intl-[a-z]{2}\/)?(track|album|playlist|episode)\/([a-zA-Z0-9]+)(?:\?[^\s]*)?/g,
-    build: (m) => ({
-      url: m[0],
-      iframeSrc: `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0`,
-      width: '100%', height: '95'
-    })
+    build: (m) => ({ url: m[0], iframeSrc: `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0`, width: '100%', height: '95' })
   },
   {
     name: 'soundcloud',
     regex: /https?:\/\/(?:www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(?:\?[^\s]*)?/g,
-    build: (m) => ({
-      url: m[0],
-      iframeSrc: `https://w.soundcloud.com/player/?url=${encodeURIComponent(m[0])}&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`,
-      width: '100%', height: '95'
-    })
+    build: (m) => ({ url: m[0], iframeSrc: `https://w.soundcloud.com/player/?url=${encodeURIComponent(m[0])}&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`, width: '100%', height: '95' })
   }
 ];
 
@@ -464,48 +450,20 @@ function detectEmbeds(text) {
 
 function buildEmbedPreviewHTML(embeds) {
   if (!embeds.length) return '';
-  return embeds.map(e =>
-    `<div class="embed-wrap">
-      <iframe
-        src="${escapeAttr(e.iframeSrc)}"
-        width="${e.width}" height="${e.height}"
-        frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        allowfullscreen
-        loading="lazy"
-        style="border-radius:0;border:1px solid #ccc;display:block;"
-      ></iframe>
-    </div>`
-  ).join('');
+  return embeds.map(e => `<div class="embed-wrap"><iframe src="${escapeAttr(e.iframeSrc)}" width="${e.width}" height="${e.height}" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="border-radius:0;border:1px solid #ccc;display:block;"></iframe></div>`).join('');
 }
 
 function buildEmbedEmailHTML(embeds) {
   if (!embeds.length) return '';
   return embeds.map(e => {
-    if (e.name === 'youtube') {
-      return `<div style="margin:8px 0;">
-        <a href="${escapeAttr(e.url)}" target="_blank">
-          <img src="https://img.youtube.com/vi/${e.id}/hqdefault.jpg"
-               style="max-width:300px;display:block;border:1px solid #ccc;">
-        </a>
-        <div style="font-size:11px;color:#666;">YouTube</div>
-      </div>`;
-    }
-    if (e.name === 'spotify') {
-      return `<div style="margin:8px 0;">
-        <a href="${escapeAttr(e.url)}" target="_blank" style="color:#1DB954;">▶ Open on Spotify</a>
-      </div>`;
-    }
-    if (e.name === 'soundcloud') {
-      return `<div style="margin:8px 0;">
-        <a href="${escapeAttr(e.url)}" target="_blank" style="color:#ff5500;">▶ Open on SoundCloud</a>
-      </div>`;
-    }
+    if (e.name === 'youtube') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank"><img src="https://img.youtube.com/vi/${e.id}/hqdefault.jpg" style="max-width:300px;display:block;border:1px solid #ccc;"></a><div style="font-size:11px;color:#666;">YouTube</div></div>`;
+    if (e.name === 'spotify') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank" style="color:#1DB954;">▶ Open on Spotify</a></div>`;
+    if (e.name === 'soundcloud') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank" style="color:#ff5500;">▶ Open on SoundCloud</a></div>`;
     return '';
   }).join('');
 }
 
-// highlight links etc.
+// ========== EDITOR HIGHLIGHT LINKS ==========
 function getCaretCharOffset(el) {
   const sel = window.getSelection();
   if (!sel || !sel.rangeCount) return 0;
@@ -519,9 +477,7 @@ function getCaretCharOffset(el) {
 function setCaretByOffset(el, offset) {
   const sel = window.getSelection();
   if (!sel) return;
-  let pos = 0;
-  let found = false;
-
+  let pos = 0, found = false;
   function walk(node) {
     if (found) return;
     if (node.nodeType === Node.TEXT_NODE) {
@@ -537,14 +493,10 @@ function setCaretByOffset(el, offset) {
       }
       pos += len;
     } else {
-      for (const child of node.childNodes) {
-        walk(child);
-        if (found) return;
-      }
+      for (const child of node.childNodes) walk(child);
     }
   }
   walk(el);
-
   if (!found) {
     const range = document.createRange();
     range.selectNodeContents(el);
@@ -576,25 +528,17 @@ function highlightLinks() {
 
   function processNode(node) {
     if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.tagName === 'IMG' ||
-          (node.classList && (node.classList.contains('pic-specs') || node.classList.contains('link-span')))) {
-        return;
-      }
+      if (node.tagName === 'IMG' || (node.classList && (node.classList.contains('pic-specs') || node.classList.contains('link-span')))) return;
       Array.from(node.childNodes).forEach(processNode);
     } else if (node.nodeType === Node.TEXT_NODE) {
       EMBED_URL_REGEX.lastIndex = 0;
       if (!EMBED_URL_REGEX.test(node.textContent)) return;
-
       EMBED_URL_REGEX.lastIndex = 0;
       const frag = document.createDocumentFragment();
-      let lastIndex = 0;
-      let m;
+      let lastIndex = 0, m;
       const text = node.textContent;
-
       while ((m = EMBED_URL_REGEX.exec(text)) !== null) {
-        if (m.index > lastIndex) {
-          frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
-        }
+        if (m.index > lastIndex) frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
         const span = document.createElement('span');
         span.className = 'link-span';
         span.style.color = '#0055cc';
@@ -602,55 +546,18 @@ function highlightLinks() {
         frag.appendChild(span);
         lastIndex = m.index + m[0].length;
       }
-      if (lastIndex < text.length) {
-        frag.appendChild(document.createTextNode(text.slice(lastIndex)));
-      }
-
-      if (node.parentNode) {
-        node.parentNode.replaceChild(frag, node);
-      }
+      if (lastIndex < text.length) frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+      if (node.parentNode) node.parentNode.replaceChild(frag, node);
     }
   }
-
   Array.from(editor.childNodes).forEach(processNode);
   setCaretByOffset(editor, caretOffset);
 }
 
-function extractLinksFromEditor() {
-  const text = editor.innerText.replace(/\u200B/g, '');
-  EMBED_URL_REGEX.lastIndex = 0;
-  const matches = text.match(EMBED_URL_REGEX);
-  if (!matches) return;
-  matches.forEach(link => {
-    if (!links.includes(link)) {
-      links.push(link);
-    }
-  });
-  renderLinks();
-}
-
-// Editor setup
-const editor      = document.getElementById('msgEditor');
-const previewMsg  = document.getElementById('previewMsg');
-const previewTime = document.getElementById('previewTime');
-
+// ========== LINKS MANUAIS ==========
 const links = [];
-const linkInput    = document.getElementById('linkInput');
+const linkInput = document.getElementById('linkInput');
 const linkDropdown = document.getElementById('linkDropdown');
-
-linkInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    const val = linkInput.value.trim();
-    if (!val) return;
-    if (!links.includes(val)) {
-      links.push(val);
-    }
-    linkInput.value = '';
-    renderLinks();
-    updatePreview();
-  }
-});
 
 function renderLinks() {
   linkDropdown.innerHTML = links.map((l, i) => `
@@ -667,28 +574,224 @@ function removeLink(i) {
   updatePreview();
 }
 
+linkInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const val = linkInput.value.trim();
+    if (!val) return;
+    if (!links.includes(val)) links.push(val);
+    linkInput.value = '';
+    renderLinks();
+    updatePreview();
+  }
+});
+
+// ========== EXTRAIR LINKS DO EDITOR ==========
+function extractLinksFromEditor() {
+  const text = editor.innerText.replace(/\u200B/g, '');
+  EMBED_URL_REGEX.lastIndex = 0;
+  const matches = text.match(EMBED_URL_REGEX);
+  if (!matches) return;
+  matches.forEach(link => {
+    if (!links.includes(link)) links.push(link);
+  });
+  renderLinks();
+}
+
+// ========== EDITOR E PREVIEW ==========
+const editor = document.getElementById('msgEditor');
+const previewMsg = document.getElementById('previewMsg');
+const previewTime = document.getElementById('previewTime');
+
 previewTime.textContent = getChanTime();
 setInterval(() => { previewTime.textContent = getChanTime(); }, 1000);
 
+const suppressedEmbeds = new Set();
+
+function updatePreview() {
+  const text = editor.innerText.replace(/\u200B/g, '').trim();
+  const hasImg = !!editor.querySelector('img');
+  const editorText = editor.innerText.replace(/\u200B/g, '');
+  const allEmbeds = detectEmbeds(editorText + '\n' + links.join('\n'));
+  const visibleEmbeds = allEmbeds.filter(e => !suppressedEmbeds.has(e.url));
+  document.getElementById('removeEmbedBtn').style.display = visibleEmbeds.length ? 'inline-block' : 'none';
+  if (text || hasImg) {
+    const msgHTML = buildPreviewHTML(editor.innerHTML);
+    const embedsHTML = buildEmbedPreviewHTML(visibleEmbeds);
+    previewMsg.innerHTML = msgHTML + embedsHTML;
+  } else {
+    previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
+  }
+}
+
+function buildPreviewHTML(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html.replace(/\u200B/g, '');
+  tmp.querySelectorAll('.link-span').forEach(span => {
+    const a = document.createElement('a');
+    a.href = span.textContent;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.style.color = '#0055cc';
+    a.textContent = span.textContent;
+    span.parentNode.replaceChild(a, span);
+  });
+  tmp.querySelectorAll('img').forEach(img => {
+    img.removeAttribute('style');
+    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
+  });
+  tmp.querySelectorAll('.pic-specs').forEach(el => {
+    el.removeAttribute('contenteditable');
+    el.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;clear:both;';
+  });
+  return tmp.innerHTML;
+}
+
+function buildEmailHTML(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html.replace(/\u200B/g, '');
+  tmp.querySelectorAll('.link-span').forEach(span => {
+    const a = document.createElement('a');
+    a.href = span.textContent;
+    a.style.color = '#0055cc';
+    a.textContent = span.textContent;
+    span.parentNode.replaceChild(a, span);
+  });
+  const img = tmp.querySelector('img');
+  const specs = tmp.querySelector('.pic-specs');
+  let bodyHTML;
+  if (img) {
+    const specsHTML = specs ? `<div style="font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 4px;display:block;">${escapeHtml(specs.textContent)}</div>` : '';
+    if (specs) specs.remove();
+    img.remove();
+    const textHTML = tmp.innerHTML.trim();
+    bodyHTML = `${specsHTML}<table role="presentation" style="border-collapse:collapse;margin:0;"><tr><td style="vertical-align:top;padding-right:10px;"><img src="${escapeAttr(img.src)}" style="max-width:200px;max-height:200px;border:1px solid #ccc;display:block;"></td><td style="vertical-align:top;font-size:13px;line-height:1.6;">${textHTML || '&nbsp;'}</td></tr></table>`;
+  } else {
+    bodyHTML = tmp.innerHTML;
+  }
+  return bodyHTML;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escapeAttr(str) {
+  return str.replace(/"/g, '&quot;');
+}
+
+// ========== IMAGEM ==========
+function truncateFileName(name, maxLen) {
+  if (name.length <= maxLen) return name;
+  const ext = name.includes('.') ? name.slice(name.lastIndexOf('.')) : '';
+  const base = name.slice(0, name.lastIndexOf('.'));
+  const allowed = maxLen - ext.length - 3;
+  if (allowed <= 0) return name.slice(0, maxLen - 3) + '...';
+  return base.slice(0, allowed) + '...' + ext;
+}
+
+async function uploadToCloudinary(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', UPLOAD_PRESET);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method:'POST', body:fd });
+  const data = await res.json();
+  if (!data.secure_url) throw new Error('upload failed');
+  return data.secure_url;
+}
+
+async function insertImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const status = document.getElementById('statusMsg');
+  const fileDisplay = document.getElementById('fileNameDisplay');
+  const removeBtn = document.getElementById('removeBtn');
+  const fileName = file.name;
+  const fileSizeKB = (file.size / 1024).toFixed(1);
+  if (file.size > 400 * 1024) {
+    status.textContent = 'Image too large (max 400 KB).';
+    status.className = 'err';
+    event.target.value = '';
+    return;
+  }
+  status.textContent = 'Uploading...';
+  status.className = '';
+  const tmpURL = URL.createObjectURL(file);
+  const tmpImg = new Image();
+  tmpImg.src = tmpURL;
+  await new Promise(res => { tmpImg.onload = res; tmpImg.onerror = res; });
+  const w = tmpImg.naturalWidth, h = tmpImg.naturalHeight;
+  URL.revokeObjectURL(tmpURL);
+  const existingText = editor.innerText.replace(/\u200B/g, '').trim();
+  try {
+    const imgUrl = await uploadToCloudinary(file);
+    const specs = document.createElement('div');
+    specs.className = 'pic-specs';
+    specs.contentEditable = 'false';
+    specs.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;cursor:default;clear:both;';
+    specs.textContent = `File: ${fileName} (${fileSizeKB} KB, ${w}×${h})`;
+    const img = document.createElement('img');
+    img.src = imgUrl;
+    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
+    const textNode = document.createTextNode(existingText || '\u200B');
+    editor.innerHTML = '';
+    editor.appendChild(specs);
+    editor.appendChild(img);
+    editor.appendChild(textNode);
+    editor.focus();
+    const range = document.createRange();
+    range.setStart(textNode, textNode.length);
+    range.collapse(true);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    fileDisplay.textContent = truncateFileName(fileName, 22);
+    removeBtn.style.display = 'inline-block';
+    status.textContent = 'Image uploaded!';
+    status.className = 'ok';
+  } catch (err) {
+    status.textContent = 'Upload failed.';
+    status.className = 'err';
+    console.error(err);
+  }
+  event.target.value = '';
+  highlightLinks();
+  updatePreview();
+}
+
+function removeAttachment() {
+  editor.querySelectorAll('img').forEach(el => el.remove());
+  editor.querySelectorAll('.pic-specs').forEach(el => el.remove());
+  document.getElementById('fileNameDisplay').textContent = 'No file chosen';
+  document.getElementById('removeBtn').style.display = 'none';
+  document.getElementById('statusMsg').textContent = '';
+  document.getElementById('statusMsg').className = '';
+  editor.innerHTML = editor.innerHTML.replace(/\u200B/g, '');
+  highlightLinks();
+  updatePreview();
+  editor.focus();
+}
+
+function removeEmbeds() {
+  const text = editor.innerText.replace(/\u200B/g, '').trim();
+  const embeds = detectEmbeds(text + '\n' + links.join('\n'));
+  embeds.forEach(e => { if (!suppressedEmbeds.has(e.url)) suppressedEmbeds.add(e.url); });
+  document.getElementById('removeEmbedBtn').style.display = 'none';
+  updatePreview();
+  editor.focus();
+}
+
+// ========== EVENTOS DO EDITOR ==========
 editor.addEventListener('input', () => {
   suppressedEmbeds.clear();
   extractLinksFromEditor();
   highlightLinks();
   updatePreview();
 });
-
 editor.addEventListener('paste', (e) => {
   e.preventDefault();
   const text = e.clipboardData.getData('text/plain');
-  if (text) {
-    document.execCommand('insertText', false, text);
-  }
+  if (text) document.execCommand('insertText', false, text);
 });
-
-editor.addEventListener('dragstart', (e) => {
-  if (e.target.tagName === 'IMG') e.preventDefault();
-});
-
+editor.addEventListener('dragstart', (e) => { if (e.target.tagName === 'IMG') e.preventDefault(); });
 editor.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
     const img = editor.querySelector('img');
@@ -696,28 +799,21 @@ editor.addEventListener('keydown', (e) => {
       e.preventDefault();
       const sel = window.getSelection();
       sel.removeAllRanges();
-
       const textNodes = [];
-      function collectTextNodes(node) {
-        if (node.nodeType === Node.TEXT_NODE) {
-          textNodes.push(node);
-        } else if (node.tagName !== 'IMG' && !(node.classList && node.classList.contains('pic-specs'))) {
-          for (const child of node.childNodes) collectTextNodes(child);
-        }
+      function collect(n) {
+        if (n.nodeType === Node.TEXT_NODE) textNodes.push(n);
+        else if (n.tagName !== 'IMG' && !(n.classList && n.classList.contains('pic-specs'))) for (const c of n.childNodes) collect(c);
       }
-      collectTextNodes(editor);
-
-      if (textNodes.length > 0) {
+      collect(editor);
+      if (textNodes.length) {
         const range = document.createRange();
         range.setStart(textNodes[0], 0);
-        const last = textNodes[textNodes.length - 1];
-        range.setEnd(last, last.textContent.length);
+        range.setEnd(textNodes[textNodes.length-1], textNodes[textNodes.length-1].textContent.length);
         sel.addRange(range);
       }
       return;
     }
   }
-
   if (e.key === 'Enter') {
     e.preventDefault();
     const sel = window.getSelection();
@@ -730,10 +826,8 @@ editor.addEventListener('keydown', (e) => {
     range.setEndAfter(br);
     sel.removeAllRanges();
     sel.addRange(range);
-    return;
   }
 });
-
 editor.addEventListener('click', () => {
   const img = editor.querySelector('img');
   if (!img) return;
@@ -741,16 +835,13 @@ editor.addEventListener('click', () => {
     const sel = window.getSelection();
     if (!sel || !sel.rangeCount) return;
     const range = sel.getRangeAt(0);
-
     let isBefore = false;
     if (range.startContainer === editor) {
       const imgIdx = Array.from(editor.childNodes).indexOf(img);
       isBefore = range.startOffset <= imgIdx;
     } else {
-      const pos = img.compareDocumentPosition(range.startContainer);
-      isBefore = !!(pos & Node.DOCUMENT_POSITION_PRECEDING);
+      isBefore = !!(img.compareDocumentPosition(range.startContainer) & Node.DOCUMENT_POSITION_PRECEDING);
     }
-
     if (isBefore) {
       let node = img.nextSibling;
       while (node && node.nodeType !== Node.TEXT_NODE) node = node.nextSibling;
@@ -767,293 +858,43 @@ editor.addEventListener('click', () => {
   });
 });
 
-const suppressedEmbeds = new Set();
-
-function updatePreview() {
-  const text   = editor.innerText.replace(/\u200B/g, '').trim();
-  const hasImg = !!editor.querySelector('img');
-  const editorText = editor.innerText.replace(/\u200B/g, '');
-  const allEmbeds  = detectEmbeds(editorText + '\n' + links.join('\n'));
-  const visibleEmbeds = allEmbeds.filter(e => !suppressedEmbeds.has(e.url));
-
-  document.getElementById('removeEmbedBtn').style.display =
-    visibleEmbeds.length ? 'inline-block' : 'none';
-
-  if (text || hasImg) {
-    const msgHTML    = buildPreviewHTML(editor.innerHTML);
-    const embedsHTML = buildEmbedPreviewHTML(visibleEmbeds);
-    previewMsg.innerHTML = msgHTML + embedsHTML;
-  } else {
-    previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
-  }
-}
-
-function buildPreviewHTML(html) {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html.replace(/\u200B/g, '');
-
-  tmp.querySelectorAll('.link-span').forEach(span => {
-    const a = document.createElement('a');
-    a.href = span.textContent;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    a.style.color = '#0055cc';
-    a.textContent = span.textContent;
-    span.parentNode.replaceChild(a, span);
-  });
-
-  tmp.querySelectorAll('img').forEach(img => {
-    img.removeAttribute('style');
-    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
-  });
-  tmp.querySelectorAll('.pic-specs').forEach(el => {
-    el.removeAttribute('contenteditable');
-    el.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;clear:both;';
-  });
-
-  return tmp.innerHTML;
-}
-
-function buildEmailHTML(html) {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html.replace(/\u200B/g, '');
-
-  tmp.querySelectorAll('.link-span').forEach(span => {
-    const a = document.createElement('a');
-    a.href = span.textContent;
-    a.style.color = '#0055cc';
-    a.textContent = span.textContent;
-    span.parentNode.replaceChild(a, span);
-  });
-
-  const img   = tmp.querySelector('img');
-  const specs = tmp.querySelector('.pic-specs');
-
-  let bodyHTML;
-  if (img) {
-    const specsHTML = specs
-      ? `<div style="font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 4px;display:block;">${escapeHtml(specs.textContent)}</div>`
-      : '';
-    if (specs) specs.remove();
-    img.remove();
-    const textHTML = tmp.innerHTML.trim();
-
-    bodyHTML = `${specsHTML}` +
-      `<table role="presentation" style="border-collapse:collapse;margin:0;">` +
-        `<tr>` +
-          `<td style="vertical-align:top;padding-right:10px;">` +
-            `<img src="${escapeAttr(img.src)}" style="max-width:200px;max-height:200px;border:1px solid #ccc;display:block;">` +
-          `</td>` +
-          `<td style="vertical-align:top;font-size:13px;line-height:1.6;">` +
-            `${textHTML || '&nbsp;'}` +
-          `</td>` +
-        `</tr>` +
-      `</table>`;
-  } else {
-    bodyHTML = tmp.innerHTML;
-  }
-
-  return bodyHTML;
-}
-
-function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-function escapeAttr(str) {
-  return str.replace(/"/g, '&quot;');
-}
-
-function truncateFileName(name, maxLen) {
-  if (name.length <= maxLen) return name;
-  const ext = name.includes('.') ? name.slice(name.lastIndexOf('.')) : '';
-  const base = name.slice(0, name.lastIndexOf('.'));
-  const allowed = maxLen - ext.length - 3;
-  if (allowed <= 0) return name.slice(0, maxLen - 3) + '...';
-  return base.slice(0, allowed) + '...' + ext;
-}
-
-async function uploadToCloudinary(file) {
-  const fd = new FormData();
-  fd.append('file', file);
-  fd.append('upload_preset', UPLOAD_PRESET);
-  const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method:'POST', body:fd });
-  const data = await res.json();
-  if (!data.secure_url) throw new Error('upload failed');
-  return data.secure_url;
-}
-
-async function insertImage(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const status      = document.getElementById('statusMsg');
-  const fileDisplay = document.getElementById('fileNameDisplay');
-  const removeBtn   = document.getElementById('removeBtn');
-  const fileName    = file.name;
-  const fileSizeKB  = (file.size / 1024).toFixed(1);
-
-  if (file.size > 400 * 1024) {
-    status.textContent = 'Image too large (max 400 KB).';
-    status.className   = 'err';
-    event.target.value = '';
-    return;
-  }
-
-  status.textContent = 'Uploading...';
-  status.className   = '';
-
-  const tmpURL = URL.createObjectURL(file);
-  const tmpImg = new Image();
-  tmpImg.src   = tmpURL;
-  await new Promise(res => { tmpImg.onload = res; tmpImg.onerror = res; });
-  const w = tmpImg.naturalWidth;
-  const h = tmpImg.naturalHeight;
-  URL.revokeObjectURL(tmpURL);
-
-  const existingText = editor.innerText.replace(/\u200B/g, '').trim();
-
-  try {
-    const imgUrl = await uploadToCloudinary(file);
-
-    const specs = document.createElement('div');
-    specs.className       = 'pic-specs';
-    specs.contentEditable = 'false';
-    specs.style.cssText   = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;cursor:default;clear:both;';
-    specs.textContent     = `File: ${fileName} (${fileSizeKB} KB, ${w}×${h})`;
-
-    const img = document.createElement('img');
-    img.src           = imgUrl;
-    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
-
-    const textNode = document.createTextNode(existingText || '\u200B');
-
-    editor.innerHTML = '';
-    editor.appendChild(specs);
-    editor.appendChild(img);
-    editor.appendChild(textNode);
-
-    editor.focus();
-    const range = document.createRange();
-    range.setStart(textNode, textNode.length);
-    range.collapse(true);
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-
-    fileDisplay.textContent = truncateFileName(fileName, 22);
-    removeBtn.style.display = 'inline-block';
-    status.textContent = 'Image uploaded!';
-    status.className   = 'ok';
-
-  } catch (err) {
-    status.textContent = 'Upload failed.';
-    status.className   = 'err';
-    console.error(err);
-  }
-
-  event.target.value = '';
-  highlightLinks();
-  updatePreview();
-}
-
-function removeAttachment() {
-  editor.querySelectorAll('img').forEach(el => el.remove());
-  editor.querySelectorAll('.pic-specs').forEach(el => el.remove());
-
-  document.getElementById('fileNameDisplay').textContent = 'No file chosen';
-  document.getElementById('removeBtn').style.display    = 'none';
-  document.getElementById('statusMsg').textContent      = '';
-  document.getElementById('statusMsg').className        = '';
-
-  editor.innerHTML = editor.innerHTML.replace(/\u200B/g, '');
-
-  highlightLinks();
-  updatePreview();
-  editor.focus();
-}
-
-function removeEmbeds() {
-  const text   = editor.innerText.replace(/\u200B/g, '').trim();
-  const embeds = detectEmbeds(text + '\n' + links.join('\n'));
-
-  embeds.forEach(e => {
-    if (!suppressedEmbeds.has(e.url)) suppressedEmbeds.add(e.url);
-  });
-
-  document.getElementById('removeEmbedBtn').style.display = 'none';
-  updatePreview();
-  editor.focus();
-}
-
-// ============================================================
-// FUNÇÃO DE ENVIO USANDO FORMSUBMIT COM TEMPLATE PERSONALIZADO
-// ============================================================
+// ========== ENVIO VIA FORMSUBMIT (SEM EMAILJS) ==========
 async function sendMsg() {
   const rawText = editor.innerText.replace(/\u200B/g, '').trim();
-  const hasImg  = !!editor.querySelector('img');
-  const status  = document.getElementById('statusMsg');
-  const btn     = document.getElementById('sendBtn');
-
+  const hasImg = !!editor.querySelector('img');
+  const status = document.getElementById('statusMsg');
+  const btn = document.getElementById('sendBtn');
   if (!rawText && !hasImg) {
     status.textContent = 'Write something first.';
-    status.className   = 'err';
+    status.className = 'err';
     return;
   }
-
   if (btn.disabled) return;
   btn.disabled = true;
-  status.className   = '';
+  status.className = '';
   status.textContent = 'Sending...';
-
-  const timeStr      = getChanTime();
-  const postNumber   = getPostNumber();
-  const bodyHTML     = buildEmailHTML(editor.innerHTML);  // mensagem + imagem
-  const allEmbeds    = detectEmbeds(rawText + '\n' + links.join('\n'));
-  const embedsHTML   = buildEmbedEmailHTML(allEmbeds);
-
-  // Monta o HTML do e-mail usando EXATAMENTE o template fornecido
+  const timeStr = getChanTime();
+  const postNumber = getPostNumber();
+  const bodyHTML = buildEmailHTML(editor.innerHTML);
+  const allEmbeds = detectEmbeds(rawText + '\n' + links.join('\n'));
+  const embedsHTML = buildEmbedEmailHTML(allEmbeds);
   const emailHTML = `
 <div style="font-family: system-ui, Arial, sans-serif; font-size: 13px; color:#111;">
-
-  <div style="margin-bottom:10px;">
-    An anonymous message has been received. Kindly respond at your earliest convenience.
-  </div>
-
-  <div style="margin-top: 5px; color: #888; font-size: 12px;">
-    Source: watanagashiarchive.vercel.app/contact
-  </div>
-
+  <div style="margin-bottom:10px;">An anonymous message has been received. Kindly respond at your earliest convenience.</div>
+  <div style="margin-top: 5px; color: #888; font-size: 12px;">Source: watanagashiarchive.vercel.app/contact</div>
   <div style="margin-top: 20px; padding: 15px 0; border-top:1px dashed lightgrey; border-bottom:1px dashed lightgrey;">
-
     <table role="presentation" style="border-collapse: collapse; width:100%;">
       <tr>
         <td style="vertical-align: top;">
-
-          <div style="color: #2c3e50; font-size: 15px;">
-            <strong>Anonymous</strong>
-          </div>
-
-          <div style="color:#aaa; font-size:12px;">
-            ${escapeHtml(timeStr)} • No.${postNumber}
-          </div>
-
-          <div style="font-size: 14px; margin-top: 6px; line-height: 1.6;">
-            ${bodyHTML}
-          </div>
-
-          <div style="margin-top:12px;">
-            ${embedsHTML}
-          </div>
-
+          <div style="color: #2c3e50; font-size: 15px;"><strong>Anonymous</strong></div>
+          <div style="color:#aaa; font-size:12px;">${escapeHtml(timeStr)} • No.${postNumber}</div>
+          <div style="font-size: 14px; margin-top: 6px; line-height: 1.6;">${bodyHTML}</div>
+          <div style="margin-top:12px;">${embedsHTML}</div>
         </td>
       </tr>
     </table>
-
   </div>
-
-</div>
-  `;
-
+</div>`;
   try {
     const response = await fetch('https://formsubmit.co/ajax/' + SEU_EMAIL, {
       method: 'POST',
@@ -1067,18 +908,15 @@ async function sendMsg() {
         html: emailHTML
       })
     });
-
     if (response.ok) {
       status.textContent = 'Post sent!';
-      status.className   = 'ok';
-
-      // Limpa o formulário
-      editor.innerHTML     = '';
+      status.className = 'ok';
+      editor.innerHTML = '';
       previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
       links.length = 0;
       renderLinks();
       document.getElementById('fileNameDisplay').textContent = 'No file chosen';
-      document.getElementById('removeBtn').style.display     = 'none';
+      document.getElementById('removeBtn').style.display = 'none';
       document.getElementById('removeEmbedBtn').style.display = 'none';
       suppressedEmbeds.clear();
     } else {
@@ -1087,14 +925,12 @@ async function sendMsg() {
     }
   } catch (err) {
     status.textContent = 'Failed — ' + err.message;
-    status.className   = 'err';
+    status.className = 'err';
     console.error(err);
   }
-
   btn.disabled = false;
 }
 
-// aAtribui o evento ao botão
 document.getElementById('sendBtn').onclick = sendMsg;
 </script>
 </body>
