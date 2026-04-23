@@ -19,10 +19,29 @@
   --editor-h: 120px;
 }
 
-::-webkit-scrollbar { width: 7px; height: 4px; }
-::-webkit-scrollbar-track { background: #3d3d3d54; }
-::-webkit-scrollbar-thumb { background: #d3d3d3; border: 2px ridge #b0b0b0; border-radius: 0; }
-::-webkit-scrollbar-thumb:hover { background: #c0c0c0; }
+
+/* 1. Largura da barra */
+::-webkit-scrollbar {
+  width: 7px; /* Um pouco mais larga para destacar a borda ridge */
+  height: 4px; /* Para barras horizontais */
+}
+
+/* 2. O trilho (fundo da barra) */
+::-webkit-scrollbar-track {
+  background: #3d3d3d54; /* Cinza bem clarinho */
+}
+
+/* 3. O polegar (parte que arrasta) */
+::-webkit-scrollbar-thumb {
+  background: #d3d3d3; /* Cinza claro */
+  border: 2px ridge #b0b0b0; /* Borda ridge no polegar */
+  border-radius: 0; /* Garante que fique quadrada */
+}
+
+/* 4. Efeito ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+  background: #c0c0c0;
+}
 
 body {
   font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
@@ -291,7 +310,6 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
     <table class="chan-outer">
       <tbody>
 
-        <!-- Name -->
         <tr>
           <td class="chan-label">Name</td>
           <td class="chan-field">
@@ -299,49 +317,33 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
           </td>
         </tr>
 
-        <!-- Post button row -->
         <tr>
           <td class="chan-label"></td>
           <td class="chan-field">
             <div class="post-row-inner">
-              <button class="chan-post-btn" id="sendBtn">Post</button>
+              <button class="chan-post-btn" id="sendBtn" onclick="sendMsg()">Post</button>
               <div id="statusMsg"></div>
             </div>
           </td>
         </tr>
 
-        <!-- Content -->
         <tr>
           <td class="chan-label" style="vertical-align:top; padding-top:6px;">Content</td>
           <td class="chan-field">
-            <div
-              id="msgEditor"
-              contenteditable="true"
-              data-placeholder=""
-              spellcheck="true"
-            ></div>
+            <div id="msgEditor" contenteditable="true" data-placeholder="" spellcheck="true"></div>
           </td>
         </tr>
 
-        <!-- Links -->
         <tr>
           <td class="chan-label">Links</td>
           <td class="chan-field">
             <div style="display:flex; flex-direction:column; gap:6px;">
               <input id="linkInput" class="chan-input" type="text" placeholder="paste youtube / spotify / soundcloud link">
-              <div id="linkDropdown" style="
-                background:#fff;
-                border:1px inset #aaa;
-                max-height:90px;
-                overflow-y:auto;
-                font-size:12px;
-                padding:4px;
-              "></div>
+              <div id="linkDropdown" style="background:#fff;border:1px inset #aaa;max-height:90px;overflow-y:auto;font-size:12px;padding:4px;"></div>
             </div>
           </td>
         </tr>
 
-        <!-- File + embed controls -->
         <tr>
           <td class="chan-label">File</td>
           <td class="chan-field">
@@ -360,9 +362,8 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
     <div class="chan-footer-note">• Please be kind to me.</div>
   </div>
 
-  <!-- PREVIEW -->
   <div id="previewSection">
-    <div id="previewTitle">Preview</div>
+    <div id="previewTitle">Preview </div>
     <div id="previewBody">
       <div style="color:#777;font-size:11px;margin-bottom:8px;">
         anonymous message — watanagashiarchive.vercel.app/contact
@@ -383,9 +384,6 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 </div>
 
 <script>
-// ============================================================
-// CONFIG
-// ============================================================
 emailjs.init({ publicKey: 'iww-r-sgJVyoRmokf' });
 
 const CLOUD_NAME    = 'dagsxkazw';
@@ -393,9 +391,9 @@ const UPLOAD_PRESET = 'unsigned_upload';
 const SERVICE_ID    = 'service_ina2cb8';
 const TEMPLATE_ID   = 'template_g7owumb';
 
-// ============================================================
-// HELPERS
-// ============================================================
+// ─────────────────────────────────────────────
+// TIME
+// ─────────────────────────────────────────────
 function getChanTime() {
   const now  = new Date();
   const mm   = String(now.getMonth() + 1).padStart(2, '0');
@@ -409,20 +407,9 @@ function getChanTime() {
   return `${mm}/${dd}/${yy}(${day})${hh}:${min}:${ss}`;
 }
 
-function getPostNumber() {
-  return Math.floor(Math.random() * 900000) + 100000;
-}
-
-function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-function escapeAttr(str) {
-  return str.replace(/"/g, '&quot;');
-}
-
-// ============================================================
+// ─────────────────────────────────────────────
 // EMBED DETECTION
-// ============================================================
+// ─────────────────────────────────────────────
 const embedPatterns = [
   {
     name: 'youtube',
@@ -450,9 +437,7 @@ function detectEmbeds(text) {
     let m;
     while ((m = pat.regex.exec(text)) !== null) {
       const built = pat.build(m);
-      if (!found.some(e => e.url === built.url)) {
-        found.push({ ...built, name: pat.name });
-      }
+      if (!found.some(e => e.url === built.url)) found.push({ ...built, name: pat.name });
     }
   }
   return found;
@@ -460,22 +445,24 @@ function detectEmbeds(text) {
 
 function buildEmbedPreviewHTML(embeds) {
   if (!embeds.length) return '';
-  return embeds.map(e => `<div class="embed-wrap"><iframe src="${escapeAttr(e.iframeSrc)}" width="${e.width}" height="${e.height}" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="border-radius:0;border:1px solid #ccc;display:block;"></iframe></div>`).join('');
+  return embeds.map(e =>
+    `<div class="embed-wrap"><iframe src="${escapeAttr(e.iframeSrc)}" width="${e.width}" height="${e.height}" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="border-radius:0;border:1px solid #ccc;display:block;"></iframe></div>`
+  ).join('');
 }
 
 function buildEmbedEmailHTML(embeds) {
   if (!embeds.length) return '';
   return embeds.map(e => {
     if (e.name === 'youtube') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank"><img src="https://img.youtube.com/vi/${e.id}/hqdefault.jpg" style="max-width:300px;display:block;border:1px solid #ccc;"></a><div style="font-size:11px;color:#666;">YouTube</div></div>`;
-    if (e.name === 'spotify') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank" style="color:#1DB954;">▶ Open on Spotify</a></div>`;
-    if (e.name === 'soundcloud') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank" style="color:#ff5500;">▶ Open on SoundCloud</a></div>`;
+    if (e.name === 'spotify') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank" style="color:#1DB954;">&#9654; Open on Spotify</a></div>`;
+    if (e.name === 'soundcloud') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank" style="color:#ff5500;">&#9654; Open on SoundCloud</a></div>`;
     return '';
   }).join('');
 }
 
-// ============================================================
+// ─────────────────────────────────────────────
 // LINK HIGHLIGHTING
-// ============================================================
+// ─────────────────────────────────────────────
 function getCaretCharOffset(el) {
   const sel = window.getSelection();
   if (!sel || !sel.rangeCount) return 0;
@@ -505,7 +492,7 @@ function setCaretByOffset(el, offset) {
       }
       pos += len;
     } else {
-      for (const child of node.childNodes) walk(child);
+      for (const child of node.childNodes) { walk(child); if (found) return; }
     }
   }
   walk(el);
@@ -564,17 +551,34 @@ function highlightLinks() {
   setCaretByOffset(editor, caretOffset);
 }
 
-// ============================================================
-// LINKS MANUAIS
-// ============================================================
-const links = [];
-const linkInput = document.getElementById('linkInput');
+// ─────────────────────────────────────────────
+// ESTADO GLOBAL
+// ─────────────────────────────────────────────
+const editor         = document.getElementById('msgEditor');
+const previewMsg     = document.getElementById('previewMsg');
+const previewTime    = document.getElementById('previewTime');
+const links          = [];
+const suppressedEmbeds = new Set();
+
+const linkInput    = document.getElementById('linkInput');
 const linkDropdown = document.getElementById('linkDropdown');
+
+// ─────────────────────────────────────────────
+// LINKS
+// ─────────────────────────────────────────────
+function extractLinksFromEditor() {
+  const text = editor.innerText.replace(/\u200B/g, '');
+  EMBED_URL_REGEX.lastIndex = 0;
+  const matches = text.match(EMBED_URL_REGEX);
+  if (!matches) return;
+  matches.forEach(link => { if (!links.includes(link)) links.push(link); });
+  renderLinks();
+}
 
 function renderLinks() {
   linkDropdown.innerHTML = links.map((l, i) => `
     <div style="display:flex;justify-content:space-between;gap:6px;margin-bottom:3px;">
-      <span style="color:#0055cc;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(l)}</span>
+      <span style="color:#0055cc;overflow:hidden;text-overflow:ellipsis;">${l}</span>
       <button onclick="removeLink(${i})" style="color:red;background:none;border:none;cursor:pointer;">x</button>
     </div>
   `).join('');
@@ -598,209 +602,29 @@ linkInput.addEventListener('keydown', (e) => {
   }
 });
 
-function extractLinksFromEditor() {
-  const text = editor.innerText.replace(/\u200B/g, '');
-  EMBED_URL_REGEX.lastIndex = 0;
-  const matches = text.match(EMBED_URL_REGEX);
-  if (!matches) return;
-  matches.forEach(link => {
-    if (!links.includes(link)) links.push(link);
-  });
-  renderLinks();
-}
-
-// ============================================================
-// EDITOR & PREVIEW
-// ============================================================
-const editor = document.getElementById('msgEditor');
-const previewMsg = document.getElementById('previewMsg');
-const previewTime = document.getElementById('previewTime');
-const suppressedEmbeds = new Set();
-
+// ─────────────────────────────────────────────
+// EDITOR EVENTS
+// ─────────────────────────────────────────────
 previewTime.textContent = getChanTime();
 setInterval(() => { previewTime.textContent = getChanTime(); }, 1000);
 
-function updatePreview() {
-  const text = editor.innerText.replace(/\u200B/g, '').trim();
-  const hasImg = !!editor.querySelector('img');
-  const editorText = editor.innerText.replace(/\u200B/g, '');
-  const allEmbeds = detectEmbeds(editorText + '\n' + links.join('\n'));
-  const visibleEmbeds = allEmbeds.filter(e => !suppressedEmbeds.has(e.url));
-  document.getElementById('removeEmbedBtn').style.display = visibleEmbeds.length ? 'inline-block' : 'none';
-  if (text || hasImg) {
-    const msgHTML = buildPreviewHTML(editor.innerHTML);
-    const embedsHTML = buildEmbedPreviewHTML(visibleEmbeds);
-    previewMsg.innerHTML = msgHTML + embedsHTML;
-  } else {
-    previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
-  }
-}
-
-function buildPreviewHTML(html) {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html.replace(/\u200B/g, '');
-  tmp.querySelectorAll('.link-span').forEach(span => {
-    const a = document.createElement('a');
-    a.href = span.textContent;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    a.style.color = '#0055cc';
-    a.textContent = span.textContent;
-    span.parentNode.replaceChild(a, span);
-  });
-  tmp.querySelectorAll('img').forEach(img => {
-    img.removeAttribute('style');
-    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
-  });
-  tmp.querySelectorAll('.pic-specs').forEach(el => {
-    el.removeAttribute('contenteditable');
-    el.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;clear:both;';
-  });
-  return tmp.innerHTML;
-}
-
-function buildEmailHTML(html) {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html.replace(/\u200B/g, '');
-  tmp.querySelectorAll('.link-span').forEach(span => {
-    const a = document.createElement('a');
-    a.href = span.textContent;
-    a.style.color = '#0055cc';
-    a.textContent = span.textContent;
-    span.parentNode.replaceChild(a, span);
-  });
-  const img = tmp.querySelector('img');
-  const specs = tmp.querySelector('.pic-specs');
-  let bodyHTML;
-  if (img) {
-    const specsHTML = specs ? `<div style="font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 4px;display:block;">${escapeHtml(specs.textContent)}</div>` : '';
-    if (specs) specs.remove();
-    img.remove();
-    const textHTML = tmp.innerHTML.trim();
-    bodyHTML = `${specsHTML}<table role="presentation" style="border-collapse:collapse;margin:0;"><tr><td style="vertical-align:top;padding-right:10px;"><img src="${escapeAttr(img.src)}" style="max-width:200px;max-height:200px;border:1px solid #ccc;display:block;"></td><td style="vertical-align:top;font-size:13px;line-height:1.6;">${textHTML || '&nbsp;'}</td></tr></table>`;
-  } else {
-    bodyHTML = tmp.innerHTML;
-  }
-  return bodyHTML;
-}
-
-// ============================================================
-// IMAGE
-// ============================================================
-function truncateFileName(name, maxLen) {
-  if (name.length <= maxLen) return name;
-  const ext = name.includes('.') ? name.slice(name.lastIndexOf('.')) : '';
-  const base = name.slice(0, name.lastIndexOf('.'));
-  const allowed = maxLen - ext.length - 3;
-  if (allowed <= 0) return name.slice(0, maxLen - 3) + '...';
-  return base.slice(0, allowed) + '...' + ext;
-}
-
-async function uploadToCloudinary(file) {
-  const fd = new FormData();
-  fd.append('file', file);
-  fd.append('upload_preset', UPLOAD_PRESET);
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method:'POST', body:fd });
-  const data = await res.json();
-  if (!data.secure_url) throw new Error('upload failed');
-  return data.secure_url;
-}
-
-async function insertImage(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const status = document.getElementById('statusMsg');
-  const fileDisplay = document.getElementById('fileNameDisplay');
-  const removeBtn = document.getElementById('removeBtn');
-  const fileName = file.name;
-  const fileSizeKB = (file.size / 1024).toFixed(1);
-  if (file.size > 400 * 1024) {
-    status.textContent = 'Image too large (max 400 KB).';
-    status.className = 'err';
-    event.target.value = '';
-    return;
-  }
-  status.textContent = 'Uploading...';
-  status.className = '';
-  const tmpURL = URL.createObjectURL(file);
-  const tmpImg = new Image();
-  tmpImg.src = tmpURL;
-  await new Promise(res => { tmpImg.onload = res; tmpImg.onerror = res; });
-  const w = tmpImg.naturalWidth, h = tmpImg.naturalHeight;
-  URL.revokeObjectURL(tmpURL);
-  const existingText = editor.innerText.replace(/\u200B/g, '').trim();
-  try {
-    const imgUrl = await uploadToCloudinary(file);
-    const specs = document.createElement('div');
-    specs.className = 'pic-specs';
-    specs.contentEditable = 'false';
-    specs.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;cursor:default;clear:both;';
-    specs.textContent = `File: ${fileName} (${fileSizeKB} KB, ${w}×${h})`;
-    const img = document.createElement('img');
-    img.src = imgUrl;
-    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
-    const textNode = document.createTextNode(existingText || '\u200B');
-    editor.innerHTML = '';
-    editor.appendChild(specs);
-    editor.appendChild(img);
-    editor.appendChild(textNode);
-    editor.focus();
-    const range = document.createRange();
-    range.setStart(textNode, textNode.length);
-    range.collapse(true);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-    fileDisplay.textContent = truncateFileName(fileName, 22);
-    removeBtn.style.display = 'inline-block';
-    status.textContent = 'Image uploaded!';
-    status.className = 'ok';
-  } catch (err) {
-    status.textContent = 'Upload failed.';
-    status.className = 'err';
-    console.error(err);
-  }
-  event.target.value = '';
-  highlightLinks();
-  updatePreview();
-}
-
-function removeAttachment() {
-  editor.querySelectorAll('img').forEach(el => el.remove());
-  editor.querySelectorAll('.pic-specs').forEach(el => el.remove());
-  document.getElementById('fileNameDisplay').textContent = 'No file chosen';
-  document.getElementById('removeBtn').style.display = 'none';
-  document.getElementById('statusMsg').textContent = '';
-  document.getElementById('statusMsg').className = '';
-  editor.innerHTML = editor.innerHTML.replace(/\u200B/g, '');
-  highlightLinks();
-  updatePreview();
-  editor.focus();
-}
-
-function removeEmbeds() {
-  const text = editor.innerText.replace(/\u200B/g, '').trim();
-  const embeds = detectEmbeds(text + '\n' + links.join('\n'));
-  embeds.forEach(e => { if (!suppressedEmbeds.has(e.url)) suppressedEmbeds.add(e.url); });
-  document.getElementById('removeEmbedBtn').style.display = 'none';
-  updatePreview();
-  editor.focus();
-}
-
-// ============================================================
-// EDITOR EVENTS
-// ============================================================
 editor.addEventListener('input', () => {
   suppressedEmbeds.clear();
   extractLinksFromEditor();
   highlightLinks();
   updatePreview();
 });
+
 editor.addEventListener('paste', (e) => {
   e.preventDefault();
   const text = e.clipboardData.getData('text/plain');
   if (text) document.execCommand('insertText', false, text);
 });
-editor.addEventListener('dragstart', (e) => { if (e.target.tagName === 'IMG') e.preventDefault(); });
+
+editor.addEventListener('dragstart', (e) => {
+  if (e.target.tagName === 'IMG') e.preventDefault();
+});
+
 editor.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
     const img = editor.querySelector('img');
@@ -809,15 +633,17 @@ editor.addEventListener('keydown', (e) => {
       const sel = window.getSelection();
       sel.removeAllRanges();
       const textNodes = [];
-      function collect(n) {
-        if (n.nodeType === Node.TEXT_NODE) textNodes.push(n);
-        else if (n.tagName !== 'IMG' && !(n.classList && n.classList.contains('pic-specs'))) for (const c of n.childNodes) collect(c);
+      function collectTextNodes(node) {
+        if (node.nodeType === Node.TEXT_NODE) textNodes.push(node);
+        else if (node.tagName !== 'IMG' && !(node.classList && node.classList.contains('pic-specs')))
+          for (const child of node.childNodes) collectTextNodes(child);
       }
-      collect(editor);
-      if (textNodes.length) {
+      collectTextNodes(editor);
+      if (textNodes.length > 0) {
         const range = document.createRange();
         range.setStart(textNodes[0], 0);
-        range.setEnd(textNodes[textNodes.length-1], textNodes[textNodes.length-1].textContent.length);
+        const last = textNodes[textNodes.length - 1];
+        range.setEnd(last, last.textContent.length);
         sel.addRange(range);
       }
       return;
@@ -837,6 +663,7 @@ editor.addEventListener('keydown', (e) => {
     sel.addRange(range);
   }
 });
+
 editor.addEventListener('click', () => {
   const img = editor.querySelector('img');
   if (!img) return;
@@ -846,18 +673,14 @@ editor.addEventListener('click', () => {
     const range = sel.getRangeAt(0);
     let isBefore = false;
     if (range.startContainer === editor) {
-      const imgIdx = Array.from(editor.childNodes).indexOf(img);
-      isBefore = range.startOffset <= imgIdx;
+      isBefore = range.startOffset <= Array.from(editor.childNodes).indexOf(img);
     } else {
       isBefore = !!(img.compareDocumentPosition(range.startContainer) & Node.DOCUMENT_POSITION_PRECEDING);
     }
     if (isBefore) {
       let node = img.nextSibling;
       while (node && node.nodeType !== Node.TEXT_NODE) node = node.nextSibling;
-      if (!node) {
-        node = document.createTextNode('\u200B');
-        editor.appendChild(node);
-      }
+      if (!node) { node = document.createTextNode('\u200B'); editor.appendChild(node); }
       const newRange = document.createRange();
       newRange.setStart(node, node.length);
       newRange.collapse(true);
@@ -867,9 +690,158 @@ editor.addEventListener('click', () => {
   });
 });
 
-// ============================================================
-// ENVIO — EmailJS
-// ============================================================
+// ─────────────────────────────────────────────
+// PREVIEW
+// ─────────────────────────────────────────────
+function updatePreview() {
+  const text   = editor.innerText.replace(/\u200B/g, '').trim();
+  const hasImg = !!editor.querySelector('img');
+  const allEmbeds = detectEmbeds(editor.innerText.replace(/\u200B/g, '') + '\n' + links.join('\n'));
+  const visibleEmbeds = allEmbeds.filter(e => !suppressedEmbeds.has(e.url));
+  document.getElementById('removeEmbedBtn').style.display = visibleEmbeds.length ? 'inline-block' : 'none';
+  if (text || hasImg) {
+    previewMsg.innerHTML = buildPreviewHTML(editor.innerHTML) + buildEmbedPreviewHTML(visibleEmbeds);
+  } else {
+    previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
+  }
+}
+
+function buildPreviewHTML(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html.replace(/\u200B/g, '');
+  tmp.querySelectorAll('.link-span').forEach(span => {
+    const a = document.createElement('a');
+    a.href = span.textContent; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    a.style.color = '#0055cc'; a.textContent = span.textContent;
+    span.parentNode.replaceChild(a, span);
+  });
+  tmp.querySelectorAll('img').forEach(img => {
+    img.removeAttribute('style');
+    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
+  });
+  tmp.querySelectorAll('.pic-specs').forEach(el => {
+    el.removeAttribute('contenteditable');
+    el.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;clear:both;';
+  });
+  return tmp.innerHTML;
+}
+
+function buildEmailHTML(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html.replace(/\u200B/g, '');
+  tmp.querySelectorAll('.link-span').forEach(span => {
+    const a = document.createElement('a');
+    a.href = span.textContent; a.style.color = '#0055cc'; a.textContent = span.textContent;
+    span.parentNode.replaceChild(a, span);
+  });
+  const img   = tmp.querySelector('img');
+  const specs = tmp.querySelector('.pic-specs');
+  const embedsSection = buildEmbedEmailHTML(detectEmbeds((tmp.innerText || '') + '\n' + links.join('\n')));
+  let bodyHTML;
+  if (img) {
+    const specsHTML = specs ? `<div style="font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 4px;display:block;">${escapeHtml(specs.textContent)}</div>` : '';
+    if (specs) specs.remove();
+    img.remove();
+    const textHTML = tmp.innerHTML.trim();
+    bodyHTML = `${specsHTML}<table role="presentation" style="border-collapse:collapse;margin:0;"><tr><td style="vertical-align:top;padding-right:10px;"><img src="${escapeAttr(img.src)}" style="max-width:200px;max-height:200px;border:1px solid #ccc;display:block;"></td><td style="vertical-align:top;font-size:13px;line-height:1.6;">${textHTML || '&nbsp;'}</td></tr></table>`;
+  } else {
+    bodyHTML = tmp.innerHTML;
+  }
+  return bodyHTML + embedsSection;
+}
+
+function escapeHtml(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escapeAttr(str) { return str.replace(/"/g, '&quot;'); }
+
+// ─────────────────────────────────────────────
+// IMAGE
+// ─────────────────────────────────────────────
+function truncateFileName(name, maxLen) {
+  if (name.length <= maxLen) return name;
+  const ext = name.includes('.') ? name.slice(name.lastIndexOf('.')) : '';
+  const base = name.slice(0, name.lastIndexOf('.'));
+  const allowed = maxLen - ext.length - 3;
+  if (allowed <= 0) return name.slice(0, maxLen - 3) + '...';
+  return base.slice(0, allowed) + '...' + ext;
+}
+
+async function uploadToCloudinary(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', UPLOAD_PRESET);
+  const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method:'POST', body:fd });
+  const data = await res.json();
+  if (!data.secure_url) throw new Error('upload failed');
+  return data.secure_url;
+}
+
+async function insertImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const status      = document.getElementById('statusMsg');
+  const fileDisplay = document.getElementById('fileNameDisplay');
+  const removeBtn   = document.getElementById('removeBtn');
+  const fileName    = file.name;
+  const fileSizeKB  = (file.size / 1024).toFixed(1);
+  if (file.size > 400 * 1024) {
+    status.textContent = 'Image too large (max 400 KB).';
+    status.className = 'err'; event.target.value = ''; return;
+  }
+  status.textContent = 'Uploading...'; status.className = '';
+  const tmpURL = URL.createObjectURL(file);
+  const tmpImg = new Image();
+  tmpImg.src = tmpURL;
+  await new Promise(res => { tmpImg.onload = res; tmpImg.onerror = res; });
+  const w = tmpImg.naturalWidth, h = tmpImg.naturalHeight;
+  URL.revokeObjectURL(tmpURL);
+  const existingText = editor.innerText.replace(/\u200B/g, '').trim();
+  try {
+    const imgUrl = await uploadToCloudinary(file);
+    const specs = document.createElement('div');
+    specs.className = 'pic-specs'; specs.contentEditable = 'false';
+    specs.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;cursor:default;clear:both;';
+    specs.textContent = `File: ${fileName} (${fileSizeKB} KB, ${w}×${h})`;
+    const img = document.createElement('img');
+    img.src = imgUrl;
+    img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
+    const textNode = document.createTextNode(existingText || '\u200B');
+    editor.innerHTML = '';
+    editor.appendChild(specs); editor.appendChild(img); editor.appendChild(textNode);
+    editor.focus();
+    const range = document.createRange();
+    range.setStart(textNode, textNode.length); range.collapse(true);
+    window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+    fileDisplay.textContent = truncateFileName(fileName, 22);
+    removeBtn.style.display = 'inline-block';
+    status.textContent = 'Image uploaded!'; status.className = 'ok';
+  } catch (err) {
+    status.textContent = 'Upload failed.'; status.className = 'err'; console.error(err);
+  }
+  event.target.value = '';
+  highlightLinks(); updatePreview();
+}
+
+function removeAttachment() {
+  editor.querySelectorAll('img').forEach(el => el.remove());
+  editor.querySelectorAll('.pic-specs').forEach(el => el.remove());
+  document.getElementById('fileNameDisplay').textContent = 'No file chosen';
+  document.getElementById('removeBtn').style.display = 'none';
+  document.getElementById('statusMsg').textContent = '';
+  document.getElementById('statusMsg').className = '';
+  editor.innerHTML = editor.innerHTML.replace(/\u200B/g, '');
+  highlightLinks(); updatePreview(); editor.focus();
+}
+
+function removeEmbeds() {
+  detectEmbeds(editor.innerText.replace(/\u200B/g, '').trim() + '\n' + links.join('\n'))
+    .forEach(e => suppressedEmbeds.add(e.url));
+  document.getElementById('removeEmbedBtn').style.display = 'none';
+  updatePreview(); editor.focus();
+}
+
+// ─────────────────────────────────────────────
+// SEND
+// ─────────────────────────────────────────────
 async function sendMsg() {
   const rawText = editor.innerText.replace(/\u200B/g, '').trim();
   const hasImg  = !!editor.querySelector('img');
@@ -878,37 +850,14 @@ async function sendMsg() {
 
   if (!rawText && !hasImg) {
     status.textContent = 'Write something first.';
-    status.className = 'err';
-    return;
+    status.className = 'err'; return;
   }
   if (btn.disabled) return;
   btn.disabled = true;
-  status.className = '';
-  status.textContent = 'Sending...';
+  status.className = ''; status.textContent = 'Sending...';
 
-  const timeStr    = getChanTime();
-  const postNumber = getPostNumber();
-  const bodyHTML   = buildEmailHTML(editor.innerHTML);
-  const allEmbeds  = detectEmbeds(rawText + '\n' + links.join('\n'));
-  const embedsHTML = buildEmbedEmailHTML(allEmbeds);
-
-  const message_html = `
-<div style="font-family: system-ui, Arial, sans-serif; font-size: 13px; color:#111;">
-  <div style="margin-bottom:10px;">An anonymous message has been received. Kindly respond at your earliest convenience.</div>
-  <div style="margin-top: 5px; color: #888; font-size: 12px;">Source: watanagashiarchive.vercel.app/contact</div>
-  <div style="margin-top: 20px; padding: 15px 0; border-top:1px dashed lightgrey; border-bottom:1px dashed lightgrey;">
-    <table role="presentation" style="border-collapse: collapse; width:100%;">
-      <tr>
-        <td style="vertical-align: top;">
-          <div style="color: #2c3e50; font-size: 15px;"><strong>Anonymous</strong></div>
-          <div style="color:#aaa; font-size:12px;">${escapeHtml(timeStr)} &bull; No.${postNumber}</div>
-          <div style="font-size: 14px; margin-top: 6px; line-height: 1.6;">${bodyHTML}</div>
-          <div style="margin-top:12px;">${embedsHTML}</div>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>`;
+  const timeStr   = getChanTime();
+  const finalHTML = buildEmailHTML(editor.innerHTML);
 
   try {
     await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
@@ -916,16 +865,14 @@ async function sendMsg() {
       from_email:   'anonymous@noreply.com',
       subject:      'anonymous message — watanagashi archive',
       message:      rawText,
-      message_html: message_html,
+      message_html: finalHTML,
       time:         timeStr,
     });
 
-    status.textContent = 'Post sent!';
-    status.className = 'ok';
+    status.textContent = 'Post sent!'; status.className = 'ok';
     editor.innerHTML = '';
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
-    links.length = 0;
-    renderLinks();
+    links.length = 0; renderLinks();
     document.getElementById('fileNameDisplay').textContent = 'No file chosen';
     document.getElementById('removeBtn').style.display = 'none';
     document.getElementById('removeEmbedBtn').style.display = 'none';
@@ -933,14 +880,11 @@ async function sendMsg() {
 
   } catch (err) {
     status.textContent = 'Failed — trenchgun1337@gmail.com';
-    status.className = 'err';
-    console.error(err);
+    status.className = 'err'; console.error(err);
   }
 
   btn.disabled = false;
 }
-
-document.getElementById('sendBtn').onclick = sendMsg;
 </script>
 </body>
 </html>
