@@ -402,6 +402,21 @@ p + p   { margin-top: 5px; }
 
   /* ── Last Updated timestamp ── */
   get(ref(db, 'archive/lastUpdated')).then(function(snap) {
+    // ── Sketch count (gallery) ──
+get(ref(db, 'archive/sketchCount')).then(function(snap) {
+  var el = document.getElementById('stat-sketches');
+  if (!el) return;
+
+  if (snap.exists()) {
+    el.textContent = String(snap.val()).padStart(2, '0');
+  } else {
+    el.textContent = '00';
+  }
+}).catch(function() {
+  var el = document.getElementById('stat-sketches');
+  if (el) el.textContent = '00';
+});
+
     var dateEl = document.getElementById('lu-date');
     if (!dateEl) return;
     if (snap.exists()) {
@@ -418,32 +433,6 @@ p + p   { margin-top: 5px; }
   });
 </script>
 
-<!-- Read gallery.js to count GALLERY_ITEMS dynamically -->
-<script>
-(function() {
-  function updateSketchCount(count) {
-    var el = document.getElementById('stat-sketches');
-    if (el) el.textContent = String(count).padStart(2, '0');
-  }
-
-  fetch('scripts/js/gallery.js')
-    .then(function(r) { return r.text(); })
-    .then(function(src) {
-      var match = src.match(/const\s+GALLERY_ITEMS\s*=\s*\[/);
-      if (!match) return;
-      var start = src.indexOf('[', match.index + match[0].length - 1);
-      var depth = 0, i = start, count = 0;
-      for (; i < src.length; i++) {
-        if (src[i] === '[' || src[i] === '{') depth++;
-        if (src[i] === ']' || src[i] === '}') depth--;
-        if (depth === 1 && src[i] === '{') count++;
-        if (depth === 0) break;
-      }
-      updateSketchCount(count);
-    })
-    .catch(function() {});
-})();
-</script>
 
 <img id="siteLogoTop"
   src="assets/images/watanagashilogo.jpg"
