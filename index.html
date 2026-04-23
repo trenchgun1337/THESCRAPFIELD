@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Watanagashi Archive</title>
-<link rel="icon" id="sitefavicon" type="image/x-icon" href="assets/images/rikaico.ico">
+<link rel="icon" href="assets/images/favicon/rikaico.ico">
 <link rel="preload" href="assets/fonts/AngelicWar.ttf" as="font" type="font/truetype" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
 <style>
@@ -23,6 +23,7 @@ img { -webkit-user-drag: none; user-select: none; pointer-events: auto; }
 
 ::selection      { background: rgba(80,80,80,.45); color: #fff; }
 ::-moz-selection { background: rgba(80,80,80,.45); color: #fff; }
+
 /* bostinha da scrollbar*/
 
 /* 1. Largura da barra */
@@ -54,7 +55,7 @@ body {
   font-size: 12px;
   color: #111;
   background-color: #000;
-  background-image: url("assets/images/whitebg.jpeg");
+  background-image: url("assets/images/backgrounds/whitebg.jpeg");
   background-size: 74%;
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -402,7 +403,7 @@ p + p   { margin-top: 5px; }
 <script>
 (function(){
   var s = document.createElement('style');
-  s.textContent = 'body{background-color:#000!important;background-image:url("assets/images/whitebg.jpeg")!important;}';
+  s.textContent = 'body{background-color:#000!important;background-image:url("assets/images/backgrounds/whitebg.jpeg")!important;}';
   document.head.appendChild(s);
 })();
 </script>
@@ -414,7 +415,7 @@ p + p   { margin-top: 5px; }
   var hash = window.location.hash.replace(/^#/, '').toLowerCase();
   var pathBlocked = blocked.some(function (p) { return path.indexOf(p) !== -1; });
   var hashBlocked = blocked.indexOf(hash) !== -1;
-  if (pathBlocked || hashBlocked) { window.location.replace('pages/notfound.html'); }
+  if (pathBlocked || hashBlocked) { window.location.replace('assets/pages/notfound.html'); }
 })();
 </script>
 
@@ -480,7 +481,7 @@ p + p   { margin-top: 5px; }
           <span class="navbar-titles">Navigation</span>
           <a class="nav-link" id="nbtn-introduction" href="#introduction" onclick="return navClick(event,'introduction')">Introduction</a>
           <a class="nav-link" id="nbtn-resources"    href="#resources"    onclick="return navClick(event,'resources')">Resources</a>
-          <a class="nav-link" href="pages/contact.html">Contact</a>
+          <a class="nav-link" href="assets/pages/contact.html">Contact</a>
         </nav>
       </div>
     </aside>
@@ -572,7 +573,7 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
           <div class="aero-borders" style="background:#000">
             <ul class="contact-links">
               <li>
-                <a href="pages/sketchbook.html"
+                <a href="assets/pages/sketchbook.html"
                   onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
                   onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
                   <span class="link-label">Sketchbook</span>
@@ -601,7 +602,7 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
         2026 | Watanagashi Archive &mdash; Created by
         <span
           class="footer-author"
-          onmouseover="WaTooltip.show(this,'<table><tr><td><img src=\'assets/newimages/rikatooltippfp.jpg\' alt=\'pfp\' width=\'80\' height=\'80\'></td><td style=\'padding-left:10px\'>If you have any questions,<br>use this email for feedback:<br><br><a href=\'mailto:trenchgun1337@gmail.com\'>trenchgun1337@gmail.com</a></td></tr></table>')"
+          onmouseover="WaTooltip.show(this,'<table><tr><td><img src=\'assets/images/rikatooltippfp.jpg\' alt=\'pfp\' width=\'80\' height=\'80\'></td><td style=\'padding-left:10px\'>If you have any questions,<br>use this email for feedback:<br><br><a href=\'mailto:trenchgun1337@gmail.com\'>trenchgun1337@gmail.com</a></td></tr></table>')"
           onmouseout="WaTooltip.hide()">Settembre19th</span>
       </div>
 
