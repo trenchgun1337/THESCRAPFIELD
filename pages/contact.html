@@ -19,29 +19,9 @@
   --editor-h: 120px;
 }
 
-
-/* 1. Largura da barra */
-::-webkit-scrollbar {
-  width: 7px; /* Um pouco mais larga para destacar a borda ridge */
-  height: 4px; /* Para barras horizontais */
-}
-
-/* 2. O trilho (fundo da barra) */
-::-webkit-scrollbar-track {
-  background: #3d3d3d54; /* Cinza bem clarinho */
-}
-
-/* 3. O polegar (parte que arrasta) */
-::-webkit-scrollbar-thumb {
-  background: #d3d3d3; /* Cinza claro */
-  border: 2px ridge #b0b0b0; /* Borda ridge no polegar */
-  border-radius: 0; /* Garante que fique quadrada */
-}
-
-/* 4. Efeito ao passar o mouse */
-::-webkit-scrollbar-thumb:hover {
-  background: #c0c0c0;
-}
+html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.5) transparent; }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-thumb { background:rgba(120,120,120,.5); border-radius:3px; }
 
 body {
   font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
@@ -59,7 +39,10 @@ body {
 }
 
 img { -webkit-user-drag:none; user-select:none; }
-a { color:#0055cc; text-decoration: underline; }
+a {
+  color:#0055cc;
+  text-decoration: underline;
+}
 
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; gap:7px; }
 
@@ -174,7 +157,10 @@ a { color:#0055cc; text-decoration: underline; }
   color: #aaa;
   pointer-events: none;
 }
-#msgEditor .link-span { color: #0055cc; }
+
+#msgEditor .link-span {
+  color: #0055cc;
+}
 
 .chan-file-inner {
   display: flex;
@@ -219,7 +205,11 @@ a { color:#0055cc; text-decoration: underline; }
 #removeBtn:hover, #removeEmbedBtn:hover { background: #f0d0d0; text-decoration: underline; }
 #removeBtn:active, #removeEmbedBtn:active { border-style: inset; }
 
-.chan-footer-note { font-size: 11px; color: #333; margin-top: 5px; }
+.chan-footer-note {
+  font-size: 11px;
+  color: #333;
+  margin-top: 5px;
+}
 
 #statusMsg { font-size:11px; color:#666; }
 #statusMsg.ok  { color:#117743; font-weight:bold; }
@@ -270,23 +260,30 @@ a { color:#0055cc; text-decoration: underline; }
   word-break: break-word;
 }
 
-.embed-wrap { margin: 6px 0; clear: both; }
-.embed-wrap iframe { border: 1px solid #ccc; display: block; max-width: 100%; }
+.embed-wrap {
+  margin: 6px 0;
+  clear: both;
+}
+.embed-wrap iframe {
+  border: 1px solid #ccc;
+  display: block;
+  max-width: 100%;
+}
 
 @media (max-width:800px) { #pageWrap { width:100%; } }
 @media (max-width:600px) { body { padding:8px 4px 24px; background-attachment:scroll; } }
 
 h1, h2, h3 {
-  display: inline;
-  background: #000;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 2px 6px;
-  border: 0.5px ridge;
-  border-color: #727272;
+    display: inline;
+    background: #000;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border: 0.5px ridge;
+    border-color: #727272;
 }
 h1 { font-size: 12px; }
 h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
@@ -310,6 +307,7 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
     <table class="chan-outer">
       <tbody>
 
+        <!-- Name -->
         <tr>
           <td class="chan-label">Name</td>
           <td class="chan-field">
@@ -317,6 +315,7 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
           </td>
         </tr>
 
+        <!-- Post button row -->
         <tr>
           <td class="chan-label"></td>
           <td class="chan-field">
@@ -327,23 +326,40 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
           </td>
         </tr>
 
+        <!-- Content -->
         <tr>
           <td class="chan-label" style="vertical-align:top; padding-top:6px;">Content</td>
           <td class="chan-field">
-            <div id="msgEditor" contenteditable="true" data-placeholder="" spellcheck="true"></div>
+            <div
+              id="msgEditor"
+              contenteditable="true"
+              data-placeholder=""
+              spellcheck="true"
+            ></div>
           </td>
         </tr>
 
         <tr>
-          <td class="chan-label">Links</td>
-          <td class="chan-field">
-            <div style="display:flex; flex-direction:column; gap:6px;">
-              <input id="linkInput" class="chan-input" type="text" placeholder="paste youtube / spotify / soundcloud link">
-              <div id="linkDropdown" style="background:#fff;border:1px inset #aaa;max-height:90px;overflow-y:auto;font-size:12px;padding:4px;"></div>
-            </div>
-          </td>
-        </tr>
+          <!-- Links -->
+  <td class="chan-label">Links</td>
+  <td class="chan-field">
+    <div style="display:flex; flex-direction:column; gap:6px;">
 
+      <input id="linkInput" class="chan-input" type="text" placeholder="paste youtube / spotify / soundcloud link">
+
+      <div id="linkDropdown" style="
+        background:#fff;
+        border:1px inset #aaa;
+        max-height:90px;
+        overflow-y:auto;
+        font-size:12px;
+        padding:4px;
+      "></div>
+
+    </div>
+  </td>
+</tr>
+        <!-- File + embed controls -->
         <tr>
           <td class="chan-label">File</td>
           <td class="chan-field">
@@ -362,6 +378,7 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
     <div class="chan-footer-note">• Please be kind to me.</div>
   </div>
 
+  <!-- PREVIEW -->
   <div id="previewSection">
     <div id="previewTitle">Preview </div>
     <div id="previewBody">
@@ -392,7 +409,7 @@ const SERVICE_ID    = 'service_ina2cb8';
 const TEMPLATE_ID   = 'template_g7owumb';
 
 // ─────────────────────────────────────────────
-// TIME
+// TIME  — chan format  MM/DD/YY(Day)HH:MM:SS
 // ─────────────────────────────────────────────
 function getChanTime() {
   const now  = new Date();
@@ -414,22 +431,36 @@ const embedPatterns = [
   {
     name: 'youtube',
     regex: /https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?(?:[^#&\s]*&)*v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/g,
-    build: (m) => ({ url: m[0], id: m[1], iframeSrc: `https://www.youtube.com/embed/${m[1]}`, width: '100%', height: '95' })
+    build: (m) => ({
+      url: m[0],
+      id: m[1],
+      iframeSrc: `https://www.youtube.com/embed/${m[1]}`,
+      width: '100%', height: '95'
+    })
   },
   {
     name: 'spotify',
     regex: /https?:\/\/open\.spotify\.com\/(?:intl-[a-z]{2}\/)?(track|album|playlist|episode)\/([a-zA-Z0-9]+)(?:\?[^\s]*)?/g,
-    build: (m) => ({ url: m[0], iframeSrc: `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0`, width: '100%', height: '95' })
+    build: (m) => ({
+      url: m[0],
+      iframeSrc: `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0`,
+      width: '100%', height: '95'
+    })
   },
   {
     name: 'soundcloud',
     regex: /https?:\/\/(?:www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(?:\?[^\s]*)?/g,
-    build: (m) => ({ url: m[0], iframeSrc: `https://w.soundcloud.com/player/?url=${encodeURIComponent(m[0])}&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`, width: '100%', height: '95' })
+    build: (m) => ({
+      url: m[0],
+      iframeSrc: `https://w.soundcloud.com/player/?url=${encodeURIComponent(m[0])}&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`,
+      width: '100%', height: '95'
+    })
   }
 ];
 
+// Regex that matches all embeddable URLs (for link highlighting)
+// Detect all embeds from plain text
 const EMBED_URL_REGEX = /https?:\/\/(?:(?:www\.)?(?:youtube\.com\/watch\?[^\s]*v=[a-zA-Z0-9_-]{11}|youtu\.be\/[a-zA-Z0-9_-]{11})|open\.spotify\.com\/(?:intl-[a-z]{2}\/)?(?:track|album|playlist|episode)\/[a-zA-Z0-9]+(?:\?[^\s]*)?|(?:www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(?:\?[^\s]*)?)/g;
-
 function detectEmbeds(text) {
   const found = [];
   for (const pat of embedPatterns) {
@@ -437,32 +468,47 @@ function detectEmbeds(text) {
     let m;
     while ((m = pat.regex.exec(text)) !== null) {
       const built = pat.build(m);
-      if (!found.some(e => e.url === built.url)) found.push({ ...built, name: pat.name });
+      if (!found.some(e => e.url === built.url)) {
+        found.push({ ...built, name: pat.name });
+      }
     }
   }
   return found;
 }
 
+// Build preview HTML for embeds (only unsuppressed ones)
 function buildEmbedPreviewHTML(embeds) {
   if (!embeds.length) return '';
   return embeds.map(e =>
-    `<div class="embed-wrap"><iframe src="${escapeAttr(e.iframeSrc)}" width="${e.width}" height="${e.height}" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy" style="border-radius:0;border:1px solid #ccc;display:block;"></iframe></div>`
+    `<div class="embed-wrap">
+      <iframe
+        src="${escapeAttr(e.iframeSrc)}"
+        width="${e.width}" height="${e.height}"
+        frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        allowfullscreen
+        loading="lazy"
+        style="border-radius:0;border:1px solid #ccc;display:block;"
+      ></iframe>
+    </div>`
   ).join('');
 }
 
+// Build email-safe embed section (links instead of iframes)
 function buildEmbedEmailHTML(embeds) {
   if (!embeds.length) return '';
-  return embeds.map(e => {
-    if (e.name === 'youtube') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank"><img src="https://img.youtube.com/vi/${e.id}/hqdefault.jpg" style="max-width:300px;display:block;border:1px solid #ccc;"></a><div style="font-size:11px;color:#666;">YouTube</div></div>`;
-    if (e.name === 'spotify') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank" style="color:#1DB954;">&#9654; Open on Spotify</a></div>`;
-    if (e.name === 'soundcloud') return `<div style="margin:8px 0;"><a href="${escapeAttr(e.url)}" target="_blank" style="color:#ff5500;">&#9654; Open on SoundCloud</a></div>`;
-    return '';
-  }).join('');
+  const items = embeds.map(e =>
+    `<div style="margin:4px 0;font-size:12px;">
+      [${e.name.toUpperCase()}] <a href="${escapeAttr(e.url)}" style="color:#0055cc;">${escapeHtml(e.url)}</a>
+    </div>`
+  ).join('');
+  return `<div style="margin-top:8px;padding-top:6px;border-top:1px dotted #ccc;font-size:11px;color:#888;">Embeds:</div>${items}`;
 }
 
 // ─────────────────────────────────────────────
-// LINK HIGHLIGHTING
+// LINK HIGHLIGHTING IN EDITOR
 // ─────────────────────────────────────────────
+
 function getCaretCharOffset(el) {
   const sel = window.getSelection();
   if (!sel || !sel.rangeCount) return 0;
@@ -476,7 +522,9 @@ function getCaretCharOffset(el) {
 function setCaretByOffset(el, offset) {
   const sel = window.getSelection();
   if (!sel) return;
-  let pos = 0, found = false;
+  let pos = 0;
+  let found = false;
+
   function walk(node) {
     if (found) return;
     if (node.nodeType === Node.TEXT_NODE) {
@@ -492,10 +540,14 @@ function setCaretByOffset(el, offset) {
       }
       pos += len;
     } else {
-      for (const child of node.childNodes) { walk(child); if (found) return; }
+      for (const child of node.childNodes) {
+        walk(child);
+        if (found) return;
+      }
     }
   }
   walk(el);
+
   if (!found) {
     const range = document.createRange();
     range.selectNodeContents(el);
@@ -516,26 +568,38 @@ function unwrapLinkSpans() {
 }
 
 function highlightLinks() {
-  const rawText = editor.textContent.replace(/\u200B/g, '');
+const rawText = editor.textContent.replace(/\u200B/g, '');
   EMBED_URL_REGEX.lastIndex = 0;
   const hasLinks = EMBED_URL_REGEX.test(rawText);
+
   const hasSpans = !!editor.querySelector('.link-span');
   if (!hasLinks && !hasSpans) return;
+
   const caretOffset = getCaretCharOffset(editor);
+
   unwrapLinkSpans();
+
   function processNode(node) {
     if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.tagName === 'IMG' || (node.classList && (node.classList.contains('pic-specs') || node.classList.contains('link-span')))) return;
+      if (node.tagName === 'IMG' ||
+          (node.classList && (node.classList.contains('pic-specs') || node.classList.contains('link-span')))) {
+        return;
+      }
       Array.from(node.childNodes).forEach(processNode);
     } else if (node.nodeType === Node.TEXT_NODE) {
       EMBED_URL_REGEX.lastIndex = 0;
       if (!EMBED_URL_REGEX.test(node.textContent)) return;
+
       EMBED_URL_REGEX.lastIndex = 0;
       const frag = document.createDocumentFragment();
-      let lastIndex = 0, m;
+      let lastIndex = 0;
+      let m;
       const text = node.textContent;
+
       while ((m = EMBED_URL_REGEX.exec(text)) !== null) {
-        if (m.index > lastIndex) frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
+        if (m.index > lastIndex) {
+          frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
+        }
         const span = document.createElement('span');
         span.className = 'link-span';
         span.style.color = '#0055cc';
@@ -543,37 +607,61 @@ function highlightLinks() {
         frag.appendChild(span);
         lastIndex = m.index + m[0].length;
       }
-      if (lastIndex < text.length) frag.appendChild(document.createTextNode(text.slice(lastIndex)));
-      if (node.parentNode) node.parentNode.replaceChild(frag, node);
+      if (lastIndex < text.length) {
+        frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+      }
+
+      if (node.parentNode) {
+        node.parentNode.replaceChild(frag, node);
+      }
     }
   }
+
   Array.from(editor.childNodes).forEach(processNode);
+
   setCaretByOffset(editor, caretOffset);
 }
 
 // ─────────────────────────────────────────────
-// ESTADO GLOBAL
+// EDITOR SETUP
 // ─────────────────────────────────────────────
-const editor         = document.getElementById('msgEditor');
-const previewMsg     = document.getElementById('previewMsg');
-const previewTime    = document.getElementById('previewTime');
-const links          = [];
-const suppressedEmbeds = new Set();
+const editor      = document.getElementById('msgEditor');
+const previewMsg  = document.getElementById('previewMsg');
+const previewTime = document.getElementById('previewTime');
+ const links = [];
 
-const linkInput    = document.getElementById('linkInput');
+const linkInput = document.getElementById('linkInput');
 const linkDropdown = document.getElementById('linkDropdown');
 
-// ─────────────────────────────────────────────
-// LINKS
-// ─────────────────────────────────────────────
-function extractLinksFromEditor() {
+linkInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const val = linkInput.value.trim();
+    if (!val) return;
+
+if (!links.includes(val)) {
+  links.push(val);
+
+}    linkInput.value = '';
+    
+    function extractLinksFromEditor() {
   const text = editor.innerText.replace(/\u200B/g, '');
-  EMBED_URL_REGEX.lastIndex = 0;
   const matches = text.match(EMBED_URL_REGEX);
+
   if (!matches) return;
-  matches.forEach(link => { if (!links.includes(link)) links.push(link); });
+
+  matches.forEach(link => {
+    if (!links.includes(link)) {
+      links.push(link);
+    }
+  });
+
   renderLinks();
 }
+    renderLinks();
+    updatePreview();
+  }
+});
 
 function renderLinks() {
   linkDropdown.innerHTML = links.map((l, i) => `
@@ -590,27 +678,12 @@ function removeLink(i) {
   updatePreview();
 }
 
-linkInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    const val = linkInput.value.trim();
-    if (!val) return;
-    if (!links.includes(val)) links.push(val);
-    linkInput.value = '';
-    renderLinks();
-    updatePreview();
-  }
-});
-
-// ─────────────────────────────────────────────
-// EDITOR EVENTS
-// ─────────────────────────────────────────────
 previewTime.textContent = getChanTime();
 setInterval(() => { previewTime.textContent = getChanTime(); }, 1000);
 
 editor.addEventListener('input', () => {
-  suppressedEmbeds.clear();
-  extractLinksFromEditor();
+  suppressedEmbeds.clear(); //  ISSO AQUI
+    extractLinksFromEditor(); 
   highlightLinks();
   updatePreview();
 });
@@ -618,27 +691,37 @@ editor.addEventListener('input', () => {
 editor.addEventListener('paste', (e) => {
   e.preventDefault();
   const text = e.clipboardData.getData('text/plain');
-  if (text) document.execCommand('insertText', false, text);
+  if (text) {
+    document.execCommand('insertText', false, text);
+  }
 });
 
 editor.addEventListener('dragstart', (e) => {
   if (e.target.tagName === 'IMG') e.preventDefault();
 });
 
+// ── Ctrl+A + Enter fix + Delete protection ──
 editor.addEventListener('keydown', (e) => {
+
+  // ── Ctrl+A: select only text nodes, skip images ──
   if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
     const img = editor.querySelector('img');
     if (img) {
       e.preventDefault();
       const sel = window.getSelection();
       sel.removeAllRanges();
+
       const textNodes = [];
       function collectTextNodes(node) {
-        if (node.nodeType === Node.TEXT_NODE) textNodes.push(node);
-        else if (node.tagName !== 'IMG' && !(node.classList && node.classList.contains('pic-specs')))
+        if (node.nodeType === Node.TEXT_NODE) {
+          textNodes.push(node);
+        } else if (node.tagName !== 'IMG' && !(node.classList && node.classList.contains('pic-specs'))) {
           for (const child of node.childNodes) collectTextNodes(child);
+        }
       }
+
       collectTextNodes(editor);
+
       if (textNodes.length > 0) {
         const range = document.createRange();
         range.setStart(textNodes[0], 0);
@@ -649,21 +732,28 @@ editor.addEventListener('keydown', (e) => {
       return;
     }
   }
+
+  // ── ENTER FIX (ESSENCIAL) ──
   if (e.key === 'Enter') {
     e.preventDefault();
+
     const sel = window.getSelection();
     if (!sel.rangeCount) return;
+
     const range = sel.getRangeAt(0);
     range.deleteContents();
+
     const br = document.createElement('br');
     range.insertNode(br);
+
     range.setStartAfter(br);
     range.setEndAfter(br);
     sel.removeAllRanges();
     sel.addRange(range);
+    return;
   }
-});
 
+});
 editor.addEventListener('click', () => {
   const img = editor.querySelector('img');
   if (!img) return;
@@ -671,24 +761,38 @@ editor.addEventListener('click', () => {
     const sel = window.getSelection();
     if (!sel || !sel.rangeCount) return;
     const range = sel.getRangeAt(0);
+
     let isBefore = false;
     if (range.startContainer === editor) {
-      isBefore = range.startOffset <= Array.from(editor.childNodes).indexOf(img);
+      const imgIdx = Array.from(editor.childNodes).indexOf(img);
+      isBefore = range.startOffset <= imgIdx;
     } else {
-      isBefore = !!(img.compareDocumentPosition(range.startContainer) & Node.DOCUMENT_POSITION_PRECEDING);
+      const pos = img.compareDocumentPosition(range.startContainer);
+      isBefore = !!(pos & Node.DOCUMENT_POSITION_PRECEDING);
     }
+
     if (isBefore) {
       let node = img.nextSibling;
       while (node && node.nodeType !== Node.TEXT_NODE) node = node.nextSibling;
-      if (!node) { node = document.createTextNode('\u200B'); editor.appendChild(node); }
+      if (!node) {
+        node = document.createTextNode('\u200B');
+        editor.appendChild(node);
+      }
       const newRange = document.createRange();
       newRange.setStart(node, node.length);
       newRange.collapse(true);
       sel.removeAllRanges();
       sel.addRange(newRange);
     }
+
+   
   });
 });
+
+// ─────────────────────────────────────────────
+// SUPPRESS EMBEDS
+// ─────────────────────────────────────────────
+const suppressedEmbeds = new Set();
 
 // ─────────────────────────────────────────────
 // PREVIEW
@@ -696,11 +800,18 @@ editor.addEventListener('click', () => {
 function updatePreview() {
   const text   = editor.innerText.replace(/\u200B/g, '').trim();
   const hasImg = !!editor.querySelector('img');
-  const allEmbeds = detectEmbeds(editor.innerText.replace(/\u200B/g, '') + '\n' + links.join('\n'));
+  const editorText = editor.innerText.replace(/\u200B/g, '');
+  const allEmbeds = detectEmbeds(editorText + '\n' + links.join('\n'));
+
   const visibleEmbeds = allEmbeds.filter(e => !suppressedEmbeds.has(e.url));
-  document.getElementById('removeEmbedBtn').style.display = visibleEmbeds.length ? 'inline-block' : 'none';
+
+  document.getElementById('removeEmbedBtn').style.display =
+    visibleEmbeds.length ? 'inline-block' : 'none';
+
   if (text || hasImg) {
-    previewMsg.innerHTML = buildPreviewHTML(editor.innerHTML) + buildEmbedPreviewHTML(visibleEmbeds);
+    const msgHTML    = buildPreviewHTML(editor.innerHTML);
+    const embedsHTML = buildEmbedPreviewHTML(visibleEmbeds);
+    previewMsg.innerHTML = msgHTML + embedsHTML;
   } else {
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
   }
@@ -709,12 +820,17 @@ function updatePreview() {
 function buildPreviewHTML(html) {
   const tmp = document.createElement('div');
   tmp.innerHTML = html.replace(/\u200B/g, '');
+
   tmp.querySelectorAll('.link-span').forEach(span => {
     const a = document.createElement('a');
-    a.href = span.textContent; a.target = '_blank'; a.rel = 'noopener noreferrer';
-    a.style.color = '#0055cc'; a.textContent = span.textContent;
+    a.href = span.textContent;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.style.color = '#0055cc';
+    a.textContent = span.textContent;
     span.parentNode.replaceChild(a, span);
   });
+
   tmp.querySelectorAll('img').forEach(img => {
     img.removeAttribute('style');
     img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
@@ -723,38 +839,68 @@ function buildPreviewHTML(html) {
     el.removeAttribute('contenteditable');
     el.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;clear:both;';
   });
+
   return tmp.innerHTML;
 }
 
+// ─────────────────────────────────────────────
+// EMAIL HTML
+// ─────────────────────────────────────────────
 function buildEmailHTML(html) {
   const tmp = document.createElement('div');
   tmp.innerHTML = html.replace(/\u200B/g, '');
+
   tmp.querySelectorAll('.link-span').forEach(span => {
     const a = document.createElement('a');
-    a.href = span.textContent; a.style.color = '#0055cc'; a.textContent = span.textContent;
+    a.href = span.textContent;
+    a.style.color = '#0055cc';
+    a.textContent = span.textContent;
     span.parentNode.replaceChild(a, span);
   });
+
   const img   = tmp.querySelector('img');
   const specs = tmp.querySelector('.pic-specs');
-  const embedsSection = buildEmbedEmailHTML(detectEmbeds((tmp.innerText || '') + '\n' + links.join('\n')));
+
+const rawText = tmp.innerText || '';
+const embeds = detectEmbeds(rawText + '\n' + links.join('\n'));
+const embedsSection = buildEmbedEmailHTML(embeds);
+
   let bodyHTML;
   if (img) {
-    const specsHTML = specs ? `<div style="font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 4px;display:block;">${escapeHtml(specs.textContent)}</div>` : '';
+    const specsHTML = specs
+      ? `<div style="font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 4px;display:block;">${escapeHtml(specs.textContent)}</div>`
+      : '';
     if (specs) specs.remove();
     img.remove();
     const textHTML = tmp.innerHTML.trim();
-    bodyHTML = `${specsHTML}<table role="presentation" style="border-collapse:collapse;margin:0;"><tr><td style="vertical-align:top;padding-right:10px;"><img src="${escapeAttr(img.src)}" style="max-width:200px;max-height:200px;border:1px solid #ccc;display:block;"></td><td style="vertical-align:top;font-size:13px;line-height:1.6;">${textHTML || '&nbsp;'}</td></tr></table>`;
+
+    bodyHTML = `${specsHTML}` +
+      `<table role="presentation" style="border-collapse:collapse;margin:0;">` +
+        `<tr>` +
+          `<td style="vertical-align:top;padding-right:10px;">` +
+            `<img src="${escapeAttr(img.src)}" style="max-width:200px;max-height:200px;border:1px solid #ccc;display:block;">` +
+          `</td>` +
+          `<td style="vertical-align:top;font-size:13px;line-height:1.6;">` +
+            `${textHTML || '&nbsp;'}` +
+          `</td>` +
+        `</tr>` +
+      `</table>`;
   } else {
     bodyHTML = tmp.innerHTML;
   }
+
   return bodyHTML + embedsSection;
 }
 
-function escapeHtml(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function escapeAttr(str) { return str.replace(/"/g, '&quot;'); }
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escapeAttr(str) {
+  return str.replace(/"/g, '&quot;');
+}
 
 // ─────────────────────────────────────────────
-// IMAGE
+// TRUNCATE FILE NAME
 // ─────────────────────────────────────────────
 function truncateFileName(name, maxLen) {
   if (name.length <= maxLen) return name;
@@ -765,6 +911,9 @@ function truncateFileName(name, maxLen) {
   return base.slice(0, allowed) + '...' + ext;
 }
 
+// ─────────────────────────────────────────────
+// IMAGE UPLOAD
+// ─────────────────────────────────────────────
 async function uploadToCloudinary(file) {
   const fd = new FormData();
   fd.append('file', file);
@@ -778,65 +927,112 @@ async function uploadToCloudinary(file) {
 async function insertImage(event) {
   const file = event.target.files[0];
   if (!file) return;
+
   const status      = document.getElementById('statusMsg');
   const fileDisplay = document.getElementById('fileNameDisplay');
   const removeBtn   = document.getElementById('removeBtn');
   const fileName    = file.name;
   const fileSizeKB  = (file.size / 1024).toFixed(1);
+
   if (file.size > 400 * 1024) {
     status.textContent = 'Image too large (max 400 KB).';
-    status.className = 'err'; event.target.value = ''; return;
+    status.className   = 'err';
+    event.target.value = '';
+    return;
   }
-  status.textContent = 'Uploading...'; status.className = '';
+
+  status.textContent = 'Uploading...';
+  status.className   = '';
+
   const tmpURL = URL.createObjectURL(file);
   const tmpImg = new Image();
-  tmpImg.src = tmpURL;
+  tmpImg.src   = tmpURL;
   await new Promise(res => { tmpImg.onload = res; tmpImg.onerror = res; });
-  const w = tmpImg.naturalWidth, h = tmpImg.naturalHeight;
+  const w = tmpImg.naturalWidth;
+  const h = tmpImg.naturalHeight;
   URL.revokeObjectURL(tmpURL);
+
   const existingText = editor.innerText.replace(/\u200B/g, '').trim();
+
   try {
     const imgUrl = await uploadToCloudinary(file);
+
     const specs = document.createElement('div');
-    specs.className = 'pic-specs'; specs.contentEditable = 'false';
-    specs.style.cssText = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;cursor:default;clear:both;';
-    specs.textContent = `File: ${fileName} (${fileSizeKB} KB, ${w}×${h})`;
+    specs.className       = 'pic-specs';
+    specs.contentEditable = 'false';
+    specs.style.cssText   = 'font-family:monospace;font-size:11px;color:#cc0000;margin:0 0 2px;display:block;cursor:default;clear:both;';
+    specs.textContent     = `File: ${fileName} (${fileSizeKB} KB, ${w}×${h})`;
+
     const img = document.createElement('img');
-    img.src = imgUrl;
+    img.src           = imgUrl;
     img.style.cssText = 'float:left;max-width:200px;max-height:200px;margin:0 12px 8px 0;border:1px solid #aaa;display:block;';
+
     const textNode = document.createTextNode(existingText || '\u200B');
+
     editor.innerHTML = '';
-    editor.appendChild(specs); editor.appendChild(img); editor.appendChild(textNode);
+    editor.appendChild(specs);
+    editor.appendChild(img);
+    editor.appendChild(textNode);
+
     editor.focus();
     const range = document.createRange();
-    range.setStart(textNode, textNode.length); range.collapse(true);
-    window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+    range.setStart(textNode, textNode.length);
+    range.collapse(true);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+
     fileDisplay.textContent = truncateFileName(fileName, 22);
     removeBtn.style.display = 'inline-block';
-    status.textContent = 'Image uploaded!'; status.className = 'ok';
+    status.textContent = 'Image uploaded!';
+    status.className   = 'ok';
+
   } catch (err) {
-    status.textContent = 'Upload failed.'; status.className = 'err'; console.error(err);
+    status.textContent = 'Upload failed.';
+    status.className   = 'err';
+    console.error(err);
   }
+
   event.target.value = '';
-  highlightLinks(); updatePreview();
+  highlightLinks();
+  updatePreview();
 }
 
+// ─────────────────────────────────────────────
+// REMOVE ATTACHMENT
+// ─────────────────────────────────────────────
 function removeAttachment() {
   editor.querySelectorAll('img').forEach(el => el.remove());
   editor.querySelectorAll('.pic-specs').forEach(el => el.remove());
+
   document.getElementById('fileNameDisplay').textContent = 'No file chosen';
-  document.getElementById('removeBtn').style.display = 'none';
-  document.getElementById('statusMsg').textContent = '';
-  document.getElementById('statusMsg').className = '';
+  document.getElementById('removeBtn').style.display    = 'none';
+  document.getElementById('statusMsg').textContent      = '';
+  document.getElementById('statusMsg').className        = '';
+
   editor.innerHTML = editor.innerHTML.replace(/\u200B/g, '');
-  highlightLinks(); updatePreview(); editor.focus();
+
+  highlightLinks();
+  updatePreview();
+  editor.focus();
 }
 
+// ─────────────────────────────────────────────
+// REMOVE EMBEDS
+// ─────────────────────────────────────────────
 function removeEmbeds() {
-  detectEmbeds(editor.innerText.replace(/\u200B/g, '').trim() + '\n' + links.join('\n'))
-    .forEach(e => suppressedEmbeds.add(e.url));
+  const text = editor.innerText.replace(/\u200B/g, '').trim();
+  const embeds = detectEmbeds(text);
+
+  embeds.forEach(e => {
+    if (!suppressedEmbeds.has(e.url)) {
+      suppressedEmbeds.add(e.url);
+    }
+  });
+
   document.getElementById('removeEmbedBtn').style.display = 'none';
-  updatePreview(); editor.focus();
+  updatePreview();
+  editor.focus();
 }
 
 // ─────────────────────────────────────────────
@@ -844,20 +1040,61 @@ function removeEmbeds() {
 // ─────────────────────────────────────────────
 async function sendMsg() {
   const rawText = editor.innerText.replace(/\u200B/g, '').trim();
+  const embeds = detectEmbeds(rawText);
+  
+
+const embedsHTML = embeds.map(e => {
+  if (e.name === 'youtube') {
+    return `
+      <div style="margin:8px 0;">
+        <a href="${e.url}" target="_blank">
+          <img src="https://img.youtube.com/vi/${e.id}/hqdefault.jpg"
+               style="max-width:300px;display:block;border:1px solid #ccc;">
+        </a>
+        <div style="font-size:11px;color:#666;">YouTube</div>
+      </div>
+    `;
+  }
+
+  if (e.name === 'spotify') {
+    return `
+      <div style="margin:8px 0;">
+        <a href="${e.url}" target="_blank" style="color:#1DB954;">
+          ▶ Open on Spotify
+        </a>
+      </div>
+    `;
+  }
+
+  if (e.name === 'soundcloud') {
+    return `
+      <div style="margin:8px 0;">
+        <a href="${e.url}" target="_blank" style="color:#ff5500;">
+          ▶ Open on SoundCloud
+        </a>
+      </div>
+    `;
+  }
+
+  return '';
+}).join('');
   const hasImg  = !!editor.querySelector('img');
   const status  = document.getElementById('statusMsg');
   const btn     = document.getElementById('sendBtn');
 
   if (!rawText && !hasImg) {
     status.textContent = 'Write something first.';
-    status.className = 'err'; return;
+    status.className   = 'err';
+    return;
   }
+
   if (btn.disabled) return;
   btn.disabled = true;
-  status.className = ''; status.textContent = 'Sending...';
+  status.className   = '';
+  status.textContent = 'Sending...';
 
-  const timeStr   = getChanTime();
-  const finalHTML = buildEmailHTML(editor.innerHTML);
+  const timeStr    = getChanTime();
+  const finalHTML  = buildEmailHTML(editor.innerHTML);
 
   try {
     await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
@@ -869,18 +1106,22 @@ async function sendMsg() {
       time:         timeStr,
     });
 
-    status.textContent = 'Post sent!'; status.className = 'ok';
-    editor.innerHTML = '';
+    status.textContent = 'Post sent!';
+    status.className   = 'ok';
+
+    editor.innerHTML     = '';
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
-    links.length = 0; renderLinks();
+
     document.getElementById('fileNameDisplay').textContent = 'No file chosen';
-    document.getElementById('removeBtn').style.display = 'none';
+    document.getElementById('removeBtn').style.display    = 'none';
     document.getElementById('removeEmbedBtn').style.display = 'none';
+
     suppressedEmbeds.clear();
 
   } catch (err) {
     status.textContent = 'Failed — trenchgun1337@gmail.com';
-    status.className = 'err'; console.error(err);
+    status.className   = 'err';
+    console.error(err);
   }
 
   btn.disabled = false;
