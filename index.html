@@ -6,49 +6,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Watanagashi Archive</title>
 <link rel="icon" id="sitefavicon" type="image/x-icon" href="assets/images/rikaico.ico">
-
-<!--
-  FIX 3: Preload the custom font BEFORE anything else renders.
-  Using a <link rel="preload"> tells the browser to fetch the font
-  at the highest priority, so it's ready before first paint.
-  Combined with font-display: block (below), the browser will wait
-  up to 3s for the font instead of flashing the fallback.
--->
 <link rel="preload" href="assets/fonts/AngelicWar.ttf" as="font" type="font/truetype" crossorigin="anonymous">
-
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
 <style>
 @font-face {
   font-family: 'AngelicWar';
   src: url('assets/fonts/AngelicWar.ttf') format('truetype');
-  /* FIX 3: 'block' hides text for up to ~3s while font loads,
-     preventing the fallback-font flash entirely. */
   font-display: block;
 }
 
-/*
-  FIX 3: Hide elements that use AngelicWar until the font is ready.
-  The .fonts-loaded class is added by the FontFace API script below.
-  Until then, those elements are invisible (no flash of wrong font).
-*/
-.angelic-target {
-  visibility: hidden;
-}
-.fonts-loaded .angelic-target {
-  visibility: visible;
-}
+.angelic-target { visibility: hidden; }
+.fonts-loaded .angelic-target { visibility: visible; }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 img { -webkit-user-drag: none; user-select: none; pointer-events: auto; }
 
 ::selection      { background: rgba(80,80,80,.45); color: #fff; }
 ::-moz-selection { background: rgba(80,80,80,.45); color: #fff; }
+/* bostinha da scrollbar*/
 
-html { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(120,120,120,.50) transparent; }
-::-webkit-scrollbar             { width: 6px; height: 6px; }
-::-webkit-scrollbar-track       { background: transparent; }
-::-webkit-scrollbar-thumb       { background: rgba(120,120,120,.50); }
-::-webkit-scrollbar-thumb:hover { background: rgba(54,54,54,.8); }
+/* 1. Largura da barra */
+::-webkit-scrollbar {
+  width: 7px; /* Um pouco mais larga para destacar a borda ridge */
+  height: 4px; /* Para barras horizontais */
+}
+
+/* 2. O trilho (fundo da barra) */
+::-webkit-scrollbar-track {
+  background: #3d3d3d54; /* Cinza bem clarinho */
+}
+
+/* 3. O polegar (parte que arrasta) */
+::-webkit-scrollbar-thumb {
+  background: #d3d3d3; /* Cinza claro */
+  border: 2px ridge #b0b0b0; /* Borda ridge no polegar */
+  border-radius: 0; /* Garante que fique quadrada */
+}
+
+/* 4. Efeito ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+  background: #c0c0c0;
+}
+
 
 body {
   font-family: 'Sawarabi Gothic', 'Sazanami Gothic', Tahoma, 'Segoe UI', sans-serif;
@@ -111,7 +110,6 @@ body {
   padding: 0; margin-bottom: 6px;
 }
 
-/* FIX 2: Navigation title color changed from #888 to #000 */
 .navbar-titles {
   font-size: 12px; color: #000; text-transform: uppercase;
   padding: 4px 2px 2px;
@@ -218,7 +216,7 @@ p + p   { margin-top: 5px; }
 /* ── Site stats ── */
 .stats-row {
   display: flex;
-  background: #000;
+  background: #ffffff;
   border-top: 1px solid rgba(255,255,255,.08);
 }
 .stat-block {
@@ -232,14 +230,17 @@ p + p   { margin-top: 5px; }
 }
 .stat-block:last-child { border-right: none; }
 .stat-num {
-  font-size: 18px;
-  color: #fff;
+  font-size: 34px;
+  color: #ffffff;
+  background-color: #000000;
   font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
-  letter-spacing: 1px;
+  letter-spacing: 3px;
+  border: 4px ridge rgb(255,255,255);
 }
 .stat-label {
   font-size: 9.5px;
-  color: rgba(255,255,255,.40);
+  color: rgba(255,255,255,.986);
+  background-color: #000000;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -262,12 +263,12 @@ p + p   { margin-top: 5px; }
 }
 .currently-item:last-child { border-right: none; }
 .currently-label {
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #f5f5f5;
-    background: black;
-    text-align: center;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #f5f5f5;
+  background: black;
+  text-align: center;
 }
 .currently-value {
   font-size: 12px;
@@ -290,16 +291,14 @@ p + p   { margin-top: 5px; }
   padding: 6px 0 4px;
 }
 
-/* ── Visitor counter (freecounterstat) ── */
+/* ── Visitor counter ── */
 .visitor-counter-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 6px 0 2px;
 }
-.visitor-counter-wrap img {
-  pointer-events: auto !important;
-}
+.visitor-counter-wrap img { pointer-events: auto !important; }
 
 #pageFooter {
   position: absolute;
@@ -385,13 +384,6 @@ p + p   { margin-top: 5px; }
 }
 </style>
 
-<!--
-  FIX 3: Load the custom font via FontFace API synchronously before
-  any content renders. The script is render-blocking on purpose —
-  it makes the browser wait until AngelicWar is loaded, then adds
-  the 'fonts-loaded' class which reveals the hidden elements.
-  A 600ms timeout is a fallback so the page never hangs.
--->
 <script>
 (function () {
   var font = new FontFace('AngelicWar', 'url(assets/fonts/AngelicWar.ttf)', { display: 'block' });
@@ -416,14 +408,14 @@ p + p   { margin-top: 5px; }
 </script>
 
 <script>
-  (function () {
-    var blocked = ['musicplayer', 'videos', 'downloader', 'community', 'preferences', 'projects'];
-    var path = window.location.pathname.toLowerCase();
-    var hash = window.location.hash.replace(/^#/, '').toLowerCase();
-    var pathBlocked = blocked.some(function (p) { return path.indexOf(p) !== -1; });
-    var hashBlocked = blocked.indexOf(hash) !== -1;
-    if (pathBlocked || hashBlocked) { window.location.replace('pages/notfound.html'); }
-  })();
+(function () {
+  var blocked = ['musicplayer', 'videos', 'downloader', 'community', 'preferences', 'projects'];
+  var path = window.location.pathname.toLowerCase();
+  var hash = window.location.hash.replace(/^#/, '').toLowerCase();
+  var pathBlocked = blocked.some(function (p) { return path.indexOf(p) !== -1; });
+  var hashBlocked = blocked.indexOf(hash) !== -1;
+  if (pathBlocked || hashBlocked) { window.location.replace('pages/notfound.html'); }
+})();
 </script>
 
 <!-- Firebase SDKs -->
@@ -445,13 +437,7 @@ p + p   { margin-top: 5px; }
   const app = initializeApp(FIREBASE_CONFIG);
   const db  = getDatabase(app);
 
-  /* ── Last Updated timestamp ──
-     FIX 1: Wrapped in DOMContentLoaded so the element
-     #lu-date is guaranteed to exist when we query it.
-     Previously the script ran before the DOM was parsed.
-  */
   function applyLastUpdated(dateStr) {
-    /* Update ALL instances of #lu-date on the page, not just intro */
     document.querySelectorAll('#lu-date').forEach(function(el) {
       el.textContent = dateStr;
     });
@@ -467,7 +453,6 @@ p + p   { margin-top: 5px; }
            ts.getFullYear();
   }
 
-  /* Run after DOM is ready so elements exist */
   document.addEventListener('DOMContentLoaded', function() {
     get(ref(db, 'archive/lastUpdated'))
       .then(function(snap) {
@@ -478,7 +463,6 @@ p + p   { margin-top: 5px; }
       });
   });
 </script>
-
 
 <img id="siteLogoTop"
   src="assets/images/watanagashilogo.jpg"
@@ -495,7 +479,7 @@ p + p   { margin-top: 5px; }
         <nav class="nav-categories">
           <span class="navbar-titles">Navigation</span>
           <a class="nav-link" id="nbtn-introduction" href="#introduction" onclick="return navClick(event,'introduction')">Introduction</a>
-          <!-- FIX 1: Resources link removed from nav — it no longer appears -->
+          <a class="nav-link" id="nbtn-resources"    href="#resources"    onclick="return navClick(event,'resources')">Resources</a>
           <a class="nav-link" href="pages/contact.html">Contact</a>
         </nav>
       </div>
@@ -547,7 +531,7 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
           <div class="stats-row aero-borders">
             <div class="stat-block">
               <span class="stat-num angelic-target" id="stat-pages-live">01</span>
-              <span class="stat-label">Pages Live</span>
+              <span class="stat-label">Done</span>
             </div>
             <div class="stat-block">
               <span class="stat-num angelic-target" id="stat-in-dev">06</span>
@@ -556,7 +540,7 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
           </div>
         </div>
 
-        <!-- LAST UPDATED -->
+        <!-- LAST UPDATED — exclusivo da Introduction -->
         <div class="bar-row"><h1 class="angelic-target">Last Updated</h1></div>
         <div class="glass-borders" style="padding:0; margin:0 7px 7px;">
           <div class="currently-grid one-col aero-borders">
@@ -576,8 +560,7 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
 
       </div><!-- /#pg-introduction -->
 
-      <!-- RESOURCES -->
-      <!-- FIX 1: Resources page kept in DOM but no longer linked from nav -->
+      <!-- RESOURCES — Last Updated não aparece aqui -->
       <div id="pg-resources" class="page">
         <div class="bar-row"><h1 class="angelic-target">Resources</h1></div>
         <div class="glass-borders">
@@ -629,13 +612,12 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
 <script>
 (function(){
   'use strict';
-  /* FIX 1: Resources removed from navigable pages array */
-  var pages = ['introduction'];
+  var pages = ['introduction','resources'];
   function gotoPage(name) {
     if (pages.indexOf(name) === -1) name = 'introduction';
     document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
     document.querySelectorAll('.nav-link').forEach(function(b){ b.classList.remove('active'); });
-    var pg = document.getElementById('pg-' + name);
+    var pg  = document.getElementById('pg-'   + name);
     var btn = document.getElementById('nbtn-' + name);
     if (pg)  pg.classList.add('active');
     if (btn) btn.classList.add('active');
@@ -670,13 +652,13 @@ window.WaTooltip = (function(){
     if (!el) return;
     el.innerHTML = html;
     el.style.display = 'block';
-    var r   = anchor.getBoundingClientRect();
-    var tw  = el.offsetWidth  || 240;
-    var th  = el.offsetHeight || 80;
+    var r    = anchor.getBoundingClientRect();
+    var tw   = el.offsetWidth  || 240;
+    var th   = el.offsetHeight || 80;
     var left = r.left + r.width / 2 - tw / 2;
     var top  = r.top - th - 8;
-    if (top < 4)                        top  = r.bottom + 8;
-    if (left < 4)                       left = 4;
+    if (top < 4)                           top  = r.bottom + 8;
+    if (left < 4)                          left = 4;
     if (left + tw > window.innerWidth - 4) left = window.innerWidth - tw - 4;
     el.style.left = left + 'px';
     el.style.top  = top  + 'px';
