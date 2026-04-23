@@ -19,10 +19,9 @@
   --editor-h: 120px;
 }
 
-::-webkit-scrollbar { width: 7px; height: 4px; }
-::-webkit-scrollbar-track { background: #3d3d3d54; }
-::-webkit-scrollbar-thumb { background: #d3d3d3; border: 2px ridge #b0b0b0; border-radius: 0; }
-::-webkit-scrollbar-thumb:hover { background: #c0c0c0; }
+html { scrollbar-width:thin; scrollbar-color:rgba(120,120,120,.5) transparent; }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-thumb { background:rgba(120,120,120,.5); border-radius:3px; }
 
 body {
   font-family:'Sawarabi Gothic','Sazanami Gothic',Tahoma,'Segoe UI',sans-serif;
@@ -40,7 +39,10 @@ body {
 }
 
 img { -webkit-user-drag:none; user-select:none; }
-a { color:#0055cc; text-decoration: underline; }
+a {
+  color:#0055cc;
+  text-decoration: underline;
+}
 
 #pageWrap { width:800px; max-width:100%; display:flex; flex-direction:column; gap:7px; }
 
@@ -155,7 +157,10 @@ a { color:#0055cc; text-decoration: underline; }
   color: #aaa;
   pointer-events: none;
 }
-#msgEditor .link-span { color: #0055cc; }
+
+#msgEditor .link-span {
+  color: #0055cc;
+}
 
 .chan-file-inner {
   display: flex;
@@ -200,7 +205,11 @@ a { color:#0055cc; text-decoration: underline; }
 #removeBtn:hover, #removeEmbedBtn:hover { background: #f0d0d0; text-decoration: underline; }
 #removeBtn:active, #removeEmbedBtn:active { border-style: inset; }
 
-.chan-footer-note { font-size: 11px; color: #333; margin-top: 5px; }
+.chan-footer-note {
+  font-size: 11px;
+  color: #333;
+  margin-top: 5px;
+}
 
 #statusMsg { font-size:11px; color:#666; }
 #statusMsg.ok  { color:#117743; font-weight:bold; }
@@ -251,23 +260,30 @@ a { color:#0055cc; text-decoration: underline; }
   word-break: break-word;
 }
 
-.embed-wrap { margin: 6px 0; clear: both; }
-.embed-wrap iframe { border: 1px solid #ccc; display: block; max-width: 100%; }
+.embed-wrap {
+  margin: 6px 0;
+  clear: both;
+}
+.embed-wrap iframe {
+  border: 1px solid #ccc;
+  display: block;
+  max-width: 100%;
+}
 
 @media (max-width:800px) { #pageWrap { width:100%; } }
 @media (max-width:600px) { body { padding:8px 4px 24px; background-attachment:scroll; } }
 
 h1, h2, h3 {
-  display: inline;
-  background: #000;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 2px 6px;
-  border: 0.5px ridge;
-  border-color: #727272;
+    display: inline;
+    background: #000;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border: 0.5px ridge;
+    border-color: #727272;
 }
 h1 { font-size: 12px; }
 h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
@@ -323,24 +339,26 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
           </td>
         </tr>
 
-        <!-- Links -->
         <tr>
-          <td class="chan-label">Links</td>
-          <td class="chan-field">
-            <div style="display:flex; flex-direction:column; gap:6px;">
-              <input id="linkInput" class="chan-input" type="text" placeholder="paste youtube / spotify / soundcloud link">
-              <div id="linkDropdown" style="
-                background:#fff;
-                border:1px inset #aaa;
-                max-height:90px;
-                overflow-y:auto;
-                font-size:12px;
-                padding:4px;
-              "></div>
-            </div>
-          </td>
-        </tr>
+          <!-- Links -->
+  <td class="chan-label">Links</td>
+  <td class="chan-field">
+    <div style="display:flex; flex-direction:column; gap:6px;">
 
+      <input id="linkInput" class="chan-input" type="text" placeholder="paste youtube / spotify / soundcloud link">
+
+      <div id="linkDropdown" style="
+        background:#fff;
+        border:1px inset #aaa;
+        max-height:90px;
+        overflow-y:auto;
+        font-size:12px;
+        padding:4px;
+      "></div>
+
+    </div>
+  </td>
+</tr>
         <!-- File + embed controls -->
         <tr>
           <td class="chan-label">File</td>
@@ -362,7 +380,7 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 
   <!-- PREVIEW -->
   <div id="previewSection">
-    <div id="previewTitle">Preview</div>
+    <div id="previewTitle">Preview </div>
     <div id="previewBody">
       <div style="color:#777;font-size:11px;margin-bottom:8px;">
         anonymous message — watanagashiarchive.vercel.app/contact
@@ -391,7 +409,7 @@ const SERVICE_ID    = 'service_ina2cb8';
 const TEMPLATE_ID   = 'template_g7owumb';
 
 // ─────────────────────────────────────────────
-// TIME — chan format MM/DD/YY(Day)HH:MM:SS
+// TIME  — chan format  MM/DD/YY(Day)HH:MM:SS
 // ─────────────────────────────────────────────
 function getChanTime() {
   const now  = new Date();
@@ -440,8 +458,9 @@ const embedPatterns = [
   }
 ];
 
+// Regex that matches all embeddable URLs (for link highlighting)
+// Detect all embeds from plain text
 const EMBED_URL_REGEX = /https?:\/\/(?:(?:www\.)?(?:youtube\.com\/watch\?[^\s]*v=[a-zA-Z0-9_-]{11}|youtu\.be\/[a-zA-Z0-9_-]{11})|open\.spotify\.com\/(?:intl-[a-z]{2}\/)?(?:track|album|playlist|episode)\/[a-zA-Z0-9]+(?:\?[^\s]*)?|(?:www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+(?:\?[^\s]*)?)/g;
-
 function detectEmbeds(text) {
   const found = [];
   for (const pat of embedPatterns) {
@@ -457,6 +476,7 @@ function detectEmbeds(text) {
   return found;
 }
 
+// Build preview HTML for embeds (only unsuppressed ones)
 function buildEmbedPreviewHTML(embeds) {
   if (!embeds.length) return '';
   return embeds.map(e =>
@@ -474,36 +494,21 @@ function buildEmbedPreviewHTML(embeds) {
   ).join('');
 }
 
-// FIX: builds email HTML for embeds — used both in message_html and sent as embeds_html
+// Build email-safe embed section (links instead of iframes)
 function buildEmbedEmailHTML(embeds) {
   if (!embeds.length) return '';
-  return embeds.map(e => {
-    if (e.name === 'youtube') {
-      return `<div style="margin:8px 0;">
-        <a href="${escapeAttr(e.url)}" target="_blank">
-          <img src="https://img.youtube.com/vi/${e.id}/hqdefault.jpg"
-               style="max-width:300px;display:block;border:1px solid #ccc;">
-        </a>
-        <div style="font-size:11px;color:#666;">YouTube</div>
-      </div>`;
-    }
-    if (e.name === 'spotify') {
-      return `<div style="margin:8px 0;">
-        <a href="${escapeAttr(e.url)}" target="_blank" style="color:#1DB954;">▶ Open on Spotify</a>
-      </div>`;
-    }
-    if (e.name === 'soundcloud') {
-      return `<div style="margin:8px 0;">
-        <a href="${escapeAttr(e.url)}" target="_blank" style="color:#ff5500;">▶ Open on SoundCloud</a>
-      </div>`;
-    }
-    return '';
-  }).join('');
+  const items = embeds.map(e =>
+    `<div style="margin:4px 0;font-size:12px;">
+      [${e.name.toUpperCase()}] <a href="${escapeAttr(e.url)}" style="color:#0055cc;">${escapeHtml(e.url)}</a>
+    </div>`
+  ).join('');
+  return `<div style="margin-top:8px;padding-top:6px;border-top:1px dotted #ccc;font-size:11px;color:#888;">Embeds:</div>${items}`;
 }
 
 // ─────────────────────────────────────────────
 // LINK HIGHLIGHTING IN EDITOR
 // ─────────────────────────────────────────────
+
 function getCaretCharOffset(el) {
   const sel = window.getSelection();
   if (!sel || !sel.rangeCount) return 0;
@@ -563,13 +568,15 @@ function unwrapLinkSpans() {
 }
 
 function highlightLinks() {
-  const rawText = editor.textContent.replace(/\u200B/g, '');
+const rawText = editor.textContent.replace(/\u200B/g, '');
   EMBED_URL_REGEX.lastIndex = 0;
   const hasLinks = EMBED_URL_REGEX.test(rawText);
+
   const hasSpans = !!editor.querySelector('.link-span');
   if (!hasLinks && !hasSpans) return;
 
   const caretOffset = getCaretCharOffset(editor);
+
   unwrapLinkSpans();
 
   function processNode(node) {
@@ -611,24 +618,8 @@ function highlightLinks() {
   }
 
   Array.from(editor.childNodes).forEach(processNode);
-  setCaretByOffset(editor, caretOffset);
-}
 
-// ─────────────────────────────────────────────
-// FIX: extractLinksFromEditor moved to outer scope
-// so it's accessible from both the input event and the linkInput handler
-// ─────────────────────────────────────────────
-function extractLinksFromEditor() {
-  const text = editor.innerText.replace(/\u200B/g, '');
-  EMBED_URL_REGEX.lastIndex = 0;
-  const matches = text.match(EMBED_URL_REGEX);
-  if (!matches) return;
-  matches.forEach(link => {
-    if (!links.includes(link)) {
-      links.push(link);
-    }
-  });
-  renderLinks();
+  setCaretByOffset(editor, caretOffset);
 }
 
 // ─────────────────────────────────────────────
@@ -637,9 +628,9 @@ function extractLinksFromEditor() {
 const editor      = document.getElementById('msgEditor');
 const previewMsg  = document.getElementById('previewMsg');
 const previewTime = document.getElementById('previewTime');
+ const links = [];
 
-const links = [];
-const linkInput    = document.getElementById('linkInput');
+const linkInput = document.getElementById('linkInput');
 const linkDropdown = document.getElementById('linkDropdown');
 
 linkInput.addEventListener('keydown', (e) => {
@@ -647,10 +638,26 @@ linkInput.addEventListener('keydown', (e) => {
     e.preventDefault();
     const val = linkInput.value.trim();
     if (!val) return;
-    if (!links.includes(val)) {
-      links.push(val);
+
+if (!links.includes(val)) {
+  links.push(val);
+
+}    linkInput.value = '';
+    
+    function extractLinksFromEditor() {
+  const text = editor.innerText.replace(/\u200B/g, '');
+  const matches = text.match(EMBED_URL_REGEX);
+
+  if (!matches) return;
+
+  matches.forEach(link => {
+    if (!links.includes(link)) {
+      links.push(link);
     }
-    linkInput.value = '';
+  });
+
+  renderLinks();
+}
     renderLinks();
     updatePreview();
   }
@@ -675,8 +682,8 @@ previewTime.textContent = getChanTime();
 setInterval(() => { previewTime.textContent = getChanTime(); }, 1000);
 
 editor.addEventListener('input', () => {
-  suppressedEmbeds.clear();
-  extractLinksFromEditor(); // FIX: now accessible from outer scope
+  suppressedEmbeds.clear(); //  ISSO AQUI
+    extractLinksFromEditor(); 
   highlightLinks();
   updatePreview();
 });
@@ -693,7 +700,10 @@ editor.addEventListener('dragstart', (e) => {
   if (e.target.tagName === 'IMG') e.preventDefault();
 });
 
+// ── Ctrl+A + Enter fix + Delete protection ──
 editor.addEventListener('keydown', (e) => {
+
+  // ── Ctrl+A: select only text nodes, skip images ──
   if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
     const img = editor.querySelector('img');
     if (img) {
@@ -709,6 +719,7 @@ editor.addEventListener('keydown', (e) => {
           for (const child of node.childNodes) collectTextNodes(child);
         }
       }
+
       collectTextNodes(editor);
 
       if (textNodes.length > 0) {
@@ -722,22 +733,27 @@ editor.addEventListener('keydown', (e) => {
     }
   }
 
+  // ── ENTER FIX (ESSENCIAL) ──
   if (e.key === 'Enter') {
     e.preventDefault();
+
     const sel = window.getSelection();
     if (!sel.rangeCount) return;
+
     const range = sel.getRangeAt(0);
     range.deleteContents();
+
     const br = document.createElement('br');
     range.insertNode(br);
+
     range.setStartAfter(br);
     range.setEndAfter(br);
     sel.removeAllRanges();
     sel.addRange(range);
     return;
   }
-});
 
+});
 editor.addEventListener('click', () => {
   const img = editor.querySelector('img');
   if (!img) return;
@@ -768,6 +784,8 @@ editor.addEventListener('click', () => {
       sel.removeAllRanges();
       sel.addRange(newRange);
     }
+
+   
   });
 });
 
@@ -783,7 +801,8 @@ function updatePreview() {
   const text   = editor.innerText.replace(/\u200B/g, '').trim();
   const hasImg = !!editor.querySelector('img');
   const editorText = editor.innerText.replace(/\u200B/g, '');
-  const allEmbeds  = detectEmbeds(editorText + '\n' + links.join('\n'));
+  const allEmbeds = detectEmbeds(editorText + '\n' + links.join('\n'));
+
   const visibleEmbeds = allEmbeds.filter(e => !suppressedEmbeds.has(e.url));
 
   document.getElementById('removeEmbedBtn').style.display =
@@ -842,6 +861,10 @@ function buildEmailHTML(html) {
   const img   = tmp.querySelector('img');
   const specs = tmp.querySelector('.pic-specs');
 
+const rawText = tmp.innerText || '';
+const embeds = detectEmbeds(rawText + '\n' + links.join('\n'));
+const embedsSection = buildEmbedEmailHTML(embeds);
+
   let bodyHTML;
   if (img) {
     const specsHTML = specs
@@ -866,7 +889,7 @@ function buildEmailHTML(html) {
     bodyHTML = tmp.innerHTML;
   }
 
-  return bodyHTML;
+  return bodyHTML + embedsSection;
 }
 
 function escapeHtml(str) {
@@ -998,11 +1021,13 @@ function removeAttachment() {
 // REMOVE EMBEDS
 // ─────────────────────────────────────────────
 function removeEmbeds() {
-  const text   = editor.innerText.replace(/\u200B/g, '').trim();
-  const embeds = detectEmbeds(text + '\n' + links.join('\n'));
+  const text = editor.innerText.replace(/\u200B/g, '').trim();
+  const embeds = detectEmbeds(text);
 
   embeds.forEach(e => {
-    if (!suppressedEmbeds.has(e.url)) suppressedEmbeds.add(e.url);
+    if (!suppressedEmbeds.has(e.url)) {
+      suppressedEmbeds.add(e.url);
+    }
   });
 
   document.getElementById('removeEmbedBtn').style.display = 'none';
@@ -1012,11 +1037,47 @@ function removeEmbeds() {
 
 // ─────────────────────────────────────────────
 // SEND
-// FIX: now sends both message_html (body) and embeds_html (separate)
-// so the EmailJS template can use {{{message_html}}} and {{{embeds_html}}} independently
 // ─────────────────────────────────────────────
 async function sendMsg() {
   const rawText = editor.innerText.replace(/\u200B/g, '').trim();
+  const embeds = detectEmbeds(rawText);
+  
+
+const embedsHTML = embeds.map(e => {
+  if (e.name === 'youtube') {
+    return `
+      <div style="margin:8px 0;">
+        <a href="${e.url}" target="_blank">
+          <img src="https://img.youtube.com/vi/${e.id}/hqdefault.jpg"
+               style="max-width:300px;display:block;border:1px solid #ccc;">
+        </a>
+        <div style="font-size:11px;color:#666;">YouTube</div>
+      </div>
+    `;
+  }
+
+  if (e.name === 'spotify') {
+    return `
+      <div style="margin:8px 0;">
+        <a href="${e.url}" target="_blank" style="color:#1DB954;">
+          ▶ Open on Spotify
+        </a>
+      </div>
+    `;
+  }
+
+  if (e.name === 'soundcloud') {
+    return `
+      <div style="margin:8px 0;">
+        <a href="${e.url}" target="_blank" style="color:#ff5500;">
+          ▶ Open on SoundCloud
+        </a>
+      </div>
+    `;
+  }
+
+  return '';
+}).join('');
   const hasImg  = !!editor.querySelector('img');
   const status  = document.getElementById('statusMsg');
   const btn     = document.getElementById('sendBtn');
@@ -1032,12 +1093,8 @@ async function sendMsg() {
   status.className   = '';
   status.textContent = 'Sending...';
 
-  const timeStr   = getChanTime();
-  const bodyHTML  = buildEmailHTML(editor.innerHTML);
-
-  // Build embeds from editor text + manually added links
-  const allEmbeds  = detectEmbeds(rawText + '\n' + links.join('\n'));
-  const embedsHTML = buildEmbedEmailHTML(allEmbeds);
+  const timeStr    = getChanTime();
+  const finalHTML  = buildEmailHTML(editor.innerHTML);
 
   try {
     await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
@@ -1045,8 +1102,7 @@ async function sendMsg() {
       from_email:   'anonymous@noreply.com',
       subject:      'anonymous message — watanagashi archive',
       message:      rawText,
-      message_html: bodyHTML,
-      embeds_html:  embedsHTML,   // FIX: now actually sent to the template
+      message_html: finalHTML,
       time:         timeStr,
     });
 
@@ -1055,11 +1111,9 @@ async function sendMsg() {
 
     editor.innerHTML     = '';
     previewMsg.innerHTML = '<span style="color:#bbb;">your message will appear here...</span>';
-    links.length = 0;
-    renderLinks();
 
     document.getElementById('fileNameDisplay').textContent = 'No file chosen';
-    document.getElementById('removeBtn').style.display     = 'none';
+    document.getElementById('removeBtn').style.display    = 'none';
     document.getElementById('removeEmbedBtn').style.display = 'none';
 
     suppressedEmbeds.clear();
