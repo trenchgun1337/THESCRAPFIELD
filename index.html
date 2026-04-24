@@ -6,12 +6,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Watanagashi Archive</title>
 <link rel="icon" href="assets/images/favicon/rikaico.ico">
-<link rel="preload" href="assets/fonts/AngelicWar.ttf" as="font" type="font/truetype" crossorigin="anonymous">
+
+<link rel="preload" href="assets/fonts/broken15/BROKEN15.TTF" as="font" type="font/ttf" crossorigin="anonymous">
+<link rel="preload" href="assets/fonts/Special_Elite/SpecialElite-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+<link rel="preload" href="assets/fonts/angelicwar/AngelicWar.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
+
 <style>
+
+@font-face {
+  font-family: 'Broken15';
+  src: url('assets/fonts/broken15/BROKEN15.TTF') format('truetype');
+  font-display: block;
+}
 @font-face {
   font-family: 'AngelicWar';
-  src: url('assets/fonts/AngelicWar.ttf') format('truetype');
+  src: url('assets/fonts/angelicwar/AngelicWar.ttf') format('truetype');
+  font-display: block;
+}
+@font-face {
+  font-family: 'SpecialElite';
+  src: url('assets/fonts/special_elite/SpecialElite-Regular.ttf') format('truetype');
   font-display: block;
 }
 
@@ -24,31 +39,10 @@ img { -webkit-user-drag: none; user-select: none; pointer-events: auto; }
 ::selection      { background: rgba(80,80,80,.45); color: #fff; }
 ::-moz-selection { background: rgba(80,80,80,.45); color: #fff; }
 
-/* bostinha da scrollbar*/
-
-/* 1. Largura da barra */
-::-webkit-scrollbar {
-  width: 7px; /* Um pouco mais larga para destacar a borda ridge */
-  height: 4px; /* Para barras horizontais */
-}
-
-/* 2. O trilho (fundo da barra) */
-::-webkit-scrollbar-track {
-  background: #3d3d3d54; /* Cinza bem clarinho */
-}
-
-/* 3. O polegar (parte que arrasta) */
-::-webkit-scrollbar-thumb {
-  background: #d3d3d3; /* Cinza claro */
-  border: 2px ridge #b0b0b0; /* Borda ridge no polegar */
-  border-radius: 0; /* Garante que fique quadrada */
-}
-
-/* 4. Efeito ao passar o mouse */
-::-webkit-scrollbar-thumb:hover {
-  background: #c0c0c0;
-}
-
+::-webkit-scrollbar { width: 7px; height: 4px; }
+::-webkit-scrollbar-track { background: #3d3d3d54; }
+::-webkit-scrollbar-thumb { background: #d3d3d3; border: 2px ridge #b0b0b0; border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: #c0c0c0; }
 
 body {
   font-family: 'Sawarabi Gothic', 'Sazanami Gothic', Tahoma, 'Segoe UI', sans-serif;
@@ -154,8 +148,73 @@ h1, h2, h3 {
   padding: 2px 6px;
   font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
 }
+
 h1 { font-size: 40px; }
-h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
+
+h4 {     
+  font-family: 'SpecialElite', 'Sawarabi Gothic', sans-serif;
+  font-size: 23px;
+  font-weight: 400;
+  color: #e3e3e3;
+  display: flow;
+  text-align: center;
+  border-bottom: 2px ridge;
+  text-decoration: underline;
+  background-color: black;
+  display: unset;
+  margin: 146px;
+}
+
+#h42 {     
+  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
+  font-size: 23px;
+  font-weight: 400;
+  color: #e3e3e3;
+  border-bottom: 2px ridge;
+  text-decoration: underline;
+  display: unset;
+}
+
+#h43 {     
+  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #ff0000;
+  background-color: black;
+  border-bottom: 2px ridge;
+  text-decoration: underline;
+  display: unset;
+}
+
+/* word-card estático removido — só hover card ativo */
+
+/* hover card flutuante — aparece no hover do interest "shlimazl" */
+#shlimazl-hover-card {
+  display: none !important;
+  position: fixed;
+  z-index: 99999;
+  pointer-events: none;
+  max-width: 260px;
+  background: #fff;
+  border: 2px ridge #727272;
+  padding: 10px 14px 14px;
+  box-shadow: #595959 1px 1px 8px 1px;
+}
+#shlimazl-hover-card.visible {
+  display: block !important;
+}
+#shlimazl-hover-card .wc-word     { font-family: 'Times New Roman', serif; font-size: 26px; font-weight: 900; color: #0a0a0a; letter-spacing: -1px; line-height: 1; display: block; margin-bottom: 2px; }
+#shlimazl-hover-card .wc-pronunciation { font-family: 'Times New Roman', serif; font-style: italic; font-size: 11px; color: #444; display: block; }
+#shlimazl-hover-card .wc-type     { font-family: 'Times New Roman', serif; font-size: 11px; font-style: italic; color: #555; font-weight: bold; display: block; margin-bottom: 4px; }
+#shlimazl-hover-card .wc-divider  { border: none; border-top: 1px solid #ccc; margin: 4px 0 5px; }
+#shlimazl-hover-card .wc-definition { font-family: 'Times New Roman', serif; font-size: 12px; color: #111; line-height: 1.4; display: block; }
+
+/* interest "shlimazl" sublinhado tracejado para dar hint */
+.interest-shlimazl {
+  cursor: default;
+  border-bottom: 1px dashed #555;
+  color: inherit;
+}
 
 .bar-row {
   display: block; background: #000;
@@ -191,6 +250,40 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 .rights-content a       { color: #ff0303; text-decoration: none; }
 .rights-content a:hover { color: #ff0303; text-decoration: underline; }
 
+/* Special Thanks — links estilo "> [link]" */
+.special-thanks-content {
+  background: #fff;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.special-thanks-link {
+  font-family: 'SpecialElite', 'Sawarabi Gothic', sans-serif;
+  font-size: 13px;
+  color: #111;
+  display: block;
+  text-indent: 0;
+}
+
+.special-thanks-link::before {
+  content: '> ';
+  color: #888;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.special-thanks-link a {
+  color: #cc0000;
+  text-decoration: none;
+  font-family: 'SpecialElite', 'Sawarabi Gothic', sans-serif;
+}
+
+.special-thanks-link a:hover {
+  text-decoration: underline;
+}
+
 #introBanner {
   width: 100%; max-height: 375px; object-fit: cover;
   display: block; border-bottom: 2px solid rgba(150,150,150,.50);
@@ -199,7 +292,9 @@ h4 { font-size: 13px; font-weight: 400; color: red; display: inline; }
 
 a       { color: #000; text-decoration: none; }
 a:hover { text-decoration: underline; }
-p       { font-size: 12.5px; line-height: 18px; color: #111; margin: 0; }
+#p2     { font-family: 'Times New Roman', sans-serif; font-size: 25.5px; line-height: 14px; color: #111; margin: 0; text-align: center; }
+p       { font-family: 'SpecialElite', sans-serif; font-size: 15.5px; line-height: 18px; color: #000000; margin: 0; text-align: center; }
+#p2     { font-family: 'SpecialElite', sans-serif; font-size: 15.5px; line-height: 18px; color: #111; margin: 0; text-align: center; }
 p + p   { margin-top: 5px; }
 
 .contact-links { list-style: none; margin: 0; padding: 0; }
@@ -214,7 +309,6 @@ p + p   { margin-top: 5px; }
 .link-label { flex: 1; }
 .link-note  { color: rgba(255,255,255,.45); font-size: 11px; }
 
-/* ── Site stats ── */
 .stats-row {
   display: flex;
   background: #ffffff;
@@ -246,7 +340,6 @@ p + p   { margin-top: 5px; }
   letter-spacing: 1px;
 }
 
-/* ── Currently / About / Last Updated (shared grid) ── */
 .currently-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -264,7 +357,8 @@ p + p   { margin-top: 5px; }
 }
 .currently-item:last-child { border-right: none; }
 .currently-label {
-  font-size: 10px;
+  font-family: 'Broken15', 'Sawarabi Gothic', sans-serif;
+  font-size: 50px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #f5f5f5;
@@ -272,7 +366,8 @@ p + p   { margin-top: 5px; }
   text-align: center;
 }
 .currently-value {
-  font-size: 12px;
+  font-family: 'SpecialElite', 'Sawarabi Gothic', sans-serif;
+  font-size: 14px;
   color: #111;
   line-height: 1.4;
 }
@@ -281,7 +376,6 @@ p + p   { margin-top: 5px; }
   color: #aaa;
 }
 
-/* ── Last Updated special style ── */
 .lu-value-big {
   font-size: 18px;
   color: #111;
@@ -292,7 +386,6 @@ p + p   { margin-top: 5px; }
   padding: 6px 0 4px;
 }
 
-/* ── Visitor counter ── */
 .visitor-counter-wrap {
   display: flex;
   align-items: center;
@@ -439,7 +532,7 @@ p + p   { margin-top: 5px; }
   const db  = getDatabase(app);
 
   function applyLastUpdated(dateStr) {
-    document.querySelectorAll('#lu-date').forEach(function(el) {
+    document.querySelectorAll('[data-lu-date]').forEach(function(el) {
       el.textContent = dateStr;
     });
   }
@@ -454,16 +547,54 @@ p + p   { margin-top: 5px; }
            ts.getFullYear();
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    get(ref(db, 'archive/lastUpdated'))
-      .then(function(snap) {
-        applyLastUpdated(snap.exists() ? formatTimestamp(snap.val()) : 'Tue, 22 Apr 2026');
-      })
-      .catch(function() {
-        applyLastUpdated('Tue, 22 Apr 2026');
-      });
-  });
+  /* aguarda DOM estar pronto antes de tentar aplicar */
+  function tryApply(dateStr) {
+    var els = document.querySelectorAll('[data-lu-date]');
+    if (els.length > 0) {
+      els.forEach(function(el){ el.textContent = dateStr; });
+    } else {
+      /* se ainda não renderizou, tenta de novo */
+      setTimeout(function(){ tryApply(dateStr); }, 150);
+    }
+  }
+
+  /* dispara assim que o módulo carrega — não espera DOMContentLoaded */
+  get(ref(db, 'archive/lastUpdated'))
+    .then(function(snap) {
+      var dateStr = snap.exists() ? formatTimestamp(snap.val()) : 'Wed, 23 Apr 2026';
+      /* tenta imediatamente e também no DOMContentLoaded */
+      tryApply(dateStr);
+      document.addEventListener('DOMContentLoaded', function(){ tryApply(dateStr); });
+    })
+    .catch(function() {
+      var fallback = 'Wed, 23 Apr 2026';
+      tryApply(fallback);
+      document.addEventListener('DOMContentLoaded', function(){ tryApply(fallback); });
+    });
 </script>
+
+<!-- SVG filter para efeito grain no word-card (escondido) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="manga-grain" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="1"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+</svg>
+
+<!-- Hover card flutuante para "shlimazl" -->
+<div id="shlimazl-hover-card">
+  <span class="wc-word">shlimazl</span>
+  <span class="wc-pronunciation">/ʃlɪˈmɑːzəl/</span>
+  <span class="wc-type">noun</span>
+  <hr class="wc-divider">
+  <span class="wc-definition">a consistently unlucky person; someone who seems destined for misfortune</span>
+</div>
 
 <img id="siteLogoTop"
   src="assets/images/watanagashilogo.jpg"
@@ -497,8 +628,10 @@ p + p   { margin-top: 5px; }
             <img id="introBanner" src="assets/images/bannerintroduction.jpg" alt="Banner" draggable="false">
           </div>
           <article class="styled-containers-headers aero-borders">
-            <p>Welcome to <h4>The Watanagashi Archive</h4> &mdash; my personal site &amp; archive.</p>
-            <p style="margin-top:7px">here i shall mantain stuff, projects, sketchy art, music &amp; general media. i'll try to keep updating it.</p>
+            <h4>The Watanagashi Archive</h4> 
+            <br><br>
+            <p>Welcome to — my personal site &amp; archive.</p>
+            <p>Here you'll find a collection of resources, media, and various content related to my interests and projects. This Archive serves No Schedule...i'll try to keep it updated as much as possible.</p>
           </article>
         </div>
 
@@ -509,19 +642,19 @@ p + p   { margin-top: 5px; }
             <div class="currently-item">
               <span class="currently-label">a bit</span>
               <br>
-              <span class="currently-value">I have many aliases, but for now, let's just say I'm <h4>Settembre.</h4></span>
+              <span class="currently-value">I have many aliases, but for now, let's just say I'm <div id="h43">Settembre.</div></span>
               <span class="currently-value">I don't really feel like socializing. I'd rather stay in my room forever. I have no purpose in life, and that's my purpose. maybe the internet is where I truly belong; maybe I just wasn't made for the outside world.</span>
               <br>
               <span class="currently-value">i don't remember being a talkative or sociable kid, even when i was younger. i always preferred to be alone and play in my own way, like i always knew what was good for me.</span>
               <br>
-              <span class="currently-value">i always had a strong sense of justice and a strange hatred for people, even when i was extremely kind to them. maybe i've always felt hatred for humans — i never hugged a family member with true love inside me, or ever felt that healthy, common fondness for them.</span>
+              <span class="currently-value">i always had a strong sense of justice and a strange hatred for people, even when i was extremely kind to them. maybe i've always felt distaste for humanity <br><br>— i never hugged a family member with true love inside me, or ever felt that healthy, common fondness for them.</span>
             </div>
             <div class="currently-item">
               <span class="currently-label">interests dump</span>
               <br>
               <span class="currently-value">anime, visual novels, higurashi, umineko, resident evil 4 (2005), fear &amp; hunger, horror, zombies, cult media, xbox 360, old web, windows 7, 2000s, nostalgia, diy, design, fashion, boots, leather, victorianism, psychology, philosophy, politics, history, literature, poems, testing morality, atheism, cyber-religion, conspiracy, coding, music, drawing, art, experimental stuff, shotguns, trench guns, bows, cats, bunnies, plants, germany, italy, brazil.
-nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death note, corpse party, silent hill, school days, mad father, witch's house, mogeko castle, wadanohara, okegom, happy tree friends, south park, my little pony, homestuck, soyjak, chud, memes, gothic architecture, lolita, kindness, justice, empathy, critical thinking, accent, "brigadeiro", bloodplay, anatomical graphics, nature, animals, solding, occultism, atheism, misanthropy, nihilism, existentialism, schizoanalysis
-</span>
+nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death note, corpse party, silent hill, school days, mad father, witch's house, mogeko castle, wadanohara, okegom, happy tree friends, south park, my little pony, homestuck, soyjak, chud, memes, gothic architecture, lolita, kindness, justice, empathy, critical thinking, accent, "brigadeiro", bloodplay, anatomical graphics, nature, animals, solding, occultism, atheism, misanthropy, nihilism, existentialism, schizoanalysis, <span class="interest-shlimazl" id="shlimazl-trigger">shlimazl</span>
+              </span>
             </div>
           </div>
         </div>
@@ -541,27 +674,31 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
           </div>
         </div>
 
-        <!-- LAST UPDATED — exclusivo da Introduction -->
+        <!-- LAST UPDATED -->
         <div class="bar-row"><h1 class="angelic-target">Last Updated</h1></div>
         <div class="glass-borders" style="padding:0; margin:0 7px 7px;">
           <div class="currently-grid one-col aero-borders">
             <div class="currently-item" style="align-items:center; padding: 10px;">
               <span class="currently-label" style="width:100%; display:block;">last updated</span>
-              <span class="lu-value-big angelic-target" id="lu-date">---</span>
+              <span class="lu-value-big angelic-target" data-lu-date>---</span>
             </div>
           </div>
         </div>
 
         <!-- SPECIAL THANKS -->
         <div class="bar-row"><h1 class="angelic-target">Special Thanks</h1></div>
-        <div class="rights-content aero-borders" style="margin:0 7px 7px">
-          <h4>Honorable Mention: <a href="https://frutigeraeroarchive.org/" target="_blank">frutigeraeroarchive.org</a></h4>
-          <h4>Honorable Mention: <a href="https://kaomoji.you/" target="_blank">kaomoji.you</a></h4>
+        <div style="position: relative; margin: 0 7px 7px;">
+          <div class="special-thanks-content aero-borders">
+            <span class="special-thanks-link">Honorable Mention: <a href="https://frutigeraeroarchive.org/" target="_blank">frutigeraeroarchive.org</a></span>
+            <span class="special-thanks-link">Honorable Mention: <a href="https://kaomoji.you/" target="_blank">kaomoji.you</a></span>
+          </div>
+
+
         </div>
 
       </div><!-- /#pg-introduction -->
 
-      <!-- RESOURCES — Last Updated não aparece aqui -->
+      <!-- RESOURCES -->
       <div id="pg-resources" class="page">
         <div class="bar-row"><h1 class="angelic-target">Resources</h1></div>
         <div class="glass-borders">
@@ -642,6 +779,34 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
     if (!raw || raw === 'index.html') raw = 'introduction';
     gotoPage(pages.indexOf(raw) !== -1 ? raw : 'introduction');
     history.replaceState({ page: raw }, '', '#' + raw);
+
+  });
+
+})();
+</script>
+
+<script>
+/* Hover card para "shlimazl" em interests */
+(function(){
+  var trigger = document.getElementById('shlimazl-trigger');
+  var card    = document.getElementById('shlimazl-hover-card');
+  if (!trigger || !card) return;
+
+  trigger.addEventListener('mousemove', function(e){
+    card.classList.add('visible');
+    var x = e.clientX + 16;
+    var y = e.clientY - 20;
+    var cw = card.offsetWidth  || 280;
+    var ch = card.offsetHeight || 100;
+    if (x + cw > window.innerWidth  - 8) x = e.clientX - cw - 10;
+    if (y + ch > window.innerHeight - 8) y = window.innerHeight - ch - 8;
+    if (y < 4) y = 4;
+    card.style.left = x + 'px';
+    card.style.top  = y + 'px';
+  });
+
+  trigger.addEventListener('mouseleave', function(){
+    card.classList.remove('visible');
   });
 })();
 </script>
