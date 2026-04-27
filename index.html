@@ -4,515 +4,764 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: wss:;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Watanagashi Archive</title>
-<link rel="icon" href="assets/images/favicon/rikaico.ico">
+<title>Introduction — Archive Shinigami</title>
+<link rel="icon" href="assets/images/favicon/favicon.ico">
 
-<link rel="preload" href="assets/fonts/broken15/BROKEN15.TTF" as="font" type="font/ttf" crossorigin="anonymous">
+<link rel="preload" href="assets/fonts/deathnote_font/DEATH_NOTE2.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 <link rel="preload" href="assets/fonts/Special_Elite/SpecialElite-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
-<link rel="preload" href="assets/fonts/angelicwar/AngelicWar.ttf" as="font" type="font/ttf" crossorigin="anonymous">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap">
 
 <style>
 
 @font-face {
-  font-family: 'Broken15';
-  src: url('assets/fonts/broken15/BROKEN15.TTF') format('truetype');
+  font-family: 'cloister';
+  src: url('assets/fonts/cloister_black/CloisterBlack.ttf') format('truetype');
   font-display: block;
 }
+
 @font-face {
-  font-family: 'AngelicWar';
-  src: url('assets/fonts/angelicwar/AngelicWar.ttf') format('truetype');
+  font-family: 'DeathNote';
+  src: url('assets/fonts/deathnote_font/DEATH_NOTE1.ttf') format('truetype');
   font-display: block;
 }
+
 @font-face {
   font-family: 'SpecialElite';
-  src: url('assets/fonts/special_elite/SpecialElite-Regular.ttf') format('truetype');
+  src: url('assets/fonts/Special_Elite/SpecialElite-Regular.ttf') format('truetype');
   font-display: block;
 }
 
-.angelic-target { visibility: hidden; }
-.fonts-loaded .angelic-target { visibility: visible; }
+*, *::before, *::after {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+}
 
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-img { -webkit-user-drag: none; user-select: none; pointer-events: auto; }
+::selection      { background: #fff; color: #000; }
+::-moz-selection { background: #fff; color: #000; }
 
-::selection      { background: rgba(80,80,80,.45); color: #fff; }
-::-moz-selection { background: rgba(80,80,80,.45); color: #fff; }
+/* SCROLLBAR CUSTOM */
 
-::-webkit-scrollbar { width: 7px; height: 4px; }
-::-webkit-scrollbar-track { background: #3d3d3d54; }
-::-webkit-scrollbar-thumb { background: #d3d3d3; border: 2px ridge #b0b0b0; border-radius: 0; }
-::-webkit-scrollbar-thumb:hover { background: #c0c0c0; }
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080808;
+  border-left: 3px solid #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background-image: url('assets/images/scrollbar1.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px dashed #000000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-image: url('assets/images/scrollbar2.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(100);
+}
+
+::-webkit-scrollbar-corner {
+  background: #111;
+}
 
 body {
-  font-family: 'Sawarabi Gothic', 'Sazanami Gothic', Tahoma, 'Segoe UI', sans-serif;
-  font-size: 12px;
-  color: #111;
-  background-color: #000;
-  background-image: url("assets/images/backgrounds/whitebg.jpeg");
-  background-size: 74%;
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 13px;
+  color: #ffffff;
+  background-color: #ffffff;
+  background-image: url("assets/images/backgrounds/indexbg.jpg");
   background-attachment: fixed;
   background-repeat: no-repeat;
-  background-position: center center;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 310px;
-  padding-bottom: 24px;
+  background-position: right center;
+  background-size: contain;
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-#siteLogoTop {
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  max-height: 302px; max-width: 800px; width: 100%;
-  object-fit: cover; object-position: top center;
-  border-radius: 0 0 18px 18px;
-  z-index: 9990; pointer-events: none; display: block;
-  border: solid 1px rgb(135 133 133);
-  box-shadow: #595959 1px 1px 12px 1px;
+
+/* ─── PAGE WRAPPER ─── */
+
+#wrapper {
+  width: 560px;
+  max-width: 100%;
+  margin: 0 0 0 18px;
+  padding: 0px 0;
 }
 
-#websiteContainer {
-  width: 800px; max-width: 100%;
-  display: flex; flex-direction: column;
+/* ─── HEADER ─── */
+
+#siteHeader {
+  background: #000;
+  border-bottom: 2px solid #fff;
+  padding: 16px 14px 11px;
+}
+
+#siteTitle {
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 36px;
+  font-weight: normal;
+  color: #fff;
+  display: block;
+  line-height: 1;
+  text-align: center;
+}
+
+#siteSubtitle {
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 10px;
+  color: #666;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 5px;
+  text-align: center;
+}
+
+/* ─── NAVIGATION ─── */
+
+#siteNav {
+  background: #000;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 12px;
+}
+
+.nav-sep {
+  color: #444;
+  margin: 0 9px;
+  user-select: none;
+}
+
+.nav-item{
+  color:#ffffff;
+  text-decoration:none;
+  cursor:pointer;
   position: relative;
+  display: inline-block;
+  padding: 2px 18px 2px 4px; /* espaço pra imagem na direita */
 }
 
-#navAndContentContainer { display: flex; align-items: stretch; }
-
-#sidebarAside {
-  display: flex; flex-direction: column;
-  align-items: flex-start; flex-shrink: 0;
+.nav-item:hover{
+  color:#000000;
+  background-color:white;
+  text-decoration:underline;
 }
 
-#navigationMenu {
-  background: linear-gradient(108deg, #f5f5f5 50%, #ececec 100%);
-  border: 2px ridge #727272;
-  width: 162px; flex-shrink: 0;
-  padding: 10px 8px 14px;
-  overflow-y: auto; height: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(120,120,120,.60) rgba(220,220,220,.70);
-  box-shadow: #595959 1px 1px 12px 1px;
+.nav-item.active{
+  color:#000000;
+  background-color:white;
+  text-decoration:underline;
 }
 
-.nav-categories {
-  display: flex; flex-direction: column;
-  background: transparent; border: none;
-  padding: 0; margin-bottom: 6px;
+/* ÍCONE AO HOVER */
+.nav-item:hover::after,
+
+/* ÍCONE NO ITEM ATIVO */
+.nav-item.active::after{
+  content:"";
+  position:absolute;
+  right:-2px;
+  top:50%;
+  transform:translateY(-50%);
+  
+  width:22px;
+  height:12px;
+
+  background-image:url('assets/images/navcross.png');
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+
+  pointer-events:none;
 }
 
-.navbar-titles {
-  font-size: 12px; color: #000; text-transform: uppercase;
-  padding: 4px 2px 2px;
-  border-bottom: 1px solid rgba(0,0,0,.10);
-  margin-bottom: 3px;
-}
-
-.nav-link {
-  display: block; color: #111; font-size: 11.5px;
-  padding: 3px 4px; margin: 1px 0;
-  text-decoration: none; cursor: pointer;
-  position: relative; white-space: nowrap;
-}
-.nav-link + .nav-link::before {
-  content: '|'; color: #bbb;
-  position: absolute; left: -6px; top: 3px;
-  font-size: 10px; pointer-events: none;
-}
-.nav-link:hover  { color: red; text-decoration: underline; }
-.nav-link.active { color: red; font-weight: bold; text-decoration: underline; }
-
-#mainContent {
-  background: #f2f2f2;
-  border: 2px ridge #727272;
-  min-height: 500px; height: auto;
-  overflow-y: visible; width: 100%;
-  box-sizing: border-box;
-  box-shadow: #595959 1px 1px 12px 1px;
-  color: #111; flex: 1; min-width: 0;
-  padding-bottom: 44px;
+#mainContent{
   position: relative;
+  background:#000;
+  min-height:400px;
 }
+
+#mainContent::before,
+#mainContent::after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:12px;
+  background:url('https://wallpapers.com/images/thumbnail/filigree-samsung-black-9u6vx5ktxvmprgub.webp') repeat-y;
+  filter: brightness(3.4);
+}
+
+#mainContent::before{
+  left:0;
+}
+
+#mainContent::after{
+  right:0;
+}
+
+/* ─── SECTION TITLE BAR ─── */
+
+.section-bar {
+    background: #000000;
+    color: #fff;
+    font-family: 'SpecialElite', Georgia, serif;
+    font-size: 22px;
+    font-weight: normal;
+    padding: 8px 0 5px;
+    display: block;
+    text-align: center;
+    /* border-top: 0px solid #000000; */
+    border-bottom: 1px solid #e5dada;
+    text-transform: uppercase ;
+
+}
+
+/* ─── PAPER SECTION (white areas with long text) ─── */
+
+.paper {
+  background: #000000;
+  color: #ffffff;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+.paper p {
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 13px;
+  line-height: 1.72;
+  color: #ffffff;
+  text-align: center;
+  margin: 0;
+}
+
+.paper p + p {
+  margin-top: 9px;
+}
+
+/* ─── BANNER IMAGE ─── */
+
+#introBanner {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  border-bottom: 1px solid #000;
+  pointer-events: none;
+}
+
+/* ─── INTRO BOX (paper) ─── */
+
+.intro-box {
+  background: #000000;
+  color: #ffffff;
+  padding: 12px 14px 14px;
+  border: 1px solid #222;
+  text-align: center;
+}
+
+
+/* ─── TWO-COLUMN ABOUT ─── */
+
+.about-cols {
+  display: flex;
+}
+
+.about-col {
+  flex: 1;
+  padding: 12px 14px;
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 12.5px;
+  line-height: 1.68;
+  color: #111;
+}
+
+.about-col + .about-col {
+  border-left: 1px solid #ddd;
+}
+
+.about-col-label {
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 17px;
+  color: #ffffff;
+  background: #000000;
+  font-weight: normal;
+  padding: 2px 8px;
+  display: inline-block;
+  margin-bottom: 10px;
+  margin-left: 60px;
+  text-align: center;
+}
+
+.name-highlight {
+  font-family: 'DeathNote', Georgia, serif;
+  font-size: 20px;
+  color: #000;
+}
+
+#name-cloister {
+  font-family: 'cloister', Georgia, serif;
+  font-size: 26px;
+  color: #000000;
+  background-color: #ffffff;
+  font-weight: normal;
+}
+
+/* ─── STATS ─── */
+
+.stats-row {
+  display: flex;
+  background: #000000;
+  color: #ffffff;
+}
+
+.stat-cell {
+  flex: 1;
+  padding: 14px 8px;
+  text-align: center;
+  border-right: 1px solid #ddd;
+}
+
+.stat-cell:last-child {
+  border-right: none;
+}
+
+.stat-num {
+  display: block;
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 46px;
+  font-weight: normal;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.stat-label {
+  background: rgb(0, 0, 0);
+  display: inline-block;
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 20px;
+  padding: 2px 8px;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ─── LAST UPDATED ─── */
+
+.lu-box {
+  background: #000000;
+  color: #111;
+  padding: 12px;
+  text-align: center;
+}
+
+.lu-date {
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 26px;
+  font-weight: normal;
+  color: #ffffff;
+}
+
+/* ─── SPECIAL THANKS ─── */
+
+.thanks-list {
+  background: #000000;
+  color: #ffffff;
+  list-style: none;
+}
+
+.thanks-list li {
+  padding: 7px 14px;
+  border-bottom: 1px dotted #ddd;
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 12.5px;
+}
+
+.thanks-list li:last-child {
+  border-bottom: none;
+}
+
+.thanks-list li::before {
+  content: '> ';
+  color: #555;
+}
+
+.thanks-list a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.thanks-list a:hover {
+  color: #000000;
+  background-color: white;
+}
+
+/* ─── RESOURCES PAGE ─── */
+
+.res-block {
+  background: #000000;
+  color: #ffffff;
+  list-style: none;
+}
+
+.res-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 14px;
+  border-bottom: 1px dotted #ddd;
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 12.5px;
+}
+
+.res-item:last-child {
+  border-bottom: none;
+}
+
+.res-item a {
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.res-item a:hover .res-name {
+  color: #000;
+  background-color: white;
+  text-decoration: underline;
+}
+
+.res-note {
+  font-size: 10.5px;
+  color: #999;
+  font-family: 'SpecialElite', Georgia, serif;
+}
+
+.res-item.locked {
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+.res-bar {
+  background: #000;
+  color: #fff;
+  font-family: 'SpecialElite', Georgia, serif;
+  font-size: 22px;
+  font-weight: normal;
+  padding: 4px 0 2px;
+  display: block;
+  text-align: center;
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #333;
+  text-transform: uppercase;
+}
+
+/* ─── DIVIDER between sections on black ─── */
+
+.black-gap {
+  background-image: url(assets/images/scrollbar1.webp);
+  height: 8px;
+  border-top: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+}
+
+/* ─── PAGES ─── */
 
 .page { display: none; }
 .page.active { display: block; }
 
-h1, h2, h3 {
-  display: inline; background: #000; color: #fff;
-  font-size: 20px; font-weight: 400;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 2px 6px;
-  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
-}
-
-h1 { font-size: 40px; }
-
-h4 {     
-  font-family: 'SpecialElite', 'Sawarabi Gothic', sans-serif;
-  font-size: 23px;
-  font-weight: 400;
-  color: #e3e3e3;
-  display: flow;
-  text-align: center;
-  border-bottom: 2px ridge;
-  text-decoration: underline;
-  background-color: black;
-  display: unset;
-  margin: 146px;
-}
-
-#h42 {     
-  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
-  font-size: 23px;
-  font-weight: 400;
-  color: #e3e3e3;
-  border-bottom: 2px ridge;
-  text-decoration: underline;
-  display: unset;
-}
-
-#h43 {     
-  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
-  font-size: 24px;
-  font-weight: 400;
-  color: #ff0000;
-  background-color: black;
-  border-bottom: 2px ridge;
-  text-decoration: underline;
-  display: unset;
-}
-
-/* word-card estático removido — só hover card ativo */
-
-/* hover card flutuante — aparece no hover do interest "shlimazl" */
-#shlimazl-hover-card {
-  display: none !important;
-  position: fixed;
-  z-index: 99999;
-  pointer-events: none;
-  max-width: 260px;
-  background: #fff;
-  border: 2px ridge #727272;
-  padding: 10px 14px 14px;
-  box-shadow: #595959 1px 1px 8px 1px;
-}
-#shlimazl-hover-card.visible {
-  display: block !important;
-}
-#shlimazl-hover-card .wc-word     { font-family: 'Times New Roman', serif; font-size: 26px; font-weight: 900; color: #0a0a0a; letter-spacing: -1px; line-height: 1; display: block; margin-bottom: 2px; }
-#shlimazl-hover-card .wc-pronunciation { font-family: 'Times New Roman', serif; font-style: italic; font-size: 11px; color: #444; display: block; }
-#shlimazl-hover-card .wc-type     { font-family: 'Times New Roman', serif; font-size: 11px; font-style: italic; color: #555; font-weight: bold; display: block; margin-bottom: 4px; }
-#shlimazl-hover-card .wc-divider  { border: none; border-top: 1px solid #ccc; margin: 4px 0 5px; }
-#shlimazl-hover-card .wc-definition { font-family: 'Times New Roman', serif; font-size: 12px; color: #111; line-height: 1.4; display: block; }
-
-/* interest "shlimazl" sublinhado tracejado para dar hint */
-.interest-shlimazl {
-  cursor: default;
-  border-bottom: 1px dashed #555;
-  color: inherit;
-}
-
-.bar-row {
-  display: block; background: #000;
-  padding: 5px 8px; margin: 0; line-height: 1.6;
-}
-
-.rights-bar {
-  display: block; background: #000; color: #fff;
-  font-size: 11px; font-weight: 400;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 5px 8px; margin-top: 5px; width: 100%;
-}
-
-.glass-borders {
-  background-image: linear-gradient(rgba(255,255,255,.50), rgba(240,240,240,.28));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.90), 0 5px 6px rgba(0,0,0,.18);
-  border: 1px solid rgba(180,180,180,.52);
-  padding: 5px; margin: 7px;
-}
-.aero-borders { border: 1px solid rgba(0,0,0,.44); }
-
-.styled-containers         { background: #000; padding: 10px; }
-.styled-containers-headers { background: #fff; padding: 8px 10px; }
-
-.rights-content {
-  background: #fff; padding: 8px 10px;
-  display: flex; flex-direction: column; gap: 4px;
-}
-.rights-content h2 {
-  display: inline; background: none; color: #111;
-  font-size: 12px; text-transform: none; letter-spacing: 0; padding: 0;
-}
-.rights-content a       { color: #ff0303; text-decoration: none; }
-.rights-content a:hover { color: #ff0303; text-decoration: underline; }
-
-/* Special Thanks — links estilo "> [link]" */
-.special-thanks-content {
-  background: #fff;
-  padding: 8px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.special-thanks-link {
-  font-family: 'SpecialElite', 'Sawarabi Gothic', sans-serif;
-  font-size: 13px;
-  color: #111;
-  display: block;
-  text-indent: 0;
-}
-
-.special-thanks-link::before {
-  content: '> ';
-  color: #888;
-  font-family: monospace;
-  font-size: 12px;
-}
-
-.special-thanks-link a {
-  color: #cc0000;
-  text-decoration: none;
-  font-family: 'SpecialElite', 'Sawarabi Gothic', sans-serif;
-}
-
-.special-thanks-link a:hover {
-  text-decoration: underline;
-}
-
-#introBanner {
-  width: 100%; max-height: 375px; object-fit: cover;
-  display: block; border-bottom: 2px solid rgba(150,150,150,.50);
-  pointer-events: none; filter: none;
-}
-
-a       { color: #000; text-decoration: none; }
-a:hover { text-decoration: underline; }
-#p2     { font-family: 'Times New Roman', sans-serif; font-size: 25.5px; line-height: 14px; color: #111; margin: 0; text-align: center; }
-p       { font-family: 'SpecialElite', sans-serif; font-size: 15.5px; line-height: 18px; color: #000000; margin: 0; text-align: center; }
-#p2     { font-family: 'SpecialElite', sans-serif; font-size: 15.5px; line-height: 18px; color: #111; margin: 0; text-align: center; }
-p + p   { margin-top: 5px; }
-
-.contact-links { list-style: none; margin: 0; padding: 0; }
-.contact-links li { border-bottom: 1px solid rgba(255,255,255,.08); }
-.contact-links li:last-child { border-bottom: none; }
-.contact-links a {
-  display: flex; align-items: center; gap: 10px;
-  padding: 7px 12px; color: #fff; font-size: 12.5px;
-  text-decoration: none; pointer-events: auto;
-}
-.contact-links a:hover { color: red; text-decoration: underline; }
-.link-label { flex: 1; }
-.link-note  { color: rgba(255,255,255,.45); font-size: 11px; }
-
-.stats-row {
-  display: flex;
-  background: #ffffff;
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-.stat-block {
-  flex: 1;
-  padding: 7px 10px;
-  border-right: 1px solid rgba(255,255,255,.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-}
-.stat-block:last-child { border-right: none; }
-.stat-num {
-  font-size: 34px;
-  color: #ffffff;
-  background-color: #000000;
-  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
-  letter-spacing: 3px;
-  border: 4px ridge rgb(255,255,255);
-}
-.stat-label {
-  font-size: 9.5px;
-  color: rgba(255,255,255,.986);
-  background-color: #000000;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.currently-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0;
-  background: #fff;
-}
-.currently-grid.two-col { grid-template-columns: 1fr 1fr; }
-.currently-grid.one-col { grid-template-columns: 1fr; }
-.currently-item {
-  padding: 8px 10px;
-  border-right: 1px solid rgba(0,0,0,.10);
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.currently-item:last-child { border-right: none; }
-.currently-label {
-  font-family: 'Broken15', 'Sawarabi Gothic', sans-serif;
-  font-size: 50px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #f5f5f5;
-  background: black;
-  text-align: center;
-}
-.currently-value {
-  font-family: 'SpecialElite', 'Sawarabi Gothic', sans-serif;
-  font-size: 14px;
-  color: #111;
-  line-height: 1.4;
-}
-.currently-sub {
-  font-size: 10.5px;
-  color: #aaa;
-}
-
-.lu-value-big {
-  font-size: 18px;
-  color: #111;
-  line-height: 1.4;
-  text-align: center;
-  font-family: 'AngelicWar', 'Sawarabi Gothic', sans-serif;
-  letter-spacing: 1px;
-  padding: 6px 0 4px;
-}
-
-.visitor-counter-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 0 2px;
-}
-.visitor-counter-wrap img { pointer-events: auto !important; }
+/* ─── FOOTER ─── */
 
 #pageFooter {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 8px 0 10px;
-  text-align: center;
-  font-size: 11px;
-  color: rgba(0,0,0,.38);
-  border-top: 1px dotted rgba(0,0,0,.12);
-  user-select: none;
-  background: transparent;
+    padding: 1px 1px 10px;
+    background: #000;
+    border-top: 1px solid #222;
+    font-family: 'SpecialElite', Georgia, serif;
+    font-size: 11.5px;
+    color: #555;
+    text-align: center;
 }
+
 #pageFooter .footer-author {
-  color: rgba(0,0,0,.50);
+  color: #777;
   cursor: default;
-  font-style: italic;
-  border-bottom: 1px dotted rgba(0,0,0,.22);
+  border-bottom: 1px dotted #444;
 }
+
 #pageFooter .footer-author:hover {
-  color: rgba(0,0,0,.80);
+  color: #ccc;
   border-bottom-style: solid;
 }
+
+/* ─── TOOLTIP ─── */
 
 #wa-tooltip {
   position: fixed;
   z-index: 99999;
   background: #fff;
-  border: 1px solid rgba(100,100,100,.45);
-  box-shadow: 2px 3px 10px rgba(0,0,0,.20);
+  border: 1px solid #aaa;
+  box-shadow: 2px 3px 8px rgba(0,0,0,0.30);
   padding: 8px 10px;
   font-size: 11.5px;
   color: #111;
-  font-family: 'Sawarabi Gothic', Tahoma, sans-serif;
+  font-family: 'SpecialElite', Georgia, serif;
   pointer-events: none;
   display: none;
-  max-width: 320px;
+  max-width: 280px;
   line-height: 1.5;
 }
-#wa-tooltip img { pointer-events: none; filter: none; display: block; }
-#wa-tooltip td  { vertical-align: middle; }
+
+#wa-tooltip a { color: #000; text-decoration: underline; }
+#wa-tooltip td { vertical-align: middle; }
 #wa-tooltip td:last-child { padding-left: 10px; }
-#wa-tooltip a   { color: #cc1a1a; text-decoration: underline; }
 
-#soundToggle {
+/* ─── HOVER CARD shlimazl ─── */
+
+#shlimazl-card {
+  display: none;
   position: fixed;
-  bottom: 8px; left: 10px;
-  z-index: 9999;
-  font-size: 10px;
-  color: rgba(255,255,255,.50);
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  user-select: none;
-  letter-spacing: .3px;
-  padding: 2px 0;
-  font-family: 'Sawarabi Gothic', Tahoma, sans-serif;
+  z-index: 99999;
+  pointer-events: none;
+  background: #fff;
+  border: 2px solid #000;
+  padding: 10px 14px 12px;
+  max-width: 240px;
+  font-family: 'SpecialElite', Georgia, serif;
 }
-#soundToggle:hover { color: rgba(255,255,255,.88); }
-#soundToggle.off   { color: rgba(255,255,255,.20); }
 
-@media (max-width: 800px) {
-  body { padding-top: 220px; }
-  #siteLogoTop { max-height: 210px; }
-  #websiteContainer { width: 100%; }
-  #navigationMenu { width: 118px; }
+#shlimazl-card.visible { display: block; }
+#shlimazl-card .sc-word  { font-size: 24px; font-weight: 900; color: #0a0a0a; display: block; line-height: 1; margin-bottom: 2px; }
+#shlimazl-card .sc-pron  { font-size: 10px; color: #555; font-style: italic; display: block; }
+#shlimazl-card .sc-type  { font-size: 10px; color: #555; font-style: italic; font-weight: bold; display: block; margin-bottom: 4px; }
+#shlimazl-card hr        { border: none; border-top: 1px solid #ddd; margin: 4px 0; }
+#shlimazl-card .sc-def   { font-size: 11.5px; color: #111; line-height: 1.4; display: block; }
+
+.interest-shlimazl {
+  cursor: default;
 }
-@media (max-width: 600px) {
-  body { padding-top: 90px; }
-  #siteLogoTop { max-height: 75px; }
-  #navAndContentContainer { flex-direction: column; }
-  #navigationMenu {
-    width: 100% !important; height: auto !important;
-    display: flex !important; flex-direction: row !important;
-    flex-wrap: wrap !important; padding: 6px !important;
-    align-items: center !important;
-  }
-  .nav-categories { flex-direction: row !important; flex-wrap: wrap !important; border: none !important; }
-  .navbar-titles { display: none !important; }
-  .nav-link { width: auto !important; padding: 4px 6px !important; font-size: 11px !important; margin: 1px !important; }
-  .about-grid { grid-template-columns: 1fr; }
-  .stats-row { flex-wrap: wrap; }
+
+#siteIcon {
+  width: 78px;
+  height: 78px;
+  object-fit: contain;
+  object-position: center;
+  display: inline-block;
+  
+  margin-left: 221px;
 }
+
+#logotext {
+  display: inline-block;
+  margin-left: 14px;
+  font-size: 60px;
+  text-align: center;
+  margin-left: 46px;
+  font-family: 'DeathNote', Georgia, serif;
+}
+
+/* ─── RESPONSIVE ─── */
+
+@media (max-width: 700px) {
+  #wrapper { width: 100%; margin: 0; }
+  body { background-image: none; }
+  .about-cols { flex-direction: column; }
+  .about-col + .about-col { border-left: none; border-top: 1px solid #ddd; }
+}
+
 </style>
-
-<script>
-(function () {
-  var font = new FontFace('AngelicWar', 'url(assets/fonts/AngelicWar.ttf)', { display: 'block' });
-  document.fonts.add(font);
-  var timeout = setTimeout(reveal, 600);
-  function reveal() {
-    clearTimeout(timeout);
-    document.documentElement.classList.add('fonts-loaded');
-  }
-  font.load().then(reveal).catch(reveal);
-})();
-</script>
 </head>
 <body>
 
-<script>
-(function(){
-  var s = document.createElement('style');
-  s.textContent = 'body{background-color:#000!important;background-image:url("assets/images/backgrounds/whitebg.jpeg")!important;}';
-  document.head.appendChild(s);
-})();
-</script>
+<!-- hover card -->
+<div id="shlimazl-card">
+  <span class="sc-word">shlimazl</span>
+  <span class="sc-pron">/ʃlɪˈmɑːzəl/</span>
+  <span class="sc-type">noun</span>
+  <hr>
+  <span class="sc-def">a consistently unlucky person; someone who seems destined for misfortune</span>
+</div>
 
-<script>
-(function () {
-  var blocked = ['musicplayer', 'videos', 'downloader', 'community', 'preferences', 'projects'];
-  var path = window.location.pathname.toLowerCase();
-  var hash = window.location.hash.replace(/^#/, '').toLowerCase();
-  var pathBlocked = blocked.some(function (p) { return path.indexOf(p) !== -1; });
-  var hashBlocked = blocked.indexOf(hash) !== -1;
-  if (pathBlocked || hashBlocked) { window.location.replace('assets/pages/notfound.html'); }
-})();
-</script>
+<div id="wa-tooltip"></div>
 
-<!-- Firebase SDKs -->
+<div id="wrapper">
+
+  <!-- HEADER -->
+  <header id="siteHeader">
+    <img id="siteIcon" src="assets/images/skull1.jpg" alt="">
+    <img src="assets/images/deathlogo.png" alt="logo" style="width: 37s0px; margin-left: 45px; height: 90px; object-position: center; filter: invert();">
+  </header>
+  
+  <!-- NAV -->
+  <nav id="siteNav">
+    <a class="nav-item" id="nbtn-introduction" href="#introduction" onclick="return navClick(event,'introduction')">introduction</a>
+    <span class="nav-sep">|</span>
+    <a class="nav-item" id="nbtn-resources" href="#resources" onclick="return navClick(event,'resources')">resources</a>
+    <span class="nav-sep">|</span>
+    <a class="nav-item" href="assets/pages/contact.html">contact</a>
+  </nav>
+  <!-- MAIN -->
+  <main id="mainContent">
+
+    <!-- PAGE: INTRODUCTION -->
+    <div id="pg-introduction" class="page">
+
+      <img id="introBanner" src="assets/images/bannerintroduction.jpg" alt="" draggable="false"
+           onerror="this.style.display='none'">
+
+      <!-- ABOUT THE SITE -->
+      <span class="section-bar">INTRODUCTION</span>
+      <div class="paper">
+        <div class="intro-box">
+          <span class="intro-box-title">Death Archive</span>
+          <p> my personal site.</p>
+          <br>
+          <hr>
+          <br>
+          <p>Here you'll find a collection of resources, media, and various content related to my interests and projects. This Archive serves No Schedule...i'll try to keep it updated as much as possible.</p>
+        
+        </div>
+      </div>
+
+      <div class="black-gap"></div>
+
+      <!-- ABOUT ME -->
+      <span class="section-bar">ABOUT</span>
+      <div class="paper">
+        <div class="about-cols">
+          <div class="about-col">
+            <p>I have many aliases, but for now, let's just say I'm <span id="name-cloister">Settembre</span></p>
+            <br>
+            <p>I don't really feel like socializing. I'd rather stay in my room forever. I have no purpose in life, and that's my purpose. maybe the internet is where I truly belong; maybe I just wasn't made for the outside world.</p>
+            <hr>
+            <br>
+            <p>i don't remember being a talkative or sociable kid, even when i was younger. i always preferred to be alone and play in my own way, like i always knew what was good for me.</p>
+            <br>
+            <hr>
+             
+            <br>
+            <p>i always had a strong sense of justice and a strange hatred for people, even when i was extremely kind to them. maybe i've always felt distaste for humanity &mdash; i never hugged a family member with true love inside me, or ever felt that healthy, common fondness for them.</p>
+            <br>
+          </div>
+          <div class="about-col">
+            <span class="about-col-label">INTERESTS DUMP</span>
+            <p>anime, visual novels, higurashi, umineko, resident evil 4 (2005), fear &amp; hunger, horror, zombies, cult media, xbox 360, old web, windows 7, 2000s, nostalgia, diy, design, fashion, boots, leather, victorianism, psychology, philosophy, politics, history, literature, poems, testing morality, atheism, cyber-religion, conspiracy, coding, music, drawing, art, experimental stuff, shotguns, trench guns, bows, cats, bunnies, plants, germany, italy, brazil.</p>
+            <br>
+            <p>nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death note, corpse party, silent hill, school days, mad father, witch's house, mogeko castle, wadanohara, okegom, happy tree friends, south park, my little pony, homestuck, soyjak, chud, memes, gothic architecture, lolita, kindness, justice, empathy, critical thinking, accent, "brigadeiro", bloodplay, anatomical graphics, nature, animals, solding, occultism, atheism, misanthropy, nihilism, existentialism, schizoanalysis, <span class="interest-shlimazl" id="shlimazl-trigger">shlimazl</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="black-gap"></div>
+
+      <!-- PAGES STATS -->
+      <span class="section-bar">pages stats</span>
+      <div class="stats-row">
+        <div class="stat-cell">
+          <span class="stat-num">01</span>
+          <span class="stat-label">Done</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num">06</span>
+          <span class="stat-label">In Dev</span>
+        </div>
+      </div>
+
+      <div class="black-gap"></div>
+
+      <!-- LAST UPDATED -->
+      <span class="section-bar">last updated</span>
+      <div class="lu-box">
+        <span class="lu-date" data-lu-date>---</span>
+      </div>
+
+      <div class="black-gap"></div>
+
+      <!-- SPECIAL THANKS -->
+      <span class="section-bar">special thanks</span>
+      <ul class="thanks-list">
+        <li>Honorable Mention: <a href="https://frutigeraeroarchive.org/" target="_blank">frutigeraeroarchive.org</a></li>
+        <li>Honorable Mention: <a href="https://kaomoji.you/" target="_blank">kaomoji.you</a></li>
+      </ul>
+
+    </div><!-- /#pg-introduction -->
+
+    <!-- PAGE: RESOURCES -->
+    <div id="pg-resources" class="page">
+
+      <span class="section-bar">resources</span>
+      <div class="paper">
+        <div class="intro-box">
+          <p>Tools, media &amp; everything else on this archive.</p>
+        </div>
+      </div>
+
+      <div class="black-gap"></div>
+
+      <span class="res-bar">pages</span>
+      <ul class="res-block">
+        <li class="res-item">
+          <a href="assets/pages/sketchbook.html">
+            <span class="res-name">Sketchbook</span>
+            <span class="res-note">gallery &amp; JS Paint</span>
+          </a>
+        </li>
+        <li class="res-item locked">
+          <span class="res-name">Music Player</span>
+          <span class="res-note">locked / in dev</span>
+        </li>
+        <li class="res-item locked">
+          <span class="res-name">Video Player</span>
+          <span class="res-note">locked / in dev</span>
+        </li>
+        <li class="res-item locked">
+          <span class="res-name">Ultimate Downloader Converter</span>
+          <span class="res-note">locked / in dev</span>
+        </li>
+      </ul>
+
+      <div class="black-gap"></div>
+
+      <span class="res-bar">coming soon</span>
+      <ul class="res-block">
+        <li class="res-item locked">
+          <span class="res-name">File Dumpster</span>
+          <span class="res-note">locked / in dev</span>
+        </li>
+        <li class="res-item locked">
+          <span class="res-name">Sites</span>
+          <span class="res-note">locked / in dev</span>
+        </li>
+        <li class="res-item locked">
+          <span class="res-name">Projects</span>
+          <span class="res-note">locked / in dev</span>
+        </li>
+      </ul>
+
+    </div><!-- /#pg-resources -->
+
+    <footer id="pageFooter">
+      2026 | Death Archive / Created by
+      <span
+        class="footer-author"
+        onmouseover="WaTooltip.show(this,'<table><tr><td><img src=\'assets/images/tooltipimg.png\' alt=\'pfp\' width=\'72\' height=\'72\'></td><td>If you have any questions, <br>use this email to contact:<br><br><a href=\'mailto:trenchgun1337@gmail.com\'>trenchgun1337@gmail.com</a></td></tr></table>')"
+        onmouseout="WaTooltip.hide()">Settembre19th</span>
+    </footer>
+
+  </main>
+
+</div><!-- /#wrapper -->
+
+<!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -531,12 +780,6 @@ p + p   { margin-top: 5px; }
   const app = initializeApp(FIREBASE_CONFIG);
   const db  = getDatabase(app);
 
-  function applyLastUpdated(dateStr) {
-    document.querySelectorAll('[data-lu-date]').forEach(function(el) {
-      el.textContent = dateStr;
-    });
-  }
-
   function formatTimestamp(val) {
     var ts = new Date(val);
     var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -547,22 +790,15 @@ p + p   { margin-top: 5px; }
            ts.getFullYear();
   }
 
-  /* aguarda DOM estar pronto antes de tentar aplicar */
   function tryApply(dateStr) {
     var els = document.querySelectorAll('[data-lu-date]');
-    if (els.length > 0) {
-      els.forEach(function(el){ el.textContent = dateStr; });
-    } else {
-      /* se ainda não renderizou, tenta de novo */
-      setTimeout(function(){ tryApply(dateStr); }, 150);
-    }
+    if (els.length > 0) { els.forEach(function(el){ el.textContent = dateStr; }); }
+    else { setTimeout(function(){ tryApply(dateStr); }, 150); }
   }
 
-  /* dispara assim que o módulo carrega — não espera DOMContentLoaded */
   get(ref(db, 'archive/lastUpdated'))
     .then(function(snap) {
-      var dateStr = snap.exists() ? formatTimestamp(snap.val()) : 'Wed, 23 Apr 2026';
-      /* tenta imediatamente e também no DOMContentLoaded */
+      var dateStr = snap.exists() ? formatTimestamp(snap.val()) : 'Wed, 24 Apr 2026';
       tryApply(dateStr);
       document.addEventListener('DOMContentLoaded', function(){ tryApply(dateStr); });
     })
@@ -573,188 +809,15 @@ p + p   { margin-top: 5px; }
     });
 </script>
 
-<!-- SVG filter para efeito grain no word-card (escondido) -->
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <filter id="manga-grain" x="0%" y="0%" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="1"/>
-      </feComponentTransfer>
-    </filter>
-  </defs>
-</svg>
-
-<!-- Hover card flutuante para "shlimazl" -->
-<div id="shlimazl-hover-card">
-  <span class="wc-word">shlimazl</span>
-  <span class="wc-pronunciation">/ʃlɪˈmɑːzəl/</span>
-  <span class="wc-type">noun</span>
-  <hr class="wc-divider">
-  <span class="wc-definition">a consistently unlucky person; someone who seems destined for misfortune</span>
-</div>
-
-<img id="siteLogoTop"
-  src="assets/images/watanagashilogo.jpg"
-  alt="Watanagashi Archive"
-  onerror="this.style.display='none'">
-
-<div id="wa-tooltip"></div>
-
-<div id="websiteContainer">
-  <div id="navAndContentContainer">
-
-    <aside id="sidebarAside">
-      <div id="navigationMenu">
-        <nav class="nav-categories">
-          <span class="navbar-titles">Navigation</span>
-          <a class="nav-link" id="nbtn-introduction" href="#introduction" onclick="return navClick(event,'introduction')">Introduction</a>
-          <a class="nav-link" id="nbtn-resources"    href="#resources"    onclick="return navClick(event,'resources')">Resources</a>
-          <a class="nav-link" href="assets/pages/contact.html">Contact</a>
-        </nav>
-      </div>
-    </aside>
-
-    <main id="mainContent">
-
-      <!-- INTRODUCTION -->
-      <div id="pg-introduction" class="page">
-
-        <div class="bar-row"><h1 class="angelic-target">Introduction</h1></div>
-        <div class="glass-borders">
-          <div class="aero-borders" style="overflow:hidden">
-            <img id="introBanner" src="assets/images/bannerintroduction.jpg" alt="Banner" draggable="false">
-          </div>
-          <article class="styled-containers-headers aero-borders">
-            <h4>The Watanagashi Archive</h4> 
-            <br><br>
-            <p>Welcome to — my personal site &amp; archive.</p>
-            <p>Here you'll find a collection of resources, media, and various content related to my interests and projects. This Archive serves No Schedule...i'll try to keep it updated as much as possible.</p>
-          </article>
-        </div>
-
-        <!-- ABOUT ME -->
-        <div class="bar-row"><h1 class="angelic-target">About Me</h1></div>
-        <div class="glass-borders" style="padding:0; margin:0 7px 7px;">
-          <div class="currently-grid two-col aero-borders">
-            <div class="currently-item">
-              <span class="currently-label">a bit</span>
-              <br>
-              <span class="currently-value">I have many aliases, but for now, let's just say I'm <div id="h43">Settembre.</div></span>
-              <span class="currently-value">I don't really feel like socializing. I'd rather stay in my room forever. I have no purpose in life, and that's my purpose. maybe the internet is where I truly belong; maybe I just wasn't made for the outside world.</span>
-              <br>
-              <span class="currently-value">i don't remember being a talkative or sociable kid, even when i was younger. i always preferred to be alone and play in my own way, like i always knew what was good for me.</span>
-              <br>
-              <span class="currently-value">i always had a strong sense of justice and a strange hatred for people, even when i was extremely kind to them. maybe i've always felt distaste for humanity <br><br>— i never hugged a family member with true love inside me, or ever felt that healthy, common fondness for them.</span>
-            </div>
-            <div class="currently-item">
-              <span class="currently-label">interests dump</span>
-              <br>
-              <span class="currently-value">anime, visual novels, higurashi, umineko, resident evil 4 (2005), fear &amp; hunger, horror, zombies, cult media, xbox 360, old web, windows 7, 2000s, nostalgia, diy, design, fashion, boots, leather, victorianism, psychology, philosophy, politics, history, literature, poems, testing morality, atheism, cyber-religion, conspiracy, coding, music, drawing, art, experimental stuff, shotguns, trench guns, bows, cats, bunnies, plants, germany, italy, brazil.
-nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death note, corpse party, silent hill, school days, mad father, witch's house, mogeko castle, wadanohara, okegom, happy tree friends, south park, my little pony, homestuck, soyjak, chud, memes, gothic architecture, lolita, kindness, justice, empathy, critical thinking, accent, "brigadeiro", bloodplay, anatomical graphics, nature, animals, solding, occultism, atheism, misanthropy, nihilism, existentialism, schizoanalysis, <span class="interest-shlimazl" id="shlimazl-trigger">shlimazl</span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- ARCHIVE STATS -->
-        <div class="bar-row"><h1 class="angelic-target">Pages Stats</h1></div>
-        <div style="margin: 0 7px 7px;">
-          <div class="stats-row aero-borders">
-            <div class="stat-block">
-              <span class="stat-num angelic-target" id="stat-pages-live">01</span>
-              <span class="stat-label">Done</span>
-            </div>
-            <div class="stat-block">
-              <span class="stat-num angelic-target" id="stat-in-dev">06</span>
-              <span class="stat-label">In Dev</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- LAST UPDATED -->
-        <div class="bar-row"><h1 class="angelic-target">Last Updated</h1></div>
-        <div class="glass-borders" style="padding:0; margin:0 7px 7px;">
-          <div class="currently-grid one-col aero-borders">
-            <div class="currently-item" style="align-items:center; padding: 10px;">
-              <span class="currently-label" style="width:100%; display:block;">last updated</span>
-              <span class="lu-value-big angelic-target" data-lu-date>---</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- SPECIAL THANKS -->
-        <div class="bar-row"><h1 class="angelic-target">Special Thanks</h1></div>
-        <div style="position: relative; margin: 0 7px 7px;">
-          <div class="special-thanks-content aero-borders">
-            <span class="special-thanks-link">Honorable Mention: <a href="https://frutigeraeroarchive.org/" target="_blank">frutigeraeroarchive.org</a></span>
-            <span class="special-thanks-link">Honorable Mention: <a href="https://kaomoji.you/" target="_blank">kaomoji.you</a></span>
-          </div>
-
-
-        </div>
-
-      </div><!-- /#pg-introduction -->
-
-      <!-- RESOURCES -->
-      <div id="pg-resources" class="page">
-        <div class="bar-row"><h1 class="angelic-target">Resources</h1></div>
-        <div class="glass-borders">
-          <div class="styled-containers-headers aero-borders">
-            <p>Tools, media &amp; everything else on this archive.</p>
-          </div>
-
-          <div class="rights-bar">Pages</div>
-          <div class="aero-borders" style="background:#000">
-            <ul class="contact-links">
-              <li>
-                <a href="assets/pages/sketchbook.html"
-                  onmouseover="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='underline')"
-                  onmouseout="this.querySelectorAll('.link-label,.link-note').forEach(el=>el.style.textDecoration='none')">
-                  <span class="link-label">Sketchbook</span>
-                  <span class="link-note">gallery &amp; JS Paint</span>
-                </a>
-              </li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Music Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Video Player</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Ultimate Downloader Converter</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-            </ul>
-          </div>
-
-          <div class="rights-bar">Coming Soon</div>
-          <div class="aero-borders" style="background:#000">
-            <ul class="contact-links">
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">File Dumpster</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">RabbitHoles / WeirdSites / RandomSites</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-              <li><a style="pointer-events:none;opacity:.45"><span class="link-label">Projects</span><span class="link-note">LOCKED / IN DEV</span></a></li>
-            </ul>
-          </div>
-
-        </div>
-      </div><!-- /#pg-resources -->
-
-      <div id="pageFooter">
-        2026 | Watanagashi Archive &mdash; Created by
-        <span
-          class="footer-author"
-          onmouseover="WaTooltip.show(this,'<table><tr><td><img src=\'assets/images/rikatooltippfp.jpg\' alt=\'pfp\' width=\'80\' height=\'80\'></td><td style=\'padding-left:10px\'>If you have any questions,<br>use this email for feedback:<br><br><a href=\'mailto:trenchgun1337@gmail.com\'>trenchgun1337@gmail.com</a></td></tr></table>')"
-          onmouseout="WaTooltip.hide()">Settembre19th</span>
-      </div>
-
-    </main>
-  </div>
-</div>
-
 <script>
 (function(){
   'use strict';
   var pages = ['introduction','resources'];
+
   function gotoPage(name) {
     if (pages.indexOf(name) === -1) name = 'introduction';
     document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-    document.querySelectorAll('.nav-link').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.nav-item').forEach(function(b){ b.classList.remove('active'); });
     var pg  = document.getElementById('pg-'   + name);
     var btn = document.getElementById('nbtn-' + name);
     if (pg)  pg.classList.add('active');
@@ -762,52 +825,45 @@ nightcore, moestyle, metal, industrial hell, dbsm, midori, evangelion, death not
     document.title = name[0].toUpperCase() + name.slice(1) + ' \u2014 The Watanagashi Archive';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
   window.gotoPage = gotoPage;
   window.navClick = function(e, name) {
-    e.preventDefault();
-    gotoPage(name);
+    e.preventDefault(); gotoPage(name);
     history.pushState({ page: name }, '', '#' + name);
     return false;
   };
+
   window.addEventListener('hashchange', function(){
     var hash = window.location.hash.replace(/^#/,'').toLowerCase().split('?')[0];
     if (!hash || hash === 'index.html') hash = 'introduction';
     gotoPage(pages.indexOf(hash) !== -1 ? hash : 'introduction');
   });
+
   document.addEventListener('DOMContentLoaded', function(){
     var raw = window.location.hash.replace(/^#/,'').toLowerCase().split('?')[0];
     if (!raw || raw === 'index.html') raw = 'introduction';
     gotoPage(pages.indexOf(raw) !== -1 ? raw : 'introduction');
     history.replaceState({ page: raw }, '', '#' + raw);
-
   });
-
 })();
 </script>
 
 <script>
-/* Hover card para "shlimazl" em interests */
+/* shlimazl hover card */
 (function(){
   var trigger = document.getElementById('shlimazl-trigger');
-  var card    = document.getElementById('shlimazl-hover-card');
+  var card    = document.getElementById('shlimazl-card');
   if (!trigger || !card) return;
-
   trigger.addEventListener('mousemove', function(e){
     card.classList.add('visible');
-    var x = e.clientX + 16;
-    var y = e.clientY - 20;
-    var cw = card.offsetWidth  || 280;
-    var ch = card.offsetHeight || 100;
-    if (x + cw > window.innerWidth  - 8) x = e.clientX - cw - 10;
-    if (y + ch > window.innerHeight - 8) y = window.innerHeight - ch - 8;
+    var x = e.clientX + 16, y = e.clientY - 16;
+    var cw = card.offsetWidth || 240, ch = card.offsetHeight || 90;
+    if (x + cw > window.innerWidth  - 6) x = e.clientX - cw - 10;
+    if (y + ch > window.innerHeight - 6) y = window.innerHeight - ch - 6;
     if (y < 4) y = 4;
-    card.style.left = x + 'px';
-    card.style.top  = y + 'px';
+    card.style.left = x + 'px'; card.style.top = y + 'px';
   });
-
-  trigger.addEventListener('mouseleave', function(){
-    card.classList.remove('visible');
-  });
+  trigger.addEventListener('mouseleave', function(){ card.classList.remove('visible'); });
 })();
 </script>
 
@@ -816,18 +872,15 @@ window.WaTooltip = (function(){
   var el = document.getElementById('wa-tooltip');
   function show(anchor, html) {
     if (!el) return;
-    el.innerHTML = html;
-    el.style.display = 'block';
-    var r    = anchor.getBoundingClientRect();
-    var tw   = el.offsetWidth  || 240;
-    var th   = el.offsetHeight || 80;
+    el.innerHTML = html; el.style.display = 'block';
+    var r = anchor.getBoundingClientRect();
+    var tw = el.offsetWidth || 240, th = el.offsetHeight || 80;
     var left = r.left + r.width / 2 - tw / 2;
     var top  = r.top - th - 8;
-    if (top < 4)                           top  = r.bottom + 8;
-    if (left < 4)                          left = 4;
+    if (top  < 4) top  = r.bottom + 8;
+    if (left < 4) left = 4;
     if (left + tw > window.innerWidth - 4) left = window.innerWidth - tw - 4;
-    el.style.left = left + 'px';
-    el.style.top  = top  + 'px';
+    el.style.left = left + 'px'; el.style.top = top + 'px';
   }
   function hide() { if (el) el.style.display = 'none'; }
   return { show: show, hide: hide };
